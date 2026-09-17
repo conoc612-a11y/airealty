@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="favicon.png" />
-  <link rel="stylesheet" href="css/tokens.css?v=fc843d4" />
+  <link rel="stylesheet" href="css/tokens.css?v=c5b6b7c" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=fc843d4"></script>
+  <script src="js/auth-guard.js?v=c5b6b7c"></script>
   <title>부동산 all in one</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -37,12 +37,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=fc843d4" />
+  <link rel="stylesheet" href="css/buttons.css?v=c5b6b7c" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=fc843d4" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=c5b6b7c" />
   <style>
     :root {
       
@@ -1726,7 +1726,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=fc843d4"></script>
+  <script src="js/ie-guard.js?v=c5b6b7c"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2003,22 +2003,22 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-17 21:29 · fc843d4</span></span>
+          · <span class="build-tag">build 2026-09-17 23:06 · c5b6b7c</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=fc843d4"></script>
+  <script src="js/joinkey.js?v=c5b6b7c"></script>
   
-  <script src="js/identity.js?v=fc843d4"></script>
-  <script src="js/common.js?v=fc843d4"></script>
-  <script src="js/ui-resize.js?v=fc843d4"></script>
-  <script src="js/footer-resize.js?v=fc843d4"></script>
-  <script src="js/route-line.js?v=fc843d4"></script>
-  <script src="js/route-api.js?v=fc843d4"></script>
-  <script src="js/footer-stats.js?v=fc843d4"></script>
+  <script src="js/identity.js?v=c5b6b7c"></script>
+  <script src="js/common.js?v=c5b6b7c"></script>
+  <script src="js/ui-resize.js?v=c5b6b7c"></script>
+  <script src="js/footer-resize.js?v=c5b6b7c"></script>
+  <script src="js/route-line.js?v=c5b6b7c"></script>
+  <script src="js/route-api.js?v=c5b6b7c"></script>
+  <script src="js/footer-stats.js?v=c5b6b7c"></script>
   <script>
     
     
@@ -5473,20 +5473,24 @@
         else tagoPosStart(r.cc, r.id, r.n + '번(' + r.c + ')', TAGO_SRC);
       }
       const _busArrSeen = new WeakSet();
+      const _busArrCache = new Map();   
       function fillBusArrival(root) {
         const box = root && root.querySelector && root.querySelector('.bus-arr');
         if (!box || _busArrSeen.has(box)) return;
         _busArrSeen.add(box);
         const st = box.dataset.st;
         if (!st) return;
+        const hit = _busArrCache.get(st);
+        if (hit && Date.now() - hit.t < 45000) { box.innerHTML = hit.html; return; }
+        const paint = (html) => { box.innerHTML = html; _busArrCache.set(st, { t: Date.now(), html }); };
         box.innerHTML = '<span style="font-size:12px;color:var(--c-muted);">도착정보 확인 중…</span>';
         fetch(SUPABASE_URL + '/functions/v1/seoul-bus-arrival?stId=' + encodeURIComponent(st))
           .then(okJson)
           .then((j) => {
             const rows = (j && j.routes) || [];
             if (!rows.length) {
-              box.innerHTML = '<span style="font-size:12px;color:var(--c-muted);">'
-                + esc(j && j.msg ? j.msg : '지금 오는 버스 정보가 없음.') + '</span>';
+              paint('<span style="font-size:12px;color:var(--c-muted);">'
+                + esc(j && j.msg ? j.msg : '지금 오는 버스 정보가 없음.') + '</span>');
               return;
             }
             
@@ -5494,7 +5498,7 @@
             
             
             const same = (a, b) => !b || b === a || /운행종료|출발대기/.test(b);
-            box.innerHTML = '<div style="font-weight:700;font-size:12px;margin-bottom:2px;">실시간 도착</div>'
+            paint('<div style="font-weight:700;font-size:12px;margin-bottom:2px;">실시간 도착</div>'
               + rows.slice(0, 8).map((x) => '<div style="font-size:12px;margin-top:2px;">'
                 
                 
@@ -5513,7 +5517,7 @@
                 + (rows.length - 8) + '개 노선</div>' : '')
               + '<div style="font-size:11px;color:var(--c-muted);margin-top:3px;">'
               + '서울시 버스도착정보 · <b>저상버스 기준</b>이라 일부 노선은 빠질 수 있음</div>'
-              + '<div style="font-size:11px;color:var(--c-muted);">노선 번호를 누르면 <b>지금 그 노선 버스가 어디 있는지</b> 지도에 표시됨.</div>';
+              + '<div style="font-size:11px;color:var(--c-muted);">노선 번호를 누르면 <b>지금 그 노선 버스가 어디 있는지</b> 지도에 표시됨.</div>');
           })
           .catch(() => {
             box.innerHTML = '<span style="font-size:12px;color:var(--c-danger);">'
@@ -5527,17 +5531,12 @@
       
       
       
-      map.on('popupopen', (e) => {
-        const el = e && e.popup && e.popup.getElement();
-        if (!el || el.dataset.rtWired) return;
-        el.dataset.rtWired = '1';
-        el.addEventListener('click', (ev) => {
-          const b = ev.target.closest('.bus-rt');
-          if (!b) return;
-          ev.preventDefault();
-          ev.stopPropagation();
-          busPosStart(b.dataset.rt, b.dataset.no);
-        });
+      
+      
+      document.addEventListener('click', (e) => {
+        const b = e.target && e.target.closest ? e.target.closest('.bus-rt') : null;
+        if (!b || !b.dataset.rt) return;
+        busPosStart(b.dataset.rt, b.dataset.no);
       });
 
       map.on('overlayadd', (e) => {
@@ -5746,6 +5745,142 @@
         }
         return out.sort((x, y) => x._d - y._d);
       }
+      
+      
+      
+      
+      
+      
+      
+      const SUBTRAIN_EP = SUPABASE_URL + '/functions/v1/seoul-subway-trains';
+      const subTrainLayer = L.layerGroup();
+      const SUBTRAIN_ST = { 0: '진입', 1: '도착', 2: '출발', 3: '전역출발' };
+      
+      
+      
+      const SUBTRAIN_ALIAS = {
+        '경의중앙선': '경의중앙선', '수인분당선': '수인분당선', '신분당선': '신분당선',
+        '우이신설선': '우이신설선', '경춘선': '경춘선',
+      };
+      const subtrainQ = (ln) => (/^\d+호선$/.test(ln) ? ln : (SUBTRAIN_ALIAS[ln] || ''));
+      
+      const subtrainKey = (nm) => String(nm || '').replace(/\s+/g, '').replace(/\(.*/, '').replace(/역$/, '');
+      let subTrainTimer = null, subTrainFail = 0;
+      const subTrainMarks = new Map();   
+      const subTrainDead = new Set();    
+      let _stXY = null;
+      function stXY() {
+        if (!_stXY && subRows) {
+          _stXY = new Map();
+          for (const d of subRows) { const k = subtrainKey(d.nm); if (k && !_stXY.has(k)) _stXY.set(k, d); }
+        }
+        return _stXY;
+      }
+      
+      function subtrainLines() {
+        if (!subRows) return [];
+        const b = map.getBounds().pad(0.15);
+        const set = new Set();
+        for (const d of subRows) {
+          if (d.lat == null || !b.contains([d.lat, d.lng])) continue;
+          for (const ln of d.ln || []) { const q = subtrainQ(ln); if (q) set.add(q); }
+          if (set.size >= 8) break;
+        }
+        return [...set].filter((q) => !subTrainDead.has(q));
+      }
+      function subtrainPopup(t) {
+        const rows = [`<div><b>${esc(t.line)} ${esc(t.train)}열차</b> · ${esc(SUBTRAIN_ST[t.status] || '운행중')}</div>`];
+        rows.push(`<div style="margin-top:2px;font-size:12px;">${esc(t.st)} ${t.updn === '1' ? '하행·외선' : '상행·내선'} → ${esc(t.dest || '')}행</div>`);
+        const tags = [];
+        if (t.exp === '1') tags.push('급행');
+        else if (t.exp === '7') tags.push('특급');
+        if (t.last === '1') tags.push('막차');
+        if (tags.length) rows.push(`<div style="margin-top:2px;font-size:12px;"><b>${tags.join(' · ')}</b></div>`);
+        if (t.at) rows.push(`<div style="margin-top:4px;font-size:11px;color:var(--c-muted);">${esc(String(t.at).slice(0, 16))} 기준</div>`);
+        rows.push('<div style="margin-top:4px;font-size:11px;color:var(--c-muted);">서울 열린데이터광장 지하철 실시간 열차 위치 · 역 단위</div>');
+        return '<div class="pc"><div class="pc-head"><span class="rp-name">실시간 열차</span></div><div class="pc-body">' + rows.join('') + '</div></div>';
+      }
+      function subtrainDraw(trains) {
+        const seen = new Set();
+        const xy = stXY();
+        for (const t of trains) {
+          const key = t.line + '|' + t.train;
+          seen.add(key);
+          const d = xy && xy.get(subtrainKey(t.st));
+          if (!d) continue;   
+          let m = subTrainMarks.get(key);
+          if (!m) {
+            m = L.marker([d.lat, d.lng], {
+              icon: svcIcon('fi-rr-subway', (SUB_LINE_COLOR && SUB_LINE_COLOR[t.line]) || '#495057', 30),
+              zIndexOffset: 800,
+            });
+            m.bindTooltip(esc(t.line) + ' ' + esc(t.train), { direction: 'top' });
+            m.bindPopup(subtrainPopup(t));
+            m._t = t;
+            
+            
+            m.on('click', () => { m.unbindPopup(); m.bindPopup(subtrainPopup(m._t)); m.openPopup(); });
+            subTrainMarks.set(key, m);
+            subTrainLayer.addLayer(m);
+          } else {
+            if (m.getLatLng().lat !== d.lat || m.getLatLng().lng !== d.lng) m.setLatLng([d.lat, d.lng]);
+            m._t = t;
+            if (m.isPopupOpen() && m.getPopup()) m.getPopup().setContent(subtrainPopup(t));
+          }
+        }
+        for (const [key, m] of subTrainMarks) {
+          if (!seen.has(key)) { subTrainLayer.removeLayer(m); subTrainMarks.delete(key); }
+        }
+      }
+      function subtrainLoad(quiet) {
+        const lines = subtrainLines();
+        if (!lines.length) { subtrainDraw([]); return Promise.resolve([]); }
+        return fetch(SUBTRAIN_EP + '?lines=' + encodeURIComponent(lines.join(',')))
+          .then(okJson)
+          .then((j) => {
+            if (j && j.error) throw new Error(j.error);
+            subTrainFail = 0;
+            
+            
+            for (const ln of Object.keys((j && j.lineErrors) || {})) subTrainDead.add(ln);
+            const trains = (j && j.trains) || [];
+            subtrainDraw(trains);
+            if (!trains.length && !quiet) toast('화면 안 노선에 운행 중인 열차가 없음 (심야 시간대 확인).');
+            return trains;
+          })
+          .catch(() => {
+            if (++subTrainFail >= 2) {
+              subtrainStop();
+              toast('열차 위치 조회 실패 — 폴링을 멈춤 (할당량 가능). 레이어를 다시 켜면 재개.');
+            } else if (!quiet) toast('열차 위치를 불러오지 못함.');
+            return [];
+          });
+      }
+      function subtrainStop() {
+        if (subTrainTimer) { clearInterval(subTrainTimer); subTrainTimer = null; }
+        subTrainMarks.forEach((m) => subTrainLayer.removeLayer(m));
+        subTrainMarks.clear();
+        if (map.hasLayer(subTrainLayer)) map.removeLayer(subTrainLayer);
+      }
+      function subtrainStart() {
+        subtrainStop();
+        subTrainDead.clear();
+        if (!map.hasLayer(subTrainLayer)) subTrainLayer.addTo(map);
+        loadSubway().then(() => {
+          if (!map.hasLayer(subTrainLayer)) return;
+          if (!subRows) { toast('지하철역 정보를 불러오지 못함.'); return; }
+          subtrainLoad(false).then(() => {
+            if (!map.hasLayer(subTrainLayer) || subTrainTimer) return;
+            subTrainTimer = setInterval(() => {
+              
+              if (document.hidden || !map.hasLayer(subTrainLayer)) return;
+              subtrainLoad(true);
+            }, 60000);
+          });
+        });
+      }
+      map.on('overlayadd', (e) => { if (e.layer === subTrainLayer) subtrainStart(); });
+      map.on('overlayremove', (e) => { if (e.layer === subTrainLayer) subtrainStop(); });
       
       
       
@@ -14346,6 +14481,8 @@
           { name: '노후 공공시설물 (안전등급)', layer: agedCluster },
           
           { name: '지하철역 (역세권 강도)', layer: subCluster },
+          
+          { name: '지하철 실시간 열차', layer: subTrainLayer },
           { name: '따릉이 대여소', layer: bikeCluster },
           { name: '상권 (매출·유동인구)', layer: trdarCluster },
           
@@ -15668,7 +15805,7 @@
           {"t": "서울특별시 (TOPIS 교통정보)", "pk": "", "u": 0, "n": 0, "o": [], "d": "시내 도로 실시간 CCTV 영상", "cat": "제공기관 자체 서비스"},
           {"t": "서울특별시 (UPIS 도시계획정보)", "pk": "", "u": 0, "n": 0, "o": [], "d": "도시계획시설·용도지구·지구단위계획·주제도", "cat": "제공기관 자체 서비스"},
           {"t": "서울특별시 (버스정보시스템 BIS)", "pk": "", "u": 0, "n": 0, "o": [], "d": "정류소별 버스 실시간 도착정보(노선·도착예정·정류소 순번)", "cat": "제공기관 자체 서비스"},
-          {"t": "서울특별시 (서울 열린데이터광장)", "pk": "", "u": 0, "n": 0, "o": [], "d": "버스정류소 위치·정류장 이용량, 지하철역 위치·시간대별 승하차, 따릉이 대여소, 학교 기본정보, 상권분석(영역·매출·유동인구·직장인구), 행정동 생활인구", "cat": "제공기관 자체 서비스"},
+          {"t": "서울특별시 (서울 열린데이터광장)", "pk": "", "u": 0, "n": 0, "o": [], "d": "버스정류소 위치·정류장 이용량, 지하철역 위치·시간대별 승하차, 따릉이 대여소, 학교 기본정보, 상권분석(영역·매출·유동인구·직장인구), 행정동 생활인구 · 지하철 실시간 열차 위치 (역 단위)", "cat": "제공기관 자체 서비스"},
           {"t": "서울특별시 (정비사업 정보몽땅)", "pk": "", "u": 0, "n": 0, "o": [], "d": "재개발·재건축 등 정비사업 구역·진행단계", "cat": "제공기관 자체 서비스"},
           {"t": "아실 (아파트실거래가)", "pk": "", "u": 0, "n": 0, "o": [], "d": "단지별 실거래가 조회 링크 (본문을 우리가 저장하지 않는다)", "cat": "제공기관 자체 서비스"},
           {"t": "한국감정평가사협회", "pk": "", "u": 0, "n": 0, "o": [], "d": "법원경매 감정평가서 원문 열람 링크 (본문을 우리가 저장하지 않는다)", "cat": "제공기관 자체 서비스"},
