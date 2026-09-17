@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="favicon.png" />
-  <link rel="stylesheet" href="css/tokens.css?v=250d5cc" />
+  <link rel="stylesheet" href="css/tokens.css?v=80d724f" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=250d5cc"></script>
+  <script src="js/auth-guard.js?v=80d724f"></script>
   <title>부동산 all in one</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -37,12 +37,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=250d5cc" />
+  <link rel="stylesheet" href="css/buttons.css?v=80d724f" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=250d5cc" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=80d724f" />
   <style>
     :root {
       
@@ -1726,7 +1726,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=250d5cc"></script>
+  <script src="js/ie-guard.js?v=80d724f"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -1996,22 +1996,22 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-17 07:01 · 250d5cc</span></span>
+          · <span class="build-tag">build 2026-09-17 17:38 · 80d724f</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=250d5cc"></script>
+  <script src="js/joinkey.js?v=80d724f"></script>
   
-  <script src="js/identity.js?v=250d5cc"></script>
-  <script src="js/common.js?v=250d5cc"></script>
-  <script src="js/ui-resize.js?v=250d5cc"></script>
-  <script src="js/footer-resize.js?v=250d5cc"></script>
-  <script src="js/route-line.js?v=250d5cc"></script>
-  <script src="js/route-api.js?v=250d5cc"></script>
-  <script src="js/footer-stats.js?v=250d5cc"></script>
+  <script src="js/identity.js?v=80d724f"></script>
+  <script src="js/common.js?v=80d724f"></script>
+  <script src="js/ui-resize.js?v=80d724f"></script>
+  <script src="js/footer-resize.js?v=80d724f"></script>
+  <script src="js/route-line.js?v=80d724f"></script>
+  <script src="js/route-api.js?v=80d724f"></script>
+  <script src="js/footer-stats.js?v=80d724f"></script>
   <script>
     
     
@@ -11751,6 +11751,18 @@
           } else {
             for (let i = 0; i < si; i++) done.push({ name: STAGE_SEQ[i], date: '' });
             done.push({ name: d.stage, date: '' });
+          }
+        }
+        
+        
+        
+        if (d.up && d.up.length) {
+          for (const s of d.up) {
+            if (!s || !s.date) continue;
+            const r = jbRank(s.name);
+            const t = done.find((x) => !x.date && jbRank(x.name) === r);
+            if (t) { t.name = s.name; t.date = s.date; }
+            else if (!done.some((x) => x.date && jbRank(x.name) === r)) done.push({ name: s.name, date: s.date });
           }
         }
         
