@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="favicon.png" />
-  <link rel="stylesheet" href="css/tokens.css?v=7823098" />
+  <link rel="stylesheet" href="css/tokens.css?v=fc843d4" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=7823098"></script>
+  <script src="js/auth-guard.js?v=fc843d4"></script>
   <title>부동산 all in one</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -37,12 +37,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=7823098" />
+  <link rel="stylesheet" href="css/buttons.css?v=fc843d4" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=7823098" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=fc843d4" />
   <style>
     :root {
       
@@ -1726,7 +1726,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=7823098"></script>
+  <script src="js/ie-guard.js?v=fc843d4"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -1880,7 +1880,14 @@
       </div>
       <div class="ap-resizer" id="ap-resizer" title="드래그해서 너비 조절"></div>
     </aside>
-    <aside id="rp-panel" class="side-panel" hidden aria-label="실거래가 필터">
+      <aside id="sub-panel" class="side-panel" hidden aria-label="분양·청약 공고 목록">
+        <div class="sp-inner">
+          <div class="sp-head"><b class="sp-title">분양·청약 공고</b><span id="sub-count" style="color:var(--c-muted);font-size:12px;"></span><button type="button" id="sub-panel-close" class="ap-close" title="패널 닫기 (레이어는 유지)" aria-label="패널 닫기">✕</button></div>
+          <div style="padding:6px 12px;border-bottom:1px solid var(--line);"><input type="search" id="sub-search" placeholder="공고명·지역 검색" autocomplete="off" aria-label="분양 공고 검색" style="width:100%;box-sizing:border-box;font:inherit;font-size:13px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--text);outline:none;"></div>
+          <div class="sp-body ui-scroll" id="sub-panel-body"></div>
+        </div>
+      </aside>
+      <aside id="rp-panel" class="side-panel" hidden aria-label="실거래가 필터">
       <div class="sp-inner">
         <div class="sp-head"><b class="sp-title">실거래가</b><button type="button" id="rp-panel-close" class="ap-close" title="패널 닫기 (레이어는 유지)" aria-label="패널 닫기">✕</button></div>
         <div class="sp-body ui-scroll" id="rp-panel-body"></div>
@@ -1996,22 +2003,22 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-17 21:18 · 7823098</span></span>
+          · <span class="build-tag">build 2026-09-17 21:29 · fc843d4</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=7823098"></script>
+  <script src="js/joinkey.js?v=fc843d4"></script>
   
-  <script src="js/identity.js?v=7823098"></script>
-  <script src="js/common.js?v=7823098"></script>
-  <script src="js/ui-resize.js?v=7823098"></script>
-  <script src="js/footer-resize.js?v=7823098"></script>
-  <script src="js/route-line.js?v=7823098"></script>
-  <script src="js/route-api.js?v=7823098"></script>
-  <script src="js/footer-stats.js?v=7823098"></script>
+  <script src="js/identity.js?v=fc843d4"></script>
+  <script src="js/common.js?v=fc843d4"></script>
+  <script src="js/ui-resize.js?v=fc843d4"></script>
+  <script src="js/footer-resize.js?v=fc843d4"></script>
+  <script src="js/route-line.js?v=fc843d4"></script>
+  <script src="js/route-api.js?v=fc843d4"></script>
+  <script src="js/footer-stats.js?v=fc843d4"></script>
   <script>
     
     
@@ -13411,6 +13418,137 @@
         });
       }
       renderSubscriptions();
+
+      
+      
+      
+      
+      
+      const subPanel = $('sub-panel'), subPanelBody = $('sub-panel-body'),
+        subCount = $('sub-count'), subSearch = $('sub-search');
+      let _subRows = null, _subInit = false, _lhP = null;
+      function loadLhNotice() {
+        if (_lhP) return _lhP;
+        const one = (tp) => new Promise((res) => {
+          let done = false;
+          const to = setTimeout(() => { if (!done) { done = true; res([]); } }, 20000);
+          dgkFetch('lhLeaseNoticeInfo1', 'lhLeaseNoticeInfo1', { UPP_AIS_TP_CD: tp, PG_SZ: 200, PAGE: 1 }, (j) => {
+            if (done) return; done = true; clearTimeout(to);
+            const arr = Array.isArray(j) ? j : [];
+            const box = arr.find((x) => x && Array.isArray(x.dsList));
+            res(box ? box.dsList : []);
+          });
+        });
+        _lhP = Promise.all([one('05'), one('06')])
+          .then(([a, b]) => [...a, ...b]).catch(() => []);
+        return _lhP;
+      }
+      function subRowsBuild(subs, pr, lh) {
+        const rows = [];
+        for (const it of subs || []) rows.push({
+          sec: '분양예정', title: it.name, meta: [it.addr, it.supply ? '공급 ' + it.supply + '세대' : ''].filter(Boolean).join(' · '),
+          addr: it.addr, it, popup: () => subPopupHtml(it),
+        });
+        for (const r of ((pr && pr.rcrit) || [])) rows.push({
+          sec: '모집공고', title: r.nm || r.addr || '모집공고',
+          meta: [pubrentRcritState(r).label, r.addr].filter(Boolean).join(' · '),
+          lat: r.lat, lng: r.lng, popup: () => pubrentRcritPopupHtml(r),
+        });
+        for (const n of ((pr && pr.notices) || [])) rows.push({
+          sec: '민간임대', title: n.nm || n.addr || '민간임대',
+          meta: [pubrentNoticeState(n).label, n.addr].filter(Boolean).join(' · '),
+          lat: n.lat, lng: n.lng, popup: () => pubrentNoticePopupHtml(n),
+        });
+        const today = chungakToday();
+        for (const x of lh || []) {
+          if (String(x.CNP_CD_NM || '').indexOf('서울') !== 0) continue;
+          const e = String(x.CLSG_DT || '').replace(/\D/g, '');
+          if (/^\d{8}$/.test(e) && e < today) continue;
+          rows.push({
+            sec: 'LH ' + (x.AIS_TP_CD_NM || '공고'), title: x.PAN_NM || 'LH 공고',
+            meta: [x.PAN_NT_ST_DT ? '게시 ' + x.PAN_NT_ST_DT : '', x.CLSG_DT ? '마감 ' + x.CLSG_DT : ''].filter(Boolean).join(' · '),
+            link: x.DTL_URL, linkTxt: 'LH 상세 보기',
+          });
+        }
+        return rows;
+      }
+      const SUB_SEC_COLOR = { '분양예정': '#7048e8', '모집공고': '#2f9e44', '민간임대': '#e64980' };
+      function subFly(lat, lng, html) {
+        map.flyTo([lat, lng], Math.max(map.getZoom(), 16), { duration: 0.8 });
+        L.popup({ maxWidth: 400 }).setLatLng([lat, lng]).setContent(html).openOn(map);
+      }
+      function subRowsRender(q) {
+        const query = (q || '').trim().toLowerCase();
+        const list = (_subRows || []).filter((r) => !query
+          || (r.sec + ' ' + r.title + ' ' + (r.meta || '')).toLowerCase().includes(query));
+        subCount.textContent = list.length + '건';
+        if (!list.length) {
+          subPanelBody.innerHTML = '<div style="padding:26px 16px;text-align:center;color:var(--c-muted);font-size:13px;">조건에 맞는 공고가 없음.</div>';
+          subPanelBody._list = [];
+          return;
+        }
+        subPanelBody.innerHTML = list.map((r, i) => `<div class="sub-row" data-i="${i}" style="padding:8px 12px;border-bottom:1px solid var(--line);cursor:pointer;">`
+          + `<div style="display:flex;align-items:center;gap:6px;font-size:13px;">`
+          + `<span style="font-size:11px;background:${SUB_SEC_COLOR[r.sec] || '#0c8599'};color:#fff;padding:1px 7px;border-radius:999px;flex-shrink:0;">${esc(r.sec)}</span>`
+          + `<b style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(r.title)}</b></div>`
+          + (r.meta ? `<div style="font-size:12px;color:var(--c-muted);margin-top:2px;">${esc(r.meta)}</div>` : '')
+          + `<div class="sub-detail" style="display:none;"></div></div>`).join('');
+        subPanelBody._list = list;
+      }
+      subPanelBody.onclick = (e) => {
+        const go = e.target.closest('[data-go]');
+        const row = e.target.closest('.sub-row');
+        if (!row) return;
+        const r = (subPanelBody._list || [])[+row.dataset.i];
+        if (!r) return;
+        
+        if (go) {
+          e.stopPropagation();
+          if (r.lat != null && r.lng != null) { try { subFly(r.lat, r.lng, r.popup()); } catch (err) {} }
+          else if (r.addr) vworldAddrToPnu(r.addr, (g) => { if (g && g.lat && g.lng) { try { subFly(g.lat, g.lng, r.popup()); } catch (err) {} } });
+          return;
+        }
+        const det = row.querySelector('.sub-detail');
+        if (!det) return;
+        if (det.style.display !== 'none') { det.style.display = 'none'; det.innerHTML = ''; return; }
+        det.style.display = '';
+        const paint = () => {
+          try {
+            det.innerHTML = `<div style="margin-top:6px;">${r.popup()}</div>`
+              + ((r.lat != null && r.lng != null) || r.addr
+                ? `<div><button type="button" data-go="1" class="pc-btn pc-btn-outline" style="margin-top:6px;">지도에서 보기</button></div>` : '')
+              + (r.link ? `<div style="margin-top:4px;"><a href="${safeUrl(r.link)}" target="_blank" rel="noopener" style="font-size:12px;">${esc(r.linkTxt || '상세 보기')}</a></div>` : '');
+          } catch (err) { det.innerHTML = ''; }
+        };
+        
+        if (r.it && r.it.pblancNo && r.it._cmpet === undefined) {
+          r.it._cmpet = 'loading';
+          paint();
+          loadChungakCmpet(r.it.pblancNo, (c) => {
+            r.it._cmpet = c || { rate: [], sp: 0 };
+            if (det.style.display !== 'none') paint();
+          });
+        } else paint();
+      };
+      subSearch.oninput = () => subRowsRender(subSearch.value);
+      $('sub-panel-close').onclick = () => { subPanel.hidden = true; };
+      function subPanelShow() {
+        subPanel.hidden = false;
+        if (_subInit) return;
+        _subInit = true;
+        subPanelBody.innerHTML = '<div style="padding:16px;color:var(--c-muted);font-size:13px;">불러오는 중…</div>';
+        Promise.all([
+          loadSubscriptions().catch(() => []),
+          loadPubrent().catch(() => null),
+          loadLhNotice(),
+        ]).then(([subs, pr, lh]) => {
+          _subRows = subRowsBuild(subs, pr, lh);
+          subRowsRender(subSearch.value || '');
+        });
+      }
+      map.on('overlayadd', (e) => {
+        if (e.layer === subLayer || e.layer === pubrentCluster || e.layer === pubrentRcritLayer || e.layer === pubrentNoticeLayer) subPanelShow();
+      });
 
       
       
