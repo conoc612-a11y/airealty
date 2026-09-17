@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="favicon.png" />
-  <link rel="stylesheet" href="css/tokens.css?v=80d724f" />
+  <link rel="stylesheet" href="css/tokens.css?v=2b2dc53" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=80d724f"></script>
+  <script src="js/auth-guard.js?v=2b2dc53"></script>
   <title>부동산 all in one</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -37,12 +37,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=80d724f" />
+  <link rel="stylesheet" href="css/buttons.css?v=2b2dc53" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=80d724f" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=2b2dc53" />
   <style>
     :root {
       
@@ -1726,7 +1726,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=80d724f"></script>
+  <script src="js/ie-guard.js?v=2b2dc53"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -1996,22 +1996,22 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-17 17:38 · 80d724f</span></span>
+          · <span class="build-tag">build 2026-09-17 18:10 · 2b2dc53</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=80d724f"></script>
+  <script src="js/joinkey.js?v=2b2dc53"></script>
   
-  <script src="js/identity.js?v=80d724f"></script>
-  <script src="js/common.js?v=80d724f"></script>
-  <script src="js/ui-resize.js?v=80d724f"></script>
-  <script src="js/footer-resize.js?v=80d724f"></script>
-  <script src="js/route-line.js?v=80d724f"></script>
-  <script src="js/route-api.js?v=80d724f"></script>
-  <script src="js/footer-stats.js?v=80d724f"></script>
+  <script src="js/identity.js?v=2b2dc53"></script>
+  <script src="js/common.js?v=2b2dc53"></script>
+  <script src="js/ui-resize.js?v=2b2dc53"></script>
+  <script src="js/footer-resize.js?v=2b2dc53"></script>
+  <script src="js/route-line.js?v=2b2dc53"></script>
+  <script src="js/route-api.js?v=2b2dc53"></script>
+  <script src="js/footer-stats.js?v=2b2dc53"></script>
   <script>
     
     
@@ -11736,6 +11736,18 @@
           + '조합·추진위 <span style="font-weight:400;">· 정보몽땅</span></div>'
           + `<div style="display:flex;flex-direction:column;gap:2px;font-size:12px;">${rows.join('')}</div></div>`;
       }
+      
+      
+      
+      function jbSibRows(d) {
+        if (typeof _jbRowsGlobal === 'undefined' || !_jbRowsGlobal || !_jbRowsGlobal.length || d.lat == null) return [];
+        const core = (s) => String(s || '').replace(/[\s,·()「」()（）/\\-]/g, '').replace(/구역$/, '');
+        const c = core(d.name);
+        if (!c) return [];
+        const k = (d.sn || d.rc || '') + '|' + d.lat + ',' + d.lng;
+        return _jbRowsGlobal.filter((z) => z.lat != null && ((z.sn || z.rc || '') + '|' + z.lat + ',' + z.lng) !== k
+          && core(z.name) === c && kmDist(d.lat, d.lng, z.lat, z.lng) <= 0.1);
+      }
       function jbTlHtml(d) {
         const done = (d.tl && d.tl.length) ? d.tl.slice() : [];
         
@@ -11756,14 +11768,23 @@
         
         
         
-        if (d.up && d.up.length) {
-          for (const s of d.up) {
+        const stamp = (list) => {
+          for (const s of list) {
             if (!s || !s.date) continue;
             const r = jbRank(s.name);
             const t = done.find((x) => !x.date && jbRank(x.name) === r);
             if (t) { t.name = s.name; t.date = s.date; }
             else if (!done.some((x) => x.date && jbRank(x.name) === r)) done.push({ name: s.name, date: s.date });
           }
+        };
+        if (d.up && d.up.length) stamp(d.up);
+        const sibs = jbSibRows(d);
+        let sibCap = '';
+        if (sibs.length) {
+          const hist = [];
+          for (const z of sibs) hist.push(...(z.tl || []), ...(z.up || []));
+          stamp(hist);
+          sibCap = `<div style="font-size:11px;color:var(--c-muted);margin-top:2px;">· 동일사업 ${esc([...new Set(sibs.map((z) => z.name))].join('·'))} 기록 포함</div>`;
         }
         
         
@@ -11791,7 +11812,7 @@
             rows.push(`<div style="display:flex;align-items:baseline;gap:8px;font-size:12px;color:var(--c-muted);opacity:.7;"><span style="width:14px;height:14px;border-radius:50%;background:transparent;border:2px dashed var(--line);font-size:9px;display:inline-flex;align-items:center;justify-content:center;flex:none;"></span><span style="flex:1;min-width:0;">${esc(STAGE_SEQ[i])}</span><span style="white-space:nowrap;font-variant-numeric:tabular-nums;">예정</span></div>`);
           }
         }
-        return `<div style="margin:8px 0 4px;border-top:1px solid var(--line);padding-top:8px;"><div style="font-size:12px;font-weight:700;color:var(--c-muted);margin-bottom:4px;">진행현황 <span style="font-weight:400;color:var(--c-muted);">· 입주까지 절차</span></div><div style="display:flex;flex-direction:column;gap:2px;">${outRows.join('')}${rows.join('')}</div></div>`;
+        return `<div style="margin:8px 0 4px;border-top:1px solid var(--line);padding-top:8px;"><div style="font-size:12px;font-weight:700;color:var(--c-muted);margin-bottom:4px;">진행현황 <span style="font-weight:400;color:var(--c-muted);">· 입주까지 절차</span></div><div style="display:flex;flex-direction:column;gap:2px;">${outRows.join('')}${rows.join('')}${sibCap}</div></div>`;
       }
       
       
@@ -12061,6 +12082,35 @@
         
         
         
+        const stageBadgeHtml = (d) => { const e = jbEffStage(d); return `<span class="jb-perm-badge" style="background:${stageColor(e)}">${esc(d.name)} · ${jbPct(e)}%</span>`; };
+        const plainTipHtml = (d, approx) => approx
+          ? `<b>${esc(d.name)}</b> · ${esc(d.stage || '')}`
+          : `<b>${esc(d.name)}</b><br><span style="font-size:12px;color:#555">${esc(d.stage || '')}</span>`;
+        const jbBindTip = (layer, d, badge) => {
+          try { layer.unbindTooltip(); } catch (e) {}
+          layer.bindTooltip(badge ? stageBadgeHtml(d) : plainTipHtml(d, !!layer._approx),
+            { sticky: !badge, permanent: badge, direction: 'top', className: badge ? 'jb-perm-tt' : '' });
+        };
+        const badgeOff = new Set();
+        if (showStageBadge) {
+          const cell = new Map();
+          for (const _i of visible) {
+            const z = jbRows[_i];
+            const k = (z.gu || '') + '|' + Math.round(z.lat * 5000) + ':' + Math.round(z.lng * 5000);
+            if (!cell.has(k)) cell.set(k, []);
+            cell.get(k).push(_i);
+          }
+          for (const arr of cell.values()) {
+            if (arr.length < 2) continue;
+            let best = arr[0], bp = -1;
+            for (const _i of arr) { const p = jbPct(jbEffStage(jbRows[_i])); if (p > bp) { bp = p; best = _i; } }
+            for (const _i of arr) if (_i !== best) badgeOff.add(_i);
+          }
+        }
+        
+        
+        
+        
         
         
         
@@ -12080,10 +12130,15 @@
             _jbLive.delete(idx);   
           });
           if (goneDots.length) jbCluster.removeLayers(goneDots);
+          
+          _jbLive.forEach((layer, idx) => {
+            if (!visSet.has(idx) || !layer._jb) return;
+            const want = showStageBadge && !badgeOff.has(idx);
+            if (!!layer._jbBadge !== want) { jbBindTip(layer, layer._jb, want); layer._jbBadge = want; }
+          });
         }
 
         const dots = [];
-        const stageBadgeHtml = (d) => { const e = jbEffStage(d); return `<span class="jb-perm-badge" style="background:${stageColor(e)}">${esc(d.name)} · ${jbPct(e)}%</span>`; };
         const polys = [];
         visible.forEach((_i) => {
           if (_jbLive.has(_i)) return;   
@@ -12100,10 +12155,9 @@
             
             const poly = L.polygon(rings.map((r) => [r]), { color: c, weight: 2, fillColor: c, fillOpacity: 0.2, fillRule: 'nonzero', smoothFactor: 1 });
             poly._jb = d;
-            poly.bindTooltip(
-              showStageBadge ? stageBadgeHtml(d) : `<b>${esc(d.name)}</b><br><span style="font-size:12px;color:#555">${esc(d.stage || '')}</span>`,
-              { sticky: !showStageBadge, permanent: showStageBadge, direction: 'top', className: showStageBadge ? 'jb-perm-tt' : '' }
-            );
+            const badge = showStageBadge && !badgeOff.has(_i);
+            jbBindTip(poly, d, badge);
+            poly._jbBadge = badge;
             poly.bindPopup(() => jbPopupHtml(d));  
             poly.on('click', () => { if (jbSel.on) jbSelToggle(d, poly); });
             poly._area = _ringArea(rings[0]);  
@@ -12115,10 +12169,9 @@
             const circle = L.circle([d.lat, d.lng], { radius: 300, color: c, weight: 2, dashArray: '4 4', fillColor: c, fillOpacity: 0.2 });
             circle._jb = d;
             circle._approx = true;
-            circle.bindTooltip(
-              showStageBadge ? stageBadgeHtml(d) : `<b>${esc(d.name)}</b> · ${esc(d.stage || '')}`,
-              { sticky: !showStageBadge, permanent: showStageBadge, direction: 'top', className: showStageBadge ? 'jb-perm-tt' : '' }
-            );
+            const badge = showStageBadge && !badgeOff.has(_i);
+            jbBindTip(circle, d, badge);
+            circle._jbBadge = badge;
             circle.bindPopup(() => jbPopupHtml(d));  
             circle.on('click', () => { if (jbSel.on) jbSelToggle(d, circle); });
             dots.push(circle);
