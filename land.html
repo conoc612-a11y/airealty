@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" type="image/png" href="favicon.png" />
-  <link rel="stylesheet" href="css/tokens.css?v=e55d8e9" />
+  <link rel="stylesheet" href="css/tokens.css?v=065c386" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=e55d8e9"></script>
+  <script src="js/auth-guard.js?v=065c386"></script>
   <title>부동산 all in one</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -37,12 +37,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=e55d8e9" />
+  <link rel="stylesheet" href="css/buttons.css?v=065c386" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=e55d8e9" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=065c386" />
   <style>
     :root {
       
@@ -1726,7 +1726,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=e55d8e9"></script>
+  <script src="js/ie-guard.js?v=065c386"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -1996,22 +1996,22 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-17 18:58 · e55d8e9</span></span>
+          · <span class="build-tag">build 2026-09-17 20:35 · 065c386</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=e55d8e9"></script>
+  <script src="js/joinkey.js?v=065c386"></script>
   
-  <script src="js/identity.js?v=e55d8e9"></script>
-  <script src="js/common.js?v=e55d8e9"></script>
-  <script src="js/ui-resize.js?v=e55d8e9"></script>
-  <script src="js/footer-resize.js?v=e55d8e9"></script>
-  <script src="js/route-line.js?v=e55d8e9"></script>
-  <script src="js/route-api.js?v=e55d8e9"></script>
-  <script src="js/footer-stats.js?v=e55d8e9"></script>
+  <script src="js/identity.js?v=065c386"></script>
+  <script src="js/common.js?v=065c386"></script>
+  <script src="js/ui-resize.js?v=065c386"></script>
+  <script src="js/footer-resize.js?v=065c386"></script>
+  <script src="js/route-line.js?v=065c386"></script>
+  <script src="js/route-api.js?v=065c386"></script>
+  <script src="js/footer-stats.js?v=065c386"></script>
   <script>
     
     
@@ -13653,7 +13653,16 @@
 
         const ensure = () => {
           if (!map.hasLayer(cluster)) return;
-          if (map.getZoom() < C.minZ) { build(); return; }
+          
+          
+          if (map.getZoom() < C.minZ) {
+            const now = Date.now();
+            if (now - (cluster._zoomWarned || 0) > 8000) {
+              cluster._zoomWarned = now;
+              toast('이 레이어는 확대해야 보임 — 줌 ' + C.minZ + ' 이상 (지금 ' + map.getZoom() + ')');
+            }
+            build(); return;
+          }
           loadIdx().then(() => {
             const need = inView(map.getBounds()).filter((a) => !cache.has(a.area) && !pending.has(a.area));
             if (!need.length) { build(); return; }
@@ -14790,6 +14799,31 @@
         
         
         
+        function wireSecHead(sec) {
+          const cb = sec.querySelector('.lp-head .lp-cb');
+          const kk = sec.querySelector('.lp-kids');
+          if (!cb || !kk || cb.dataset.uaWired || cb.onchange) return;
+          const cbs = () => [...kk.querySelectorAll('input.lp-cb')];
+          if (!cbs().length) { cb.disabled = true; return; }
+          cb.onchange = () => {
+            const target = cb.checked;
+            cbs().forEach((c) => { if (c.checked !== target) { c.checked = target; if (typeof c.onchange === 'function') c.onchange(); } });
+            cb.indeterminate = false;
+          };
+          kk.addEventListener('change', () => {
+            const all = cbs();
+            const on = all.filter((c) => c.checked).length;
+            cb.checked = on > 0;
+            cb.indeterminate = on > 0 && on < all.length;
+          });
+          cb.dataset.uaWired = '1';
+        }
+        
+        
+        
+        
+        
+        
         
         
         
@@ -15104,18 +15138,7 @@
             });
           }
           
-          Object.values(secByName).forEach((sec) => {
-            const cb = sec.querySelector('.lp-head .lp-cb');
-            const kk = sec.querySelector('.lp-kids');
-            if (!cb || !kk || cb.dataset.uaWired) return;
-            const cbs = () => [...kk.querySelectorAll('input.lp-cb')];
-            if (!cbs().length) { cb.disabled = true; return; }
-            
-            
-            
-            
-            cb.dataset.uaWired = '1';
-          });
+          Object.values(secByName).forEach(wireSecHead);
         }, 0);
 
         
@@ -15237,6 +15260,7 @@
           const nm = sec.querySelector('.lp-head .lp-name');
           if (!nm) return;
           if (!sec.dataset.big) sec.dataset.big = nm.textContent.trim();
+          wireSecHead(sec);   
           if (!sec.querySelector('.lp-grip')) {
             const g = document.createElement('span');
             g.className = 'lp-grip';
