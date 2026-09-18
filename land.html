@@ -4741,6 +4741,25 @@
       };
       
       
+      window.busIcon = function (color) {
+        const k = 'bus|' + color;
+        if (!window._svcIconCache) window._svcIconCache = {};
+        if (!window._svcIconCache[k]) {
+          window._svcIconCache[k] = L.divIcon({
+            className: 'svc-pin-wrap',
+            html: `<svg width="30" height="30" viewBox="0 0 32 32">`
+              + `<rect x="6.5" y="2.5" width="19" height="20" rx="4" fill="${color}" stroke="#fff" stroke-width="1.5"/>`
+              + `<rect x="9.5" y="5.5" width="13" height="6.5" rx="1.5" fill="#fff" opacity="0.93"/>`
+              + `<circle cx="10.5" cy="16.5" r="1.3" fill="#fff"/><circle cx="21.5" cy="16.5" r="1.3" fill="#fff"/>`
+              + `<circle cx="11" cy="24.5" r="2.5" fill="#2b2f36"/><circle cx="21" cy="24.5" r="2.5" fill="#2b2f36"/>`
+              + `</svg>`,
+            iconSize: [30, 30], iconAnchor: [15, 15],
+          });
+        }
+        return window._svcIconCache[k];
+      };
+      
+      
       
       
       
@@ -5240,6 +5259,58 @@
       
       
       
+      const _busRouteCache = new Map();   
+      let _busRouteLine = null, _busRouteKey = '', _busRouteSeq = 0;
+      function busRouteFile(city) {
+        if (!_busRouteCache.has(city)) {
+          _busRouteCache.set(city, fetch('busroute/' + encodeURIComponent(city) + '.json')
+            .then(okJson)
+            .then((j) => ({ routes: j.routes || [], stops: j.stops || {} }))
+            .catch(() => null));
+        }
+        return _busRouteCache.get(city);
+      }
+      function busRouteFind(g, rtid, no) {
+        const hit = g.routes.find((r) => String(r.id) === String(rtid));
+        if (hit) return hit;
+        
+        const same = g.routes.filter((r) => r.no === no);
+        return same.length === 1 ? same[0] : null;
+      }
+      function busRouteHide() {
+        if (_busRouteLine) { map.removeLayer(_busRouteLine); _busRouteLine = null; _busRouteKey = ''; }
+      }
+      async function busRouteLine(kind, rtid, no, city, label) {
+        const key = kind + '|' + rtid + '|' + no;
+        if (_busRouteKey === key && _busRouteLine) {
+          busRouteHide();
+          return;
+        }
+        busRouteHide();
+        if (kind === 'ultra') { toast('이 노선의 경로 데이터가 없음 (초정밀).'); return; }
+        const seq = ++_busRouteSeq;
+        const g = await busRouteFile(city);
+        if (seq !== _busRouteSeq) return;     
+        if (!g) { toast('노선 형상 파일을 불러오지 못함.'); return; }
+        const r = busRouteFind(g, rtid, no);
+        if (!r) { toast((label || no || '이 노선') + ' — 경로 데이터가 없음 (수집 예정).'); return; }
+        const pts = [];
+        for (const id of [...(r.up || []), ...(r.down || [])]) {
+          const s = g.stops[id];
+          if (s && Number.isFinite(+s[1]) && Number.isFinite(+s[2])) pts.push([+s[1], +s[2]]);
+        }
+        if (pts.length < 2) { toast('경로 좌표가 부족함.'); return; }
+        _busRouteLine = L.layerGroup([
+          L.polyline(pts, { color: '#ffffff', weight: 11, opacity: 0.9 }),
+          L.polyline(pts, { color: '#f76707', weight: 6, opacity: 0.95 }),
+        ]).addTo(map);
+        _busRouteKey = key;
+        try { map.fitBounds(_busRouteLine.getBounds().pad(0.1), { maxZoom: 15 }); } catch (e) {}
+      }
+      
+      
+      
+      
       
       
       
@@ -5258,19 +5329,22 @@
       function busPosStop() {
         if (busPosTimer) { clearInterval(busPosTimer); busPosTimer = null; }
         busPosRt = ''; busPosNo = '';
+        busRouteHide();
         busPosLayer.clearLayers();
         if (map.hasLayer(busPosLayer)) map.removeLayer(busPosLayer);
       }
 
       function busPosDraw(buses) {
         busPosLayer.clearLayers();
+        const rt = busPosRt, no = busPosNo;
         for (const b of buses) {
           if (!b.lat || !b.lng) continue;
           
           const color = b.last ? '#D92A14' : (b.full ? '#e8590c' : '#2260C3');
-          const m = L.marker([b.lat, b.lng], { icon: svcIcon('fi-rr-bus', color, 30), zIndexOffset: 800 });
+          const m = L.marker([b.lat, b.lng], { icon: busIcon(color), zIndexOffset: 800 });
           const t = String(b.at || '').replace(/^\d{8}(\d{2})(\d{2})(\d{2})$/, '$1:$2:$3');
           m.bindTooltip(esc(busPosNo) + ' ' + esc(b.no), { direction: 'top' });
+          m.on('click', () => busRouteLine('seoul', rt, no, '11', no + '번'));
           m.bindPopup('<div class="pc"><div class="pc-head"><span class="rp-name">'
             + esc(busPosNo) + ' <span style="font-weight:400;">' + esc(b.no) + '</span></span></div>'
             + '<div class="pc-body">'
@@ -5354,16 +5428,21 @@
       function tagoPosStop() {
         if (tagoPosTimer) { clearInterval(tagoPosTimer); tagoPosTimer = null; }
         tagoPosKey = ''; tagoPosLabel = ''; tagoPosSrc = TAGO_SRC;
+        busRouteHide();
         tagoPosLayer.clearLayers();
         if (map.hasLayer(tagoPosLayer)) map.removeLayer(tagoPosLayer);
       }
       function tagoPosDraw(buses, label) {
         const C = tagoPosSrc;
+        const kp = (tagoPosKey || '').split('/');
+        const cc = kp[0], rid = kp.slice(1).join('/');
+        const ultra = tagoPosSrc === ULTRA_SRC;
         tagoPosLayer.clearLayers();
         for (const b of buses) {
           if (!b.lat || !b.lng) continue;
-          const m = L.marker([b.lat, b.lng], { icon: svcIcon('fi-rr-bus', C.color, 30), zIndexOffset: 800 });
+          const m = L.marker([b.lat, b.lng], { icon: busIcon(C.color), zIndexOffset: 800 });
           m.bindTooltip(esc(label) + ' ' + esc(b.no), { direction: 'top' });
+          m.on('click', () => busRouteLine(ultra ? 'ultra' : 'tago', rid, label, cc, label));
           m.bindPopup('<div class="pc"><div class="pc-head"><span class="rp-name">'
             + esc(label) + ' <span style="font-weight:400;">' + esc(b.no) + '</span></span></div>'
             + '<div class="pc-body">'
@@ -5745,6 +5824,51 @@
         }
         return out.sort((x, y) => x._d - y._d);
       }
+      
+      
+      
+      
+      const planLayer = L.layerGroup();
+      
+      
+      const PLAN_LINE_COLOR = {
+        'GTX-A': '#7c3aed', 'GTX-B': '#0891b2', 'GTX-C': '#dc2626', 'GTX-D': '#db2777',
+        '강북횡단선': '#2563eb', '서부선': '#16a34a', '서남선': '#65a30d', '난곡선': '#9333ea',
+        '서부선남부연장': '#0d9488', '신림선북부연장': '#ca8a04',
+        '면목선': '#4f46e5', '우이신설연장': '#B0CE18', '9호선4단계': '#BDB092',
+      };
+      let _planPromise = null;
+      function loadPlannedLines() {
+        if (!_planPromise) {
+          _planPromise = fetch('transit_planned_lines.json')
+            .then(okJson)
+            .then((j) => { planBuild(j); return j; })
+            .catch((e) => { _planPromise = null; console.error('계획노선 로드 실패:', e); return null; });
+        }
+        return _planPromise;
+      }
+      function planBuild(j) {
+        planLayer.clearLayers();
+        if (!j || !j.lines) return;
+        for (const [nm, ln] of Object.entries(j.lines)) {
+          const color = PLAN_LINE_COLOR[nm] || '#495057';
+          (ln.segs || []).forEach((seg) => {
+            if (!seg || seg.length < 2) return;
+            const pts = seg.map((s) => [s[1], s[2]]);
+            const pl = L.polyline(pts, { color, weight: 3, dashArray: '6 5', opacity: 0.9 });
+            pl.bindTooltip(esc(nm), { direction: 'top', offset: [0, -6] });
+            pl.bindPopup('<div class="pc"><div class="pc-head">'
+              + '<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:'
+              + color + ';flex-shrink:0;"></span>'
+              + '<span class="rp-name">' + esc(nm) + '</span></div><div class="pc-body">'
+              + '<div style="font-size:12px;">' + esc(ln.status || '') + '</div>'
+              + '<div style="margin-top:4px;font-size:11px;color:var(--c-muted);">점선: 미개통 계획노선'
+              + ' · 색은 표시용(공식 노선색 아님)</div></div></div>');
+            pl.addTo(planLayer);
+          });
+        }
+      }
+      map.on('overlayadd', (e) => { if (e.layer === planLayer) loadPlannedLines(); });
       
       
       
@@ -14481,6 +14605,8 @@
           { name: '노후 공공시설물 (안전등급)', layer: agedCluster },
           
           { name: '지하철역 (역세권 강도)', layer: subCluster },
+          
+          { name: '계획 철도노선 (GTX·미래선)', layer: planLayer },
           
           { name: '지하철 실시간 열차', layer: subTrainLayer },
           { name: '따릉이 대여소', layer: bikeCluster },
