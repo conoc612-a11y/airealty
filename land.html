@@ -2219,6 +2219,11 @@
     
     const ICON_SUN = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>';
     const ICON_MOON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+    
+    const ICON_DROP = '<svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 2C12 2 5 10 5 15a7 7 0 0 0 14 0C19 10 12 2 12 2z" fill="#1E40AF"/></svg>';
+    const ICON_GEM = '<svg width="16" height="16" viewBox="0 0 24 24"><rect x="7.5" y="7.5" width="9" height="9" transform="rotate(45 12 12)" fill="#A16207"/></svg>';
+    const ICON_WAVE = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0F766E" stroke-width="3"><circle cx="12" cy="12" r="7"/></svg>';
+    function paintThemeIcon() { const b = $('theme-btn'); if (!b) return; const t = curTheme(); b.innerHTML = t === 'dark' ? ICON_SUN : t === 'mock' ? ICON_DROP : t === 'lux' ? ICON_GEM : t === 'teal' ? ICON_WAVE : ICON_MOON; }
     function applyTheme(dark) { document.documentElement.classList.toggle('dark', dark); const b = $('theme-btn'); if (b) b.innerHTML = dark ? ICON_SUN : ICON_MOON; }
     
     
@@ -2260,6 +2265,7 @@
       document.querySelectorAll('.pc-actions[data-mock-ai]').forEach((box) => box.removeAttribute('data-mock-ai'));
       if (alt) mockAiSweep();
       if (window.__mockRefreshPins) window.__mockRefreshPins();
+      paintThemeIcon();
     }
     function mockAiSweep() {
       document.querySelectorAll('.pc-actions:not([data-mock-ai])').forEach((box) => {
