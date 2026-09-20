@@ -2255,13 +2255,13 @@
       if (alt && panel && !$('mock-kpi')) { const k = document.createElement('div'); k.id = 'mock-kpi'; panel.prepend(k); }
       if (alt) renderMockKpi(); else { const k = $('mock-kpi'); if (k) k.remove(); }
       document.querySelectorAll('.mock-ai-btn').forEach((b) => b.remove());
+      
+      
+      document.querySelectorAll('.pc-actions[data-mock-ai]').forEach((box) => box.removeAttribute('data-mock-ai'));
+      if (alt) mockAiSweep();
       if (window.__mockRefreshPins) window.__mockRefreshPins();
     }
-    
-    
-    if (typeof window !== 'undefined' && typeof MutationObserver !== 'undefined') {
-    new MutationObserver(() => {
-      if (!altThemeOn()) return;
+    function mockAiSweep() {
       document.querySelectorAll('.pc-actions:not([data-mock-ai])').forEach((box) => {
         box.dataset.mockAi = '1';
         const b = document.createElement('button');
@@ -2269,6 +2269,13 @@
         b.addEventListener('click', (e) => { e.stopPropagation(); const cp = $('chat-panel'); if (window.__chatTab && cp && cp.classList.contains('collapsed')) window.__chatTab.toggle(); });
         box.prepend(b);
       });
+    }
+    
+    
+    if (typeof window !== 'undefined' && typeof MutationObserver !== 'undefined') {
+    new MutationObserver(() => {
+      if (!altThemeOn()) return;
+      mockAiSweep();
     }).observe(document.body, { childList: true, subtree: true });
     setInterval(() => { if (altThemeOn()) renderMockKpi(); }, 10000);
     }
