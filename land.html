@@ -98,8 +98,8 @@
     }
     
 
-    
 
+    
 
     html.mock:not(.dark) body, html.mock.dark {
       --bg:#F8FAFC; --card:#FFFFFF; --line:#DBEAFE; --text:#1E3A8A; --muted:#475569;
@@ -108,102 +108,132 @@
       --c-primary:#1E40AF; --c-primary-soft:#DBEAFE; --c-price:#1E40AF;
       --accent:#1E40AF; --ok:#059669; --c-success:#059669;
       --c-danger:#DC2626; --c-warn:#D97706;
+      --mx-accent:#1E40AF; --mx-ink:#1E3A8A; --mx-hot:#D97706;
+      --mx-line:#DBEAFE; --mx-soft:#E9EEF6; --mx-header:#0F172A; --mx-chip:#E9EEF6;
     }
-    :root.mock header { background:#0F172A; }
-    :root.mock .brand-title { color:#FFFFFF; }
-    :root.mock .info-chip { background:rgba(255,255,255,.12); color:#E9EEF6; }
-    :root.mock .info-chip b { color:#FFFFFF; }
+    html.lux:not(.dark) body, html.lux.dark {
+      --bg:#FAFAF9; --card:#FFFFFF; --line:#D6D3D1; --text:#0C0A09; --muted:#57534E;
+      --c-bg:#FAFAF9; --c-card:#FFFFFF; --c-hover:#F5F4F0; --c-border:#D6D3D1; --c-line:#D6D3D1;
+      --c-text:#0C0A09; --c-muted:#57534E;
+      --c-primary:#1C1917; --c-primary-soft:#EDE9E3; --c-price:#1C1917;
+      --accent:#A16207; --ok:#287F38; --c-success:#287F38;
+      --c-danger:#DC2626; --c-warn:#A16207;
+      --mx-accent:#1C1917; --mx-ink:#0C0A09; --mx-hot:#A16207;
+      --mx-line:#D6D3D1; --mx-soft:#F5F4F0; --mx-header:#1C1917; --mx-chip:#EDE9E3;
+    }
+    html.teal:not(.dark) body, html.teal.dark {
+      --bg:#F0FDFA; --card:#FFFFFF; --line:#99F6E4; --text:#134E4A; --muted:#475569;
+      --c-bg:#F0FDFA; --c-card:#FFFFFF; --c-hover:#E8F0F3; --c-border:#99F6E4; --c-line:#99F6E4;
+      --c-text:#134E4A; --c-muted:#475569;
+      --c-primary:#0F766E; --c-primary-soft:#CCFBF1; --c-price:#0F766E;
+      --accent:#0369A1; --ok:#0F766E; --c-success:#0F766E;
+      --c-danger:#DC2626; --c-warn:#0369A1;
+      --mx-accent:#0F766E; --mx-ink:#134E4A; --mx-hot:#0369A1;
+      --mx-line:#99F6E4; --mx-soft:#E8F0F3; --mx-header:#134E4A; --mx-chip:#F0FDFA;
+    }
+    :is(:root.mock,:root.lux,:root.teal) header { background:var(--mx-header); }
+    :is(:root.mock,:root.lux,:root.teal) .brand-title { color:#FFFFFF; }
+    :is(:root.mock,:root.lux,:root.teal) .info-chip { background:rgba(255,255,255,.12); color:var(--mx-chip); }
+    :is(:root.mock,:root.lux,:root.teal) .info-chip b { color:#FFFFFF; }
     
-
-    :root.mock .stat-bar { background:#E9EEF6; }
-    :root.mock .pc-btn:hover { border-color:#1E40AF; color:#1E40AF; }
-    :root.mock .jb-chip:hover { border-color:#1E40AF; color:#1E40AF; }
-    :root.mock .jb-chip.active { border-color:#1E40AF; background:#1E40AF; }
-    :root.mock #view-search { color:#1E40AF; }
-    :root.mock #view-search:hover { background:#1E40AF; border-color:#1E40AF; }
-    :root.mock #nearby-go { color:#1E40AF; }
-    :root.mock #nearby-go:hover { background:#1E40AF; border-color:#1E40AF; }
-    :root.mock .rec .actions a:hover, :root.mock .rec .actions button:hover { border-color:#1E40AF; color:#1E40AF; }
-    :root.mock .rec .actions .save { background:#1E40AF; }
-    :root.mock .recent-chip:hover { border-color:#1E40AF; color:#1E40AF; }
-    :root.mock .leaflet-control-zoom a { color:#1E40AF; border-color:#1E40AF; }
-    :root.mock .lp-restore-chip:hover { border-color:#1E40AF; }
-    :root.mock .profile-menu a:not(#who):hover, :root.mock .profile-menu button:hover { border-color:#1E40AF; }
-    
-    :root.mock :is(.pc-btn-primary, .btn-mini.primary) { background:#1E40AF; border-color:#1E40AF; color:#fff; }
-    :root.mock :is(.pc-btn-primary:hover, .btn-mini.primary:hover, a.pc-btn-primary:hover) { background:#1E3A8A; border-color:#1E3A8A; color:#fff; }
-    :root.mock .tool-btn:hover { border-color:#1E40AF; }
-    :root.mock .tool-btn.on { background:#1E40AF; border-color:#1E40AF; }
-    :root.mock .list-tab.active { background:#1E40AF; border-color:#1E40AF; }
-    :root.mock .list-tab:hover { border-color:#1E40AF; }
-    :root.mock .fav-cat:hover { border-color:#1E40AF; color:#1E40AF; }
-    :root.mock .fav-cat.active { background:#1E40AF; border-color:#1E40AF; }
-    :root.mock .btn-mini.active { background:#1E40AF; border-color:#1E40AF; }
-    :root.mock .rt-mode.on { background:#1E40AF; border-color:#1E40AF; }
-    :root.mock .btn-mini.outline { color:#1E40AF; border-color:#1E40AF; }
-    :root.mock .apd-btn:hover { border-color:#1E40AF; color:#1E40AF; }
-    :root.mock .apd-btn.on { background:#1E40AF; border-color:#1E40AF; }
-    :root.mock .apd-go:hover { border-color:#1E40AF; color:#1E40AF; }
-    :root.mock .apd-go:active { background:#1E40AF; color:#fff; }
-    :root.mock .apd-go.has-local, :root.mock .auc-pop-go.has-local { border-color:#1E40AF; color:#1E40AF; }
-    :root.mock .auc-pop-go:hover { border-color:#1E40AF; color:#1E40AF; }
-    :root.mock .auc-pop-go:active { background:#1E40AF; color:#fff; }
-    :root.mock .apd-back:hover, :root.mock .apd-close:hover { border-color:#1E40AF; color:#1E40AF; }
-    :root.mock .jb-stage.active { background:#1E40AF; border-color:#1E40AF; }
-    :root.mock .lp-role:hover { border-color:#1E40AF; color:#1E40AF; }
-    :root.mock .lp-role.on { background:#1E40AF; border-color:#1E40AF; }
-    :root.mock .bm-item:hover { border-color:#1E40AF; }
-    :root.mock .bm-item.on { border-color:#1E40AF; }
-    :root.mock .bm-item.on .bm-label { color:#1E40AF; }
-    :root.mock .lp-toggle { color:#1E40AF; }
-    :root.mock .lp-hstat b { color:#1E40AF; }
-    :root.mock .tag.hit { background:#1E40AF; }
-    :root.mock .rp-fill { background:#1E40AF; }
-    :root.mock #rp-price-lbl { color:#1E40AF; }
-    :root.mock #nearby-chips .nb-chip.active { background:#1E40AF !important; border-color:#1E40AF !important; }
-    :root.mock .ap-links a { color:#1E40AF; }
-    :root.mock .ap-update { color:#1E40AF; }
-    :root.mock .ap-update:hover { background:#1E40AF; color:#fff; }
-    :root.mock .ap-filt-row select.on { border-color:#1E40AF; color:#1E40AF; }
-    :root.mock .ap-search-row input:focus { border-color:#1E40AF; }
-    :root.mock .search-inp:focus { outline-color:#1E40AF; border-color:#1E40AF; }
-    :root.mock .gps-btn { color:#1E40AF; }
-    :root.mock .gps-btn:hover { border-color:#1E40AF; }
-    :root.mock .kakao-back { color:#1E40AF; }
-    :root.mock .kakao-back:hover { border-color:#1E40AF; }
-    :root.mock .panel-slide-tab:hover { color:#1E40AF; border-color:#1E40AF; }
-    :root.mock .panel-slide-tab.dragging { color:#1E40AF; border-color:#1E40AF; }
-    :root.mock body .ui-pop-btn { color:#1E40AF; }
-    :root.mock body .ui-pop-btn:hover { background:#1E40AF; border-color:#1E40AF; }
-    :root.mock .fi { color:#1E40AF; }
-    :root.mock .list-tab.active .fi, :root.mock #sp-go .fi { color:#fff; }
-    :root.mock :focus-visible { outline-color:#1E40AF; }
-    :root.mock * { scrollbar-color:#1E40AF transparent; }
-    :root.mock *::-webkit-scrollbar-thumb:hover { background:#1E40AF; }
+    :is(:root.mock,:root.lux,:root.teal) .stat-bar { background:var(--mx-soft); }
+    :is(:root.mock,:root.lux,:root.teal) .pc-btn:hover { border-color:var(--mx-accent); color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .jb-chip:hover { border-color:var(--mx-accent); color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .jb-chip.active { border-color:var(--mx-accent); background:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) #view-search { color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) #view-search:hover { background:var(--mx-accent); border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) #nearby-go { color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) #nearby-go:hover { background:var(--mx-accent); border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .rec .actions a:hover, :is(:root.mock,:root.lux,:root.teal) .rec .actions button:hover { border-color:var(--mx-accent); color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .rec .actions .save { background:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .recent-chip:hover { border-color:var(--mx-accent); color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .leaflet-control-zoom a { color:var(--mx-accent); border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .lp-restore-chip:hover { border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .profile-menu a:not(#who):hover, :is(:root.mock,:root.lux,:root.teal) .profile-menu button:hover { border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) :is(.pc-btn-primary, .btn-mini.primary) { background:var(--mx-accent); border-color:var(--mx-accent); color:#fff; }
+    :is(:root.mock,:root.lux,:root.teal) :is(.pc-btn-primary:hover, .btn-mini.primary:hover, a.pc-btn-primary:hover) { background:var(--mx-ink); border-color:var(--mx-ink); color:#fff; }
+    :is(:root.mock,:root.lux,:root.teal) .tool-btn:hover { border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .tool-btn.on { background:var(--mx-accent); border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .list-tab.active { background:var(--mx-accent); border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .list-tab:hover { border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .fav-cat:hover { border-color:var(--mx-accent); color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .fav-cat.active { background:var(--mx-accent); border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .btn-mini.active { background:var(--mx-accent); border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .rt-mode.on { background:var(--mx-accent); border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .btn-mini.outline { color:var(--mx-accent); border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .apd-btn:hover { border-color:var(--mx-accent); color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .apd-btn.on { background:var(--mx-accent); border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .apd-go:hover { border-color:var(--mx-accent); color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .apd-go:active { background:var(--mx-accent); color:#fff; }
+    :is(:root.mock,:root.lux,:root.teal) .apd-go.has-local, :is(:root.mock,:root.lux,:root.teal) .auc-pop-go.has-local { border-color:var(--mx-accent); color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .auc-pop-go:hover { border-color:var(--mx-accent); color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .auc-pop-go:active { background:var(--mx-accent); color:#fff; }
+    :is(:root.mock,:root.lux,:root.teal) .apd-back:hover, :is(:root.mock,:root.lux,:root.teal) .apd-close:hover { border-color:var(--mx-accent); color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .jb-stage.active { background:var(--mx-accent); border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .lp-role:hover { border-color:var(--mx-accent); color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .lp-role.on { background:var(--mx-accent); border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .bm-item:hover { border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .bm-item.on { border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .bm-item.on .bm-label { color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .lp-toggle { color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .lp-hstat b { color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .tag.hit { background:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .rp-fill { background:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) #rp-price-lbl { color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) #nearby-chips .nb-chip.active { background:var(--mx-accent) !important; border-color:var(--mx-accent) !important; }
+    :is(:root.mock,:root.lux,:root.teal) .ap-links a { color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .ap-update { color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .ap-update:hover { background:var(--mx-accent); color:#fff; }
+    :is(:root.mock,:root.lux,:root.teal) .ap-filt-row select.on { border-color:var(--mx-accent); color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .ap-search-row input:focus { border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .search-inp:focus { outline-color:var(--mx-accent); border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .gps-btn { color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .gps-btn:hover { border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .kakao-back { color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .kakao-back:hover { border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .panel-slide-tab:hover { color:var(--mx-accent); border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .panel-slide-tab.dragging { color:var(--mx-accent); border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) body .ui-pop-btn { color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) body .ui-pop-btn:hover { background:var(--mx-accent); border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .fi { color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .list-tab.active .fi, :is(:root.mock,:root.lux,:root.teal) #sp-go .fi { color:#fff; }
+    :is(:root.mock,:root.lux,:root.teal) :focus-visible { outline-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) * { scrollbar-color:var(--mx-accent) transparent; }
+    :is(:root.mock,:root.lux,:root.teal) *::-webkit-scrollbar-thumb:hover { background:var(--mx-accent); }
     
     
     #mock-kpi { display:flex; gap:8px; padding:10px 0 4px; }
-    #mock-kpi .mk { flex:1; background:#F8FAFC; border:1px solid #DBEAFE; border-radius:8px; padding:8px 4px; text-align:center; }
-    #mock-kpi .mk b { display:block; font-size:15px; font-variant-numeric:tabular-nums; color:#1E40AF; }
-    #mock-kpi .mk span { font-size:11px; color:#475569; }
+    #mock-kpi .mk { flex:1; background:var(--mx-soft,#F8FAFC); border:1px solid var(--mx-line,#DBEAFE); border-radius:8px; padding:8px 4px; text-align:center; }
+    #mock-kpi .mk b { display:block; font-size:15px; font-variant-numeric:tabular-nums; color:var(--mx-accent,#1E40AF); }
+    #mock-kpi .mk span { font-size:11px; color:var(--muted); }
     
-    :root.mock .ap-list { padding:10px; }
-    :root.mock .ap-row { background:#FFFFFF; border:1px solid #DBEAFE; border-radius:8px; padding:12px; margin-bottom:10px; }
-    :root.mock .ap-badge { background:#1E40AF; color:#fff; border-color:#1E40AF; }
-    :root.mock .ap-badge.fail { background:#D97706; border-color:#D97706; color:#fff; }
-    :root.mock .ap-addr { color:#1E3A8A; }
-    :root.mock .ap-filt-row { flex-wrap:wrap; }
-    :root.mock .ap-filt-row select { border-radius:999px; background:#F8FAFC; }
+    :is(:root.mock,:root.lux,:root.teal) .ap-list { padding:10px; }
+    :is(:root.mock,:root.lux,:root.teal) .ap-row { background:#FFFFFF; border:1px solid var(--mx-line); border-radius:8px; padding:12px; margin-bottom:10px; }
+    :is(:root.mock,:root.lux,:root.teal) .ap-badge { background:var(--mx-accent); color:#fff; border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal) .ap-badge.fail { background:var(--mx-hot); border-color:var(--mx-hot); color:#fff; }
+    :is(:root.mock,:root.lux,:root.teal) .ap-addr { color:var(--mx-ink); }
+    :is(:root.mock,:root.lux,:root.teal) .ap-filt-row { flex-wrap:wrap; }
+    :is(:root.mock,:root.lux,:root.teal) .ap-filt-row select { border-radius:999px; background:var(--mx-soft); }
     
-    :root.mock .fav-cats.on { margin:2px 0 10px; }
-    :root.mock .fav-cat { border-radius:999px; }
+    :is(:root.mock,:root.lux,:root.teal) .fav-cats.on { margin:2px 0 10px; }
+    :is(:root.mock,:root.lux,:root.teal) .fav-cat { border-radius:999px; }
     
-    :root.mock .rec { border:1px solid #DBEAFE; border-radius:8px; box-shadow:0 1px 3px rgba(30,64,175,.08); }
-    :root.mock .rec h3 { color:#1E3A8A; }
+    :is(:root.mock,:root.lux,:root.teal) .rec { border:1px solid var(--mx-line); border-radius:8px; box-shadow:0 1px 3px rgba(0,0,0,.08); }
+    :is(:root.mock,:root.lux,:root.teal) .rec h3 { color:var(--mx-ink); }
     
-    :root.mock .leaflet-popup-content-wrapper { border-radius:8px; }
-    :root.mock .pc-price { font-size:18px; font-weight:800; }
-    :root.mock .mock-ai-btn { display:block; width:100%; padding:10px 12px; margin-top:7px; border-radius:8px; border:1px solid #1E40AF; background:#1E40AF; color:#fff; font:inherit; font-size:14px; font-weight:600; cursor:pointer; text-align:center; }
+    :is(:root.mock,:root.lux,:root.teal) .leaflet-popup-content-wrapper { border-radius:8px; }
+    :is(:root.mock,:root.lux,:root.teal) .pc-price { font-size:18px; font-weight:800; }
+    :is(:root.mock,:root.lux,:root.teal) .mock-ai-btn { display:block; width:100%; padding:10px 12px; margin-top:7px; border-radius:8px; border:1px solid var(--mx-accent); background:var(--mx-accent); color:#fff; font:inherit; font-size:14px; font-weight:600; cursor:pointer; text-align:center; }
+    
+    html.lux :is(.ap-row, .rec) { border-radius:4px; }
+    html.lux .rec { border-top:2px solid var(--mx-hot); }
+    html.lux :is(.pc-price, #mock-kpi .mk b, .lp-hstat b, .stat-bar b) { font-family:Georgia,'Times New Roman',serif; }
+    html.lux :is(.header-resize::before, .stat-resize::before) { background:var(--mx-hot); }
+    html.lux .ap-badge { border-radius:4px; }
+    
+    html.teal :is(.ap-row, .rec) { background:rgba(255,255,255,.78); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
+    html.teal .leaflet-popup-content-wrapper { background:rgba(255,255,255,.86); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid var(--mx-line); }
+    html.teal .leaflet-popup-tip { background:rgba(255,255,255,.86); }
     
 
 
@@ -1825,11 +1855,15 @@
   <script>
     (function () {
       try {
-        var t = localStorage.getItem('mj_theme');
-        if (t ? t === 'dark' : (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches)) {
-          document.documentElement.classList.add('dark');
+        var m = localStorage.getItem('mj_mode');
+        if (m !== 'base' && m !== 'dark' && m !== 'mock' && m !== 'lux' && m !== 'teal') {
+          m = (localStorage.getItem('mj_mock') === '1') ? 'mock' : localStorage.getItem('mj_theme');
         }
-        try { if (localStorage.getItem('mj_mock') === '1') document.documentElement.classList.add('mock'); } catch (e) {}
+        if (m ? m === 'dark' : (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else if (m === 'mock' || m === 'lux' || m === 'teal') {
+          document.documentElement.classList.add(m);
+        }
       } catch (e) {}
     })();
   </script>
@@ -1853,7 +1887,7 @@
       <button id="bizno-btn" class="nav-tab" title="사업자등록증 조회 (국세청)" aria-label="사업자등록증 조회">사업자등록증조회</button>
     </div>
     <div class="right">
-      <button id="theme-btn" class="icon-btn" title="클릭: 기본·다크·신 디자인 전환" aria-label="화면모드 전환"></button>
+      <button id="theme-btn" class="icon-btn" title="클릭: 기본·다크·신·골드·틸 전환" aria-label="화면모드 전환"></button>
       <div class="profile">
         <button id="profile-btn" class="nav-tab profile-tab">내 정보 <span style="opacity:.6;">▾</span></button>
         <div id="profile-menu" class="profile-menu">
@@ -2190,11 +2224,19 @@
     
     const _storedTheme = localStorage.getItem('mj_theme');
     const _systemDark = () => (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
-    applyTheme(_storedTheme ? _storedTheme === 'dark' : _systemDark());
+    let _mode0 = null; try { _mode0 = localStorage.getItem('mj_mode'); } catch (_e) {}
+    applyTheme(_mode0 ? _mode0 === 'dark' : (_storedTheme ? _storedTheme === 'dark' : _systemDark()));
     
 
 
-    function initThemeBtn() { const b = $('theme-btn'); if (!b) return; b.addEventListener('click', () => { const h = document.documentElement; if (h.classList.contains('mock')) { setMock(false); applyTheme(false); try { localStorage.setItem('mj_theme', 'light'); } catch (_e2) {} toast('기본 화면'); } else if (h.classList.contains('dark')) { applyTheme(false); try { localStorage.setItem('mj_theme', 'light'); } catch (_e3) {} setMock(true); toast('신 디자인'); } else { applyTheme(true); try { localStorage.setItem('mj_theme', 'dark'); } catch (_e5) {} toast('다크모드'); } }); }
+    
+
+
+    const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal'];
+    const THEME_TOAST = { base: '기본 화면', dark: '다크모드', mock: '신 디자인', lux: '블랙·골드', teal: '틸·글래스' };
+    function curTheme() { const c = document.documentElement.classList; return c.contains('lux') ? 'lux' : c.contains('teal') ? 'teal' : (c.contains('mock') ? 'mock' : (c.contains('dark') ? 'dark' : 'base')); }
+    function altThemeOn() { const t = curTheme(); return t === 'mock' || t === 'lux' || t === 'teal'; }
+    function initThemeBtn() { const b = $('theme-btn'); if (!b) return; b.addEventListener('click', () => { const nx = THEME_ORDER[(THEME_ORDER.indexOf(curTheme()) + 1) % THEME_ORDER.length]; setTheme(nx); toast(THEME_TOAST[nx]); }); }
     initThemeBtn();
     
     function mockNum(id) { const el = $(id); if (!el || !el.textContent) return '—'; const m = el.textContent.replace(/[^0-9]/g, ' ' ).trim().split(/\s+/)[0]; return m ? Number(m).toLocaleString() : '—'; }
@@ -2203,12 +2245,15 @@
       const cells = [[mockNum('ap-count') + '건', '경매'], [mockNum('stat-rp') + '건', '실거래'], [mockNum('stat-fav') + '곳', '관심']];
       k.innerHTML = cells.map(([v, l]) => `<div class="mk"><b>${esc(v)}</b><span>${l}</span></div>`).join('');
     }
-    function setMock(m) {
-      document.documentElement.classList.toggle('mock', m);
-      try { localStorage.setItem('mj_mock', m ? '1' : '0'); } catch (_e) {}
+    function setTheme(t) {
+      const h = document.documentElement;
+      h.classList.remove('dark', 'mock', 'lux', 'teal');
+      if (t === 'dark') applyTheme(true); else { applyTheme(false); if (t !== 'base') h.classList.add(t); }
+      try { localStorage.setItem('mj_mode', t); localStorage.setItem('mj_mock', t === 'mock' ? '1' : '0'); localStorage.setItem('mj_theme', t === 'dark' ? 'dark' : 'light'); } catch (_e) {}
+      const alt = t !== 'base' && t !== 'dark';
       const panel = $('panel');
-      if (m && panel && !$('mock-kpi')) { const k = document.createElement('div'); k.id = 'mock-kpi'; panel.prepend(k); }
-      if (m) renderMockKpi(); else { const k = $('mock-kpi'); if (k) k.remove(); }
+      if (alt && panel && !$('mock-kpi')) { const k = document.createElement('div'); k.id = 'mock-kpi'; panel.prepend(k); }
+      if (alt) renderMockKpi(); else { const k = $('mock-kpi'); if (k) k.remove(); }
       document.querySelectorAll('.mock-ai-btn').forEach((b) => b.remove());
       if (window.__mockRefreshPins) window.__mockRefreshPins();
     }
@@ -2216,7 +2261,7 @@
     
     if (typeof window !== 'undefined' && typeof MutationObserver !== 'undefined') {
     new MutationObserver(() => {
-      if (!document.documentElement.classList.contains('mock')) return;
+      if (!altThemeOn()) return;
       document.querySelectorAll('.pc-actions:not([data-mock-ai])').forEach((box) => {
         box.dataset.mockAi = '1';
         const b = document.createElement('button');
@@ -2225,9 +2270,10 @@
         box.prepend(b);
       });
     }).observe(document.body, { childList: true, subtree: true });
-    setInterval(() => { if (document.documentElement.classList.contains('mock')) renderMockKpi(); }, 10000);
+    setInterval(() => { if (altThemeOn()) renderMockKpi(); }, 10000);
     }
-    try { if (localStorage.getItem('mj_mock') === '1') setMock(true); } catch (_e) {}
+    try { let _m = localStorage.getItem('mj_mode'); if (!mj_mode_valid(_m)) { _m = (localStorage.getItem('mj_mock') === '1') ? 'mock' : ((localStorage.getItem('mj_theme') === 'dark') ? 'dark' : 'base'); } setTheme(_m); } catch (_e) {}
+    function mj_mode_valid(m) { return m === 'base' || m === 'dark' || m === 'mock' || m === 'lux' || m === 'teal'; }
 
     
     const RECENT_KEY = 'mj_recent_land';
@@ -7232,7 +7278,7 @@
       
       
       
-      const aucColor = (s, d) => { const mock = document.documentElement.classList.contains('mock'); let hot = false; try { hot = (typeof aucDday === 'function' && d) ? ((dd) => dd != null && dd >= 0 && dd <= 3)(aucDday(d)) : false; } catch (e) { hot = false; } if (mock) return hot ? '#D97706' : '#1E40AF'; if ((s || '').includes('유찰')) return '#fa5252'; return '#f08c00'; };
+      const aucColor = (s, d) => { const hc = document.documentElement.classList; const pal = hc.contains('lux') ? ['#1C1917', '#A16207'] : hc.contains('teal') ? ['#0F766E', '#0369A1'] : hc.contains('mock') ? ['#1E40AF', '#D97706'] : null; let hot = false; try { hot = (typeof aucDday === 'function' && d) ? ((dd) => dd != null && dd >= 0 && dd <= 3)(aucDday(d)) : false; } catch (e) { hot = false; } if (pal) return hot ? pal[1] : pal[0]; if ((s || '').includes('유찰')) return '#fa5252'; return '#f08c00'; };
       
       
       
@@ -9161,7 +9207,8 @@
       const _aucIconCache = {};
       
       function aucIcon(color, hi, label) {
-        const mock = document.documentElement.classList.contains('mock');
+        const hc = document.documentElement.classList;
+        const mock = hc.contains('mock') || hc.contains('lux') || hc.contains('teal');
         const key = color + (hi ? '!' : '') + (mock ? '@' + (label || '') : '');
         if (!_aucIconCache[key]) {
           _aucIconCache[key] = L.divIcon(mock ? {
