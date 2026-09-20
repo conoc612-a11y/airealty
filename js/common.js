@@ -17,7 +17,8 @@ const SUPABASE_KEY = 'sb_publishable_rYaGd3kk5UuFBe3TSpFA8g_uGHWwkqM';
 const ODSAY_KEY = 'H4Vo/z04g/E+AUShnTQIiQ'; // ODsay 대중교통(웹 도메인 잠금 키 → 프론트 노출 안전)
 const VWORLD_KEY = '60353720-B2BE-43A1-B6F7-A77361FCFC76'; // V-World 지도
 const $ = (id) => document.getElementById(id);
-const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+// null/undefined 는 빈 문자열 — "undefined층" 사고 방지. 숫자 강제변환은 그대로.
+const esc = (s) => (s == null ? '' : String(s)).replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
 
 // 지연 supabase 클라이언트 — 첫 사용 시 SDK 를 로드하고 1회 재사용.
 // land.html 은 초기 지도 렌더와 무관하므로(푸터 통계·로그아웃 전용) 이 패턴을 쓴다.

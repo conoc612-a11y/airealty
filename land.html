@@ -3003,7 +3003,7 @@
     
     
     
-    const NB = '⁠';
+    const NB = '\u2060';
     const fmtAmt = (man) => {
       const v = Number(man);
       if (!isFinite(v) || v === 0) return '';
@@ -4080,8 +4080,9 @@
       function rpPriceLabel() {
         const { lo, hi } = rpFilter.price;
         
+        
         const t = (lo <= 0 && hi >= RP_PMAX) ? '전체'
-          : hi >= RP_PMAX ? `${lo}억원${NB}+` : lo <= 0 ? `${hi}억원 이하` : `${lo}~${hi}억원`;
+          : hi >= RP_PMAX ? `${lo}${NB}억원+` : lo <= 0 ? `${hi}${NB}억원 이하` : `${lo}~${hi}${NB}억원`;
         const el = document.getElementById('rp-price-lbl');
         if (el) el.textContent = t;
       }
@@ -21653,10 +21654,12 @@
         }
         if (st.orderPlan && st.orderPlan.length) {
           const op = st.orderPlan;
-          const eok = (v) => (v >= 1e4 ? fmtAmt(v / 1e4) : String(v));
+          
+          
+          const eok = (v) => (v >= 1e4 ? fmtAmt(v / 1e4) : Number(v).toLocaleString('ko-KR') + NB + '원');
           const big = op.slice().sort((a, b) => b.amt - a.amt)[0];
           rows2.push(`<div style="font-size:11px;margin-top:3px;">공공공사 발주계획 <b>${op.length}건</b>`
-            + (big && big.amt ? ` <span style="color:var(--c-muted);">최대 ${eok(big.amt)}원</span>` : '') + '</div>'
+            + (big && big.amt ? ` <span style="color:var(--c-muted);">최대 ${eok(big.amt)}</span>` : '') + '</div>'
             + (big && big.nm ? `<div style="font-size:11px;color:var(--c-muted);">${esc(big.nm.slice(0, 44))}`
               + `${big.inst ? ' · ' + esc(big.inst.slice(0, 20)) : ''}</div>` : ''));
         }
