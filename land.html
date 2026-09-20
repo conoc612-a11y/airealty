@@ -7232,7 +7232,7 @@
       
       
       
-      const aucColor = (s) => { const mock = document.documentElement.classList.contains('mock'); if ((s || '').includes('유찰')) return mock ? '#D97706' : '#fa5252'; return mock ? '#1E40AF' : '#f08c00'; };
+      const aucColor = (s, d) => { const mock = document.documentElement.classList.contains('mock'); let hot = false; try { hot = (typeof aucDday === 'function' && d) ? ((dd) => dd != null && dd >= 0 && dd <= 3)(aucDday(d)) : false; } catch (e) { hot = false; } if (mock) return hot ? '#D97706' : '#1E40AF'; if ((s || '').includes('유찰')) return '#fa5252'; return '#f08c00'; };
       
       
       
@@ -9160,10 +9160,15 @@
       
       const _aucIconCache = {};
       
-      function aucIcon(color, hi) {
-        const key = color + (hi ? '!' : '');
+      function aucIcon(color, hi, label) {
+        const mock = document.documentElement.classList.contains('mock');
+        const key = color + (hi ? '!' : '') + (mock ? '@' + (label || '') : '');
         if (!_aucIconCache[key]) {
-          _aucIconCache[key] = L.divIcon({
+          _aucIconCache[key] = L.divIcon(mock ? {
+            className: '',
+            html: `<div style="width:38px;height:38px;background:${color};border:2px solid #fff;border-radius:50% 50% 50% 6px;transform:rotate(-45deg);box-shadow:0 4px 12px rgba(0,0,0,.35)${hi ? ',0 0 0 3px #3B82F6' : ''};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:${label && label.length > 3 ? 10 : 12}px;font-family:inherit;">${label ? `<span style="transform:rotate(45deg);line-height:1;">${label}</span>` : `<img src="icons/auction-gavel.png" style="width:16px;height:16px;filter:invert(1);transform:rotate(45deg);" alt="">`}</div>`,
+            iconSize: [38, 38], iconAnchor: [19, 34],
+          } : {
             className: '',
             html: `<div class="${hi ? 'auc-hi' : ''}" style="width:26px;height:26px;background:${color};border:2px solid #fff;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;"><img src="icons/auction-gavel.png" style="width:14px;height:14px;filter:invert(1)" alt=""></div>`,
             iconSize: [26, 26], iconAnchor: [13, 13],
@@ -9247,6 +9252,8 @@
         map.once('moveend', finish);
         setTimeout(finish, 600);
       }
+      
+      const aucPinLabel = (d) => { try { if (typeof aucDday === 'function') { const dd = aucDday(d); if (dd != null && dd >= 0 && dd <= 3) return '임박'; } if (typeof aucApprEok === 'function' && typeof aucLowEok === 'function') { const ap = aucApprEok(d), lo = aucLowEok(d); if (ap > 0 && lo > 0) { const p = Math.round((1 - lo / ap) * 100); if (p > 0) return p + '%'; } } } catch (e) {} return ''; };
       function auctionBuild(force) {
         if (!auctionRows) return null;
         const favs = new Set(auctionFavLoad());
@@ -9277,7 +9284,7 @@
         
         aucHiClear();
         auctionCluster.addLayers(picked.map(({ d, i }) => {
-          const m = L.marker([d.lat, d.lng], { icon: aucIcon(aucColor(d.status), filtered) });
+          const m = L.marker([d.lat, d.lng], { icon: aucIcon(aucColor(d.status, d), filtered, aucPinLabel(d)) });
           m._pop = (() => auctionPopupHtml(d));
           
           
