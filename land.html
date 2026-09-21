@@ -669,6 +669,10 @@
     
 
     .ap-filt-row { display:flex; gap:5px; padding:0 12px 7px; border-bottom:1px solid var(--line); }
+    
+    .ap-theme { display:flex; gap:6px; flex-wrap:wrap; padding:0 12px 7px; }
+    .ap-theme button { font:inherit; font-size:12px; font-weight:600; padding:4px 12px; border:1px solid var(--line); background:var(--card); color:var(--muted); border-radius:8px; cursor:pointer; transition:all .15s; }
+    .ap-theme button.on { background:var(--c-primary); border-color:var(--c-primary); color:#fff; }
     .ap-filt-row select { flex:1 1 0; min-width:0; font:inherit; font-size:12px; padding:5px 4px;
       border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--text); }
     .ap-filt-row select.on { border-color:#D92A14; color:#D92A14; font-weight:600; }
@@ -1997,6 +2001,14 @@
             <option value="2">2회 이상</option>
             <option value="3">3회 이상</option>
           </select>
+        </div>
+        
+        <div class="ap-theme" id="ap-theme">
+          <button type="button" data-preset="half">반값↓</button>
+          <button type="button" data-preset="new">신건</button>
+          <button type="button" data-preset="soon">마감7일</button>
+          <button type="button" data-preset="fail3">유찰3회+</button>
+          <button type="button" data-preset="">해제</button>
         </div>
         
 
@@ -8641,6 +8653,8 @@
           + (dd != null && dd >= 0 ? ` <b class="${dd <= 7 ? 'urg' : ''}">D-${dd}</b>` : ''));
         if (nFail > 0) when.push('유찰 ' + nFail + '회');
         if (dep) when.push(`입찰보증금 <b>${dep}</b><span style="color:var(--c-muted);"> (최저가의 ${rate}%)</span>`);
+        
+        else if (lowMan > 0) when.push(`입찰보증금 약 <b>${fmtAmtExact(lowMan * 0.1)}</b><span style="color:var(--c-muted);"> (최저가의 10%·일반 기준)</span>`);
         const _nm = (det.base && det.base.nm) || '';
         const _bld = ((det.objct || [])[0] || {}).bld || '';
         const what = [_bld, d.use, _nm, d.court, d.no ? '물건' + d.no : ''].filter(Boolean).map(esc).join(' · ');
@@ -10848,6 +10862,24 @@
           auctionFitFiltered(auctionBuild());
           auctionList.scrollTop = 0;
         };
+      });
+      
+      const presetBox = $('ap-theme');
+      if (presetBox) presetBox.addEventListener('click', (e) => {
+        const b = e.target.closest('button[data-preset]'); if (!b) return;
+        const set = (id, key, v) => { aucFilt[key] = v; const el = $(id); if (el) { el.value = v; el.classList.toggle('on', !!v); } };
+        set('ap-f-price', 'price', ''); set('ap-f-dday', 'dday', ''); set('ap-f-use', 'use', '');
+        set('ap-f-disc', 'disc', ''); set('ap-f-fail', 'fail', '');
+        if (typeof clearAdv === 'function') clearAdv();
+        const p = b.dataset.preset;
+        if (p === 'half') set('ap-f-disc', 'disc', '50');
+        else if (p === 'soon') set('ap-f-dday', 'dday', '7');
+        else if (p === 'fail3') set('ap-f-fail', 'fail', '3');
+        else if (p === 'new') { aucAdv.st = 'new'; const el = $('ap-a-st'); if (el) el.value = 'new'; }
+        presetBox.querySelectorAll('button').forEach((x) => x.classList.toggle('on', x === b && !!p));
+        auctionRenderList();
+        auctionFitFiltered(auctionBuild());
+        auctionList.scrollTop = 0;
       });
       
       const sortEl = $('ap-sort');
