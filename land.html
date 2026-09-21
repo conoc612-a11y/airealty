@@ -15951,7 +15951,19 @@
             };
           };
           UA_SERVICES.forEach(([cat, items]) => {
-            const target = CAT_TARGET[cat] || '기타 공공데이터';
+            
+            
+            const target0 = (it) => {
+              const nm = it.t.includes('_') ? it.t.split('_').slice(1).join('_') : it.t;
+              const s = it.t + ' ' + (it.w || '');
+              if (/실거래/.test(s)) return '실거래가';
+              if (/임대|청약|마이홈/.test(it.t)) return '분양·청약';
+              if (/온비드|공매|파산/.test(it.t)) return '경·공매';
+              if (/토지이음/.test(it.t)) return '토지규제';
+              if (/버스|지하철|철도|교통|도로|항공|정류장|노선|응급|병원|의료|학교|유치원|상가|상권|생필품|국가자산/.test(nm)) return '입지·임장';
+              if (/키스콘|건설업체/.test(it.t)) return '건설업체 (키스콘)';
+              return CAT_TARGET[cat] || '기타 공공데이터';
+            };
             items.forEach((it) => {
               
               
@@ -15961,7 +15973,7 @@
               
               
               if (it.w && !(it.pk && UA_POPUP_KEY[it.pk])) return;
-              const sec = ensureSec(target);
+              const sec = ensureSec(target0(it));
               addRow(sec.querySelector('.lp-kids'), it);
             });
           });
@@ -16301,7 +16313,6 @@
           {"t": "국토교통부_연립다세대 전월세 실거래가 자료", "pk": "15126473", "u": 1, "n": 1, "o": ["getRTMSDataSvcRHRent"], "w": "단독·다가구 매매 (동 단위) · 단독·다가구 전월세 (동 단위) · 아파트 분양권·입주권 전매 · 아파트 실거래가·노후도 · 연립·다세대 실거래가 · 오피스텔"},
           {"t": "국토교통부_오피스텔 매매 실거래가 자료", "pk": "15126464", "u": 1, "n": 1, "o": ["getRTMSDataSvcOffiTrade"], "w": "단독·다가구 매매 (동 단위) · 단독·다가구 전월세 (동 단위) · 아파트 분양권·입주권 전매 · 아파트 실거래가·노후도 · 연립·다세대 실거래가 · 오피스텔"},
           {"t": "국토교통부_오피스텔 전월세 실거래가 자료", "pk": "15126475", "u": 1, "n": 1, "o": ["getRTMSDataSvcOffiRent"], "w": "단독·다가구 매매 (동 단위) · 단독·다가구 전월세 (동 단위) · 아파트 분양권·입주권 전매 · 아파트 실거래가·노후도 · 연립·다세대 실거래가 · 오피스텔"},
-          {"t": "국토교통부_정류장별 경유노선별 이용량", "pk": "15142065", "u": 2, "n": 2, "o": ["getDailyStopbyRouteTripVolume", "getMonthlyStopbyRouteTripVolume"], "w": ""},
           {"t": "국토교통부_키스콘 건설업체정보 서비스", "pk": "15061362", "u": 2, "n": 2, "o": ["ConAdminInfoSvc1", "GongsiReg"], "w": "건설업체 (키스콘)"},
           {"t": "국토안전관리원_노후화된 공공시설물현황", "pk": "15017291", "u": 2, "n": 2, "o": ["OldFacilService", "getFacil30YearsOldList"], "w": "노후 공공시설물 (안전등급) · 병원·의원 (심평원) · 전기차 충전소"},
           {"t": "예금보험공사 파산금융회사 매물현황(정보)", "pk": "3035683", "u": 2, "n": 2, "o": ["GetBankruptcyEstatesGoodsService2020081", "getRealEstateDetail2020081"], "w": "건축 인허가 이력 · 공공데이터 더보기 · 공매 (온비드 · 압류재산) · 공중화장실 (동 단위) · 공중화장실 (비상벨·CCTV) · 국민연금 가입현황 (자치구"},
@@ -16332,6 +16343,7 @@
           {"t": "경찰청_핸드폰 찾기 정보 조회 서비스", "pk": "15000442", "u": 2, "n": 2, "o": ["SearchMoblphonInfoInqireService", "getMoblphonAcctoKindAreaPeriodInfo"], "w": ""},
           {"t": "국토교통부_(TAGO)_버스노선정보", "pk": "15098529", "u": 2, "n": 2, "o": ["BusRouteInfoInqireService", "getRouteInfoIem"], "w": ""},
           {"t": "국토교통부_(TAGO)_버스위치정보", "pk": "15098533", "u": 2, "n": 2, "o": ["BusLcInfoInqireService", "getRouteAcctoBusLcList"], "w": ""},
+          {"t": "국토교통부_정류장별 경유노선별 이용량", "pk": "15142065", "u": 2, "n": 2, "o": ["getDailyStopbyRouteTripVolume", "getMonthlyStopbyRouteTripVolume"], "w": ""},
           {"t": "기상청_CCTV 기반 도로날씨정보 조회서비스", "pk": "15057966", "u": 2, "n": 2, "o": ["RoadWthrInfoService", "getCctvStnRoadWthr"], "w": ""},
           {"t": "기상청_기상특보 조회서비스", "pk": "15000415", "u": 2, "n": 2, "o": ["WthrWrnInfoService", "getWthrWrnList"], "w": ""},
           {"t": "기상청_단기예보 조회서비스", "pk": "15084084", "u": 1, "n": 2, "o": ["VilageFcstInfoService_2.0"], "w": ""},
@@ -25668,7 +25680,8 @@
     inputEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') run(); });
     sendEl.addEventListener('click', run);
     $('chat-panel-close').addEventListener('click', () => { if (window.__chatTab) window.__chatTab.toggle(); });
-    if (!bodyEl.childElementCount) bubble('b', '안녕하세요. 경매 · 실거래 · 정비사업 · 공공주택 정보를 안내해 드립니다.<br>예: 「2024타경2532 감정가」 「강남구 역삼동 실거래」 「잠실 재건축」 「강동구 영구임대」');
+    const seedChat = () => { if (!bodyEl.childElementCount) bubble('b', '안녕하세요. 경매 · 실거래 · 정비사업 · 공공주택 정보를 안내해 드립니다.<br>예: 「2024타경2532 감정가」 「강남구 역삼동 실거래」 「잠실 재건축」 「강동구 영구임대」'); };
+    seedChat();
 
     
     const newsBody = $('news-panel-body');
@@ -25698,11 +25711,14 @@
     $('news-panel').addEventListener('click', () => { if (!_news) renderNews(); });
     
     
+    
     if (typeof window !== 'undefined' && typeof MutationObserver !== 'undefined') {
     new MutationObserver(() => {
       const pn = $('news-panel');
       if (pn && !pn.classList.contains('collapsed') && !_news) renderNews();
-    }).observe($('news-panel'), { attributes: true, attributeFilter: ['class'] });
+      const cp = $('chat-panel');
+      if (cp && !cp.classList.contains('collapsed')) seedChat();
+    }).observe(document.body, { attributes: true, attributeFilter: ['class'], subtree: true });
     }
   })();
   </script>
