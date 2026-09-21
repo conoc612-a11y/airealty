@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=e0bb35d" />
+  <link rel="stylesheet" href="css/tokens.css?v=96ac356" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=e0bb35d"></script>
+  <script src="js/auth-guard.js?v=96ac356"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -44,12 +44,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=e0bb35d" />
+  <link rel="stylesheet" href="css/buttons.css?v=96ac356" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=e0bb35d" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=96ac356" />
   <style>
     :root {
       
@@ -1815,10 +1815,6 @@
     .lp-restore-chip:hover { border-color:#D92A14; }
     .lp-restore-chip b { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     
-    .leaflet-tooltip.hov-tip { background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:8px; padding:7px 10px; box-shadow:var(--c-shadow-lg); font-size:13px; line-height:1.55; min-width:230px; min-height:64px; box-sizing:border-box; }
-    .leaflet-tooltip-top.hov-tip::before { border-top-color:var(--card); }
-    .hov-tip .hov-addr { color:var(--muted); }
-    .hov-tip .hov-name { font-weight:700; color:var(--text); }
     
     .vw-zone-label { background:none; border:none; box-shadow:none; font-weight:800; font-size:13px; color:#0C0A09; text-shadow:0 0 4px #fff, 0 0 4px #fff, 0 0 8px #fff; }
     .vw-zone-label::before { display:none; }
@@ -1910,7 +1906,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=e0bb35d"></script>
+  <script src="js/ie-guard.js?v=96ac356"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2213,22 +2209,22 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-20 17:41 · e0bb35d</span></span>
+          · <span class="build-tag">build 2026-09-22 07:23 · 96ac356</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=e0bb35d"></script>
+  <script src="js/joinkey.js?v=96ac356"></script>
   
-  <script src="js/identity.js?v=e0bb35d"></script>
-  <script src="js/common.js?v=e0bb35d"></script>
-  <script src="js/ui-resize.js?v=e0bb35d"></script>
-  <script src="js/footer-resize.js?v=e0bb35d"></script>
-  <script src="js/route-line.js?v=e0bb35d"></script>
-  <script src="js/route-api.js?v=e0bb35d"></script>
-  <script src="js/footer-stats.js?v=e0bb35d"></script>
+  <script src="js/identity.js?v=96ac356"></script>
+  <script src="js/common.js?v=96ac356"></script>
+  <script src="js/ui-resize.js?v=96ac356"></script>
+  <script src="js/footer-resize.js?v=96ac356"></script>
+  <script src="js/route-line.js?v=96ac356"></script>
+  <script src="js/route-api.js?v=96ac356"></script>
+  <script src="js/footer-stats.js?v=96ac356"></script>
   <script>
     
     
@@ -12082,7 +12078,11 @@
       }
       
       
-      { const sp = $('sp-panel'); if (sp && sp.classList.contains('collapsed')) { sp.style.width = RAIL_W + 'px'; sp.style.minWidth = RAIL_W + 'px'; } }
+      
+      
+      document.querySelectorAll('.side-panel.collapsed').forEach((p) => {
+        p.style.width = RAIL_W + 'px'; p.style.minWidth = RAIL_W + 'px';
+      });
       {
         
         
@@ -23737,51 +23737,8 @@
     
     
     
-    let _hovTip = null, _hovKey = '', _hovLatLng = null, _hovLast = 0;
-    map.on('mousemove', (e) => { _hovLatLng = e.latlng; _hovLast = Date.now(); });
-    map.on('mouseout', () => { _hovLatLng = null; _hovKey = ''; if (_hovTip) { map.removeLayer(_hovTip); _hovTip = null; } });
-    setInterval(() => {
-      if (!_hovLatLng || map.getZoom() < 16) return;
-      if (Date.now() - _hovLast < 400) return;
-      const key = _gcKey(_hovLatLng.lat, _hovLatLng.lng);
-      if (key === _hovKey) return;
-      _hovKey = key;
-      showHover(_hovLatLng, key);
-    }, 250);
-    function showHover(ll, key) {
-      
-      
-      
-      
-      if (!_hovTip) {
-        _hovTip = L.tooltip({ direction: 'top', offset: L.point(0, -10), opacity: 1, permanent: true, className: 'hov-tip' });
-        _hovTip.setLatLng(ll);
-        _hovTip.addTo(map);
-      }
-      _hovTip.setLatLng(ll).setContent('<div class="hov-addr">불러오는 중…</div><div class="bld-info"></div>').update();
-      const el = _hovTip.getElement();
-      if (!el) return;
-      const addrEl = el.querySelector('.hov-addr');
-      const bldSlot = el.querySelector('.bld-info');
-      const cached = _gcCache.get(key);
-      const jibun = cached && cached.jibun || '';
-      if (cached) {
-        addrEl.textContent = cached.bldName ? `${cached.bldName} · ${cached.addr || ''}` : (cached.addr || '주소 없음');
-      } else {
-        reverseGeocode(ll.lat, ll.lng, (addr) => {
-          if (_hovKey !== key) return;
-          
-          
-          
-          
-          
-          
-          _gcCache.set(key, { addr, bldName: null, jibun: '', thin: true });
-          if (addrEl) addrEl.textContent = addr || '주소 없음';
-        });
-      }
-      if (bldSlot) fillLandInfo(bldSlot, () => null, ll.lat, ll.lng, null, true, jibun);
-    }
+    
+    
 
     
     
@@ -23879,7 +23836,6 @@
 
       const { lat, lng } = e.latlng;
       loadWeather(lat, lng);
-      if (_hovTip) { map.removeLayer(_hovTip); _hovTip = null; _hovKey = ''; }
       if (clickMarker) map.removeLayer(clickMarker);
       clickMarker = L.marker([lat, lng]).addTo(map).bindPopup('정보 불러오는 중…').openPopup();
       const myGen = ++_clickGen;
