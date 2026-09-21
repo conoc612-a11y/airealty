@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=96ac356" />
+  <link rel="stylesheet" href="css/tokens.css?v=b5cdc24" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=96ac356"></script>
+  <script src="js/auth-guard.js?v=b5cdc24"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -44,12 +44,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=96ac356" />
+  <link rel="stylesheet" href="css/buttons.css?v=b5cdc24" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=96ac356" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=b5cdc24" />
   <style>
     :root {
       
@@ -1439,6 +1439,9 @@
     
 
     .pc-head { font-weight:700; font-size:15px; margin-bottom:8px; display:flex; align-items:center; gap:6px; flex-wrap:wrap; line-height:1.35; color:var(--text); padding-right:56px; }
+    
+
+    .auc-pop-cn { font-size:12px; font-weight:600; color:var(--c-muted); flex-shrink:0; }
     .pc-body { font-size:13px; color:var(--muted); margin-bottom:12px; line-height:1.6; }
     .pc-body b { color:var(--text); }
     
@@ -1810,6 +1813,11 @@
     
 
 
+    table.rp-deals.auc-fact th { text-align:left; width:1%; }
+    table.rp-deals.auc-fact td { text-align:right; }
+    
+
+
     .lp-min-btn { position:absolute; top:3px; right:30px; z-index:1100; }
     .lp-restore-chip { position:absolute; right:12px; bottom:12px; z-index:1500; display:flex; align-items:center; gap:6px; max-width:300px; padding:8px 12px; background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:8px; box-shadow:var(--c-shadow-lg); font-size:13px; cursor:pointer; transition:all .15s; }
     .lp-restore-chip:hover { border-color:#D92A14; }
@@ -1906,7 +1914,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=96ac356"></script>
+  <script src="js/ie-guard.js?v=b5cdc24"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2209,22 +2217,22 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-22 07:23 · 96ac356</span></span>
+          · <span class="build-tag">build 2026-09-22 07:45 · b5cdc24</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=96ac356"></script>
+  <script src="js/joinkey.js?v=b5cdc24"></script>
   
-  <script src="js/identity.js?v=96ac356"></script>
-  <script src="js/common.js?v=96ac356"></script>
-  <script src="js/ui-resize.js?v=96ac356"></script>
-  <script src="js/footer-resize.js?v=96ac356"></script>
-  <script src="js/route-line.js?v=96ac356"></script>
-  <script src="js/route-api.js?v=96ac356"></script>
-  <script src="js/footer-stats.js?v=96ac356"></script>
+  <script src="js/identity.js?v=b5cdc24"></script>
+  <script src="js/common.js?v=b5cdc24"></script>
+  <script src="js/ui-resize.js?v=b5cdc24"></script>
+  <script src="js/footer-resize.js?v=b5cdc24"></script>
+  <script src="js/route-line.js?v=b5cdc24"></script>
+  <script src="js/route-api.js?v=b5cdc24"></script>
+  <script src="js/footer-stats.js?v=b5cdc24"></script>
   <script>
     
     
@@ -7040,6 +7048,18 @@
       
       
       const aucYmdDot = (y) => (y ? String(y).replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3') : '');
+      
+      
+      
+      
+      
+      
+      
+      const aucCnShort = (d) => {
+        const cn = String((d && d.cn) || '').trim();
+        if (!cn) return '';
+        return cn.replace(/^(.*?)(?:지방법원|지원|법원)\s*/, '$1 ').trim();
+      };
       const aucRsltNm = (c) => AUC_RSLT_NM[String(c || '')] || String(c || '');
       const aucRsltUnknown = (c) => !!c && !AUC_RSLT_NM[String(c)];
       
@@ -8983,13 +9003,76 @@
           + `사건내역·당사자·기일 전체는 <b>맨 왼쪽 '물건 상세'</b> 에 있음.</div>`
           + `</div>`;
       }
+      
+      
+      
+      
+      
+      const _aucM2Py = (m2) => (m2 > 0 ? `${fmtArea(m2)} (${(m2 / 3.305785).toFixed(2)}평)` : '');
+      const _aucWon = (v) => (Number(v) > 0 ? fmtAmtExact(Number(v) / 1e4) : '');
+      function aucFactTbl(d) {
+        const ds = (d.detail && d.detail.dspsl) || {};
+        const b = (d.detail && d.detail.base) || {};
+        const doc = (d.detail && d.detail.objctDoc) || {};
+        const low = Number(ds.low) || aucLowEok(d) * 1e8;
+        const rate = Number(ds.depositRate) || 0;
+        
+        
+        const cells = [
+          ['감정가', _aucWon(Number(ds.appr) || aucApprEok(d) * 1e8)],
+          ['최저가', _aucWon(low)],
+          [rate ? `보증금 (${rate}%)` : '보증금', rate && low ? _aucWon(low * rate / 100) : ''],
+          ['청구액', _aucWon(b.clmAmt)],
+          ['접수일', aucYmdDot(b.rcptYmd)],
+          ['배당종기', doc.demandEnd || ''],
+          ['매각일', aucYmdDot(ds.dxdyYmd)],
+          ['매각결정기일', aucYmdDot(ds.dcsnYmd)],
+        ].filter(([, v]) => v);
+        if (!cells.length) return '';
+        let html = '';
+        for (let i = 0; i < cells.length; i += 2) {
+          const a = cells[i], b2 = cells[i + 1];
+          html += `<tr><th>${esc(a[0])}</th><td>${esc(a[1])}</td>`
+            + (b2 ? `<th>${esc(b2[0])}</th><td>${esc(b2[1])}</td>` : '<th></th><td></td>')
+            + '</tr>';
+        }
+        return `<table class="rp-deals auc-fact"><tbody>${html}</tbody></table>`;
+      }
+      function aucGihuiTbl(d) {
+        const g = (d.detail && d.detail.gihui) || [];
+        if (!g.length) return '';
+        const rows = g.map((x) => {
+          
+          const nm = x.rslt ? aucRsltNm(x.rslt) : (x.rsltNm || '');
+          return '<tr>'
+            + `<td>${esc(AUC_KND_NM[String(x.knd || '')] || x.kndNm || '')}</td>`
+            + `<td>${esc(aucYmdDot(x.y))}</td>`
+            + `<td>${esc(_aucWon(x.low) || '-')}</td>`
+            + `<td>${esc(nm || '-')}</td></tr>`;
+        }).join('');
+        return '<table class="rp-deals"><thead><tr><th>구분</th><th>날짜</th><th>최저가</th><th>결과</th></tr></thead>'
+          + `<tbody>${rows}</tbody></table>`;
+      }
+      function aucObjctTbl(d) {
+        const o = (d.detail && d.detail.objct) || [];
+        const doc = (d.detail && d.detail.objctDoc) || {};
+        
+        const m2 = (s) => { const m = String(s || '').match(/([\d,]+(?:\.\d+)?)\s*㎡/); return m ? Number(m[1].replace(/,/g, '')) : 0; };
+        
+        
+        
+        const use = String(d.use || '').split(',')[0].trim();
+        const cell = (v) => `<td style="text-align:left;white-space:normal;">${esc(v)}</td>`;
+        let rows = o.map((x) => `<tr><td>${esc(use)}</td>${cell(x.addr || '')}<td>${esc(_aucM2Py(m2(x.ar)))}</td></tr>`).join('');
+        if (Number(doc.landShare) > 0) rows += `<tr><td>대지권</td>${cell('')}<td>${esc(_aucM2Py(Number(doc.landShare)))}</td></tr>`;
+        if (!rows) return '';
+        return '<table class="rp-deals"><thead><tr><th>구분</th><th style="text-align:left;">소재지</th><th>면적</th></tr></thead>'
+          + `<tbody>${rows}</tbody></table>`;
+      }
       function auctionPopupHtml(d) {
         
         
         const _det = d.detail || {};
-        const _l = aucLowEok(d), _a = aucApprEok(d);
-        const _pct = (_a > 0 && _l > 0) ? Math.round(_l / _a * 100) : null;
-        const _rate = _det.dspsl && _det.dspsl.depositRate;
         const _les = (_det.curst && _det.curst.dlt_ordTsLserLtn) || [];
         const _cfm = _les.filter((x) => x.rgstryCrtcpCfmtnCtt && x.rgstryCrtcpCfmtnCtt !== '미상').length;
         
@@ -9001,62 +9084,17 @@
         
         
         
-        const _aee = _det.aee || {};
-        const _ymd8 = (v) => { const m = String(v || '').match(/^(\d{4})(\d{2})(\d{2})$/); return m ? `${m[1]}.${m[2]}.${m[3]}` : ''; };
         
         
         
         
-        
-        const _nearTxt = (() => {
-          const r = aucNear(d);
-          if (r.pct == null) return '';
-          const head = `${r.tierNm} 실거래의 ${r.pct}%`;
-          if (r.tier === 'dong') {
-            return `${head} · 이 물건 ${fmtUnit(r.mine)}/㎡ (연면적 ${fmtArea(r.area)})`
-              + ` vs 동 중앙 ${fmtUnit(r.mid)}/㎡ (${r.n}건) — ${r.note}`;
-          }
-          if (r.tier === 'unit') {
-            
-            return `${head} · 최저 ${fmtAmtExact(r.mineEok * 10000)} vs 같은 평형(전용 ${fmtArea(r.area)}) 실거래 중앙 ${fmtAmt(r.midEok * 10000)}`
-              + ` (최근 ${AUC_NEAR_MONTHS}개월 ${r.n}건 · 같은 건물 판정 근거: ${r.why})`;
-          }
-          if (r.tier === 'bld') {
-            return `${head} · 이 물건 ${fmtUnit(r.mine)}/㎡ (전용 ${fmtArea(r.area)})`
-              + ` vs ${fmtUnit(r.mid)}/㎡ (최근 ${AUC_NEAR_MONTHS}개월 · ${r.n}건 중앙값 · 근거: ${r.why})`;
-          }
-          return `${head} · 이 물건 ${fmtUnit(r.mine)}/㎡ (전용 ${fmtArea(r.area)}${r.areaSrc ? ' · ' + r.areaSrc : ''})`
-            + ` vs ${fmtUnit(r.mid)}/㎡ (최근 ${AUC_NEAR_MONTHS}개월 · ${r.n}건 중앙값)`;
-        })();
-        const _areaTxt = (() => {
-          const r = aucNear(d);
-          if (r.area) return fmtArea(r.area) + (r.areaSrc ? ` (${r.areaSrc})` : '');
-          const a = aucArea(_det);
-          return a ? fmtArea(a) : '';
-        })();
         const rows = [
           
-          ['##', 'AI 한줄요약'],
           
           
-          ['', aucSummaryText(d)],
-
-          ['##', 'AI 입찰가격 추정'],
-          ['최저매각가격', wonEok(aucLowEok(d)) + (_pct != null ? ' (감정가의 ' + _pct + '%)' : '')],
-          ['실거래 대비', _nearTxt],
           
-          ['감정평가액', wonEok(aucApprEok(d)) + (_ymd8(_aee.crtrYmd) ? ` (${_ymd8(_aee.crtrYmd)} 가격시점)` : '')],
-          ['입찰보증금', _rate && _l ? fmtAmtExact(_l * 10000 * _rate / 100) + ' (최저가의 ' + _rate + '%)' : ''],
-          ['총 투입금(추정)', aucCostText(d)],
-          ['다음 기일·가격', aucNextRounds(d)],
           
-          ['낙찰가율', (() => {
-            const r = aucSoldRate(d);
-            if (!r) return '';
-            const appr = aucApprEok(d);
-            return `${r.scope} 낙찰가율 중앙 ${r.mid}% (사분위 ${r.lo}~${r.hi}% · ${r.n}건)`
-              + (appr ? ` — 감정가 기준 예상 낙찰가 ${fmtAmtExact(appr * 10000 * r.mid / 100)}` : '');
-          })()],
+          
 
           
           
@@ -9084,6 +9122,13 @@
             if (!z.length) return '';
             return z.map((x) => `${x.name}${x.stage ? '(' + x.stage + ')' : ''} ${x.dist}km`).join(' · ');
           })()],
+
+          
+          
+          
+          ['##', '경매 요약'], ['@@', aucFactTbl(d)],
+          ['##', '기일 내역'], ['@@', aucGihuiTbl(d)],
+          ['##', '매각 목록'], ['@@', aucObjctTbl(d)],
 
           ['##', 'AI 물건분석'],
           
@@ -9126,9 +9171,13 @@
           
         ].filter(([k, v]) => k === '##' ? true : (v != null && v !== ''));
         
-        const _kept = rows.filter((r, i) => r[0] !== '##' || rows.slice(i + 1).some((x) => x[0] !== '##'));
+        
+        
+        const _kept = rows.filter((r, i) => r[0] !== '##' || (rows[i + 1] && rows[i + 1][0] !== '##'));
         const rowsHtml = _kept.map(([k, v], i) => {
           if (k === '##') return `<div class="auc-doc-h${i ? '' : ' first'}">${esc(v)}</div>`;
+          
+          if (k === '@@') return `<div style="margin:4px 0 2px;">${v}</div>`;
           const long = String(v).length > 60;
           
           
@@ -9175,7 +9224,7 @@
         
         d._investArgs = [aucPopSummary(d), rowsHtml, goBtns];
         try { d._invest = aucInvestHtml(d, ...d._investArgs); } catch (e) { d._invest = ''; }
-        return `<div class="pc" data-kind="auc" data-favkey="${esc(auctionFavKey(d))}" data-i="${d._i}"><div class="pc-head"><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${aucColor(d.status)};flex-shrink:0;"></span><span class="rp-name">${esc(d.addr)}</span>${favBtn}${rsBadge}<span style="font-size:12px;background:${aucColor(d.status)};color:#fff;padding:1px 8px;border-radius:999px;">경매</span></div><div class="pc-body auc-body">${rsLine}${aucPopSummary(d)}${auctionPhotoHtml(d)}${rowsHtml}${goBtns}<div style="margin-top:3px;font-size:12px;color:var(--c-muted);">기일내역·당사자·감정평가·매각물건명세서는 위 바로가기에서 확인. 파란 ↗ 는 법원 원문(새 탭).</div></div></div>`;
+        return `<div class="pc" data-kind="auc" data-favkey="${esc(auctionFavKey(d))}" data-i="${d._i}"><div class="pc-head"><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${aucColor(d.status)};flex-shrink:0;"></span><span class="auc-pop-cn">${esc(aucCnShort(d))}</span><span class="rp-name">${esc(d.addr)}</span>${favBtn}${rsBadge}<span style="font-size:12px;background:${aucColor(d.status)};color:#fff;padding:1px 8px;border-radius:999px;">경매</span></div><div class="pc-body auc-body">${rsLine}${aucPopSummary(d)}${auctionPhotoHtml(d)}${rowsHtml}${goBtns}<div style="margin-top:3px;font-size:12px;color:var(--c-muted);">기일내역·당사자·감정평가·매각물건명세서는 위 바로가기에서 확인. 파란 ↗ 는 법원 원문(새 탭).</div></div></div>`;
       }
       
       function aucPopWire(popup) {
