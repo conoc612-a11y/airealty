@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=b5cdc24" />
+  <link rel="stylesheet" href="css/tokens.css?v=addeeeb" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=b5cdc24"></script>
+  <script src="js/auth-guard.js?v=addeeeb"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -44,12 +44,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=b5cdc24" />
+  <link rel="stylesheet" href="css/buttons.css?v=addeeeb" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=b5cdc24" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=addeeeb" />
   <style>
     :root {
       
@@ -1331,6 +1331,12 @@
     #dp-panel-body .pop-only { display:none; }
     
 
+
+
+
+    .leaflet-popup .panel-only { display:none; }
+    
+
     
     .leaflet-popup-content .ls-base > .sec-nps { display:none; }
     .leaflet-popup-content .ls-base > .sec-rst { display:none; }
@@ -1914,7 +1920,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=b5cdc24"></script>
+  <script src="js/ie-guard.js?v=addeeeb"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2217,22 +2223,22 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-22 07:45 · b5cdc24</span></span>
+          · <span class="build-tag">build 2026-09-22 08:08 · addeeeb</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=b5cdc24"></script>
+  <script src="js/joinkey.js?v=addeeeb"></script>
   
-  <script src="js/identity.js?v=b5cdc24"></script>
-  <script src="js/common.js?v=b5cdc24"></script>
-  <script src="js/ui-resize.js?v=b5cdc24"></script>
-  <script src="js/footer-resize.js?v=b5cdc24"></script>
-  <script src="js/route-line.js?v=b5cdc24"></script>
-  <script src="js/route-api.js?v=b5cdc24"></script>
-  <script src="js/footer-stats.js?v=b5cdc24"></script>
+  <script src="js/identity.js?v=addeeeb"></script>
+  <script src="js/common.js?v=addeeeb"></script>
+  <script src="js/ui-resize.js?v=addeeeb"></script>
+  <script src="js/footer-resize.js?v=addeeeb"></script>
+  <script src="js/route-line.js?v=addeeeb"></script>
+  <script src="js/route-api.js?v=addeeeb"></script>
+  <script src="js/footer-stats.js?v=addeeeb"></script>
   <script>
     
     
@@ -9008,6 +9014,7 @@
       
       
       
+      
       const _aucM2Py = (m2) => (m2 > 0 ? `${fmtArea(m2)} (${(m2 / 3.305785).toFixed(2)}평)` : '');
       const _aucWon = (v) => (Number(v) > 0 ? fmtAmtExact(Number(v) / 1e4) : '');
       function aucFactTbl(d) {
@@ -9073,8 +9080,62 @@
         
         
         const _det = d.detail || {};
+        const _l = aucLowEok(d), _a = aucApprEok(d);
+        const _pct = (_a > 0 && _l > 0) ? Math.round(_l / _a * 100) : null;
+        const _rate = _det.dspsl && _det.dspsl.depositRate;
         const _les = (_det.curst && _det.curst.dlt_ordTsLserLtn) || [];
         const _cfm = _les.filter((x) => x.rgstryCrtcpCfmtnCtt && x.rgstryCrtcpCfmtnCtt !== '미상').length;
+        const _aee = _det.aee || {};
+        const _ymd8 = (v) => { const m = String(v || '').match(/^(\d{4})(\d{2})(\d{2})$/); return m ? `${m[1]}.${m[2]}.${m[3]}` : ''; };
+        const _nearTxt = (() => {
+          const r = aucNear(d);
+          if (r.pct == null) return '';
+          const head = `${r.tierNm} 실거래의 ${r.pct}%`;
+          if (r.tier === 'dong') {
+            return `${head} · 이 물건 ${fmtUnit(r.mine)}/㎡ (연면적 ${fmtArea(r.area)})`
+              + ` vs 동 중앙 ${fmtUnit(r.mid)}/㎡ (${r.n}건) — ${r.note}`;
+          }
+          if (r.tier === 'unit') {
+            
+            return `${head} · 최저 ${fmtAmtExact(r.mineEok * 10000)} vs 같은 평형(전용 ${fmtArea(r.area)}) 실거래 중앙 ${fmtAmt(r.midEok * 10000)}`
+              + ` (최근 ${AUC_NEAR_MONTHS}개월 ${r.n}건 · 같은 건물 판정 근거: ${r.why})`;
+          }
+          if (r.tier === 'bld') {
+            return `${head} · 이 물건 ${fmtUnit(r.mine)}/㎡ (전용 ${fmtArea(r.area)})`
+              + ` vs ${fmtUnit(r.mid)}/㎡ (최근 ${AUC_NEAR_MONTHS}개월 · ${r.n}건 중앙값 · 근거: ${r.why})`;
+          }
+          return `${head} · 이 물건 ${fmtUnit(r.mine)}/㎡ (전용 ${fmtArea(r.area)}${r.areaSrc ? ' · ' + r.areaSrc : ''})`
+            + ` vs ${fmtUnit(r.mid)}/㎡ (최근 ${AUC_NEAR_MONTHS}개월 · ${r.n}건 중앙값)`;
+        })();
+        
+        
+        
+        
+        
+        const aiRows = [
+          
+          ['##', 'AI 한줄요약'],
+          
+          
+          ['', aucSummaryText(d)],
+
+          ['##', 'AI 입찰가격 추정'],
+          ['최저매각가격', wonEok(aucLowEok(d)) + (_pct != null ? ' (감정가의 ' + _pct + '%)' : '')],
+          ['실거래 대비', _nearTxt],
+          
+          ['감정평가액', wonEok(aucApprEok(d)) + (_ymd8(_aee.crtrYmd) ? ` (${_ymd8(_aee.crtrYmd)} 가격시점)` : '')],
+          ['입찰보증금', _rate && _l ? fmtAmtExact(_l * 10000 * _rate / 100) + ' (최저가의 ' + _rate + '%)' : ''],
+          ['총 투입금(추정)', aucCostText(d)],
+          ['다음 기일·가격', aucNextRounds(d)],
+          
+          ['낙찰가율', (() => {
+            const r = aucSoldRate(d);
+            if (!r) return '';
+            const appr = aucApprEok(d);
+            return `${r.scope} 낙찰가율 중앙 ${r.mid}% (사분위 ${r.lo}~${r.hi}% · ${r.n}건)`
+              + (appr ? ` — 감정가 기준 예상 낙찰가 ${fmtAmtExact(appr * 10000 * r.mid / 100)}` : '');
+          })()],
+        ];
         
         
         
@@ -9089,7 +9150,6 @@
         
         
         const rows = [
-          
           
           
           
@@ -9169,23 +9229,38 @@
           
           
           
-        ].filter(([k, v]) => k === '##' ? true : (v != null && v !== ''));
+        ];
+        
+        
+        const _render = (list, first) => {
+          
+          
+          
+          const kept = list
+            .filter(([k, v]) => k === '##' ? true : (v != null && v !== ''))
+            .filter((r, i, a) => r[0] !== '##' || (a[i + 1] && a[i + 1][0] !== '##'));
+          return kept.map(([k, v], i) => {
+            if (k === '##') return `<div class="auc-doc-h${(i === 0 && first) ? ' first' : ''}">${esc(v)}</div>`;
+            
+            if (k === '@@') return `<div style="margin:4px 0 2px;">${v}</div>`;
+            const long = String(v).length > 60;
+            
+            
+            if (!k) return `<div class="auc-doc-p"><div>${esc(v)}</div></div>`;
+            return long
+              ? `<div class="auc-doc-p"><span>${k}</span><div>${esc(v)}</div></div>`
+              : `<div style="display:flex;justify-content:space-between;gap:10px;"><span style="color:var(--c-muted);flex-shrink:0;">${k}</span><b style="text-align:right;">${esc(v)}</b></div>`;
+          }).join('');
+        };
         
         
         
-        const _kept = rows.filter((r, i) => r[0] !== '##' || (rows[i + 1] && rows[i + 1][0] !== '##'));
-        const rowsHtml = _kept.map(([k, v], i) => {
-          if (k === '##') return `<div class="auc-doc-h${i ? '' : ' first'}">${esc(v)}</div>`;
-          
-          if (k === '@@') return `<div style="margin:4px 0 2px;">${v}</div>`;
-          const long = String(v).length > 60;
-          
-          
-          if (!k) return `<div class="auc-doc-p"><div>${esc(v)}</div></div>`;
-          return long
-            ? `<div class="auc-doc-p"><span>${k}</span><div>${esc(v)}</div></div>`
-            : `<div style="display:flex;justify-content:space-between;gap:10px;"><span style="color:var(--c-muted);flex-shrink:0;">${k}</span><b style="text-align:right;">${esc(v)}</b></div>`;
-        }).join('');
+        
+        
+        
+        const _aiHtml = _render(aiRows, false);
+        const rowsHtml = (_aiHtml ? `<div class="panel-only">${_aiHtml}</div>` : '')
+          + _render(rows, true);
         
         
         
