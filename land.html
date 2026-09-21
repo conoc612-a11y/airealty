@@ -1424,8 +1424,9 @@
       .bm-picker { gap:4px; padding:4px; }
     }
     .rp-stat { font-size:12px; color:var(--muted); margin-top:5px; }
-    .jb-perm-badge { color:#fff; font-size:12px; font-weight:600; padding:3px 8px; border-radius:8px; white-space:nowrap; box-shadow:var(--c-shadow); text-align:center; line-height:1.4; }
-    .jb-perm-badge .jb-cur { display:block; font-size:11px; font-weight:400; opacity:.88; }
+    .jb-perm-badge { display:inline-block; background:#fff; border:1px solid; border-radius:8px; overflow:hidden; text-align:center; line-height:1.4; box-shadow:var(--c-shadow); }
+    .jb-perm-badge .jb-top { display:block; color:#fff; font-size:12px; font-weight:600; padding:2px 8px; }
+    .jb-perm-badge .jb-cur { display:block; font-size:11px; font-weight:400; color:#000; padding:1px 8px 3px; }
     .leaflet-tooltip.jb-perm-tt { background:none; border:none; box-shadow:none; padding:0; }
     .leaflet-tooltip.jb-perm-tt::before { display:none; }
     
@@ -12742,7 +12743,7 @@
           ev.sort((a, b) => String(b.date).localeCompare(String(a.date)));
           return ev.length ? ev[0].name : (d && d.stage) || '';
         };
-        const stageBadgeHtml = (d) => { const e = jbEffStage(d); const cur = jbCurStep(d); return `<span class="jb-perm-badge" style="background:${stageColor(e)}">${esc(d.name)} · ${jbPct(e)}%${cur ? `<span class="jb-cur">${esc(cur)}</span>` : ''}</span>`; };
+        const stageBadgeHtml = (d) => { const e = jbEffStage(d); const cur = jbCurStep(d); return `<span class="jb-perm-badge" style="border-color:${stageColor(e)}"><span class="jb-top" style="background:${stageColor(e)}">${esc(d.name)} · ${jbPct(e)}%</span>${cur ? `<span class="jb-cur">${esc(cur)}</span>` : ''}</span>`; };
         const plainTipHtml = (d, approx) => approx
           ? `<b>${esc(d.name)}</b> · ${esc(d.stage || '')}`
           : `<b>${esc(d.name)}</b><br><span style="font-size:12px;color:#555">${esc(d.stage || '')}</span>`;
@@ -14935,14 +14936,19 @@
       const _vwz = [];   
       function zoneLayer(kind, color, label) {
         const g = L.layerGroup();
-        g.on('add', () => { loadZonePolys().then(() => { if (map.hasLayer(g)) zoneDraw(kind, color, label); }); });
+        g.on('add', () => { loadZonePolys().then(() => { if (!map.hasLayer(g)) return; zoneDraw(kind, color, label); const c = map.getCenter(); _vwzDrawn = map.getZoom() + ':' + c.lat.toFixed(3) + ',' + c.lng.toFixed(3); }); });
         _vwz.push([kind, color, label, g]);
         return g;
       }
-      let _vwzTimer = null;
+      let _vwzTimer = null, _vwzDrawn = '';
       map.on('moveend', () => {
         clearTimeout(_vwzTimer);
         _vwzTimer = setTimeout(() => {
+          
+          const c = map.getCenter();
+          const k = map.getZoom() + ':' + c.lat.toFixed(3) + ',' + c.lng.toFixed(3);
+          if (k === _vwzDrawn) return;
+          _vwzDrawn = k;
           _vwz.forEach(([kind, color, label, g]) => { if (map.hasLayer(g) && _zoneData) zoneDraw(kind, color, label); });
         }, 600);
       });
