@@ -1424,7 +1424,8 @@
       .bm-picker { gap:4px; padding:4px; }
     }
     .rp-stat { font-size:12px; color:var(--muted); margin-top:5px; }
-    .jb-perm-badge { color:#fff; font-size:12px; font-weight:600; padding:2px 7px; border-radius:999px; white-space:nowrap; box-shadow:var(--c-shadow); }
+    .jb-perm-badge { color:#fff; font-size:12px; font-weight:600; padding:3px 8px; border-radius:8px; white-space:nowrap; box-shadow:var(--c-shadow); text-align:center; line-height:1.4; }
+    .jb-perm-badge .jb-cur { display:block; font-size:11px; font-weight:400; opacity:.88; }
     .leaflet-tooltip.jb-perm-tt { background:none; border:none; box-shadow:none; padding:0; }
     .leaflet-tooltip.jb-perm-tt::before { display:none; }
     
@@ -12735,7 +12736,13 @@
         
         
         
-        const stageBadgeHtml = (d) => { const e = jbEffStage(d); return `<span class="jb-perm-badge" style="background:${stageColor(e)}">${esc(d.name)} · ${jbPct(e)}%</span>`; };
+        
+        const jbCurStep = (d) => {
+          const ev = [...((d && d.tl) || []), ...((d && d.up) || [])].filter((x) => x && x.date && x.name);
+          ev.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+          return ev.length ? ev[0].name : (d && d.stage) || '';
+        };
+        const stageBadgeHtml = (d) => { const e = jbEffStage(d); const cur = jbCurStep(d); return `<span class="jb-perm-badge" style="background:${stageColor(e)}">${esc(d.name)} · ${jbPct(e)}%${cur ? `<span class="jb-cur">${esc(cur)}</span>` : ''}</span>`; };
         const plainTipHtml = (d, approx) => approx
           ? `<b>${esc(d.name)}</b> · ${esc(d.stage || '')}`
           : `<b>${esc(d.name)}</b><br><span style="font-size:12px;color:#555">${esc(d.stage || '')}</span>`;
@@ -16256,8 +16263,6 @@
       
       const UA_SERVICES = [
         ['부동산·건축', [
-          {"t": "국토교통부_(TAGO)_버스노선정보", "pk": "15098529", "u": 2, "n": 2, "o": ["BusRouteInfoInqireService", "getRouteInfoIem"], "w": ""},
-          {"t": "국토교통부_(TAGO)_버스위치정보", "pk": "15098533", "u": 2, "n": 2, "o": ["BusLcInfoInqireService", "getRouteAcctoBusLcList"], "w": ""},
           {"t": "국토교통부_(도시계획)개발행위허가정보서비스", "pk": "15058480", "u": 1, "n": 1, "o": ["selectPrmisnPrjct"], "w": ""},
           {"t": "국토교통부_건축HUB_건물에너지정보 서비스", "pk": "15135963", "u": 2, "n": 2, "o": ["getBeElctyUsgInfo", "getBeGasUsgInfo"], "w": "에너지 사용량 (전기·가스)"},
           {"t": "국토교통부_건축HUB_건축물대장정보 서비스", "pk": "15134735", "u": 10, "n": 10, "o": ["getBrTitleInfo", "getBrBasisOulnInfo", "getBrFlrOulnInfo", "getBrExposPubuseAreaInfo"], "w": "건축 인허가 이력"},
@@ -16319,6 +16324,8 @@
           {"t": "경찰청_습득물정보 조회 서비스", "pk": "15058696", "u": 2, "n": 2, "o": ["LosfundInfoInqireService", "getLosfundInfoAccToClAreaPd"], "w": ""},
           {"t": "경찰청_포털기관 습득물정보 조회 서비스", "pk": "15057670", "u": 2, "n": 2, "o": ["LosPtfundInfoInqireService", "getPtLosfundInfoAccToClAreaPd"], "w": ""},
           {"t": "경찰청_핸드폰 찾기 정보 조회 서비스", "pk": "15000442", "u": 2, "n": 2, "o": ["SearchMoblphonInfoInqireService", "getMoblphonAcctoKindAreaPeriodInfo"], "w": ""},
+          {"t": "국토교통부_(TAGO)_버스노선정보", "pk": "15098529", "u": 2, "n": 2, "o": ["BusRouteInfoInqireService", "getRouteInfoIem"], "w": ""},
+          {"t": "국토교통부_(TAGO)_버스위치정보", "pk": "15098533", "u": 2, "n": 2, "o": ["BusLcInfoInqireService", "getRouteAcctoBusLcList"], "w": ""},
           {"t": "기상청_CCTV 기반 도로날씨정보 조회서비스", "pk": "15057966", "u": 2, "n": 2, "o": ["RoadWthrInfoService", "getCctvStnRoadWthr"], "w": ""},
           {"t": "기상청_기상특보 조회서비스", "pk": "15000415", "u": 2, "n": 2, "o": ["WthrWrnInfoService", "getWthrWrnList"], "w": ""},
           {"t": "기상청_단기예보 조회서비스", "pk": "15084084", "u": 1, "n": 2, "o": ["VilageFcstInfoService_2.0"], "w": ""},
@@ -25684,7 +25691,13 @@
     $('news-panel-close').addEventListener('click', () => { if (window.__newsTab) window.__newsTab.toggle(); });
     $('news-panel').addEventListener('click', () => { if (!_news) renderNews(); });
     
-    renderNews();
+    
+    if (typeof window !== 'undefined' && typeof MutationObserver !== 'undefined') {
+    new MutationObserver(() => {
+      const pn = $('news-panel');
+      if (pn && !pn.classList.contains('collapsed') && !_news) renderNews();
+    }).observe($('news-panel'), { attributes: true, attributeFilter: ['class'] });
+    }
   })();
   </script>
 </body>
