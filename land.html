@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=addeeeb" />
+  <link rel="stylesheet" href="css/tokens.css?v=af8f63c" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=addeeeb"></script>
+  <script src="js/auth-guard.js?v=af8f63c"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -44,12 +44,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=addeeeb" />
+  <link rel="stylesheet" href="css/buttons.css?v=af8f63c" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=addeeeb" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=af8f63c" />
   <style>
     :root {
       
@@ -1672,9 +1672,25 @@
                  padding-top:9px; border-top:1px solid var(--c-border); letter-spacing:-.2px; }
     .auc-doc-h.first { margin-top:0; padding-top:0; border-top:0; }
     
+
     .auc-doc-p { margin:3px 0; }
     .auc-doc-p > span { display:block; color:var(--c-muted); }
     .auc-doc-p > div { font-weight:600; line-height:1.55; }
+    
+
+
+
+
+    .auc-kv { display:flex; gap:9px; margin:3px 0; align-items:baseline; }
+    .auc-kv > span { flex:0 0 6.4em; color:var(--c-muted); word-break:keep-all; }
+    .auc-kv > div { flex:1; min-width:0; font-weight:600; line-height:1.55; overflow-wrap:anywhere; }
+    
+
+
+
+    .auc-sum-note { margin-top:6px; padding:6px 9px; font-size:12px; line-height:1.55;
+      border-left:3px solid var(--c-price); background:var(--c-hover); border-radius:0 6px 6px 0; }
+    .auc-sum-note > b { color:var(--c-price); margin-right:5px; }
     
 
 
@@ -1920,7 +1936,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=addeeeb"></script>
+  <script src="js/ie-guard.js?v=af8f63c"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2223,22 +2239,22 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-22 08:08 · addeeeb</span></span>
+          · <span class="build-tag">build 2026-09-22 08:35 · af8f63c</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=addeeeb"></script>
+  <script src="js/joinkey.js?v=af8f63c"></script>
   
-  <script src="js/identity.js?v=addeeeb"></script>
-  <script src="js/common.js?v=addeeeb"></script>
-  <script src="js/ui-resize.js?v=addeeeb"></script>
-  <script src="js/footer-resize.js?v=addeeeb"></script>
-  <script src="js/route-line.js?v=addeeeb"></script>
-  <script src="js/route-api.js?v=addeeeb"></script>
-  <script src="js/footer-stats.js?v=addeeeb"></script>
+  <script src="js/identity.js?v=af8f63c"></script>
+  <script src="js/common.js?v=af8f63c"></script>
+  <script src="js/ui-resize.js?v=af8f63c"></script>
+  <script src="js/footer-resize.js?v=af8f63c"></script>
+  <script src="js/route-line.js?v=af8f63c"></script>
+  <script src="js/route-api.js?v=af8f63c"></script>
+  <script src="js/footer-stats.js?v=af8f63c"></script>
   <script>
     
     
@@ -8649,86 +8665,61 @@
         const apprMan = a > 0 ? a * 10000 : 0;
         const dd = aucDday(d);
         const nFail = (d.idx && d.idx.n) || 0;
-        const rate = det.dspsl && det.dspsl.depositRate;
-        const dep = rate && lowMan ? fmtAmtExact(lowMan * rate / 100) : '';
-        const les = (det.curst && det.curst.dlt_ordTsLserLtn) || [];
-        const nCfm = les.filter((x) => x.rgstryCrtcpCfmtnCtt && x.rgstryCrtcpCfmtnCtt !== '미상').length;
+        
         const tags = (d.idx && d.idx.t) || [];
 
+        
+        
+        
+        
+        
+        
+        const nr = aucNear(d);
         const price = lowMan
           ? `<div class="auc-sum-price"><b>${fmtAmtExact(lowMan)}</b>`
             + `<span>최저매각가격${pct != null ? ' · 감정가의 ' + pct + '%' : ''}`
-            + `${apprMan ? ' (감정 ' + fmtAmtExact(apprMan) + ')' : ''}</span></div>`
+            + `${apprMan ? ' (감정 ' + fmtAmtExact(apprMan) + ')' : ''}</span>`
+            
+            
+            + `${nr.pct != null ? `<span class="${nr.pct <= 70 ? 'urg' : ''}" style="font-weight:700;">시세의 ${nr.pct}%</span>` : ''}</div>`
           : '';
         
         
-        const _ar = aucArea(det);
-        const _py = _ar > 0 ? _ar / 3.305785 : 0;
-        const pyLine = (lowMan > 0 && _py > 0)
-          ? `<div class="auc-sum-line" style="color:var(--c-muted);">평당 ${fmtUnit(lowMan / _py)}`
-            + `${apprMan > 0 ? ` · 감정 ${fmtUnit(apprMan / _py)}` : ''}`
-            + ` (전유 ${_py.toFixed(1)}평)</div>`
-          : '';
         
-        const nr = aucNear(d);
-        const nrLine = nr.pct != null
-          ? `<div class="auc-sum-line"><b class="${nr.pct <= 70 ? 'urg' : ''}">${esc(nr.tierNm)} 시세의 ${nr.pct}%</b>`
-            + `<span style="color:var(--c-muted);"> · ${nr.tier === 'unit'
-              ? `실거래 중앙 ${fmtAmt(nr.midEok * 10000)}`
-              : `${fmtUnit(nr.mine)}/㎡ vs ${fmtUnit(nr.mid)}/㎡`}`
-            + ` (${nr.n}건 · 최근 ${AUC_NEAR_MONTHS}개월${nr.why ? ' · ' + esc(nr.why) : ''})</span></div>`
-          : '';
+        
+        
+        
         
         const _cost = aucCostRange(d);
-        const costLine = _cost
-          ? `<div class="auc-sum-line" style="color:var(--c-muted);">총 투입금 <b style="color:var(--c-text);">`
-            + `${Math.abs(_cost.lo - _cost.hi) < 0.001 ? fmtAmtExact(_cost.totLo) : fmtAmtExact(_cost.totLo) + '~' + fmtAmtExact(_cost.totHi)}</b>`
-            + ` (최저가 + 취득세 등 ${_cost.lo}${Math.abs(_cost.lo - _cost.hi) < 0.001 ? '' : '~' + _cost.hi}%) · 명도비 미포함</div>`
-          : '';
         const when = [];
         if (d.sale) when.push('매각기일 ' + esc(d.sale)
           + (dd != null && dd >= 0 ? ` <b class="${dd <= 7 ? 'urg' : ''}">D-${dd}</b>` : ''));
         if (nFail > 0) when.push('유찰 ' + nFail + '회');
-        if (dep) when.push(`입찰보증금 <b>${dep}</b><span style="color:var(--c-muted);"> (최저가의 ${rate}%)</span>`);
         
-        else if (lowMan > 0) when.push(`입찰보증금 약 <b>${fmtAmtExact(lowMan * 0.1)}</b><span style="color:var(--c-muted);"> (최저가의 10%·일반 기준)</span>`);
-        const _nm = (det.base && det.base.nm) || '';
-        const _bld = ((det.objct || [])[0] || {}).bld || '';
-        const what = [_bld, d.use, _nm, d.court, d.no ? '물건' + d.no : ''].filter(Boolean).map(esc).join(' · ');
+        if (_cost) when.push('총 투입금 <b>'
+          + `${Math.abs(_cost.lo - _cost.hi) < 0.001 ? fmtAmtExact(_cost.totLo) : fmtAmtExact(_cost.totLo) + '~' + fmtAmtExact(_cost.totHi)}</b>`
+          + '<span style="color:var(--c-muted);"> (취득세 포함 · 명도비 미포함)</span>');
         const stk = aucStake(det);
         const stkB = stk
           ? `<span class="ap-tag ap-tag-risk danger" title="물건 전체가 아니라 이 지분만 낙찰됨.`
             + ` 공유자 동의 없이는 사용·처분이 제한돼 가치가 크게 달라짐.">지분매각 ${stk.n}/${stk.d}</span>`
           : '';
         const caseB = stkB + aucCaseBadges(d);
-        
-        const _ls = aucLandShare(det);
-        const _lup = _ls.mine ? aucLupNear(d) : 0;
-        const lsLine = _ls.mine
-          ? `<div class="auc-sum-line" style="color:var(--c-muted);">대지지분 <b style="color:var(--c-text);">${fmtArea(_ls.mine)}</b>`
-            + `${_ls.whole ? ` / 전체 ${fmtArea(_ls.whole)}` : ''}`
-            + `${_lup ? ` · 인근 대지지분 단가로 환산 <b style="color:var(--c-text);">${fmtAmt(_ls.mine * _lup)}</b> (참고)` : ''}</div>`
-          : '';
-        
-        const nd = aucNdstrc(d);
-        const ndLine = nd
-          ? `<div class="auc-sum-les"><b>고지</b> ${esc(nd.slice(0, 70))}${nd.length > 70 ? '…' : ''}</div>`
-          : '';
-
         const risk = caseB + tags.map((nm) => '<span class="ap-tag ap-tag-risk' + (AUC_TAG_LV[nm] ? ' danger' : '')
           + '" title="' + esc(AUC_TAG_TIP[nm] || nm) + '">' + esc(nm) + '</span>').join('');
 
-        const lesLine = les.length
-          ? `<div class="auc-sum-les">임차인 <b>${les.length}명</b>`
-            + `${nCfm ? ' · 확정일자 ' + nCfm + '건' : ''}`
-            + ` <span style="color:var(--c-muted);">— 대항력은 매각물건명세서의 최선순위 설정일과 대조 요함</span></div>`
+        
+        
+        
+        
+        const noteLine = d.note
+          ? `<div class="auc-sum-note"><b>비고</b>${esc(d.note)}</div>`
           : '';
 
-        if (!price && !when.length && !risk && !lesLine && !ndLine && !lsLine) return '';
-        return `<div class="auc-sum pop-only">${price}${pyLine}${nrLine}${costLine}`
+        if (!price && !when.length && !risk && !noteLine) return '';
+        return `<div class="auc-sum pop-only">${price}`
           + `${when.length ? `<div class="auc-sum-line">${when.join(' · ')}</div>` : ''}`
-          + `${what ? `<div class="auc-sum-line" style="color:var(--c-muted);">${what}</div>` : ''}`
-          + `${lsLine}${risk ? `<div class="ap-tags">${risk}</div>` : ''}${lesLine}${ndLine}</div>`;
+          + `${risk ? `<div class="ap-tags">${risk}</div>` : ''}${noteLine}</div>`;
       }
       
       
@@ -9032,8 +9023,23 @@
           ['청구액', _aucWon(b.clmAmt)],
           ['접수일', aucYmdDot(b.rcptYmd)],
           ['배당종기', doc.demandEnd || ''],
-          ['매각일', aucYmdDot(ds.dxdyYmd)],
+          ['매각기일', aucYmdDot(ds.dxdyYmd)],
           ['매각결정기일', aucYmdDot(ds.dcsnYmd)],
+          
+          
+          ['평당', (() => {
+            
+            const ar = aucArea(d.detail || {});
+            const py = ar > 0 ? ar / 3.305785 : 0;
+            return (py > 0 && low > 0) ? `${fmtUnit(low / 1e4 / py)} (전유 ${py.toFixed(1)}평)` : '';
+          })()],
+          ['대지지분 환산', (() => {
+            const ls = aucLandShare(d.detail || {});
+            if (!ls.mine) return '';
+            const lup = aucLupNear(d);
+            return lup ? `${fmtAmt(ls.mine * lup)} (인근 단가 기준 · 참고)` : '';
+          })()],
+          ['물건번호', d.no ? String(d.no) : ''],
         ].filter(([, v]) => v);
         if (!cells.length) return '';
         let html = '';
@@ -9045,21 +9051,8 @@
         }
         return `<table class="rp-deals auc-fact"><tbody>${html}</tbody></table>`;
       }
-      function aucGihuiTbl(d) {
-        const g = (d.detail && d.detail.gihui) || [];
-        if (!g.length) return '';
-        const rows = g.map((x) => {
-          
-          const nm = x.rslt ? aucRsltNm(x.rslt) : (x.rsltNm || '');
-          return '<tr>'
-            + `<td>${esc(AUC_KND_NM[String(x.knd || '')] || x.kndNm || '')}</td>`
-            + `<td>${esc(aucYmdDot(x.y))}</td>`
-            + `<td>${esc(_aucWon(x.low) || '-')}</td>`
-            + `<td>${esc(nm || '-')}</td></tr>`;
-        }).join('');
-        return '<table class="rp-deals"><thead><tr><th>구분</th><th>날짜</th><th>최저가</th><th>결과</th></tr></thead>'
-          + `<tbody>${rows}</tbody></table>`;
-      }
+      
+      
       function aucObjctTbl(d) {
         const o = (d.detail && d.detail.objct) || [];
         const doc = (d.detail && d.detail.objctDoc) || {};
@@ -9171,7 +9164,8 @@
           
           
           
-          ['비고', d.note],
+          
+          
           
           ['건축물대장', aucBrLine(d)],
           
@@ -9186,8 +9180,11 @@
           
           
           
+          
+          
+          
+          
           ['##', '경매 요약'], ['@@', aucFactTbl(d)],
-          ['##', '기일 내역'], ['@@', aucGihuiTbl(d)],
           ['##', '매각 목록'], ['@@', aucObjctTbl(d)],
 
           ['##', 'AI 물건분석'],
@@ -9243,13 +9240,11 @@
             if (k === '##') return `<div class="auc-doc-h${(i === 0 && first) ? ' first' : ''}">${esc(v)}</div>`;
             
             if (k === '@@') return `<div style="margin:4px 0 2px;">${v}</div>`;
-            const long = String(v).length > 60;
             
             
             if (!k) return `<div class="auc-doc-p"><div>${esc(v)}</div></div>`;
-            return long
-              ? `<div class="auc-doc-p"><span>${k}</span><div>${esc(v)}</div></div>`
-              : `<div style="display:flex;justify-content:space-between;gap:10px;"><span style="color:var(--c-muted);flex-shrink:0;">${k}</span><b style="text-align:right;">${esc(v)}</b></div>`;
+            
+            return `<div class="auc-kv"><span>${k}</span><div>${esc(v)}</div></div>`;
           }).join('');
         };
         
