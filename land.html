@@ -25408,10 +25408,42 @@
     }
 
     const SB_URL = typeof SUPABASE_URL === 'string' ? SUPABASE_URL : 'https://bhgijvaxxjnocgfnaaeu.supabase.co';
-    async function askFree(q) {
+    
+    function chatDist(a, b, c, d) { const R = 6371, t = Math.PI / 180; const h = Math.sin((c - a) * t / 2) ** 2 + Math.cos(a * t) * Math.cos(c * t) * Math.sin((d - b) * t / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(h)); }
+    
+    
+    async function buildChatCtx() {
+      try {
+        if (typeof map === 'undefined' || !map || !map.getCenter) return '';
+        const c = map.getCenter();
+        const [S, H, K, U, E] = await Promise.all([
+          (typeof loadSchool === 'function' ? loadSchool().catch(() => null) : null),
+          (typeof loadHosp === 'function' ? loadHosp().catch(() => null) : null),
+          (typeof loadKinder === 'function' ? loadKinder().catch(() => null) : null),
+          (typeof loadSubway === 'function' ? loadSubway().catch(() => null) : null),
+          (typeof loadEmrg === 'function' ? loadEmrg().catch(() => null) : null),
+        ]);
+        const near = (rows, f) => (rows || []).filter((r) => r && r.lat != null && r.lng != null && chatDist(c.lat, c.lng, r.lat, r.lng) <= 1 && (!f || f(r)));
+        const cnt = (rows, f) => near(rows, f).length;
+        let sub = null, sd = 1e9;
+        (U || []).forEach((r) => { if (r.lat == null || r.lng == null) return; const d = chatDist(c.lat, c.lng, r.lat, r.lng); if (d < sd) { sd = d; sub = r; } });
+        let hosp = null, hd = 1e9;
+        (H || []).forEach((r) => { if (r.lat == null || r.lng == null) return; const d = chatDist(c.lat, c.lng, r.lat, r.lng); if (d < hd) { hd = d; hosp = r; } });
+        let recent = '';
+        try { const rc = (typeof loadRecent === 'function' && loadRecent()[0]) || null; if (rc) recent = (rc.name || rc.key || ''); } catch (_e) {}
+        const parts = [`중심 ${c.lat.toFixed(3)},${c.lng.toFixed(3)}`];
+        parts.push(`반경1km: 초${cnt(S, (r) => r.lv === '초')}·중${cnt(S, (r) => r.lv === '중')}·고${cnt(S, (r) => r.lv === '고')}·유치원${cnt(K)}·병원${cnt(H)}·응급${cnt(E)}`);
+        if (sub) parts.push(`최근역: ${sub.nm}${sub.ln && sub.ln.length ? '(' + sub.ln.join('/') + ')' : ''}·${Math.round(sd * 1000)}m`);
+        if (hosp) parts.push(`최근병원: ${hosp.nm}·${Math.round(hd * 1000)}m`);
+        if (recent) parts.push(`최근 본 곳: ${recent}`);
+        const s = parts.join(' / ');
+        return s.length > 600 ? s.slice(0, 600) : s;
+      } catch (_e) { return ''; }
+    }
+    async function askFree(q, ctx) {
       const r = await fetch(SB_URL + '/functions/v1/chat', {
         method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ q }),
+        body: JSON.stringify(ctx ? { q, ctx } : { q }),
         signal: AbortSignal.timeout(40000),
       });
       if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -25448,7 +25480,7 @@
         if (route === 'PUBRENT') return bubble('b', await answerPubrent(q));
         const wait = bubble('b', '관련 정보를 찾아보는 중입니다…');
         try {
-          const r = await askFree(q);
+          const r = await askFree(q, await buildChatCtx());
           wait.innerHTML = esc(r.answer) + ((r.sources && r.sources.length)
             ? '<span class="cb-src">출처: ' + r.sources.map((s) => '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.title) + '</a>').join(' · ') + '</span>'
             : '');
