@@ -7369,7 +7369,7 @@
       function auctionPhotoHtml(d) {
         const ph = (label) => `<div class="auc-photo"><span class="auc-photo-ph">${label}</span></div>`;
         if (!d.photos || !d.photos.length) {
-          return `<div class="auc-photos">${ph('📷 사진<br>준비 중')}${ph('')}${ph('')}</div>`;
+          return `<div class="auc-photos">${ph('<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted)"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><br>사진<br>준비 중')}${ph('')}${ph('')}</div>`;
         }
         const cells = d.photos.slice(0, 3).map((p, i) => `<div class="auc-photo auc-photo-click" data-idx="${i}"><img src="${esc(photoUrl(p))}" alt="물건 사진 ${i + 1}" loading="lazy"></div>`);
         while (cells.length < 3) cells.push(ph(''));
@@ -10695,7 +10695,7 @@
         const _ap = aucApprEok(d);
         if (_sr && _ap > 0) rowPairs.push(['예상', `${fmtAmtExact(_ap * 10000 * _sr.mid / 100)} (${_sr.mid}%·${_sr.n}건)`]);
         const rows = rowPairs.filter(([, v]) => v != null && v !== '').map(([k, v]) => `${k} ${esc(v)}`).join(' · ');
-        const thumb = d.photos && d.photos.length ? `<img class="ap-thumb" src="${esc(photoUrl(d.photos[0]))}" alt="" loading="lazy">` : '<span class="ap-thumb ap-thumb-ph">📷</span>';
+        const thumb = d.photos && d.photos.length ? `<img class="ap-thumb" src="${esc(photoUrl(d.photos[0]))}" alt="" loading="lazy">` : '<span class="ap-thumb ap-thumb-ph"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted)"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span>';
         return `<div class="ap-row${pinned ? ' pinned' : ''}" data-i="${idx}">
           ${thumb}
           <div class="ap-row-main">
@@ -11189,7 +11189,7 @@
         const photos = d.photos || [];
         
         if (!photos.length) {
-          phEl.innerHTML = `<div class="apd-ph">📷 사진 준비 중<br><span style="font-size:11px;color:var(--muted)">courtauction.go.kr에서 사건번호로 확인</span></div>`;
+          phEl.innerHTML = `<div class="apd-ph"><div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted)"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1-2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>사진 준비 중</span><span style="font-size:11px;color:var(--muted)">courtauction.go.kr에서 사건번호로 확인</span></div></div>`;
         } else {
           const p = photos[Math.min(apdIdx, photos.length - 1)];
           phEl.innerHTML = `
