@@ -110,16 +110,18 @@
       --c-danger:#DC2626; --c-warn:#D97706;
       --mx-accent:#1E40AF; --mx-ink:#1E3A8A; --mx-hot:#D97706;
       --mx-line:#DBEAFE; --mx-soft:#E9EEF6; --mx-header:#0F172A; --mx-chip:#E9EEF6;
+      --mx-brandtext:#FFFFFF;
     }
     html.lux:not(.dark) body, html.lux.dark {
       --bg:#FAFAF9; --card:#FFFFFF; --line:#D6D3D1; --text:#0C0A09; --muted:#57534E;
       --c-bg:#FAFAF9; --c-card:#FFFFFF; --c-hover:#F5F4F0; --c-border:#D6D3D1; --c-line:#D6D3D1;
       --c-text:#0C0A09; --c-muted:#57534E;
-      --c-primary:#1C1917; --c-primary-soft:#EDE9E3; --c-price:#1C1917;
-      --accent:#A16207; --ok:#287F38; --c-success:#287F38;
+      --c-primary:#111111; --c-primary-soft:#EDE9E3; --c-price:#111111;
+      --accent:#111111; --ok:#287F38; --c-success:#287F38;
       --c-danger:#DC2626; --c-warn:#A16207;
-      --mx-accent:#1C1917; --mx-ink:#0C0A09; --mx-hot:#A16207;
-      --mx-line:#D6D3D1; --mx-soft:#F5F4F0; --mx-header:#1C1917; --mx-chip:#EDE9E3;
+      --mx-accent:#111111; --mx-ink:#0C0A09; --mx-hot:#A16207;
+      --mx-line:#D6D3D1; --mx-soft:#F5F4F0; --mx-header:#0A0A0A; --mx-chip:#EDE9E3;
+      --mx-brandtext:#FFD43B;
     }
     html.teal:not(.dark) body, html.teal.dark {
       --bg:#F0FDFA; --card:#FFFFFF; --line:#99F6E4; --text:#134E4A; --muted:#475569;
@@ -130,6 +132,7 @@
       --c-danger:#DC2626; --c-warn:#0369A1;
       --mx-accent:#0F766E; --mx-ink:#134E4A; --mx-hot:#0369A1;
       --mx-line:#99F6E4; --mx-soft:#E8F0F3; --mx-header:#134E4A; --mx-chip:#F0FDFA;
+      --mx-brandtext:#FFFFFF;
     }
     html.soil:not(.dark) body, html.soil.dark {
       --bg:#FAF6EF; --card:#FFFFFF; --line:#E2D5BC; --text:#3E2E1E; --muted:#6B5D4F;
@@ -140,9 +143,10 @@
       --c-danger:#DC2626; --c-warn:#B4432F;
       --mx-accent:#7C4A21; --mx-ink:#3E2E1E; --mx-hot:#B4432F;
       --mx-line:#E2D5BC; --mx-soft:#F5EEDF; --mx-header:#3E2E1E; --mx-chip:#F5EEDF;
+      --mx-brandtext:#FFFFFF;
     }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) header { background:var(--mx-header); }
-    :is(:root.mock,:root.lux,:root.teal,:root.soil) .brand-title { color:#FFFFFF; }
+    :is(:root.mock,:root.lux,:root.teal,:root.soil) .brand-title { color:var(--mx-brandtext,#FFFFFF); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .info-chip { background:rgba(255,255,255,.12); color:var(--mx-chip); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .info-chip b { color:#FFFFFF; }
     
@@ -240,6 +244,8 @@
     html.lux :is(.pc-price, #mock-kpi .mk b, .lp-hstat b, .stat-bar b) { font-family:Georgia,'Times New Roman',serif; }
     html.lux :is(.header-resize::before, .stat-resize::before) { background:var(--mx-hot); }
     html.lux .ap-badge { border-radius:4px; }
+    
+    :is(:root.lux) .ap-row .ap-badge { background:#0A0A0A; border-color:#0A0A0A; color:#FFD43B; }
     
     html.teal :is(.ap-row, .rec) { background:rgba(255,255,255,.78); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
     html.teal .leaflet-popup-content-wrapper { background:rgba(255,255,255,.86); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid var(--mx-line); }
@@ -2236,7 +2242,7 @@
     const ICON_SUN = '<img src="icons/theme-sun.png" width="18" height="18" alt="">';
     
 
-    const ICON_SET = '<img src="icons/theme-sunrise.png" width="18" height="18" alt="">';
+    const ICON_RISE = '<img src="icons/theme-sunrise.png" width="18" height="18" alt="">';
     
     const ICON_DROP = '<img src="icons/theme-raindrops.png" width="18" height="18" alt="">';
     const ICON_GEM = '<img src="icons/theme-gold.png" width="18" height="18" alt="">';
@@ -2247,8 +2253,8 @@
     const ICON_O_EARTH = '<svg width="16" height="16" viewBox="0 0 24 24"><text x="12" y="17" text-anchor="middle" font-size="14" font-weight="700" fill="#7C4A21">土</text></svg>';
     const ICON_O_METAL = '<svg width="16" height="16" viewBox="0 0 24 24"><text x="12" y="17" text-anchor="middle" font-size="14" font-weight="700" fill="#868E96">金</text></svg>';
     const ICON_O_WATER = '<svg width="16" height="16" viewBox="0 0 24 24"><text x="12" y="17" text-anchor="middle" font-size="14" font-weight="700" fill="#1971C2">水</text></svg>';
-    function paintThemeIcon() { const b = $('theme-btn'); if (!b) return; const t = curTheme(); b.innerHTML = t === 'dark' ? ICON_SUN : t === 'mock' ? ICON_DROP : t === 'lux' ? ICON_GEM : t === 'teal' ? ICON_TREE : ICON_SET; }
-    function applyTheme(dark) { document.documentElement.classList.toggle('dark', dark); const b = $('theme-btn'); if (b) b.innerHTML = dark ? ICON_SUN : ICON_SET; }
+    function paintThemeIcon() { const b = $('theme-btn'); if (!b) return; const t = curTheme(); b.innerHTML = t === 'mock' ? ICON_DROP : t === 'lux' ? ICON_GEM : t === 'teal' ? ICON_TREE : t === 'soil' ? ICON_RISE : ICON_SUN; }
+    function applyTheme(dark) { document.documentElement.classList.toggle('dark', dark); const b = $('theme-btn'); if (b) b.innerHTML = ICON_SUN; }
     
     
     const _storedTheme = localStorage.getItem('mj_theme');
@@ -7315,7 +7321,7 @@
       
       
       
-      const aucColor = (s, d) => { const hc = document.documentElement.classList;       const pal = hc.contains('lux') ? ['#1C1917', '#A16207'] : hc.contains('teal') ? ['#0F766E', '#0369A1'] : hc.contains('soil') ? ['#7C4A21', '#B4432F'] : hc.contains('mock') ? ['#1E40AF', '#D97706'] : null; let hot = false; try { hot = (typeof aucDday === 'function' && d) ? ((dd) => dd != null && dd >= 0 && dd <= 3)(aucDday(d)) : false; } catch (e) { hot = false; } if (pal) return hot ? pal[1] : pal[0]; if ((s || '').includes('유찰')) return '#fa5252'; return '#f08c00'; };
+      const aucColor = (s, d) => { const hc = document.documentElement.classList;       const pal = hc.contains('lux') ? ['#111111', '#A16207'] : hc.contains('teal') ? ['#0F766E', '#0369A1'] : hc.contains('soil') ? ['#7C4A21', '#B4432F'] : hc.contains('mock') ? ['#1E40AF', '#D97706'] : null; let hot = false; try { hot = (typeof aucDday === 'function' && d) ? ((dd) => dd != null && dd >= 0 && dd <= 3)(aucDday(d)) : false; } catch (e) { hot = false; } if (pal) return hot ? pal[1] : pal[0]; if ((s || '').includes('유찰')) return '#fa5252'; return '#f08c00'; };
       
       
       
