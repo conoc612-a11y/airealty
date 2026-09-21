@@ -1813,7 +1813,7 @@
     .lp-restore-chip:hover { border-color:#D92A14; }
     .lp-restore-chip b { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     
-    .leaflet-tooltip.hov-tip { background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:8px; padding:7px 10px; box-shadow:var(--c-shadow-lg); font-size:13px; line-height:1.55; }
+    .leaflet-tooltip.hov-tip { background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:8px; padding:7px 10px; box-shadow:var(--c-shadow-lg); font-size:13px; line-height:1.55; min-width:230px; min-height:64px; box-sizing:border-box; }
     .leaflet-tooltip-top.hov-tip::before { border-top-color:var(--card); }
     .hov-tip .hov-addr { color:var(--muted); }
     .hov-tip .hov-name { font-weight:700; color:var(--text); }
@@ -14964,6 +14964,17 @@
         });
         
         
+        const mr = map.getContainer().getBoundingClientRect();
+        let vx0 = 70, vx1 = mr.width - 70;
+        ['panel', 'auction-panel'].forEach((pid) => {
+          const pn = document.getElementById(pid);
+          if (!pn || pn.hidden) return;
+          const r = pn.getBoundingClientRect();
+          if (r.width < 40 || r.height < 40) return;
+          if (r.left <= mr.left + 4) vx0 = Math.max(vx0, r.right - mr.left + 70);
+          if (r.right >= mr.right - 4) vx1 = Math.min(vx1, r.left - mr.left - 70);
+        });
+        
         const placed = [];
         groups
           .filter((gr) => gr.at)
@@ -14972,7 +14983,7 @@
             const pt = map.latLngToContainerPoint([gr.at[1], gr.at[0]]);
             const sz = map.getSize();
             
-            if (pt.x < 70 || pt.y < 30 || pt.x > sz.x - 70 || pt.y > sz.y - 30) return;
+            if (pt.x < vx0 || pt.y < 30 || pt.x > vx1 || pt.y > sz.y - 30) return;
             const w = label.length * 13 + 16, h = 22;
             const box = [pt.x - w / 2, pt.y - h / 2, pt.x + w / 2, pt.y + h / 2];
             for (const q of placed) {
@@ -20856,7 +20867,11 @@
     function clampPopup(p) {
       if (!p || !p.isOpen || !p.isOpen()) return;
       const map = p._map;
-      if (!map || !p.getElement) return;
+      if (!map) return;
+      
+      
+      if (map._animatingZoom) return;
+      if (!p.getElement) return;
       const el = p.getElement();
       if (!el) return;
       const m = map.getContainer().getBoundingClientRect();
@@ -23797,6 +23812,8 @@
       
       if (_pointerDragged) { _pointerDragged = false; return; }
       
+      if (Date.now() - _ctxAt < 600) return;
+      
       
       syncPopupMaxHeight();
       
@@ -24098,7 +24115,18 @@
     });
 
     
-    map.on('contextmenu', (e) => { map.closePopup(); if (clickMarker) { map.removeLayer(clickMarker); clickMarker = null; } if (e.originalEvent) e.originalEvent.preventDefault(); });
+    
+    
+    
+    let _ctxAt = 0;
+    document.addEventListener('contextmenu', (e) => {
+      const t = e.target;
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable)) return;
+      _ctxAt = Date.now();
+      e.preventDefault();
+      try { map.closePopup(); } catch (_e) {}
+    }, true);
+    map.on('contextmenu', (e) => { _ctxAt = Date.now(); map.closePopup(); if (clickMarker) { map.removeLayer(clickMarker); clickMarker = null; } if (e.originalEvent) e.originalEvent.preventDefault(); });
     
     
     
