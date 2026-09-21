@@ -12338,9 +12338,21 @@
       
       
       
+      
+      
+      function jbDupCore(s) { return String(s || '').replace(/[\s,·()「」()（）/\\-]/g, '').replace(/(구역|단지|아파트|주택)$/, ''); }
+      function jbDupKey(d) { if (!d || !d.name) return null; return (d.gu || '') + '|' + jbDupCore(d.name); }
+      function jbDupDist(a, b) { const t = Math.PI / 180; const h = Math.sin((a.lat - b.lat) * t / 2) ** 2 + Math.cos(a.lat * t) * Math.cos(b.lat * t) * Math.sin((a.lng - b.lng) * t / 2) ** 2; return 12742 * Math.asin(Math.sqrt(h)); }
+      function jbSameComplex(a, b) {
+        if (!a || !b || a === b) return false;
+        const ka = jbDupKey(a), kb = jbDupKey(b);
+        if (!ka || ka !== kb) return false;
+        if (a.lat == null || b.lat == null || a.lng == null || b.lng == null) return true;
+        return jbDupDist(a, b) <= 0.5;
+      }
       function jbSibRows(d) {
         if (typeof _jbRowsGlobal === 'undefined' || !_jbRowsGlobal || !_jbRowsGlobal.length || d.lat == null) return [];
-        const core = (s) => String(s || '').replace(/[\s,·()「」()（）/\\-]/g, '').replace(/구역$/, '');
+        const core = (s) => String(s || '').replace(/[\s,·()「」()（）/\\-]/g, '').replace(/(구역|단지|아파트|주택)$/, '');
         const c = core(d.name);
         return _jbRowsGlobal.filter((z) => {
           if (z.lat == null || z === d) return false;
@@ -12582,10 +12594,12 @@
         if (!_jbRowsGlobal || !_jbRowsGlobal.length || d.lat == null) return [];
         return _jbRowsGlobal
           .filter((z) => z.lat != null && (z.name !== d.name || (z.jibun || '') !== (d.jibun || '')))
-          .map((z) => ({ name: z.name, jibun: z.jibun || '', g: jbGroup(z), stage: z.stage || '', pct: jbPct(jbEffStage(z)), dist: Math.round(kmDist(d.lat, d.lng, z.lat, z.lng) * 100) / 100 }))
+          .map((z) => ({ name: z.name, jibun: z.jibun || '', g: jbGroup(z), stage: z.stage || '', pct: jbPct(jbEffStage(z)), dist: Math.round(kmDist(d.lat, d.lng, z.lat, z.lng) * 100) / 100, __z: z }))
           .filter((x) => x.dist <= 1.5)
           .sort((a, b) => a.dist - b.dist)
-          .slice(0, limit);
+          .filter((x, i, arr) => i === arr.findIndex((y) => jbSameComplex(y.__z, x.__z)))
+          .slice(0, limit)
+          .map(({ __z, ...rest }) => rest);
       }
       
       
@@ -12756,6 +12770,14 @@
         
         
         const visSet = new Set(visible);
+        
+        const _dupKeep = new Map(), _dupOk = new Set();
+        for (const _d of jbRows) {
+          const k = jbDupKey(_d);
+          if (!k) { _dupOk.add(_d); continue; }
+          const arr = _dupKeep.get(k) || [];
+          if (!arr.some((z) => jbSameComplex(z, _d))) { arr.push(_d); _dupKeep.set(k, arr); _dupOk.add(_d); }
+        }
         const fullRebuild = (_jbLiveBadge !== showStageBadge) || _jbLiveRows !== jbRows || _jbLivePolys !== jbPolys;
         if (fullRebuild) {
           jbCluster.clearLayers();
@@ -12772,7 +12794,7 @@
           
           _jbLive.forEach((layer, idx) => {
             if (!visSet.has(idx) || !layer._jb) return;
-            const want = showStageBadge && !badgeOff.has(idx);
+            const want = showStageBadge && !badgeOff.has(idx) && (!_dupOk || _dupOk.has(layer._jb));
             if (!!layer._jbBadge !== want) { jbBindTip(layer, layer._jb, want); layer._jbBadge = want; }
           });
         }
@@ -12794,7 +12816,7 @@
             
             const poly = L.polygon(rings.map((r) => [r]), { color: c, weight: 1, fillColor: c, fillOpacity: 0.1, fillRule: 'nonzero', smoothFactor: 1 });
             poly._jb = d;
-            const badge = showStageBadge && !badgeOff.has(_i);
+            const badge = showStageBadge && !badgeOff.has(_i) && _dupOk.has(d);
             jbBindTip(poly, d, badge);
             poly._jbBadge = badge;
             poly.bindPopup(() => jbPopupHtml(d));  
@@ -12808,7 +12830,7 @@
             const circle = L.circle([d.lat, d.lng], { radius: 300, color: c, weight: 1, dashArray: '4 4', fillColor: c, fillOpacity: 0.1 });
             circle._jb = d;
             circle._approx = true;
-            const badge = showStageBadge && !badgeOff.has(_i);
+            const badge = showStageBadge && !badgeOff.has(_i) && _dupOk.has(d);
             jbBindTip(circle, d, badge);
             circle._jbBadge = badge;
             circle.bindPopup(() => jbPopupHtml(d));  
@@ -25515,8 +25537,12 @@
         const nm = norm(r.name || '');
         return nm.includes(qn) || (r.dong && qn.includes(norm(r.dong))) || (r.gu && qn.includes(norm(r.gu)));
       });
-      if (!hit.length) return '정비사업이 진행 중인 구역(예: 여의도, 잠실, 신반포)으로 질문해 주세요. ' + ask;
-      return hit.slice(0, 3).map((r) => {
+        if (!hit.length) return '정비사업이 진행 중인 구역(예: 여의도, 잠실, 신반포)으로 질문해 주세요. ' + ask;
+        
+        for (let i = hit.length - 1; i >= 0; i--) {
+          if (hit.slice(0, i).some((s) => jbSameComplex(s, hit[i]))) hit.splice(i, 1);
+        }
+        return hit.slice(0, 3).map((r) => {
         const head = '<b>' + esc(r.name) + '</b>' + ((r.gu || r.jibun) ? ' (' + esc(r.gu || '') + (r.jibun ? ' ' + esc(r.jibun) : '') + ')' : '');
         const meta = [r.gubun && ('사업구분 ' + r.gubun), r.method && ('시행방식 ' + r.method), r.stage && ('진행단계 ' + r.stage)].filter(Boolean);
         return head + (meta.length ? '<br>' + meta.join(' · ') : '');
@@ -25657,6 +25683,8 @@
     };
     $('news-panel-close').addEventListener('click', () => { if (window.__newsTab) window.__newsTab.toggle(); });
     $('news-panel').addEventListener('click', () => { if (!_news) renderNews(); });
+    
+    renderNews();
   })();
   </script>
 </body>
