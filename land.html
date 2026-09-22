@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=edf91a3" />
+  <link rel="stylesheet" href="css/tokens.css?v=aaea953" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=edf91a3"></script>
+  <script src="js/auth-guard.js?v=aaea953"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=edf91a3" />
+  <link rel="stylesheet" href="css/buttons.css?v=aaea953" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=edf91a3" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=aaea953" />
   <style>
     :root {
       
@@ -588,6 +588,21 @@
       font-size:11px; color:var(--c-muted); text-align:center; }
     
     .ad-rail .adsbygoogle { display:block; width:160px; height:600px; }
+    
+
+
+
+    #ad-consent { position:fixed; left:0; right:0; bottom:0; z-index:4000;
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      flex-wrap:wrap; padding:12px 18px; font-size:13px; line-height:1.5;
+      background:var(--card); color:var(--text); border-top:2px solid var(--c-primary);
+      box-shadow:0 -6px 20px rgba(0,0,0,.18); }
+    #ad-consent .ad-consent-text { flex:1 1 320px; min-width:0; }
+    #ad-consent a { color:var(--c-primary); }
+    #ad-consent .ad-consent-btns { display:flex; gap:8px; flex-shrink:0; }
+    #ad-consent button { padding:7px 16px; border-radius:8px; font-size:13px; cursor:pointer;
+      font-family:inherit; border:1px solid var(--line); background:var(--c-hover); color:var(--text); }
+    #ad-consent .ad-consent-yes { background:var(--c-primary); border-color:var(--c-primary); color:#fff; font-weight:700; }
     #map { flex:9 1 0; min-width:0; min-height:0; }
     
 
@@ -1972,7 +1987,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=edf91a3"></script>
+  <script src="js/ie-guard.js?v=aaea953"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2283,22 +2298,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-22 23:43 · edf91a3</span></span>
+          · <span class="build-tag">build 2026-09-23 00:05 · aaea953</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=edf91a3"></script>
+  <script src="js/joinkey.js?v=aaea953"></script>
   
-  <script src="js/identity.js?v=edf91a3"></script>
-  <script src="js/common.js?v=edf91a3"></script>
-  <script src="js/ui-resize.js?v=edf91a3"></script>
-  <script src="js/footer-resize.js?v=edf91a3"></script>
-  <script src="js/route-line.js?v=edf91a3"></script>
-  <script src="js/route-api.js?v=edf91a3"></script>
-  <script src="js/footer-stats.js?v=edf91a3"></script>
+  <script src="js/identity.js?v=aaea953"></script>
+  <script src="js/common.js?v=aaea953"></script>
+  <script src="js/ui-resize.js?v=aaea953"></script>
+  <script src="js/footer-resize.js?v=aaea953"></script>
+  <script src="js/route-line.js?v=aaea953"></script>
+  <script src="js/route-api.js?v=aaea953"></script>
+  <script src="js/footer-stats.js?v=aaea953"></script>
+  
+
+  <script src="js/ad-consent.js?v=aaea953"></script>
   <script>
     
     
@@ -3259,7 +3277,10 @@
     const ADSENSE_CLIENT = '';   
     const AD_SLOT_LEFT = '';
     const AD_SLOT_RIGHT = '';
-    if (ADSENSE_CLIENT) {
+    let _adsLoaded = false;
+    function initAds() {
+      if (_adsLoaded || !ADSENSE_CLIENT) return;
+      _adsLoaded = true;
       const s = document.createElement('script');
       s.async = true;
       s.crossOrigin = 'anonymous';
@@ -3278,6 +3299,12 @@
         try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
       });
     }
+    
+    
+    
+    
+    if (!window.adConsent || window.adConsent.ok()) initAds();
+    else window.adConsent.onGrant(initAds);
 
     
     const KAKAO_JS_KEY = '725e7ddf965a3ffff3da1f2ac771cc57'; 
