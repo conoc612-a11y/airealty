@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=af8f63c" />
+  <link rel="stylesheet" href="css/tokens.css?v=d69ebce" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=af8f63c"></script>
+  <script src="js/auth-guard.js?v=d69ebce"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -44,12 +44,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=af8f63c" />
+  <link rel="stylesheet" href="css/buttons.css?v=d69ebce" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=af8f63c" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=d69ebce" />
   <style>
     :root {
       
@@ -1332,9 +1332,6 @@
     
 
 
-
-
-    .leaflet-popup .panel-only { display:none; }
     
 
     
@@ -1658,6 +1655,9 @@
     
 
     .auc-sum-price span { font-size:12px; color:var(--c-muted); word-break:keep-all; }
+    
+    .auc-sum-price .auc-sum-fail { font-size:12px; font-weight:700; color:var(--c-price);
+      background:var(--c-hover); padding:1px 7px; border-radius:999px; flex-shrink:0; }
     .auc-sum-line { font-size:12.5px; margin-top:3px; }
     .auc-sum-line b { color:var(--c-text); }
     .auc-sum-line .urg { color:var(--c-price); }
@@ -1936,7 +1936,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=af8f63c"></script>
+  <script src="js/ie-guard.js?v=d69ebce"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2239,22 +2239,22 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-22 08:35 · af8f63c</span></span>
+          · <span class="build-tag">build 2026-09-22 09:25 · d69ebce</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=af8f63c"></script>
+  <script src="js/joinkey.js?v=d69ebce"></script>
   
-  <script src="js/identity.js?v=af8f63c"></script>
-  <script src="js/common.js?v=af8f63c"></script>
-  <script src="js/ui-resize.js?v=af8f63c"></script>
-  <script src="js/footer-resize.js?v=af8f63c"></script>
-  <script src="js/route-line.js?v=af8f63c"></script>
-  <script src="js/route-api.js?v=af8f63c"></script>
-  <script src="js/footer-stats.js?v=af8f63c"></script>
+  <script src="js/identity.js?v=d69ebce"></script>
+  <script src="js/common.js?v=d69ebce"></script>
+  <script src="js/ui-resize.js?v=d69ebce"></script>
+  <script src="js/footer-resize.js?v=d69ebce"></script>
+  <script src="js/route-line.js?v=d69ebce"></script>
+  <script src="js/route-api.js?v=d69ebce"></script>
+  <script src="js/footer-stats.js?v=d69ebce"></script>
   <script>
     
     
@@ -7077,6 +7077,18 @@
       
       
       
+      
+      
+      
+      
+      const aucKindBadge = (d) => {
+        const nm = String((d && d.detail && d.detail.base && d.detail.base.nm) || '');
+        if (nm.includes('공유물분할')) return '공유물분할';
+        if (nm.includes('형식적')) return '형식적경매';
+        if (nm.includes('강제')) return '강제경매';
+        if (nm.includes('임의')) return '임의경매';
+        return '경매';
+      };
       const aucCnShort = (d) => {
         const cn = String((d && d.cn) || '').trim();
         if (!cn) return '';
@@ -8657,7 +8669,11 @@
       
       
       
-      function aucPopSummary(d) {
+      
+      
+      
+      
+      function aucPopSummary(d, slim) {
         const det = d.detail || {};
         const a = aucApprEok(d), l = aucLowEok(d);
         const pct = (a > 0 && l > 0) ? Math.round(l / a * 100) : null;
@@ -8665,61 +8681,150 @@
         const apprMan = a > 0 ? a * 10000 : 0;
         const dd = aucDday(d);
         const nFail = (d.idx && d.idx.n) || 0;
-        
+        const rate = det.dspsl && det.dspsl.depositRate;
+        const dep = rate && lowMan ? fmtAmtExact(lowMan * rate / 100) : '';
+        const les = (det.curst && det.curst.dlt_ordTsLserLtn) || [];
+        const nCfm = les.filter((x) => x.rgstryCrtcpCfmtnCtt && x.rgstryCrtcpCfmtnCtt !== '미상').length;
         const tags = (d.idx && d.idx.t) || [];
-
-        
-        
-        
-        
-        
-        
         const nr = aucNear(d);
+
         const price = lowMan
           ? `<div class="auc-sum-price"><b>${fmtAmtExact(lowMan)}</b>`
             + `<span>최저매각가격${pct != null ? ' · 감정가의 ' + pct + '%' : ''}`
             + `${apprMan ? ' (감정 ' + fmtAmtExact(apprMan) + ')' : ''}</span>`
-            
-            
-            + `${nr.pct != null ? `<span class="${nr.pct <= 70 ? 'urg' : ''}" style="font-weight:700;">시세의 ${nr.pct}%</span>` : ''}</div>`
+            + '</div>'
           : '';
         
         
         
         
+        const slimPrice = lowMan
+          ? `<div class="auc-sum-price">`
+            + `${nFail > 0 ? `<span class="auc-sum-fail">유찰 ${nFail}회</span>` : ''}`
+            + `<b>${fmtAmtExact(lowMan)}</b>`
+            + `<span>${apprMan ? '/ ' + fmtAmtExact(apprMan) + ' ' : ''}`
+            + `${pct != null ? '감정가 ' + pct + '%' : ''}</span></div>`
+          : '';
         
         
+        const _ar = aucArea(det);
+        const _py = _ar > 0 ? _ar / 3.305785 : 0;
+        const pyLine = (lowMan > 0 && _py > 0)
+          ? `<div class="auc-sum-line" style="color:var(--c-muted);">평당 ${fmtUnit(lowMan / _py)}`
+            + `${apprMan > 0 ? ` · 감정 ${fmtUnit(apprMan / _py)}` : ''}`
+            + ` (전유 ${_py.toFixed(1)}평)</div>`
+          : '';
+        
+        const nrLine = nr.pct != null
+          ? `<div class="auc-sum-line"><b class="${nr.pct <= 70 ? 'urg' : ''}">${esc(nr.tierNm)} 시세의 ${nr.pct}%</b>`
+            + `<span style="color:var(--c-muted);"> · ${nr.tier === 'unit'
+              ? `실거래 중앙 ${fmtAmt(nr.midEok * 10000)}`
+              : `${fmtUnit(nr.mine)}/㎡ vs ${fmtUnit(nr.mid)}/㎡`}`
+            + ` (${nr.n}건 · 최근 ${AUC_NEAR_MONTHS}개월${nr.why ? ' · ' + esc(nr.why) : ''})</span></div>`
+          : '';
         
         const _cost = aucCostRange(d);
+        const _totTxt = _cost
+          ? (Math.abs(_cost.lo - _cost.hi) < 0.001 ? fmtAmtExact(_cost.totLo)
+            : fmtAmtExact(_cost.totLo) + '~' + fmtAmtExact(_cost.totHi))
+          : '';
+        const costLine = _cost
+          ? `<div class="auc-sum-line" style="color:var(--c-muted);">총 투입금 <b style="color:var(--c-text);">${_totTxt}</b>`
+            + ` (최저가 + 취득세 등 ${_cost.lo}${Math.abs(_cost.lo - _cost.hi) < 0.001 ? '' : '~' + _cost.hi}%) · 명도비 미포함</div>`
+          : '';
         const when = [];
         if (d.sale) when.push('매각기일 ' + esc(d.sale)
           + (dd != null && dd >= 0 ? ` <b class="${dd <= 7 ? 'urg' : ''}">D-${dd}</b>` : ''));
         if (nFail > 0) when.push('유찰 ' + nFail + '회');
+        if (slim) {
+          
+        } else if (dep) {
+          when.push(`입찰보증금 <b>${dep}</b><span style="color:var(--c-muted);"> (최저가의 ${rate}%)</span>`);
         
-        if (_cost) when.push('총 투입금 <b>'
-          + `${Math.abs(_cost.lo - _cost.hi) < 0.001 ? fmtAmtExact(_cost.totLo) : fmtAmtExact(_cost.totLo) + '~' + fmtAmtExact(_cost.totHi)}</b>`
-          + '<span style="color:var(--c-muted);"> (취득세 포함 · 명도비 미포함)</span>');
+        } else if (lowMan > 0) {
+          when.push(`입찰보증금 약 <b>${fmtAmtExact(lowMan * 0.1)}</b><span style="color:var(--c-muted);"> (최저가의 10%·일반 기준)</span>`);
+        }
+        const _nm = (det.base && det.base.nm) || '';
+        const _bld = ((det.objct || [])[0] || {}).bld || '';
+        const what = [_bld, d.use, _nm, d.court, d.no ? '물건' + d.no : ''].filter(Boolean).map(esc).join(' · ');
         const stk = aucStake(det);
         const stkB = stk
           ? `<span class="ap-tag ap-tag-risk danger" title="물건 전체가 아니라 이 지분만 낙찰됨.`
             + ` 공유자 동의 없이는 사용·처분이 제한돼 가치가 크게 달라짐.">지분매각 ${stk.n}/${stk.d}</span>`
           : '';
         const caseB = stkB + aucCaseBadges(d);
+        
+        const _ls = aucLandShare(det);
+        const _lup = _ls.mine ? aucLupNear(d) : 0;
+        const lsLine = _ls.mine
+          ? `<div class="auc-sum-line" style="color:var(--c-muted);">대지지분 <b style="color:var(--c-text);">${fmtArea(_ls.mine)}</b>`
+            + `${_ls.whole ? ` / 전체 ${fmtArea(_ls.whole)}` : ''}`
+            + `${_lup ? ` · 인근 대지지분 단가로 환산 <b style="color:var(--c-text);">${fmtAmt(_ls.mine * _lup)}</b> (참고)` : ''}</div>`
+          : '';
+        
+        const nd = aucNdstrc(d);
+        const ndLine = nd
+          ? `<div class="auc-sum-les"><b>고지</b> ${esc(nd.slice(0, 70))}${nd.length > 70 ? '…' : ''}</div>`
+          : '';
+
         const risk = caseB + tags.map((nm) => '<span class="ap-tag ap-tag-risk' + (AUC_TAG_LV[nm] ? ' danger' : '')
           + '" title="' + esc(AUC_TAG_TIP[nm] || nm) + '">' + esc(nm) + '</span>').join('');
 
+        const lesLine = les.length
+          ? `<div class="auc-sum-les">임차인 <b>${les.length}명</b>`
+            + `${nCfm ? ' · 확정일자 ' + nCfm + '건' : ''}`
+            + ` <span style="color:var(--c-muted);">— 대항력은 매각물건명세서의 최선순위 설정일과 대조 요함</span></div>`
+          : '';
+
         
         
         
         
-        const noteLine = d.note
+        const noteLine = (slim && d.note)
           ? `<div class="auc-sum-note"><b>비고</b>${esc(d.note)}</div>`
           : '';
 
-        if (!price && !when.length && !risk && !noteLine) return '';
-        return `<div class="auc-sum pop-only">${price}`
+        
+        
+        
+        
+        
+        
+        
+        if (slim) {
+          
+          const _same = _cost && Math.abs(_cost.lo - _cost.hi) < 0.001;
+          const _taxTxt = _cost
+            ? `취득세 ${_cost.lo}${_same ? '' : '~' + _cost.hi}% `
+              + `${_same ? fmtAmtExact(_cost.taxLo) : fmtAmtExact(_cost.taxLo) + '~' + fmtAmtExact(_cost.taxHi)}`
+            : '';
+          const slimCost = _totTxt
+            ? `<div class="auc-sum-line" style="color:var(--c-muted);">총 투입금 <b style="color:var(--c-text);">${_totTxt}</b>`
+              + ` (${_taxTxt} · 명도비 미포함)</div>`
+            : '';
+          const slimWhen = d.sale
+            ? `<div class="auc-sum-line" style="color:var(--c-muted);">매각기일`
+              + `${dd != null && dd >= 0 ? ` <b class="${dd <= 7 ? 'urg' : ''}">D-${dd}</b>` : ''}`
+              + ` <b style="color:var(--c-text);">${esc(d.sale)}</b></div>`
+            : '';
+          
+          
+          const slimLs = _ls.mine
+            ? `<div class="auc-sum-line" style="color:var(--c-muted);">대지지분 `
+              + `<b style="color:var(--c-text);">${fmtArea(_ls.mine)}</b>`
+              + `${_ls.whole ? ` / ${fmtArea(_ls.whole)}` : ''}`
+              + `${_lup ? ` · 대지 시세가 환산 <b style="color:var(--c-text);">${fmtAmt(_ls.mine * _lup)}</b> (참조)` : ''}</div>`
+            : '';
+          if (!slimPrice && !slimCost && !slimWhen && !slimLs && !risk && !noteLine) return '';
+          return `<div class="auc-sum pop-only">${slimPrice}${slimCost}${slimWhen}${slimLs}`
+            + `${risk ? `<div class="ap-tags">${risk}</div>` : ''}${noteLine}</div>`;
+        }
+        
+        if (!price && !when.length && !risk && !lesLine && !ndLine && !lsLine) return '';
+        return `<div class="auc-sum pop-only">${price}${pyLine}${nrLine}${costLine}`
           + `${when.length ? `<div class="auc-sum-line">${when.join(' · ')}</div>` : ''}`
-          + `${risk ? `<div class="ap-tags">${risk}</div>` : ''}${noteLine}</div>`;
+          + `${what ? `<div class="auc-sum-line" style="color:var(--c-muted);">${what}</div>` : ''}`
+          + `${lsLine}${risk ? `<div class="ap-tags">${risk}</div>` : ''}${lesLine}${ndLine}</div>`;
       }
       
       
@@ -9016,39 +9121,23 @@
         const rate = Number(ds.depositRate) || 0;
         
         
-        const cells = [
-          ['감정가', _aucWon(Number(ds.appr) || aucApprEok(d) * 1e8)],
-          ['최저가', _aucWon(low)],
-          [rate ? `보증금 (${rate}%)` : '보증금', rate && low ? _aucWon(low * rate / 100) : ''],
-          ['청구액', _aucWon(b.clmAmt)],
-          ['접수일', aucYmdDot(b.rcptYmd)],
-          ['배당종기', doc.demandEnd || ''],
-          ['매각기일', aucYmdDot(ds.dxdyYmd)],
-          ['매각결정기일', aucYmdDot(ds.dcsnYmd)],
+        
+        
+        
+        
+        
+        const pairs = [
+          [['감정가', _aucWon(Number(ds.appr) || aucApprEok(d) * 1e8)], ['청구액', _aucWon(b.clmAmt)]],
+          [['최저가', _aucWon(low)],
+            [rate ? `보증금 (${rate}%)` : '보증금', rate && low ? _aucWon(low * rate / 100) : '']],
+          [['접수일', aucYmdDot(b.rcptYmd)], ['매각기일', aucYmdDot(ds.dxdyYmd)]],
+          [['매각결정기일', aucYmdDot(ds.dcsnYmd)], ['배당종기', doc.demandEnd || '']],
           
           
-          ['평당', (() => {
-            
-            const ar = aucArea(d.detail || {});
-            const py = ar > 0 ? ar / 3.305785 : 0;
-            return (py > 0 && low > 0) ? `${fmtUnit(low / 1e4 / py)} (전유 ${py.toFixed(1)}평)` : '';
-          })()],
-          ['대지지분 환산', (() => {
-            const ls = aucLandShare(d.detail || {});
-            if (!ls.mine) return '';
-            const lup = aucLupNear(d);
-            return lup ? `${fmtAmt(ls.mine * lup)} (인근 단가 기준 · 참고)` : '';
-          })()],
-          ['물건번호', d.no ? String(d.no) : ''],
-        ].filter(([, v]) => v);
-        if (!cells.length) return '';
-        let html = '';
-        for (let i = 0; i < cells.length; i += 2) {
-          const a = cells[i], b2 = cells[i + 1];
-          html += `<tr><th>${esc(a[0])}</th><td>${esc(a[1])}</td>`
-            + (b2 ? `<th>${esc(b2[0])}</th><td>${esc(b2[1])}</td>` : '<th></th><td></td>')
-            + '</tr>';
-        }
+        ].filter(([a, b2]) => a[1] || b2[1]);
+        if (!pairs.length) return '';
+        const cell = ([k, v]) => (v ? `<th>${esc(k)}</th><td>${esc(v)}</td>` : '<th></th><td></td>');
+        const html = pairs.map(([a, b2]) => `<tr>${cell(a)}${cell(b2)}</tr>`).join('');
         return `<table class="rp-deals auc-fact"><tbody>${html}</tbody></table>`;
       }
       
@@ -9104,7 +9193,6 @@
         
         
         
-        
         const aiRows = [
           
           ['##', 'AI 한줄요약'],
@@ -9142,7 +9230,8 @@
         
         
         
-        const rows = [
+        
+        const objRows = [
           
           
           
@@ -9176,17 +9265,9 @@
             if (!z.length) return '';
             return z.map((x) => `${x.name}${x.stage ? '(' + x.stage + ')' : ''} ${x.dist}km`).join(' · ');
           })()],
-
-          
-          
-          
-          
-          
-          
-          
-          ['##', '경매 요약'], ['@@', aucFactTbl(d)],
-          ['##', '매각 목록'], ['@@', aucObjctTbl(d)],
-
+        ];
+        
+        const anlRows = [
           ['##', 'AI 물건분석'],
           
           ['권리분석', (() => {
@@ -9229,7 +9310,7 @@
         ];
         
         
-        const _render = (list, first) => {
+        const _render = (list, first, kv) => {
           
           
           
@@ -9244,7 +9325,12 @@
             
             if (!k) return `<div class="auc-doc-p"><div>${esc(v)}</div></div>`;
             
-            return `<div class="auc-kv"><span>${k}</span><div>${esc(v)}</div></div>`;
+            
+            if (kv) return `<div class="auc-kv"><span>${k}</span><div>${esc(v)}</div></div>`;
+            const long = String(v).length > 60;
+            return long
+              ? `<div class="auc-doc-p"><span>${k}</span><div>${esc(v)}</div></div>`
+              : `<div style="display:flex;justify-content:space-between;gap:10px;"><span style="color:var(--c-muted);flex-shrink:0;">${k}</span><b style="text-align:right;">${esc(v)}</b></div>`;
           }).join('');
         };
         
@@ -9253,9 +9339,23 @@
         
         
         
-        const _aiHtml = _render(aiRows, false);
-        const rowsHtml = (_aiHtml ? `<div class="panel-only">${_aiHtml}</div>` : '')
-          + _render(rows, true);
+        const popRows = [
+          ...objRows,
+          
+          
+          
+          
+          
+          ['##', '경매 요약'], ['@@', aucFactTbl(d)],
+          ['##', '매각 목록'], ['@@', aucObjctTbl(d)],
+          ...anlRows,
+        ];
+        
+        const panelRows = [...aiRows, ['비고', d.note], ...objRows, ...anlRows];
+        const rowsHtml = _render(popRows, true, true);          
+        const panelHtml = _render(panelRows, true, false);      
+        
+        
         
         
         
@@ -9292,9 +9392,10 @@
         
         
         
-        d._investArgs = [aucPopSummary(d), rowsHtml, goBtns];
+        
+        d._investArgs = [aucPopSummary(d), panelHtml, goBtns];
         try { d._invest = aucInvestHtml(d, ...d._investArgs); } catch (e) { d._invest = ''; }
-        return `<div class="pc" data-kind="auc" data-favkey="${esc(auctionFavKey(d))}" data-i="${d._i}"><div class="pc-head"><span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${aucColor(d.status)};flex-shrink:0;"></span><span class="auc-pop-cn">${esc(aucCnShort(d))}</span><span class="rp-name">${esc(d.addr)}</span>${favBtn}${rsBadge}<span style="font-size:12px;background:${aucColor(d.status)};color:#fff;padding:1px 8px;border-radius:999px;">경매</span></div><div class="pc-body auc-body">${rsLine}${aucPopSummary(d)}${auctionPhotoHtml(d)}${rowsHtml}${goBtns}<div style="margin-top:3px;font-size:12px;color:var(--c-muted);">기일내역·당사자·감정평가·매각물건명세서는 위 바로가기에서 확인. 파란 ↗ 는 법원 원문(새 탭).</div></div></div>`;
+        return `<div class="pc" data-kind="auc" data-favkey="${esc(auctionFavKey(d))}" data-i="${d._i}"><div class="pc-head">${favBtn}<span style="font-size:12px;background:${aucColor(d.status)};color:#fff;padding:1px 8px;border-radius:999px;flex-shrink:0;">${esc(aucKindBadge(d))}</span>${rsBadge}<span class="auc-pop-cn">${esc(aucCnShort(d))}</span><span class="rp-name">${esc(d.addr)}</span></div><div class="pc-body auc-body">${rsLine}${aucPopSummary(d, true)}${auctionPhotoHtml(d)}${rowsHtml}</div></div>`;
       }
       
       function aucPopWire(popup) {
