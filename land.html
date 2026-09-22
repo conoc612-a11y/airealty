@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=c041a52" />
+  <link rel="stylesheet" href="css/tokens.css?v=24f4b93" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=c041a52"></script>
+  <script src="js/auth-guard.js?v=24f4b93"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -44,12 +44,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=c041a52" />
+  <link rel="stylesheet" href="css/buttons.css?v=24f4b93" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=c041a52" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=24f4b93" />
   <style>
     :root {
       
@@ -569,6 +569,21 @@
     
 
     .layout { display:flex; flex-wrap:nowrap; align-items:stretch; flex:9.4; min-height:0; overflow:hidden; position:relative; }
+    
+
+
+
+
+
+
+
+
+    .ad-rail { display:none; flex:0 0 160px; min-width:0; overflow:hidden;
+      background:var(--c-hover); border-inline:1px solid var(--line); }
+    @media (min-width:1600px) { .ad-rail { display:block; } }
+    
+    .ad-rail:empty::before { content:'광고 자리'; display:block; padding:12px 8px;
+      font-size:11px; color:var(--c-muted); text-align:center; }
     #map { flex:9 1 0; min-width:0; min-height:0; }
     
 
@@ -1953,7 +1968,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=c041a52"></script>
+  <script src="js/ie-guard.js?v=24f4b93"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -1993,6 +2008,12 @@
   </div>
 
   <div class="layout">
+    
+
+
+
+
+    <aside class="ad-rail ad-rail-left" id="ad-left" aria-label="광고" aria-hidden="true"></aside>
     <div class="left-panels" id="left-panels">
     <aside id="auction-panel" class="auction-panel" hidden aria-label="법원경매 물건 목록">
       <div class="ap-inner">
@@ -2236,6 +2257,8 @@
       <div id="cmp-bar" style="display:none;"></div>
       <div id="rec-list"></div>
     </div>
+    
+    <aside class="ad-rail ad-rail-right" id="ad-right" aria-label="광고" aria-hidden="true"></aside>
   </div>
   <footer class="site-footer" id="site-footer">
     <div class="footer-resize" id="footer-resize" title="끌어서 세로 크기 조절"></div>
@@ -2256,22 +2279,22 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-22 12:23 · c041a52</span></span>
+          · <span class="build-tag">build 2026-09-22 21:58 · 24f4b93</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=c041a52"></script>
+  <script src="js/joinkey.js?v=24f4b93"></script>
   
-  <script src="js/identity.js?v=c041a52"></script>
-  <script src="js/common.js?v=c041a52"></script>
-  <script src="js/ui-resize.js?v=c041a52"></script>
-  <script src="js/footer-resize.js?v=c041a52"></script>
-  <script src="js/route-line.js?v=c041a52"></script>
-  <script src="js/route-api.js?v=c041a52"></script>
-  <script src="js/footer-stats.js?v=c041a52"></script>
+  <script src="js/identity.js?v=24f4b93"></script>
+  <script src="js/common.js?v=24f4b93"></script>
+  <script src="js/ui-resize.js?v=24f4b93"></script>
+  <script src="js/footer-resize.js?v=24f4b93"></script>
+  <script src="js/route-line.js?v=24f4b93"></script>
+  <script src="js/route-api.js?v=24f4b93"></script>
+  <script src="js/footer-stats.js?v=24f4b93"></script>
   <script>
     
     
@@ -16643,6 +16666,7 @@
           {"t": "한국감정평가사협회", "pk": "", "u": 0, "n": 0, "o": [], "d": "법원경매 감정평가서 원문 열람 링크 (본문을 우리가 저장하지 않는다)", "cat": "제공기관 자체 서비스"},
           {"t": "한국경제신문", "pk": "", "u": 0, "n": 0, "o": [], "d": "부동산 기사 제목·링크·발행일 (RSS)", "cat": "제공기관 자체 서비스"},
           {"t": "한국부동산원 (부동산통계정보 R-ONE)", "pk": "", "u": 0, "n": 0, "o": [], "d": "지역별 지가변동률·지가지수(법정동 단위)", "cat": "제공기관 자체 서비스"},
+          {"t": "한국수출입은행", "pk": "", "u": 0, "n": 0, "o": [], "d": "현재환율 (AP01) — 헤더의 USD·JPY 고시환율", "cat": "제공기관 자체 서비스"},
           {"t": "한국자산관리공사 (온비드)", "pk": "", "u": 0, "n": 0, "o": [], "d": "공매 물건 썸네일 이미지 · 물건 상세 링크", "cat": "제공기관 자체 서비스"},
           {"t": "행정안전부 (공공데이터 제공표준)", "pk": "", "u": 0, "n": 0, "o": [], "d": "전국 CCTV정보(37만) · 무료와이파이정보(9.4만) · 모범음식점정보 — 지자체 취합 CSV", "cat": "제공기관 자체 서비스"},
           {"t": "행정안전부·경찰청 (생활안전지도)", "pk": "", "u": 0, "n": 0, "o": [], "d": "범죄주의구간·여성밤길치안안전·치안사고통계·CPTED, 침수흔적도·하천범람·산사태 등 WMS 지도", "cat": "제공기관 자체 서비스"},
@@ -16658,7 +16682,7 @@
           {"t": "한국토지주택공사 (LH청약플러스)", "pk": "", "u": 0, "n": 0, "o": [], "d": "입주자모집공고 첨부 「공급대상주택목록」 — 매입임대·든든전세 **물건별 주소**(광역 공고는 공고 본문에 주소가 없어 이 첨부가 유일한 위치 자료다)", "cat": "공개 웹 수집"},
         ]],
       ];
-      const UA_SERVICES_N = 130;   
+      const UA_SERVICES_N = 131;   
       
       
       
@@ -17446,9 +17470,43 @@
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    function headerPrime() {
+      
+      return fetch('header.json?t=' + Math.floor(Date.now() / 36e5))
+        .then((r) => (r.ok ? r.json() : null))
+        .then((h) => {
+          if (!h) return;
+          if (h.weather && h.weather.temp != null) {
+            
+            const k = `${Math.round(37.5665 / 0.05)}|${Math.round(126.9780 / 0.05)}`;
+            _wxCache.set(k, { text: h.weather.temp + '℃ ' + (h.weather.label || ''), at: Date.now() });
+          }
+          
+          if (h.fx && h.fx.usd && h.fx.jpy) {
+            try {
+              localStorage.setItem(FX_STORE, JSON.stringify({ t: Date.now(), usd: h.fx.usd, jpy: h.fx.jpy }));
+            } catch (e) {}
+          }
+        })
+        .catch(() => {});   
+    }
+    
+    
+    
+    
     (window.requestIdleCallback || ((f) => setTimeout(f, 300)))(() => {
-      loadRates();
-      loadWeather(37.5665, 126.9780); 
+      headerPrime().then(() => {
+        loadRates();
+        loadWeather(37.5665, 126.9780); 
+      });
     });
 
     
