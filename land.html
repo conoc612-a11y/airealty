@@ -639,6 +639,21 @@
       align-items:stretch; max-width:100%; pointer-events:none; }
     .left-panels > * { pointer-events:auto; }
     
+    .right-panels { position:absolute; right:0; top:0; bottom:0; z-index:2000; display:flex;
+      flex-direction:row-reverse; align-items:stretch; max-width:100%; pointer-events:none; }
+    .right-panels > * { pointer-events:auto; }
+    
+    .right-panels .side-panel { border-right:none; border-left:1px solid var(--c-primary); }
+    .right-panels .side-resizer { right:auto; left:-4px; }
+    
+
+    #lp-panel .sp-body { padding:0; display:flex; flex-direction:column; }
+    #lp-panel .lp { flex:1; display:flex; flex-direction:column; min-height:0; }
+    #lp-panel .lp-body { position:static; display:block; width:auto; flex:1; min-height:0; max-height:none; box-shadow:none; }
+    #lp-panel .lp.open .lp-resizer { display:none; }
+    
+    header .lp-toggle { box-shadow:none; }
+    
 
 
 
@@ -1170,6 +1185,7 @@
     .leaflet-popup-content, .leaflet-popup-content *,
     #panel, #panel *,
     .left-panels, .left-panels *,
+    .right-panels, .right-panels *,
     .bld-info, .bld-info *,
     .pc, .pc *,
     .apd-lb-cap, .apd-lb-head,
@@ -2176,13 +2192,6 @@
       </div>
       <div class="side-resizer" id="jb-panel-resizer" title="드래그해서 너비 조절"></div>
     </aside>
-    <aside id="sp-panel" class="side-panel collapsed" aria-label="길찾기">
-      <div class="sp-inner">
-        <div class="sp-head"><b class="sp-title">길찾기</b><button type="button" id="sp-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">✕</button></div>
-        <div class="sp-body ui-scroll" id="sp-panel-body"></div>
-      </div>
-      <div class="side-resizer" id="sp-panel-resizer" title="드래그해서 너비 조절"></div>
-    </aside>
     
 
 
@@ -2195,24 +2204,6 @@
         <div class="sp-body ui-scroll" id="dp-panel-body"></div>
       </div>
       <div class="side-resizer" id="dp-panel-resizer" title="드래그해서 너비 조절"></div>
-    </aside>
-    <aside id="chat-panel" class="side-panel collapsed" aria-label="AI 상담">
-      <div class="sp-inner">
-        <div class="sp-head"><b class="sp-title">AI 상담</b><button type="button" id="chat-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">✕</button></div>
-        <div class="sp-body ui-scroll" id="chat-panel-body"></div>
-        <div class="sp-foot" id="chat-panel-foot">
-          <input type="text" id="chat-input" placeholder="예: 2024타경2532 감정가" autocomplete="off" aria-label="상담 질문 입력">
-          <button type="button" id="chat-send" aria-label="질문 보내기">↵</button>
-        </div>
-      </div>
-      <div class="side-resizer" id="chat-panel-resizer" title="드래그해서 너비 조절"></div>
-    </aside>
-    <aside id="news-panel" class="side-panel collapsed" aria-label="부동산 뉴스">
-      <div class="sp-inner">
-        <div class="sp-head"><b class="sp-title">부동산 뉴스</b><button type="button" id="news-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">✕</button></div>
-        <div class="sp-body ui-scroll" id="news-panel-body"></div>
-      </div>
-      <div class="side-resizer" id="news-panel-resizer" title="드래그해서 너비 조절"></div>
     </aside>
     </div>
     
@@ -2275,6 +2266,41 @@
       <div id="recent" style="display:none;"></div>
       <div id="cmp-bar" style="display:none;"></div>
       <div id="rec-list"></div>
+    </div>
+    <div class="right-panels" id="right-panels">
+    
+    <aside id="sp-panel" class="side-panel collapsed" aria-label="길찾기">
+      <div class="sp-inner">
+        <div class="sp-head"><b class="sp-title">길찾기</b><button type="button" id="sp-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">✕</button></div>
+        <div class="sp-body ui-scroll" id="sp-panel-body"></div>
+      </div>
+      <div class="side-resizer" id="sp-panel-resizer" title="드래그해서 너비 조절"></div>
+    </aside>
+    <aside id="chat-panel" class="side-panel collapsed" aria-label="AI 상담">
+      <div class="sp-inner">
+        <div class="sp-head"><b class="sp-title">AI 상담</b><button type="button" id="chat-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">✕</button></div>
+        <div class="sp-body ui-scroll" id="chat-panel-body"></div>
+        <div class="sp-foot" id="chat-panel-foot">
+          <input type="text" id="chat-input" placeholder="예: 2024타경2532 감정가" autocomplete="off" aria-label="상담 질문 입력">
+          <button type="button" id="chat-send" aria-label="질문 보내기">↵</button>
+        </div>
+      </div>
+      <div class="side-resizer" id="chat-panel-resizer" title="드래그해서 너비 조절"></div>
+    </aside>
+    <aside id="news-panel" class="side-panel collapsed" aria-label="부동산 뉴스">
+      <div class="sp-inner">
+        <div class="sp-head"><b class="sp-title">부동산 뉴스</b><button type="button" id="news-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">✕</button></div>
+        <div class="sp-body ui-scroll" id="news-panel-body"></div>
+      </div>
+      <div class="side-resizer" id="news-panel-resizer" title="드래그해서 너비 조절"></div>
+    </aside>
+    <aside id="lp-panel" class="side-panel collapsed" aria-label="레이어">
+      <div class="sp-inner">
+        <div class="sp-head"><b class="sp-title">레이어</b><button type="button" id="lp-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">✕</button></div>
+        <div class="sp-body ui-scroll" id="lp-panel-body"></div>
+      </div>
+      <div class="side-resizer" id="lp-panel-resizer" title="드래그해서 너비 조절"></div>
+    </aside>
     </div>
     
     <aside class="ad-rail ad-rail-right" id="ad-right" aria-label="광고" aria-hidden="true"></aside>
@@ -3721,6 +3747,17 @@
           
           const room = Math.round(mr.right - CTL_GAP - pr.right);
           if (need > 1 && room > 1) dx = Math.min(need, room);
+        }
+      }
+
+      
+      const rpan = document.querySelector('.right-panels');
+      if (rpan) {
+        const rr = rpan.getBoundingClientRect();
+        if (rr.width > 1 && pr.right > rr.left - CTL_GAP) {
+          const need = Math.round(pr.right - (rr.left - CTL_GAP));
+          const room = Math.round(pr.left - (mr.left + CTL_GAP));
+          if (need > 1 && room > 1) dx = -Math.min(need, room);
         }
       }
 
@@ -12225,20 +12262,27 @@
         resize: { minW: 220, maxW: 520, bodyClass: 'ap-resizing', gripClass: 'dragging' },
       });
       window.__spTab = makeSlideTab($('sp-panel-resizer'), $('sp-panel'), {
-        side: 'left', defaultWidth: 300, collapsedWidth: RAIL_W,
-        resize: { minW: 220, maxW: 520, bodyClass: 'ap-resizing', gripClass: 'dragging' },
+        side: 'right', defaultWidth: 300, collapsedWidth: RAIL_W,
+        resize: { minW: 220, maxW: 520, reverseW: true, bodyClass: 'ap-resizing', gripClass: 'dragging' },
       });
       window.__dpTab = makeSlideTab($('dp-panel-resizer'), $('dp-panel'), {
         side: 'left', defaultWidth: 360, collapsedWidth: RAIL_W,
         resize: { minW: 260, maxW: 640, bodyClass: 'ap-resizing', gripClass: 'dragging' },
       });
       window.__chatTab = makeSlideTab($('chat-panel-resizer'), $('chat-panel'), {
-        side: 'left', defaultWidth: 340, collapsedWidth: RAIL_W,
-        resize: { minW: 280, maxW: 520, bodyClass: 'ap-resizing', gripClass: 'dragging' },
+        side: 'right', defaultWidth: 340, collapsedWidth: RAIL_W,
+        resize: { minW: 280, maxW: 520, reverseW: true, bodyClass: 'ap-resizing', gripClass: 'dragging' },
       });
       window.__newsTab = makeSlideTab($('news-panel-resizer'), $('news-panel'), {
-        side: 'left', defaultWidth: 340, collapsedWidth: RAIL_W,
-        resize: { minW: 280, maxW: 560, bodyClass: 'ap-resizing', gripClass: 'dragging' },
+        side: 'right', defaultWidth: 340, collapsedWidth: RAIL_W,
+        resize: { minW: 280, maxW: 560, reverseW: true, bodyClass: 'ap-resizing', gripClass: 'dragging' },
+      });
+      
+      
+      
+      window.__lpTab = makeSlideTab($('lp-panel-resizer'), $('lp-panel'), {
+        side: 'right', defaultWidth: 300, collapsedWidth: RAIL_W,
+        resize: { minW: 220, maxW: 520, reverseW: true, bodyClass: 'ap-resizing', gripClass: 'dragging' },
       });
       
       
@@ -12465,6 +12509,9 @@
               const pr = pEl.getBoundingClientRect(), br = body.getBoundingClientRect();
               if (pr.left < br.right && pr.right > br.left && pr.top < br.bottom && pr.bottom > br.top) {
                 lp.classList.remove('open');
+                
+                const _lpA = document.getElementById('lp-panel');
+                if (_lpA && window.__lpTab && !_lpA.classList.contains('collapsed')) window.__lpTab.toggle();
               }
             }
           });
@@ -16589,6 +16636,25 @@
         return div;
       };
       layerPanel.addTo(map);
+      
+      
+      
+      (function dockLayerPanel() {
+        const slot = $('lp-panel-body');
+        const lpDiv = map.getContainer().querySelector('.lp');
+        if (!slot || !lpDiv) return;
+        slot.appendChild(lpDiv);
+        lpDiv.classList.add('open');
+        const tg = lpDiv.querySelector('.lp-toggle');
+        const theme = $('theme-btn');
+        if (tg && theme && theme.parentNode) theme.parentNode.insertBefore(tg, theme.nextSibling);
+        if (tg) tg.onclick = () => { if (window.__lpTab) window.__lpTab.toggle(); };
+        const x = $('lp-panel-close');
+        
+        if (x && !x._w) { x._w = 1; x.addEventListener('click', () => {
+          if (window.__lpTab && !$('lp-panel').classList.contains('collapsed')) window.__lpTab.toggle();
+        }); }
+      })();
 
       
       
