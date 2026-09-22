@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=2f05e42" />
+  <link rel="stylesheet" href="css/tokens.css?v=ed618bb" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=2f05e42"></script>
+  <script src="js/auth-guard.js?v=ed618bb"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -44,12 +44,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=2f05e42" />
+  <link rel="stylesheet" href="css/buttons.css?v=ed618bb" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=2f05e42" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=ed618bb" />
   <style>
     :root {
       
@@ -1444,13 +1444,12 @@
     .pc-head { font-weight:700; font-size:15px; margin-bottom:8px; display:flex; align-items:center; gap:6px; flex-wrap:wrap; line-height:1.35; color:var(--text); padding-right:56px; }
     
 
-    .auc-pop-cn { font-size:12px; font-weight:600; color:var(--c-muted); flex-shrink:0; }
     
 
 
 
-
-    .pc[data-kind="auc"] > .pc-head > .rp-name { flex:0 0 100%; margin-top:2px; }
+    .auc-pop-cn { font-size:13px; font-weight:600; color:var(--c-muted); flex-shrink:0; }
+    .pc[data-kind="auc"] > .pc-head > .rp-name { font-size:13px; }
     .pc-body { font-size:13px; color:var(--muted); margin-bottom:12px; line-height:1.6; }
     .pc-body b { color:var(--text); }
     
@@ -1664,7 +1663,19 @@
     
 
 
-    .auc-sum-price .auc-sum-fail { font-size:12.5px; font-weight:700; color:var(--c-price); flex-shrink:0; }
+
+    table.rp-deals.auc-sum-tbl th,
+    table.rp-deals.auc-sum-tbl td { text-align:left; vertical-align:baseline; padding:5px 4px 5px 0; }
+    table.rp-deals.auc-sum-tbl th { width:1%; white-space:nowrap; font-weight:700; color:var(--c-text);
+      padding-right:10px; }
+    table.rp-deals.auc-sum-tbl td { white-space:normal; overflow-wrap:anywhere; }
+    
+    table.rp-deals.auc-sum-tbl th .urg { color:var(--c-price); }
+    
+    .auc-sum-tbl .auc-sum-amt { font-size:18px; color:var(--c-price); line-height:1.2; }
+    .auc-sum-tbl .auc-sum-sub { color:var(--c-muted); font-size:12px; word-break:keep-all; }
+    
+    .auc-sum-tbl .auc-sum-k-note { color:var(--c-price); }
     .auc-sum-line { font-size:12.5px; margin-top:3px; }
     .auc-sum-line b { color:var(--c-text); }
     .auc-sum-line .urg { color:var(--c-price); }
@@ -1695,9 +1706,8 @@
 
 
 
-    .auc-sum-note { margin-top:6px; padding:6px 9px; font-size:12px; line-height:1.55;
-      border-left:3px solid var(--c-price); background:var(--c-hover); border-radius:0 6px 6px 0; }
-    .auc-sum-note > b { color:var(--c-price); margin-right:5px; }
+    
+
     
 
 
@@ -1943,7 +1953,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=2f05e42"></script>
+  <script src="js/ie-guard.js?v=ed618bb"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2246,22 +2256,22 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-22 09:43 · 2f05e42</span></span>
+          · <span class="build-tag">build 2026-09-22 09:55 · ed618bb</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=2f05e42"></script>
+  <script src="js/joinkey.js?v=ed618bb"></script>
   
-  <script src="js/identity.js?v=2f05e42"></script>
-  <script src="js/common.js?v=2f05e42"></script>
-  <script src="js/ui-resize.js?v=2f05e42"></script>
-  <script src="js/footer-resize.js?v=2f05e42"></script>
-  <script src="js/route-line.js?v=2f05e42"></script>
-  <script src="js/route-api.js?v=2f05e42"></script>
-  <script src="js/footer-stats.js?v=2f05e42"></script>
+  <script src="js/identity.js?v=ed618bb"></script>
+  <script src="js/common.js?v=ed618bb"></script>
+  <script src="js/ui-resize.js?v=ed618bb"></script>
+  <script src="js/footer-resize.js?v=ed618bb"></script>
+  <script src="js/route-line.js?v=ed618bb"></script>
+  <script src="js/route-api.js?v=ed618bb"></script>
+  <script src="js/footer-stats.js?v=ed618bb"></script>
   <script>
     
     
@@ -8704,16 +8714,6 @@
         
         
         
-        
-        const slimPrice = lowMan
-          ? `<div class="auc-sum-price">`
-            + `${nFail > 0 ? `<span class="auc-sum-fail">유찰 ${nFail}회</span>` : ''}`
-            + `<b>${fmtAmtExact(lowMan)}</b>`
-            + `<span>${apprMan ? '/ ' + fmtAmtExact(apprMan) + ' ' : ''}`
-            + `${pct != null ? '감정가 ' + pct + '%' : ''}</span></div>`
-          : '';
-        
-        
         const _ar = aucArea(det);
         const _py = _ar > 0 ? _ar / 3.305785 : 0;
         const pyLine = (lowMan > 0 && _py > 0)
@@ -8785,12 +8785,10 @@
 
         
         
-        
-        
-        const noteLine = (slim && d.note)
-          ? `<div class="auc-sum-note"><b>비고</b>${esc(d.note)}</div>`
-          : '';
 
+        
+        
+        
         
         
         
@@ -8805,26 +8803,29 @@
             ? `취득세 ${_cost.lo}${_same ? '' : '~' + _cost.hi}% `
               + `${_same ? fmtAmtExact(_cost.taxLo) : fmtAmtExact(_cost.taxLo) + '~' + fmtAmtExact(_cost.taxHi)}`
             : '';
-          const slimCost = _totTxt
-            ? `<div class="auc-sum-line" style="color:var(--c-muted);">총 투입금 <b style="color:var(--c-text);">${_totTxt}</b>`
-              + ` (${_taxTxt} · 명도비 미포함)</div>`
-            : '';
-          const slimWhen = d.sale
-            ? `<div class="auc-sum-line" style="color:var(--c-muted);">매각기일`
-              + `${dd != null && dd >= 0 ? ` <b class="${dd <= 7 ? 'urg' : ''}">D-${dd}</b>` : ''}`
-              + ` <b style="color:var(--c-text);">${esc(d.sale)}</b></div>`
-            : '';
+          const sub = (t) => `<span class="auc-sum-sub">${t}</span>`;
           
           
-          const slimLs = _ls.mine
-            ? `<div class="auc-sum-line" style="color:var(--c-muted);">대지지분 `
-              + `<b style="color:var(--c-text);">${fmtArea(_ls.mine)}</b>`
-              + `${_ls.whole ? ` / ${fmtArea(_ls.whole)}` : ''}`
-              + `${_lup ? ` · 대지 시세가 환산 <b style="color:var(--c-text);">${fmtAmt(_ls.mine * _lup)}</b> (참조)` : ''}</div>`
+          const tr = [
+            [[dd != null && dd >= 0 ? `<span class="${dd <= 7 ? 'urg' : ''}">D-${dd}</span>` : '',
+              nFail > 0 ? `유찰 ${nFail}회` : ''].filter(Boolean).join(' · '),
+              lowMan ? `<b class="auc-sum-amt">${fmtAmtExact(lowMan)}</b>`
+                + (apprMan ? sub(` / ${fmtAmtExact(apprMan)}${pct != null ? ` 감정가 ${pct}%` : ''}`) : '') : ''],
+            ['총 투입금', _totTxt ? `<b>${_totTxt}</b>${_taxTxt ? sub(` (${_taxTxt} · 명도비 미포함)`) : ''}` : ''],
+            
+            ['대지지분', _ls.mine ? `<b>${fmtArea(_ls.mine)}</b>${_ls.whole ? ` / ${fmtArea(_ls.whole)}` : ''}`
+              + (_lup ? sub(` · 대지 시세가 환산 <b>${fmtAmt(_ls.mine * _lup)}</b> (참조)`) : '') : ''],
+            
+            
+            ['<span class="auc-sum-k-note">비고</span>', d.note ? esc(d.note) : ''],
+          ].filter(([, v]) => v);
+          if (!tr.length && !risk) return '';
+          const tbl = tr.length
+            ? `<table class="rp-deals auc-sum-tbl"><tbody>${tr.map(([k, v]) =>
+              `<tr><th>${k}</th><td>${v}</td></tr>`).join('')}</tbody></table>`
             : '';
-          if (!slimPrice && !slimCost && !slimWhen && !slimLs && !risk && !noteLine) return '';
-          return `<div class="auc-sum pop-only">${slimPrice}${slimCost}${slimWhen}${slimLs}`
-            + `${risk ? `<div class="ap-tags">${risk}</div>` : ''}${noteLine}</div>`;
+          return `<div class="auc-sum pop-only">${tbl}`
+            + `${risk ? `<div class="ap-tags">${risk}</div>` : ''}</div>`;
         }
         
         if (!price && !when.length && !risk && !lesLine && !ndLine && !lsLine) return '';
