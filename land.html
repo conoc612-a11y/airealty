@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=9e392fd" />
+  <link rel="stylesheet" href="css/tokens.css?v=aaea953" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=9e392fd"></script>
+  <script src="js/auth-guard.js?v=aaea953"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=9e392fd" />
+  <link rel="stylesheet" href="css/buttons.css?v=aaea953" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=9e392fd" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=aaea953" />
   <style>
     :root {
       
@@ -579,15 +579,17 @@
 
 
 
-    .ad-rail { display:none; flex:0 0 160px; min-width:0; overflow:hidden;
+    
+
+    .ad-rail { display:none; flex:0 0 120px; flex-direction:column; min-width:0; overflow:hidden;
       background:var(--c-hover); border-inline:1px solid var(--line); }
-    @media (min-width:1600px) { .ad-rail { display:block; } }
+    @media (min-width:1600px) { .ad-rail { display:flex; } }
     
 
     .ad-rail:empty::before { content:'광고 자리'; display:block; padding:12px 8px;
       font-size:11px; color:var(--c-muted); text-align:center; }
     
-    .ad-rail .adsbygoogle { display:block; width:160px; height:600px; }
+    .ad-rail .adsbygoogle { display:block; width:120px; flex:1 1 0; min-height:120px; }
     
 
 
@@ -638,6 +640,24 @@
     .left-panels { position:absolute; left:0; top:0; bottom:0; z-index:2000; display:flex;
       align-items:stretch; max-width:100%; pointer-events:none; }
     .left-panels > * { pointer-events:auto; }
+    
+    .right-panels { position:absolute; right:0; top:0; bottom:0; z-index:2000; display:flex;
+      flex-direction:row-reverse; align-items:stretch; max-width:100%; pointer-events:none; }
+    .right-panels > * { pointer-events:auto; }
+    
+
+    @media (min-width:1600px) { .left-panels { left:120px; } .right-panels { right:120px; } }
+    
+    .right-panels .side-panel { border-right:none; border-left:1px solid var(--c-primary); }
+    .right-panels .side-resizer { right:auto; left:-4px; }
+    
+
+    #lp-panel .sp-body { padding:0; display:flex; flex-direction:column; }
+    #lp-panel .lp { flex:1; display:flex; flex-direction:column; min-height:0; }
+    #lp-panel .lp-body { position:static; display:block; width:auto; flex:1; min-height:0; max-height:none; box-shadow:none; }
+    #lp-panel .lp.open .lp-resizer { display:none; }
+    
+    header .lp-toggle { box-shadow:none; }
     
 
 
@@ -1170,6 +1190,7 @@
     .leaflet-popup-content, .leaflet-popup-content *,
     #panel, #panel *,
     .left-panels, .left-panels *,
+    .right-panels, .right-panels *,
     .bld-info, .bld-info *,
     .pc, .pc *,
     .apd-lb-cap, .apd-lb-head,
@@ -1987,7 +2008,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=9e392fd"></script>
+  <script src="js/ie-guard.js?v=aaea953"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2176,13 +2197,6 @@
       </div>
       <div class="side-resizer" id="jb-panel-resizer" title="드래그해서 너비 조절"></div>
     </aside>
-    <aside id="sp-panel" class="side-panel collapsed" aria-label="길찾기">
-      <div class="sp-inner">
-        <div class="sp-head"><b class="sp-title">길찾기</b><button type="button" id="sp-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">✕</button></div>
-        <div class="sp-body ui-scroll" id="sp-panel-body"></div>
-      </div>
-      <div class="side-resizer" id="sp-panel-resizer" title="드래그해서 너비 조절"></div>
-    </aside>
     
 
 
@@ -2195,24 +2209,6 @@
         <div class="sp-body ui-scroll" id="dp-panel-body"></div>
       </div>
       <div class="side-resizer" id="dp-panel-resizer" title="드래그해서 너비 조절"></div>
-    </aside>
-    <aside id="chat-panel" class="side-panel collapsed" aria-label="AI 상담">
-      <div class="sp-inner">
-        <div class="sp-head"><b class="sp-title">AI 상담</b><button type="button" id="chat-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">✕</button></div>
-        <div class="sp-body ui-scroll" id="chat-panel-body"></div>
-        <div class="sp-foot" id="chat-panel-foot">
-          <input type="text" id="chat-input" placeholder="예: 2024타경2532 감정가" autocomplete="off" aria-label="상담 질문 입력">
-          <button type="button" id="chat-send" aria-label="질문 보내기">↵</button>
-        </div>
-      </div>
-      <div class="side-resizer" id="chat-panel-resizer" title="드래그해서 너비 조절"></div>
-    </aside>
-    <aside id="news-panel" class="side-panel collapsed" aria-label="부동산 뉴스">
-      <div class="sp-inner">
-        <div class="sp-head"><b class="sp-title">부동산 뉴스</b><button type="button" id="news-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">✕</button></div>
-        <div class="sp-body ui-scroll" id="news-panel-body"></div>
-      </div>
-      <div class="side-resizer" id="news-panel-resizer" title="드래그해서 너비 조절"></div>
     </aside>
     </div>
     
@@ -2233,7 +2229,8 @@
         <div class="ui-grip ui-grip-corner" id="apd-lb-grip" title="드래그하여 창 크기 조절"></div>
       </div>
     </div>
-    <div id="map"></div>    <div class="panel-resizer" id="panel-resizer" title="드래그해서 목록 너비 조절"></div>
+    <div id="map"></div>
+    <div class="right-panels" id="right-panels">
     <div class="panel" id="panel">
       <div class="sheet-handle" id="sheet-handle" title="위로 올려서 목록 보기"></div>
       <div id="engine-bar" class="engine-bar">
@@ -2276,6 +2273,41 @@
       <div id="cmp-bar" style="display:none;"></div>
       <div id="rec-list"></div>
     </div>
+    <div class="panel-resizer" id="panel-resizer" title="드래그해서 목록 너비 조절"></div>
+    
+    <aside id="sp-panel" class="side-panel collapsed" aria-label="길찾기">
+      <div class="sp-inner">
+        <div class="sp-head"><b class="sp-title">길찾기</b><button type="button" id="sp-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">✕</button></div>
+        <div class="sp-body ui-scroll" id="sp-panel-body"></div>
+      </div>
+      <div class="side-resizer" id="sp-panel-resizer" title="드래그해서 너비 조절"></div>
+    </aside>
+    <aside id="chat-panel" class="side-panel collapsed" aria-label="AI 상담">
+      <div class="sp-inner">
+        <div class="sp-head"><b class="sp-title">AI 상담</b><button type="button" id="chat-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">✕</button></div>
+        <div class="sp-body ui-scroll" id="chat-panel-body"></div>
+        <div class="sp-foot" id="chat-panel-foot">
+          <input type="text" id="chat-input" placeholder="예: 2024타경2532 감정가" autocomplete="off" aria-label="상담 질문 입력">
+          <button type="button" id="chat-send" aria-label="질문 보내기">↵</button>
+        </div>
+      </div>
+      <div class="side-resizer" id="chat-panel-resizer" title="드래그해서 너비 조절"></div>
+    </aside>
+    <aside id="news-panel" class="side-panel collapsed" aria-label="부동산 뉴스">
+      <div class="sp-inner">
+        <div class="sp-head"><b class="sp-title">부동산 뉴스</b><button type="button" id="news-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">✕</button></div>
+        <div class="sp-body ui-scroll" id="news-panel-body"></div>
+      </div>
+      <div class="side-resizer" id="news-panel-resizer" title="드래그해서 너비 조절"></div>
+    </aside>
+    <aside id="lp-panel" class="side-panel collapsed" aria-label="레이어">
+      <div class="sp-inner">
+        <div class="sp-head"><b class="sp-title">레이어</b><button type="button" id="lp-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">✕</button></div>
+        <div class="sp-body ui-scroll" id="lp-panel-body"></div>
+      </div>
+      <div class="side-resizer" id="lp-panel-resizer" title="드래그해서 너비 조절"></div>
+    </aside>
+    </div>
     
     <aside class="ad-rail ad-rail-right" id="ad-right" aria-label="광고" aria-hidden="true"></aside>
   </div>
@@ -2298,25 +2330,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-23 00:03 · 9e392fd</span></span>
+          · <span class="build-tag">build 2026-09-23 00:05 · aaea953</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=9e392fd"></script>
+  <script src="js/joinkey.js?v=aaea953"></script>
   
-  <script src="js/identity.js?v=9e392fd"></script>
-  <script src="js/common.js?v=9e392fd"></script>
-  <script src="js/ui-resize.js?v=9e392fd"></script>
-  <script src="js/footer-resize.js?v=9e392fd"></script>
-  <script src="js/route-line.js?v=9e392fd"></script>
-  <script src="js/route-api.js?v=9e392fd"></script>
-  <script src="js/footer-stats.js?v=9e392fd"></script>
+  <script src="js/identity.js?v=aaea953"></script>
+  <script src="js/common.js?v=aaea953"></script>
+  <script src="js/ui-resize.js?v=aaea953"></script>
+  <script src="js/footer-resize.js?v=aaea953"></script>
+  <script src="js/route-line.js?v=aaea953"></script>
+  <script src="js/route-api.js?v=aaea953"></script>
+  <script src="js/footer-stats.js?v=aaea953"></script>
   
 
-  <script src="js/ad-consent.js?v=9e392fd"></script>
+  <script src="js/ad-consent.js?v=aaea953"></script>
   <script>
     
     
@@ -3275,8 +3307,8 @@
     
     
     const ADSENSE_CLIENT = '';   
-    const AD_SLOT_LEFT = '';
-    const AD_SLOT_RIGHT = '';
+    const AD_SLOT_LEFT = ['', ''];    
+    const AD_SLOT_RIGHT = ['', ''];   
     let _adsLoaded = false;
     function initAds() {
       if (_adsLoaded || !ADSENSE_CLIENT) return;
@@ -3287,16 +3319,19 @@
       s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client='
         + encodeURIComponent(ADSENSE_CLIENT);
       document.head.appendChild(s);
-      [['ad-left', AD_SLOT_LEFT], ['ad-right', AD_SLOT_RIGHT]].forEach(([id, slot]) => {
+      [['ad-left', AD_SLOT_LEFT], ['ad-right', AD_SLOT_RIGHT]].forEach(([id, slots]) => {
         const rail = $(id);
-        if (!rail || !slot) return;
-        const ins = document.createElement('ins');
-        ins.className = 'adsbygoogle';
-        ins.dataset.adClient = ADSENSE_CLIENT;
-        ins.dataset.adSlot = slot;
-        rail.appendChild(ins);
-        
-        try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
+        if (!rail) return;
+        slots.forEach(slot => {
+          if (!slot) return;
+          const ins = document.createElement('ins');
+          ins.className = 'adsbygoogle';
+          ins.dataset.adClient = ADSENSE_CLIENT;
+          ins.dataset.adSlot = slot;
+          rail.appendChild(ins);
+          
+          try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
+        });
       });
     }
     
@@ -3721,6 +3756,17 @@
           
           const room = Math.round(mr.right - CTL_GAP - pr.right);
           if (need > 1 && room > 1) dx = Math.min(need, room);
+        }
+      }
+
+      
+      const rpan = document.querySelector('.right-panels');
+      if (rpan) {
+        const rr = rpan.getBoundingClientRect();
+        if (rr.width > 1 && pr.right > rr.left - CTL_GAP) {
+          const need = Math.round(pr.right - (rr.left - CTL_GAP));
+          const room = Math.round(pr.left - (mr.left + CTL_GAP));
+          if (need > 1 && room > 1) dx = -Math.min(need, room);
         }
       }
 
@@ -12225,20 +12271,27 @@
         resize: { minW: 220, maxW: 520, bodyClass: 'ap-resizing', gripClass: 'dragging' },
       });
       window.__spTab = makeSlideTab($('sp-panel-resizer'), $('sp-panel'), {
-        side: 'left', defaultWidth: 300, collapsedWidth: RAIL_W,
-        resize: { minW: 220, maxW: 520, bodyClass: 'ap-resizing', gripClass: 'dragging' },
+        side: 'right', defaultWidth: 300, collapsedWidth: RAIL_W,
+        resize: { minW: 220, maxW: 520, reverseW: true, bodyClass: 'ap-resizing', gripClass: 'dragging' },
       });
       window.__dpTab = makeSlideTab($('dp-panel-resizer'), $('dp-panel'), {
         side: 'left', defaultWidth: 360, collapsedWidth: RAIL_W,
         resize: { minW: 260, maxW: 640, bodyClass: 'ap-resizing', gripClass: 'dragging' },
       });
       window.__chatTab = makeSlideTab($('chat-panel-resizer'), $('chat-panel'), {
-        side: 'left', defaultWidth: 340, collapsedWidth: RAIL_W,
-        resize: { minW: 280, maxW: 520, bodyClass: 'ap-resizing', gripClass: 'dragging' },
+        side: 'right', defaultWidth: 340, collapsedWidth: RAIL_W,
+        resize: { minW: 280, maxW: 520, reverseW: true, bodyClass: 'ap-resizing', gripClass: 'dragging' },
       });
       window.__newsTab = makeSlideTab($('news-panel-resizer'), $('news-panel'), {
-        side: 'left', defaultWidth: 340, collapsedWidth: RAIL_W,
-        resize: { minW: 280, maxW: 560, bodyClass: 'ap-resizing', gripClass: 'dragging' },
+        side: 'right', defaultWidth: 340, collapsedWidth: RAIL_W,
+        resize: { minW: 280, maxW: 560, reverseW: true, bodyClass: 'ap-resizing', gripClass: 'dragging' },
+      });
+      
+      
+      
+      window.__lpTab = makeSlideTab($('lp-panel-resizer'), $('lp-panel'), {
+        side: 'right', defaultWidth: 300, collapsedWidth: RAIL_W,
+        resize: { minW: 220, maxW: 520, reverseW: true, bodyClass: 'ap-resizing', gripClass: 'dragging' },
       });
       
       
@@ -12411,7 +12464,7 @@
         
         const pnl = $('panel');
         const rightTab = window.__mjRightTab = makeSlideTab($('panel-resizer'), pnl, {
-          side: 'right', flexTarget: true, defaultWidth: 380, edgeTab: true,
+          side: 'right', flexTarget: true, defaultWidth: 380, collapsedWidth: RAIL_W,
           onToggle: () => setTimeout(refreshMapSize, 160),
           resize: {
             reverseW: true, applyStyle: false,
@@ -12465,6 +12518,9 @@
               const pr = pEl.getBoundingClientRect(), br = body.getBoundingClientRect();
               if (pr.left < br.right && pr.right > br.left && pr.top < br.bottom && pr.bottom > br.top) {
                 lp.classList.remove('open');
+                
+                const _lpA = document.getElementById('lp-panel');
+                if (_lpA && window.__lpTab && !_lpA.classList.contains('collapsed')) window.__lpTab.toggle();
               }
             }
           });
@@ -16589,6 +16645,25 @@
         return div;
       };
       layerPanel.addTo(map);
+      
+      
+      
+      (function dockLayerPanel() {
+        const slot = $('lp-panel-body');
+        const lpDiv = map.getContainer().querySelector('.lp');
+        if (!slot || !lpDiv) return;
+        slot.appendChild(lpDiv);
+        lpDiv.classList.add('open');
+        const tg = lpDiv.querySelector('.lp-toggle');
+        const theme = $('theme-btn');
+        if (tg && theme && theme.parentNode) theme.parentNode.insertBefore(tg, theme.nextSibling);
+        if (tg) tg.onclick = () => { if (window.__lpTab) window.__lpTab.toggle(); };
+        const x = $('lp-panel-close');
+        
+        if (x && !x._w) { x._w = 1; x.addEventListener('click', () => {
+          if (window.__lpTab && !$('lp-panel').classList.contains('collapsed')) window.__lpTab.toggle();
+        }); }
+      })();
 
       
       
