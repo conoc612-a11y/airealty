@@ -196,7 +196,6 @@
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .lp-role.on { background:var(--mx-accent); border-color:var(--mx-accent); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .bm-item:hover { border-color:var(--mx-accent); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .bm-item.on { border-color:var(--mx-accent); }
-    :is(:root.mock,:root.lux,:root.teal,:root.soil) .bm-item.on .bm-label { color:var(--mx-accent); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .lp-toggle { color:var(--mx-accent); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .lp-hstat b { color:var(--mx-accent); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .tag.hit { background:var(--mx-accent); }
@@ -1166,7 +1165,7 @@
 
 
     header, .stat-bar, .engine-bar, .list-tabs, .fav-cats, .banner,
-    .leaflet-control, .leaflet-control-layers-list, .lc, .bm-picker, .ctl-row,
+    .leaflet-control, .leaflet-control-layers-list, .lc, .bm-picker,
     .pc-actions, .rec .actions, .jb-chip, .jb-stage, .sheet-handle {
       -webkit-user-select:none; user-select:none;
     }
@@ -1193,8 +1192,7 @@
     .right-panels, .right-panels *,
     .bld-info, .bld-info *,
     .pc, .pc *,
-    .apd-lb-cap, .apd-lb-head,
-    .ctl-row, .ctl-row * {
+    .apd-lb-cap, .apd-lb-head {
       -webkit-user-select:text; user-select:text;
     }
     .leaflet-popup-content, .leaflet-popup-content *,
@@ -1270,13 +1268,11 @@
     #jb-rp-bar-close { border:none; background:var(--c-hover); color:var(--muted); border-radius:8px; width:22px; height:22px; cursor:pointer; font-size:12px; line-height:1; }
     
 
-    .bm-picker { display:flex; gap:6px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:6px; box-shadow:var(--c-shadow); }
-    .bm-item { font:inherit; padding:0; border:2px solid var(--line); border-radius:8px; background:var(--card); cursor:pointer; overflow:hidden; width:72px; }
+    .bm-picker { display:flex; background:none; border:none; padding:0; box-shadow:none; }
+    .bm-item { font:inherit; padding:0; border:2px solid var(--line); border-radius:8px; background:var(--card); cursor:pointer; overflow:hidden; width:32px; height:32px; }
     .bm-item:hover { border-color:#D92A14; }
-    .bm-thumb { display:block; width:100%; height:44px; background-size:cover; background-position:center; background-color:var(--line); }
-    .bm-label { display:block; padding:4px 2px; font-size:13px; font-weight:600; color:var(--muted); white-space:nowrap; }
+    .bm-thumb { display:block; width:100%; height:100%; background-size:cover; background-position:center; background-color:var(--line); }
     .bm-item.on { border-color:#D92A14; }
-    .bm-item.on .bm-label { color:#D92A14; }
     
 
     
@@ -1289,10 +1285,10 @@
     
 
 
-    .lp-toggle, .ctl-row .leaflet-control-zoom a { position:relative; }
+    .lp-toggle, .leaflet-control-zoom a { position:relative; }
     .lp-toggle::before { content:''; position:absolute; inset:-5px; }
     
-    .ctl-row .leaflet-control-zoom a::before {
+    .leaflet-control-zoom a::before {
       content:''; position:absolute; inset:-4px -7px; }
     .lp-body { display:none; position:absolute; right:0; top:40px; width:250px; background:var(--card);
       border:1px solid var(--line); border-radius:8px; box-shadow:var(--c-shadow-lg); padding:6px 4px;
@@ -1463,29 +1459,8 @@
     .ua-note b { color:var(--text); }
     
 
-    
-
-
-
-    .ctl-row { position:absolute; top:10px; left:50%; transform:translateX(-50%); z-index:1300;
-      display:flex; align-items:stretch; gap:6px; margin:0; }
-    .ctl-row > .leaflet-control { margin:0 !important; float:none; }
-    
-
-    .ctl-row .leaflet-control-zoom { display:flex; flex-direction:column; }
-    .ctl-row .leaflet-control-zoom a { flex:1; height:auto; display:flex; align-items:center; justify-content:center; }
-    @media (max-width:760px) {
-      
-      .bm-item { width:52px; }
-      .bm-thumb { height:32px; }
-      .bm-label { font-size:12px; }
-      .bm-picker { gap:4px; padding:4px; }
-    }
-    
-
-
-
-    @media (max-width:1100px) { .ctl-row { left:30px; transform:none; } }
+    .leaflet-top.leaflet-right { display:flex; gap:6px; align-items:flex-start; padding:10px 10px 0 0; }
+    .leaflet-top.leaflet-right .leaflet-control { margin:0 !important; float:none; }
     .rp-stat { font-size:12px; color:var(--muted); margin-top:5px; }
     .jb-perm-badge { display:inline-block; background:#fff; border:1px solid; border-radius:8px; overflow:hidden; text-align:center; line-height:1.4; box-shadow:var(--c-shadow); }
     .jb-perm-badge .jb-top { display:block; color:#fff; font-size:12px; font-weight:600; padding:2px 8px; }
@@ -1834,6 +1809,9 @@
     .leaflet-container button, .leaflet-container input { font-family:inherit; }
     .leaflet-popup-content { max-height:var(--popup-max-h, min(62vh, 520px)); overflow-y:scroll; overflow-x:hidden; overflow-wrap:anywhere; word-break:break-word; min-width:220px; max-width:calc(100vw - 40px); margin:13px 4.5px 13px 20px; padding-right:24px; }
     
+
+
+
 
 
 
@@ -3543,8 +3521,8 @@
       
       
       
-      const _ctlRow = map.getContainer().querySelector('.ctl-row');
-      const _ctlH = _ctlRow ? Math.round(_ctlRow.getBoundingClientRect().height) + 8 : 0;
+      
+      const _ctlH = 0; 
       const w = sz.x - 30, h = Math.max(160, sz.y - 50 - _ctlH);
       
       
@@ -3690,9 +3668,8 @@
       const el = map.getContainer();
       const h = map.getSize().y || el.clientHeight || 0;
       if (h < 120) return;   
-      const row = el.querySelector('.ctl-row');
       
-      const reserve = row ? Math.round(row.getBoundingClientRect().height) + 18 : 0;
+      const reserve = 0;
       
       
       const avail = Math.max(150, Math.round(Math.min(h - reserve - 55, POPUP_H_CAP) * popupZoomFactor()));
@@ -3737,16 +3714,6 @@
       if (!el || !mc) return;
       const pr = el.getBoundingClientRect(), mr = mc.getBoundingClientRect();
       let dx = 0, dy = 0;
-
-      
-      const row = mc.querySelector('.ctl-row');
-      if (row) {
-        const rr = row.getBoundingClientRect();
-        if (Math.min(pr.right, rr.right) - Math.max(pr.left, rr.left) > 0) {
-          const need = Math.round(rr.bottom + CTL_GAP - pr.top);
-          if (need > 1) dy = need;
-        }
-      }
 
       
       
@@ -17314,69 +17281,45 @@
       const THUMB = (layer, ext) => `https://api.vworld.kr/req/wmts/1.0.0/${VWORLD_KEY}/${layer}/15/12688/27942.${ext}`;
       
       
-      const BM_GROUPS = [
-        [
-          { key: '일반지도', label: '일반지도', thumb: THUMB('Base', 'png') },
-          { key: 'OSM (대체)', label: 'OSM', thumb: 'https://tile.openstreetmap.org/15/27942/12688.png' },
-        ],
-        [
-          { key: '항공영상', label: '위성지도', thumb: THUMB('Satellite', 'jpeg') },
-          { key: '항공+라벨', label: '위성+라벨', thumb: `${THUMB('Hybrid', 'png')}), url(${THUMB('Satellite', 'jpeg')}` },
-        ],
-      ].map((states) => ({ states: states.filter((s) => baseLayers[s.key]), idx: 0 }))
-        .filter((g) => g.states.length);
-      let bmActive = Math.max(0, BM_GROUPS.findIndex((g) => g.states.some((s) => s.key === '일반지도')));
-      const bmPaint = (btn, g) => {
-        const s = g.states[g.idx];
+      const BM_STATES = [
+        { key: '일반지도', label: '일반지도', thumb: THUMB('Base', 'png') },
+        { key: 'OSM (대체)', label: 'OSM', thumb: 'https://tile.openstreetmap.org/15/27942/12688.png' },
+        { key: '항공영상', label: '위성지도', thumb: THUMB('Satellite', 'jpeg') },
+        { key: '항공+라벨', label: '위성+라벨', thumb: `${THUMB('Hybrid', 'png')}), url(${THUMB('Satellite', 'jpeg')}` },
+      ].filter((s) => baseLayers[s.key]);
+      let bmIdx = Math.max(0, BM_STATES.findIndex((s) => s.key === '일반지도'));
+      const bmPaint = (btn) => {
+        const s = BM_STATES[bmIdx];
         btn.dataset.b = s.key;
         btn.title = s.label;
-        btn.innerHTML = `<span class="bm-thumb" style="background-image:url(${s.thumb});"></span>`
-          + `<span class="bm-label">${s.label}</span>`;
+        btn.innerHTML = `<span class="bm-thumb" style="background-image:url(${s.thumb});"></span>`;
       };
-      const bmPicker = L.control({ position: 'topleft' });
+      
+      const bmPicker = L.control({ position: 'topright' });
       bmPicker.onAdd = () => {
         const div = L.DomUtil.create('div');
         div.className = 'bm-picker';
-        const btns = BM_GROUPS.map((g, gi) => {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = 'bm-item' + (gi === bmActive ? ' on' : '');
-          bmPaint(btn, g);
-          btn.onclick = () => {
-            if (gi === bmActive) g.idx = (g.idx + 1) % g.states.length; 
-            else { bmActive = gi; btns.forEach((b, bi) => b.classList.toggle('on', bi === gi)); }
-            bmPaint(btn, g);
-            const target = baseLayers[g.states[g.idx].key];
-            Object.values(baseLayers).forEach((l) => map.hasLayer(l) && map.removeLayer(l));
-            target.addTo(map);
-            if (target.bringToBack) target.bringToBack();
-          };
-          return btn;
-        });
-        btns.forEach((b) => div.appendChild(b));
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'bm-item on';
+        bmPaint(btn);
+        btn.onclick = () => {
+          bmIdx = (bmIdx + 1) % BM_STATES.length; 
+          bmPaint(btn);
+          const target = baseLayers[BM_STATES[bmIdx].key];
+          Object.values(baseLayers).forEach((l) => map.hasLayer(l) && map.removeLayer(l));
+          target.addTo(map);
+          if (target.bringToBack) target.bringToBack();
+        };
+        div.appendChild(btn);
         L.DomEvent.disableClickPropagation(div);
         L.DomEvent.disableScrollPropagation(div);
         return div;
       };
       bmPicker.addTo(map);
       
-      
-      
-      const _zoomEl = map.zoomControl && map.zoomControl.getContainer();
-      const _pickEl = bmPicker.getContainer();
-      if (_pickEl) {
-        const row = L.DomUtil.create('div', 'ctl-row');
-        if (_zoomEl) row.appendChild(_zoomEl);
-        row.appendChild(_pickEl);
-        map.getContainer().appendChild(row);
-        L.DomEvent.disableClickPropagation(row);
-        L.DomEvent.disableScrollPropagation(row);
-        
-        
-        
-        
-        requestAnimationFrame(syncPopupMaxHeight);
-      }
+      if (map.zoomControl) map.zoomControl.setPosition('bottomright');
+      requestAnimationFrame(syncPopupMaxHeight);
     }
     (window.requestIdleCallback || ((f) => setTimeout(f, 2500)))(() => { ensureNaver(); });
 
@@ -21393,18 +21336,7 @@
       
       
       
-      
-      
-      
-      
       let topLimit = m.top + POPUP_PAD;
-      const ctlEl = map.getContainer().querySelector('.ctl-row');
-      if (ctlEl) {
-        const cr = ctlEl.getBoundingClientRect();
-        if (cr.height > 0 && Math.min(r.right, cr.right) - Math.max(r.left, cr.left) > 0) {
-          topLimit = Math.max(topLimit, cr.bottom + 8);
-        }
-      }
       if (r.top - dy < topLimit) dy = r.top - topLimit;
       if (r.right > m.right - POPUP_PAD) dx = r.right - (m.right - POPUP_PAD);
       if (r.left - dx < m.left + POPUP_PAD) dx = r.left - (m.left + POPUP_PAD);
@@ -24277,7 +24209,6 @@
       if (_pointerDragged) { _pointerDragged = false; return; }
       
       if (Date.now() - _ctxAt < 600) return;
-      
       
       syncPopupMaxHeight();
       
