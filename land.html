@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=aaea953" />
+  <link rel="stylesheet" href="css/tokens.css?v=b7f59a1" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=aaea953"></script>
+  <script src="js/auth-guard.js?v=b7f59a1"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=aaea953" />
+  <link rel="stylesheet" href="css/buttons.css?v=b7f59a1" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=aaea953" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=b7f59a1" />
   <style>
     :root {
       
@@ -336,7 +336,7 @@
     
 
     
-    .nav-tab { color:var(--muted); padding:7px 12px; border-radius:8px; text-decoration:none; font-weight:500; border:1px solid var(--line); background:var(--card); transition:background .15s,color .15s,border-color .15s; }
+    .nav-tab { color:var(--muted); padding:7px 12px; border-radius:8px; text-decoration:none; font-weight:500; border:1px solid var(--line); background:var(--card); transition:background .15s,color .15s,border-color .15s; height:34px; box-sizing:border-box; display:inline-flex; align-items:center; justify-content:center; white-space:nowrap; flex:none; }
     .nav-tab:hover { background:var(--c-hover); color:var(--text); }
     
     
@@ -345,7 +345,7 @@
     
 
 
-    .icon-btn { width:34px; height:34px; border:1px solid var(--line); background:var(--c-hover); color:var(--text); border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:16px; line-height:1; }
+    .icon-btn { width:34px; height:34px; flex:none; border:1px solid var(--line); background:var(--c-hover); color:var(--text); border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:16px; line-height:1; }
     .icon-btn svg { width:18px; height:18px; }
     #theme-btn img { width:18px; height:18px; display:block; }
     
@@ -2008,7 +2008,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=aaea953"></script>
+  <script src="js/ie-guard.js?v=b7f59a1"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2026,6 +2026,7 @@
       <button id="bizno-btn" class="nav-tab" title="사업자등록증 조회 (국세청)" aria-label="사업자등록증 조회">사업자등록증조회</button>
     </div>
     <div class="right">
+      <button id="panel-toggle-btn" class="icon-btn" title="패널 접기/펼치기" aria-label="패널 접기/펼치기">◫</button>
       <button id="theme-btn" class="icon-btn" title="클릭: 기본·다크·신·골드·틸·토 전환" aria-label="화면모드 전환"></button>
       <div class="profile">
         <button id="profile-btn" class="nav-tab profile-tab">내 정보 <span style="opacity:.6;">▾</span></button>
@@ -2036,7 +2037,6 @@
           <button id="delete-account" style="display:none;color:var(--c-danger);">회원 탈퇴</button>
         </div>
       </div>
-      <button id="panel-toggle-btn" class="icon-btn" title="패널 접기/펼치기" aria-label="패널 접기/펼치기">◫</button>
     </div>
     <div class="footer-resize header-resize" id="header-resize" title="끌어서 세로 크기 조절"></div>
   </header>
@@ -2330,25 +2330,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-23 00:05 · aaea953</span></span>
+          · <span class="build-tag">build 2026-09-23 11:47 · b7f59a1</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=aaea953"></script>
+  <script src="js/joinkey.js?v=b7f59a1"></script>
   
-  <script src="js/identity.js?v=aaea953"></script>
-  <script src="js/common.js?v=aaea953"></script>
-  <script src="js/ui-resize.js?v=aaea953"></script>
-  <script src="js/footer-resize.js?v=aaea953"></script>
-  <script src="js/route-line.js?v=aaea953"></script>
-  <script src="js/route-api.js?v=aaea953"></script>
-  <script src="js/footer-stats.js?v=aaea953"></script>
+  <script src="js/identity.js?v=b7f59a1"></script>
+  <script src="js/common.js?v=b7f59a1"></script>
+  <script src="js/ui-resize.js?v=b7f59a1"></script>
+  <script src="js/footer-resize.js?v=b7f59a1"></script>
+  <script src="js/route-line.js?v=b7f59a1"></script>
+  <script src="js/route-api.js?v=b7f59a1"></script>
+  <script src="js/footer-stats.js?v=b7f59a1"></script>
   
 
-  <script src="js/ad-consent.js?v=aaea953"></script>
+  <script src="js/ad-consent.js?v=b7f59a1"></script>
   <script>
     
     
@@ -12479,7 +12479,15 @@
             },
           },
         });
-        $('panel-toggle-btn').addEventListener('click', () => rightTab.toggle());
+        
+        
+        
+        $('panel-toggle-btn').addEventListener('click', () => {
+          const pairs = [[window.__apTab, auctionPanel], [window.__rpTab, $('rp-panel')], [window.__jbTab, $('jb-panel')], [window.__dpTab, $('dp-panel')], [window.__spTab, $('sp-panel')], [window.__chatTab, $('chat-panel')], [window.__newsTab, $('news-panel')], [window.__lpTab, $('lp-panel')], [rightTab, pnl]];
+          const anyOpen = pairs.some(([, p]) => p && !p.classList.contains('collapsed'));
+          pairs.forEach(([t, p]) => { if (t && t.toggle && p && p.classList.contains('collapsed') === !anyOpen) t.toggle(); });
+          setTimeout(refreshMapSize, 260);
+        });
         
         
         
@@ -17299,34 +17307,48 @@
       
       
       const THUMB = (layer, ext) => `https://api.vworld.kr/req/wmts/1.0.0/${VWORLD_KEY}/${layer}/15/12688/27942.${ext}`;
-      const BASEMAPS = [
-        { key: '일반지도', label: '일반지도', thumb: THUMB('Base', 'png') },
-        { key: '항공영상', label: '위성지도', thumb: THUMB('Satellite', 'jpeg') },
-        { key: '항공+라벨', label: '위성+라벨', thumb: `${THUMB('Hybrid', 'png')}), url(${THUMB('Satellite', 'jpeg')}` },
-        
-        
-        
-        { key: 'OSM (대체)', label: 'OSM', thumb: 'https://tile.openstreetmap.org/15/27942/12688.png' },
-      ];
+      
+      
+      const BM_GROUPS = [
+        [
+          { key: '일반지도', label: '일반지도', thumb: THUMB('Base', 'png') },
+          { key: 'OSM (대체)', label: 'OSM', thumb: 'https://tile.openstreetmap.org/15/27942/12688.png' },
+        ],
+        [
+          { key: '항공영상', label: '위성지도', thumb: THUMB('Satellite', 'jpeg') },
+          { key: '항공+라벨', label: '위성+라벨', thumb: `${THUMB('Hybrid', 'png')}), url(${THUMB('Satellite', 'jpeg')}` },
+        ],
+      ].map((states) => ({ states: states.filter((s) => baseLayers[s.key]), idx: 0 }))
+        .filter((g) => g.states.length);
+      let bmActive = Math.max(0, BM_GROUPS.findIndex((g) => g.states.some((s) => s.key === '일반지도')));
+      const bmPaint = (btn, g) => {
+        const s = g.states[g.idx];
+        btn.dataset.b = s.key;
+        btn.title = s.label;
+        btn.innerHTML = `<span class="bm-thumb" style="background-image:url(${s.thumb});"></span>`
+          + `<span class="bm-label">${s.label}</span>`;
+      };
       const bmPicker = L.control({ position: 'topleft' });
       bmPicker.onAdd = () => {
         const div = L.DomUtil.create('div');
         div.className = 'bm-picker';
-        div.innerHTML = BASEMAPS.map((b) =>
-          `<button type="button" class="bm-item${b.key === '일반지도' ? ' on' : ''}" data-b="${b.key}" title="${b.label}">`
-          + `<span class="bm-thumb" style="background-image:url(${b.thumb});"></span>`
-          + `<span class="bm-label">${b.label}</span></button>`
-        ).join('');
-        div.querySelectorAll('.bm-item').forEach((btn) => {
+        const btns = BM_GROUPS.map((g, gi) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'bm-item' + (gi === bmActive ? ' on' : '');
+          bmPaint(btn, g);
           btn.onclick = () => {
-            const target = baseLayers[btn.dataset.b];
-            if (!target) return;
+            if (gi === bmActive) g.idx = (g.idx + 1) % g.states.length; 
+            else { bmActive = gi; btns.forEach((b, bi) => b.classList.toggle('on', bi === gi)); }
+            bmPaint(btn, g);
+            const target = baseLayers[g.states[g.idx].key];
             Object.values(baseLayers).forEach((l) => map.hasLayer(l) && map.removeLayer(l));
             target.addTo(map);
             if (target.bringToBack) target.bringToBack();
-            div.querySelectorAll('.bm-item').forEach((o) => o.classList.toggle('on', o === btn));
           };
+          return btn;
         });
+        btns.forEach((b) => div.appendChild(b));
         L.DomEvent.disableClickPropagation(div);
         L.DomEvent.disableScrollPropagation(div);
         return div;
