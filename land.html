@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=47788d2" />
+  <link rel="stylesheet" href="css/tokens.css?v=baf97fb" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=47788d2"></script>
+  <script src="js/auth-guard.js?v=baf97fb"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=47788d2" />
+  <link rel="stylesheet" href="css/buttons.css?v=baf97fb" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=47788d2" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=baf97fb" />
   <style>
     :root {
       
@@ -1991,7 +1991,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=47788d2"></script>
+  <script src="js/ie-guard.js?v=baf97fb"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2313,25 +2313,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-23 15:18 · 47788d2</span></span>
+          · <span class="build-tag">build 2026-09-24 07:29 · baf97fb</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=47788d2"></script>
+  <script src="js/joinkey.js?v=baf97fb"></script>
   
-  <script src="js/identity.js?v=47788d2"></script>
-  <script src="js/common.js?v=47788d2"></script>
-  <script src="js/ui-resize.js?v=47788d2"></script>
-  <script src="js/footer-resize.js?v=47788d2"></script>
-  <script src="js/route-line.js?v=47788d2"></script>
-  <script src="js/route-api.js?v=47788d2"></script>
-  <script src="js/footer-stats.js?v=47788d2"></script>
+  <script src="js/identity.js?v=baf97fb"></script>
+  <script src="js/common.js?v=baf97fb"></script>
+  <script src="js/ui-resize.js?v=baf97fb"></script>
+  <script src="js/footer-resize.js?v=baf97fb"></script>
+  <script src="js/route-line.js?v=baf97fb"></script>
+  <script src="js/route-api.js?v=baf97fb"></script>
+  <script src="js/footer-stats.js?v=baf97fb"></script>
   
 
-  <script src="js/ad-consent.js?v=47788d2"></script>
+  <script src="js/ad-consent.js?v=baf97fb"></script>
   <script>
     
     
@@ -2339,12 +2339,29 @@
     
     const okJson = (r) => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status)));
     const okText = (r) => (r.ok ? r.text() : Promise.reject(new Error('HTTP ' + r.status)));
+    
+    
+    const _onceP = new Map();
+    function loadOnce(key, start, tag) {
+      let p = _onceP.get(key);
+      if (!p) {
+        p = start().catch((e) => { _onceP.delete(key); if (tag) console.error(tag + ' 로드 실패:', e); return null; });
+        _onceP.set(key, p);
+      }
+      return p;
+    }
     const dgkBody = (j) => j && j.response && j.response.body;
     const dgkItem = (j) => { const b = dgkBody(j); return b && b.item; };
     const asArr = (v) => (Array.isArray(v) ? v : (v ? [v] : []));
     const itemsArr = (it) => (!it ? [] : asArr(it.item));
     const flexArr = (it) => (!it ? [] : (Array.isArray(it) ? it : asArr(it.item)));
+    const bodyItems = (b) => asArr(b && b.items && (b.items.item || b.items));   
     const ensurePop = (m) => { if (!m.getPopup() && m._pop) m.bindPopup(m._pop()); };
+    
+    
+    
+    const popOnClick = (e) => { const m = e.layer; if (!m || !m._pop) return; ensurePop(m); m.openPopup(); };
+    const colIdx = (fields) => Object.fromEntries(fields.map((f, i) => [f, i]));   
     const pnuQ = (pp) => `&bjdongCd=${pp.bjdongCd}&platGbCd=${pp.platGbCd}&bun=${pp.bun}&ji=${pp.ji}`;
     function toast(msg, action) {
       let t = $('app-toast');
@@ -2377,20 +2394,14 @@
     const ICON_DROP = '<img src="icons/theme-raindrops.png" width="18" height="18" alt="">';
     const ICON_GEM = '<img src="icons/theme-gold.png" width="18" height="18" alt="">';
     const ICON_TREE = '<img src="icons/theme-tree.png" width="18" height="18" alt="">';
-    
-    const ICON_O_WOOD = '<svg width="16" height="16" viewBox="0 0 24 24"><text x="12" y="17" text-anchor="middle" font-size="14" font-weight="700" fill="#2F9E44">木</text></svg>';
-    const ICON_O_FIRE = '<svg width="16" height="16" viewBox="0 0 24 24"><text x="12" y="17" text-anchor="middle" font-size="14" font-weight="700" fill="#E03131">火</text></svg>';
-    const ICON_O_EARTH = '<svg width="16" height="16" viewBox="0 0 24 24"><text x="12" y="17" text-anchor="middle" font-size="14" font-weight="700" fill="#7C4A21">土</text></svg>';
-    const ICON_O_METAL = '<svg width="16" height="16" viewBox="0 0 24 24"><text x="12" y="17" text-anchor="middle" font-size="14" font-weight="700" fill="#868E96">金</text></svg>';
-    const ICON_O_WATER = '<svg width="16" height="16" viewBox="0 0 24 24"><text x="12" y="17" text-anchor="middle" font-size="14" font-weight="700" fill="#1971C2">水</text></svg>';
     function paintThemeIcon() { const b = $('theme-btn'); if (!b) return; const t = curTheme(); b.innerHTML = t === 'mock' ? ICON_DROP : t === 'lux' ? ICON_GEM : t === 'teal' ? ICON_TREE : t === 'soil' ? ICON_RISE : ICON_SUN; }
     function applyTheme(dark) { document.documentElement.classList.toggle('dark', dark); const b = $('theme-btn'); if (b) b.innerHTML = ICON_SUN; }
     
     
-    const _storedTheme = localStorage.getItem('mj_theme');
-    const _systemDark = () => (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
-    let _mode0 = null; try { _mode0 = localStorage.getItem('mj_mode'); } catch (_e) {}
-    applyTheme(_mode0 ? _mode0 === 'dark' : (_storedTheme ? _storedTheme === 'dark' : _systemDark()));
+    const _systemDark = () => !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+    
+    
+    applyTheme(_systemDark());
     
 
 
@@ -2410,11 +2421,11 @@
       const cells = [[mockNum('ap-count') + '건', '경매'], [mockNum('stat-rp') + '건', '실거래'], [mockNum('stat-fav') + '곳', '관심']];
       k.innerHTML = cells.map(([v, l]) => `<div class="mk"><b>${esc(v)}</b><span>${l}</span></div>`).join('');
     }
-    function setTheme(t) {
+    function setTheme(t, persist = true) {
       const h = document.documentElement;
       h.classList.remove('dark', 'mock', 'lux', 'teal', 'soil');
       if (t === 'dark') applyTheme(true); else { applyTheme(false); if (t !== 'base') h.classList.add(t); }
-      try { localStorage.setItem('mj_mode', t); localStorage.setItem('mj_mock', t === 'mock' ? '1' : '0'); localStorage.setItem('mj_theme', t === 'dark' ? 'dark' : 'light'); } catch (_e) {}
+      if (persist) try { localStorage.setItem('mj_mode', t); localStorage.setItem('mj_mock', t === 'mock' ? '1' : '0'); localStorage.setItem('mj_theme', t === 'dark' ? 'dark' : 'light'); } catch (_e) {}
       const alt = t !== 'base' && t !== 'dark';
       const panel = $('panel');
       if (alt && panel && !$('mock-kpi')) { const k = document.createElement('div'); k.id = 'mock-kpi'; panel.prepend(k); }
@@ -2445,8 +2456,17 @@
     }).observe(document.body, { childList: true, subtree: true });
     setInterval(() => { if (altThemeOn()) renderMockKpi(); }, 10000);
     }
-    try { let _m = localStorage.getItem('mj_mode'); if (!mj_mode_valid(_m)) { _m = (localStorage.getItem('mj_mock') === '1') ? 'mock' : ((localStorage.getItem('mj_theme') === 'dark') ? 'dark' : 'base'); } setTheme(_m); } catch (_e) {}
-    function mj_mode_valid(m) { return m === 'base' || m === 'dark' || m === 'mock' || m === 'lux' || m === 'teal' || m === 'soil'; }
+    
+    
+    try {
+      let _m = localStorage.getItem('mj_mode');
+      if (!mj_mode_valid(_m)) {
+        const _t = (localStorage.getItem('mj_mock') === '1') ? 'mock' : localStorage.getItem('mj_theme');
+        _m = _t === 'mock' ? 'mock' : ((_t ? _t === 'dark' : _systemDark()) ? 'dark' : 'base');
+      }
+      setTheme(_m, false);
+    } catch (_e) {}
+    function mj_mode_valid(m) { return THEME_ORDER.includes(m); }
 
     
     const RECENT_KEY = 'mj_recent_land';
@@ -2472,8 +2492,13 @@
     
     
     
-    const SUBSCRIPTION_ENDPOINT = new URLSearchParams(location.search).get('chungakEndpoint')
-      || SUPABASE_URL + '/functions/v1/chungak-proxy';
+    
+    
+    const _devEndpoint = (k) => {
+      const v = new URLSearchParams(location.search).get(k);
+      return v && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?\//.test(v) ? v : null;
+    };
+    const SUBSCRIPTION_ENDPOINT = _devEndpoint('chungakEndpoint') || SUPABASE_URL + '/functions/v1/chungak-proxy';
     
     
     
@@ -2607,8 +2632,7 @@
     
     
     
-    const BIZNO_ENDPOINT = new URLSearchParams(location.search).get('biznoEndpoint')
-      || SUPABASE_URL + '/functions/v1/bizno-proxy';
+    const BIZNO_ENDPOINT = _devEndpoint('biznoEndpoint') || SUPABASE_URL + '/functions/v1/bizno-proxy';
     const _bizFmt = (v) => { const d = v.replace(/[^0-9]/g, '').slice(0, 10); return d.length > 5 ? d.slice(0, 3) + '-' + d.slice(3, 5) + '-' + d.slice(5) : d.length > 3 ? d.slice(0, 3) + '-' + d.slice(3) : d; };
     function openBiznoModal() {
       let m = $('bizno-modal');
@@ -2667,6 +2691,7 @@
             .forEach((id) => { const el = $(id); if (el) el.value = ''; });
           const rb = $('bizno-result');
           if (rb) { rb.innerHTML = ''; rb.style.display = 'none'; }
+          _bizSeq++;   
           $('bizno-go').disabled = false;
           $('bizno-input').focus();
         };
@@ -2718,7 +2743,52 @@
         }
       };
     }
+    
+    
+    
+    function localGovRows() {
+      return fetch(DGK_PROXY + '?svc=openApiMngInfo3&op=openXmlMngInfo2'
+        + '&pageNo=1&numOfRows=500&ac_year=' + LOCALGOV_YEAR + '&type=xml')
+        .then(okText)
+        .then((xml) => {
+          const doc = new DOMParser().parseFromString(xml, 'text/xml');
+          const pick = (el, t) => {
+            const n = el.getElementsByTagName(t)[0];
+            return n ? String(n.textContent || '') : '';
+          };
+          const rows = [...doc.getElementsByTagName('item')].map((el) => ({
+            nm: pick(el, 'ENT_NAME'),
+            asset: Number(pick(el, 'TOT_JAE_JS')) || 0,
+            debt: Number(pick(el, 'TOT_JAE_BU')) || 0,
+            
+            
+            
+            
+            profit: Number(pick(el, 'TOT_GYE_DI')) || 0,
+          }));
+          return { doc, rows };
+        });
+    }
+    
+    function localGovCard(x) {
+      const eok = (v) => (Math.abs(v) >= 1e6
+        ? (v / 1e6).toFixed(1) + '조'
+        : fmtAmt(Number(v) * 100));
+      const ratio = x.asset - x.debt > 0
+        ? Math.round((x.debt / (x.asset - x.debt)) * 100) : null;
+      return '<div style="margin-bottom:3px;">' + esc(x.nm) + '</div>'
+        + `<div class="pc-price">자산 ${eok(x.asset)} · 부채 ${eok(x.debt)}</div>`
+        + (ratio !== null
+          ? `<div style="margin-top:3px;">부채비율 <b>${ratio.toLocaleString('ko-KR')}%</b></div>` : '')
+        + `<div style="margin-top:2px;">당기손익 <b>${x.profit < 0 ? '-' : ''}${eok(Math.abs(x.profit))}</b></div>`
+        + '<div style="font-size:12px;color:var(--muted);margin-top:3px;">'
+        + LOCALGOV_YEAR + '년 · 출처 한국지역정보개발원</div>';
+    }
+    
+    let _bizSeq = 0;
     function lookupBizno() {
+      if ($('bizno-go').disabled) return;   
+      const seq = ++_bizSeq, stale = () => seq !== _bizSeq;
       const box = $('bizno-result');
       const digits = ($('bizno-input').value || '').replace(/[^0-9]/g, '');
       const name = ($('bizno-name').value || '').trim();
@@ -2740,10 +2810,10 @@
           const q = crno.length >= 10 ? { crno } : { corpNm: bname };
           dgkFetch('GetCorpBasicInfoService_V2', 'getCorpOutline_V2',
             Object.assign({ numOfRows: 5, pageNo: 1, resultType: 'json' }, q), (j2) => {
+              if (stale()) return;   
               $('bizno-go').disabled = false;
               const b2 = j2 && j2.response && j2.response.body;
-              const it2 = b2 && b2.items && (b2.items.item || b2.items);
-              const a2 = Array.isArray(it2) ? it2 : (it2 ? [it2] : []);
+              const a2 = bodyItems(b2);
               const hit = a2.find((x) => x && /^[0-9]{10}$/.test(String(x.bzno || '')));
               if (!hit) {
                 
@@ -2759,22 +2829,10 @@
                 
                 const norm0 = mjNameKey;
                 const key0 = norm0(bname);
-                fetch(DGK_PROXY + '?svc=openApiMngInfo3&op=openXmlMngInfo2'
-                  + '&pageNo=1&numOfRows=500&ac_year=' + LOCALGOV_YEAR + '&type=xml')
-                  .then(okText)
-                  .then((xml) => {
-                    const doc = new DOMParser().parseFromString(xml, 'text/xml');
-                    const pick = (el, t) => {
-                      const n = el.getElementsByTagName(t)[0];
-                      return n ? String(n.textContent || '') : '';
-                    };
-                    const g = [...doc.getElementsByTagName('item')]
-                      .map((el) => ({
-                        nm: pick(el, 'ENT_NAME'),
-                        asset: Number(pick(el, 'TOT_JAE_JS')) || 0,
-                        debt: Number(pick(el, 'TOT_JAE_BU')) || 0,
-                        profit: Number(pick(el, 'TOT_GYE_YI')) || 0,
-                      }))
+                localGovRows()
+                  .then(({ rows }) => {
+                    if (stale()) return;
+                    const g = rows
                       .find((x) => {
                         const k = norm0(x.nm);
                         return k && key0 && (k.includes(key0) || key0.includes(k));
@@ -2785,22 +2843,9 @@
                         + '사업자등록번호를 직접 입력해 주세요.</span>';
                       return;
                     }
-                    const eok = (v) => (Math.abs(v) >= 1e6
-                      ? (v / 1e6).toFixed(1) + '조'
-                      : fmtAmt(Number(v) * 100));
-                    const ratio = g.asset - g.debt > 0
-                      ? Math.round((g.debt / (g.asset - g.debt)) * 100) : null;
                     box.innerHTML = '<div style="margin-bottom:10px;">'
                       + '<div style="font-weight:700;font-size:13px;margin-bottom:4px;">지방공기업 경영정보</div>'
-                      + '<div style="font-size:13px;">'
-                      + '<div style="margin-bottom:3px;">' + esc(g.nm) + '</div>'
-                      + '<div class="pc-price">자산 ' + eok(g.asset) + ' · 부채 ' + eok(g.debt) + '</div>'
-                      + (ratio !== null ? '<div style="margin-top:3px;">부채비율 <b>'
-                          + ratio.toLocaleString('ko-KR') + '%</b></div>' : '')
-                      + '<div style="margin-top:2px;">당기손익 <b>' + (g.profit < 0 ? '-' : '')
-                      + eok(Math.abs(g.profit)) + '</b></div>'
-                      + '<div style="font-size:12px;color:var(--muted);margin-top:3px;">'
-                      + LOCALGOV_YEAR + '년 · 출처 한국지역정보개발원</div>'
+                      + '<div style="font-size:13px;">' + localGovCard(g)
                       + '</div></div>'
                       + '<div style="font-size:12px;color:var(--muted);">'
                       + '지방공기업이라 <b>금융위 법인 등록부에는 없음</b> — 사업자등록번호를 자동으로 '
@@ -2808,6 +2853,7 @@
                       + '사업자등록번호를 입력해 주세요.</div>';
                   })
                   .catch(() => {
+                    if (stale()) return;
                     box.innerHTML = '<span style="color:var(--c-danger);font-size:14px;">'
                       + '그 상호로 사업자등록번호를 찾지 못함.</span>';
                   });
@@ -2844,6 +2890,7 @@
       fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) })
         .then((r) => (r.ok ? r.json() : Promise.reject(new Error('조회 API HTTP ' + r.status))))
         .then((j) => {
+          if (stale()) return;
           const row = Array.isArray(j && j.data) ? j.data[0] : null;
           if (!row) throw new Error('응답에 조회 결과가 없음.');
           
@@ -2966,8 +3013,7 @@
               .then((r) => (r.ok ? r.json() : null))
               .then((j) => {
                 const b = dgkBody(j);
-                const it = b && b.items && (b.items.item || b.items);
-                const a = asArr(it);
+                const a = bodyItems(b);
                 if (!a.length) return;
                 
                 const key = nokey(bname);
@@ -3027,26 +3073,9 @@
             
             if (!bname) { left -= 1; } else {
               const nameKey = nokey(bname);
-              fetch(DGK_PROXY + '?svc=openApiMngInfo3&op=openXmlMngInfo2'
-                + '&pageNo=1&numOfRows=500&ac_year=' + LOCALGOV_YEAR + '&type=xml')
-                .then(okText)
-                .then((xml) => {
-                  const doc = new DOMParser().parseFromString(xml, 'text/xml');
-                  const pick = (el, t) => {
-                    const n = el.getElementsByTagName(t)[0];
-                    return n ? String(n.textContent || '') : '';
-                  };
-                  const hit = [...doc.getElementsByTagName('item')]
-                    .map((el) => ({
-                      nm: pick(el, 'ENT_NAME'),
-                      asset: Number(pick(el, 'TOT_JAE_JS')) || 0,
-                      debt: Number(pick(el, 'TOT_JAE_BU')) || 0,
-                      
-                      
-                      
-                      
-                      profit: Number(pick(el, 'TOT_GYE_DI')) || 0,
-                    }))
+              localGovRows()
+                .then(({ doc, rows }) => {
+                  const hit = rows
                     .filter((x) => {
                       const k = nokey(x.nm);
                       return k && nameKey && (k.includes(nameKey) || nameKey.includes(k));
@@ -3063,20 +3092,7 @@
                     return;
                   }
                   if (!hit.length) return;
-                  const eok = (v) => (Math.abs(v) >= 1e6
-                    ? (v / 1e6).toFixed(1) + '조'
-                    : fmtAmt(Number(v) * 100));
-                  const x = hit[0];
-                  const ratio = x.asset - x.debt > 0
-                    ? Math.round((x.debt / (x.asset - x.debt)) * 100) : null;
-                  parts.push(sec('지방공기업 경영정보',
-                    '<div style="margin-bottom:3px;">' + esc(x.nm) + '</div>'
-                    + `<div class="pc-price">자산 ${eok(x.asset)} · 부채 ${eok(x.debt)}</div>`
-                    + (ratio !== null
-                      ? `<div style="margin-top:3px;">부채비율 <b>${ratio.toLocaleString('ko-KR')}%</b></div>` : '')
-                    + `<div style="margin-top:2px;">당기손익 <b>${x.profit < 0 ? '-' : ''}${eok(Math.abs(x.profit))}</b></div>`
-                    + '<div style="font-size:12px;color:var(--muted);margin-top:3px;">'
-                    + LOCALGOV_YEAR + '년 · 출처 한국지역정보개발원</div>'));
+                  parts.push(sec('지방공기업 경영정보', localGovCard(hit[0])));
                 })
                 .catch(() => {})
                 .finally(done);
@@ -3094,8 +3110,7 @@
               dgkFetch('GetCorpBasicInfoService_V2', 'getCorpOutline_V2',
                 { corpNm: bname, numOfRows: 5, pageNo: 1, resultType: 'json' }, (j) => {
                   const b = dgkBody(j);
-                  const it = b && b.items && (b.items.item || b.items);
-                  const a = asArr(it);
+                  const a = bodyItems(b);
                   const c = a[0];
                   if (!c || !c.crno) { done(); return; }
                   const mk = String(c.corpRegMrktDcdNm || '');
@@ -3114,8 +3129,7 @@
                     .then((r) => (r.ok ? r.json() : null))
                     .then((j2) => {
                       const b2 = j2 && j2.response && j2.response.body;
-                      const i2 = b2 && b2.items && (b2.items.item || b2.items);
-                      const arr = Array.isArray(i2) ? i2 : (i2 ? [i2] : []);
+                      const arr = bodyItems(b2);
                       
                       const f = arr.slice().sort((x, y) =>
                         String(y.bizYear || '').localeCompare(String(x.bizYear || '')))[0];
@@ -3131,8 +3145,7 @@
                       dgkFetch('GetCorpGoveInfoService', 'getReprDireInfo',
                         { crno: c.crno, numOfRows: 3, pageNo: 1, resultType: 'json' }, (j3) => {
                           const b3 = j3 && j3.response && j3.response.body;
-                          const i3 = b3 && b3.items && (b3.items.item || b3.items);
-                          const g = (Array.isArray(i3) ? i3 : (i3 ? [i3] : []))[0];
+                          const g = bodyItems(b3)[0];
                           if (g && (g.reprDireNm || g.reprNm)) {
                             html += '<div style="margin-top:3px;">대표이사 <b>'
                               + esc(String(g.reprDireNm || g.reprNm)) + '</b></div>';
@@ -3272,8 +3285,8 @@
           _bizHistAdd({ bno: digits, name, bname, startDt, badge: badgeTxt, ts: Date.now() });
           renderBiznoHist();
         })
-        .catch((err) => { box.innerHTML = `<span style="color:var(--c-danger);font-size:14px;">조회 실패: ${esc(String(err.message || err))}</span>`; })
-        .finally(() => { $('bizno-go').disabled = false; });
+        .catch((err) => { if (!stale()) box.innerHTML = `<span style="color:var(--c-danger);font-size:14px;">조회 실패: ${esc(String(err.message || err))}</span>`; })
+        .finally(() => { if (!stale()) $('bizno-go').disabled = false; });
     }
     const _biznoBtn = $('bizno-btn');
     if (_biznoBtn) _biznoBtn.addEventListener('click', openBiznoModal);
@@ -3383,7 +3396,12 @@
     let subStations = null;
     
     
-    fetch('transit_subway.json').then((r) => r.ok ? r.json() : null).then((j) => { subStations = j && j.rows || null; }).catch(() => {});
+    
+    
+    let _subJsonP = null;
+    const loadSubJson = () => _subJsonP || (_subJsonP = fetch('transit_subway.json').then(okJson)
+      .catch((e) => { _subJsonP = null; throw e; }));
+    loadSubJson().then((j) => { subStations = j && j.rows || null; }).catch(() => {});
     
     
     let lpData = null, _lpPromise = null;
@@ -3923,13 +3941,11 @@
     
     
     function decodeCompactRp(j) {
-      const F = {};
-      j.fields.forEach((f, i) => { F[f] = i; });
+      const F = colIdx(j.fields);
       const pick = (r, k) => (F[k] === undefined ? undefined : r[F[k]]);
 
       if (j.v === 2) {                       
-        const C = {};
-        j.cxFields.forEach((f, i) => { C[f] = i; });
+        const C = colIdx(j.cxFields);
         return j.rows.map((r) => {
           const c = j.cx[r[F.cx]];
           return {
@@ -3998,7 +4014,8 @@
           return rpRows;
         })
         .catch((err) => {
-          if (err && err._missing) { try { sessionStorage.setItem(APT_MISS_KEY, String(Date.now())); } catch (e) {} }
+          
+          if (err && err._missing && tryApt) { try { sessionStorage.setItem(APT_MISS_KEY, String(Date.now())); } catch (e) {} }
           return fetch('realprice_seoul_gg.json')
             .then((r) => r.json())
             .then((rows) => { rpSource = 'legacy'; rpRows = rows; window.__rpRows = rows; return rows; })
@@ -4031,15 +4048,10 @@
     
     
     
-    let _houseJsonPromise = null;
     window.__loadHouseJson = () => loadHouseJson();   
     function loadHouseJson() {
-      if (!_houseJsonPromise) {
-        _houseJsonPromise = fetch('realprice_house.json')
-          .then((r) => r.json())
-          .catch(() => { _houseJsonPromise = null; return null; });
-      }
-      return _houseJsonPromise;
+      return loadOnce('_houseJsonPromise', () => fetch('realprice_house.json')
+          .then((r) => r.json()));
     }
     
     
@@ -4055,6 +4067,9 @@
     
     
     
+    
+    
+    const ymdN = (s) => { const p = String(s || '').split('.').map(Number); return (p[0] || 0) * 12 + (p[1] || 0); };
     let _rpGrp = null;
     const rpGroupMap = () => {
       if (_rpGrp) return _rpGrp;
@@ -4069,7 +4084,7 @@
         if (!_rpGrp.has(k)) _rpGrp.set(k, []);
         _rpGrp.get(k).push(r);
       }
-      _rpGrp.forEach((g) => g.sort((a, b) => (a.ymd || '').localeCompare(b.ymd || '')));
+      _rpGrp.forEach((g) => g.sort((a, b) => ymdN(a.ymd) - ymdN(b.ymd)));
       return _rpGrp;
     };
     const rpGroup = (d) => rpGroupMap().get((d.name || '') + '|' + (d.gu || '') + '|' + (d.dong || '')) || null;
@@ -4080,7 +4095,7 @@
       const g = rpGroup(d);
       if (!g || g.length < 2) return null;
       const avg = (arr) => { const u = arr.map(rpUnitM2).filter((x) => x != null); return u.length ? u.reduce((a, b) => a + b, 0) / u.length : null; };
-      const ymds = [...new Set(g.map((r) => r.ymd || ''))].filter(Boolean).sort((a, b) => a.localeCompare(b));
+      const ymds = [...new Set(g.map((r) => r.ymd || ''))].filter(Boolean).sort((a, b) => ymdN(a) - ymdN(b));
       if (ymds.length < 2) return null;
       const lastYmd = ymds[ymds.length - 1];
       const prevYmd = ymds[ymds.length - 2];
@@ -4096,25 +4111,18 @@
       return '#868e96';
     };
     
-    const rpNewHigh = (d) => {
-      if (d.priceEok == null) return false;
-      const g = rpGroup(d);
-      if (!g || g.length < 2) return false;
-      const a = Math.round(Number(d.area) * 2) / 2;
-      const same = g.filter((r) => Math.round(Number(r.area) * 2) / 2 === a && r.priceEok != null);
-      if (same.length < 2) return false;
-      return same[same.length - 1] === d && same.every((r) => r.priceEok <= d.priceEok + 1e-9);
-    };
     
-    const rpNewLow = (d) => {
+    const rpNewExt = (d, ok) => {
       if (d.priceEok == null) return false;
       const g = rpGroup(d);
       if (!g || g.length < 2) return false;
       const a = Math.round(Number(d.area) * 2) / 2;
       const same = g.filter((r) => Math.round(Number(r.area) * 2) / 2 === a && r.priceEok != null);
       if (same.length < 2) return false;
-      return same[same.length - 1] === d && same.every((r) => r.priceEok >= d.priceEok - 1e-9);
+      return same[same.length - 1] === d && same.every((r) => ok(r.priceEok, d.priceEok));
     };
+    const rpNewHigh = (d) => rpNewExt(d, (p, x) => p <= x + 1e-9);
+    const rpNewLow = (d) => rpNewExt(d, (p, x) => p >= x - 1e-9);
     
     const rpTrendHtml = (d) => {
       const g = rpGroup(d);
@@ -4144,10 +4152,10 @@
     const rpDealTableHtml = (d) => {
       const g = rpGroup(d);
       if (!g || !g.length) return '';
-      const ym = (r) => { const p = (r.ymd || '').split('.').map(Number); return (p[0] || 0) * 12 + (p[1] || 0); };
+      const ym = (r) => ymdN(r.ymd);
       const nowYm = new Date().getFullYear() * 12 + (new Date().getMonth() + 1) - 6;
       const halfCnt = g.filter((r) => ym(r) >= nowYm).length;
-      const rows = [...g].sort((a, b) => (b.ymd || '').localeCompare(a.ymd || '')).slice(0, 10);
+      const rows = [...g].sort((a, b) => ymdN(b.ymd) - ymdN(a.ymd)).slice(0, 10);
       const chip = (txt, bg) => `<span style="background:${bg};color:#fff;font-size:10px;padding:0 5px;border-radius:8px;margin-left:4px;">${txt}</span>`;
       const rowHtml = rows.map((r) => {
         const a = uAreaVal(r.area);
@@ -4164,6 +4172,15 @@
     };
     
     const kmDist = (lat1, lng1, lat2, lng2) => { const dy = (lat1 - lat2) * 111, dx = (lng1 - lng2) * 88; return Math.sqrt(dx * dx + dy * dy); };
+    
+    const medianOf = (a) => { const v = a.slice().sort((x, y) => x - y), h = v.length >> 1; return v.length % 2 ? v[h] : (v[h - 1] + v[h]) / 2; };
+    
+    
+    function geoM(lat1, lng1, lat2, lng2) {
+      const rad = Math.PI / 180, dLat = (lat2 - lat1) * rad, dLng = (lng2 - lng1) * rad;
+      const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * rad) * Math.cos(lat2 * rad) * Math.sin(dLng / 2) ** 2;
+      return 2 * 6371000 * Math.asin(Math.min(1, Math.sqrt(a)));
+    }
     
     
     const JB_COLOR = { '신통': '#e8590c', '재개발': '#e03131', '재건축': '#7048e8', '지역주택': '#1c7ed6', '재정비촉진': '#f08c00', '모아': '#2f9e44', '역세권': '#0c8599', '노후계획도시': '#5c7cfa', '기타': '#868e96' };
@@ -4327,7 +4344,7 @@
       map.on('zoomend', applyTojiZoom);
       
       
-      let _tojiLoaded = false;
+      let _tojiLoaded = false, _tojiLoading = false;
       map.on('overlayadd', (e) => {
         if (e.layer !== tojiLayer) return;
         applyTojiZoom();
@@ -4335,7 +4352,9 @@
         if (map.getZoom() < TOJI_MIN_ZOOM) {
           toast(`토지거래허가구역은 확대해야 보임 — 줌 ${TOJI_MIN_ZOOM} 이상 (지금 ${map.getZoom()})`);
         }
-        if (_tojiLoaded) return;
+        
+        if (_tojiLoaded || _tojiLoading) return;
+        _tojiLoading = true;
         fetch('toji_heoga.geojson?v=2')
           .then((r) => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
           .then((gj) => {
@@ -4349,25 +4368,23 @@
             
             console.error('토지거래허가구역 로드 실패:', err);
             toast('토지거래허가구역을 불러오지 못함 (toji_heoga.geojson)');
-          });
+          })
+          .finally(() => { _tojiLoading = false; });   
       });
 
       
       const realpriceCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 60 });
       rpClusterRef = realpriceCluster;
       
-      realpriceCluster.on('mouseover', (e) => {
+      
+      function rpHoverTip(e) {
         const m = e.layer, d = m && m._rp;
         if (!d || m._ttDone) return;
         m._ttDone = 1;
         m.bindTooltip(uPriceShort(d), { direction: 'top' }).openTooltip();
-      });
-      realpriceCluster.on('click', (e) => {
-        const m = e.layer;
-        if (!m || !m._rp) return;
-        ensurePop(m);
-        m.openPopup();
-      });
+      }
+      realpriceCluster.on('mouseover', rpHoverTip);
+      realpriceCluster.on('click', popOnClick);
       rpRows = null;
       const RP_PMAX = 40;   
       const RP_AMIN = 1970, RP_AMAX = new Date().getFullYear(); 
@@ -4404,7 +4421,7 @@
           if (!inPrice(d.priceEok) || !inAge(d.build)) continue;
           const k = (d.name || '') + '|' + (d.gu || '') + '|' + (d.dong || '');
           const cur = rep.get(k);
-          if (!cur || (d.ymd || '') > (cur.ymd || '')) rep.set(k, d);
+          if (!cur || ymdN(d.ymd) > ymdN(cur.ymd)) rep.set(k, d);
         }
         realpriceCluster.addLayers([...rep.values()].map((d) => {
           const m = L.marker([d.lat, d.lng], { icon: rpMarkerIcon(d) });
@@ -4495,18 +4512,19 @@
         const el = document.getElementById('rp-price-lbl');
         if (el) el.textContent = t;
       }
-      function rpPricePaint() {
-        const loEl = document.getElementById('rp-lo'), hiEl = document.getElementById('rp-hi');
+      
+      function rpRangePaint(key, ids, min, max, label) {
+        const loEl = document.getElementById(ids[0]), hiEl = document.getElementById(ids[1]);
         if (!loEl || !hiEl) return;
-        const { lo, hi } = rpFilter.price;
+        const { lo, hi } = rpFilter[key];
         loEl.value = lo; hiEl.value = hi;
-        const fill = document.getElementById('rp-fill');
-        if (fill) { fill.style.left = (lo / RP_PMAX * 100) + '%'; fill.style.right = (100 - hi / RP_PMAX * 100) + '%'; }
-        rpPriceLabel();
+        const fill = document.getElementById(ids[2]);
+        if (fill) { fill.style.left = ((lo - min) / (max - min) * 100) + '%'; fill.style.right = (100 - (hi - min) / (max - min) * 100) + '%'; }
+        label();
       }
-      let _rpPriceT = 0;
-      function rpPriceWire() {
-        const loEl = document.getElementById('rp-lo'), hiEl = document.getElementById('rp-hi');
+      const _rpRangeT = {};
+      function rpRangeWire(key, ids, paint) {
+        const loEl = document.getElementById(ids[0]), hiEl = document.getElementById(ids[1]);
         if (!loEl || !hiEl || loEl._w) return;
         loEl._w = hiEl._w = 1;
         const on = (e) => {
@@ -4514,16 +4532,18 @@
           
           if (e.target === loEl && lo > hi) { lo = hi; loEl.value = lo; }
           if (e.target === hiEl && hi < lo) { hi = lo; hiEl.value = hi; }
-          rpFilter.price = { lo, hi };
-          rpPricePaint();
+          rpFilter[key] = { lo, hi };
+          paint();
           
-          clearTimeout(_rpPriceT);
-          _rpPriceT = setTimeout(() => { rpBuild(); villaBuild(); rpEmptyNotify(); }, 150);
+          clearTimeout(_rpRangeT[key]);
+          _rpRangeT[key] = setTimeout(() => { rpBuild(); villaBuild(); rpEmptyNotify(); }, 150);
         };
         loEl.addEventListener('input', on);
         hiEl.addEventListener('input', on);
-        rpPricePaint();
+        paint();
       }
+      function rpPricePaint() { rpRangePaint('price', ['rp-lo', 'rp-hi', 'rp-fill'], 0, RP_PMAX, rpPriceLabel); }
+      function rpPriceWire() { rpRangeWire('price', ['rp-lo', 'rp-hi'], rpPricePaint); }
       function rpPriceReset() {
         rpFilter.price = { lo: 0, hi: RP_PMAX };
         rpPricePaint();
@@ -4534,33 +4554,8 @@
         const el = document.getElementById('rp-age-lbl');
         if (el) el.textContent = t;
       }
-      function rpAgePaint() {
-        const loEl = document.getElementById('rp-age-lo'), hiEl = document.getElementById('rp-age-hi');
-        if (!loEl || !hiEl) return;
-        const { lo, hi } = rpFilter.age;
-        loEl.value = lo; hiEl.value = hi;
-        const fill = document.getElementById('rp-age-fill');
-        if (fill) { fill.style.left = ((lo - RP_AMIN) / (RP_AMAX - RP_AMIN) * 100) + '%'; fill.style.right = (100 - (hi - RP_AMIN) / (RP_AMAX - RP_AMIN) * 100) + '%'; }
-        rpAgeLabel();
-      }
-      let _rpAgeT = 0;
-      function rpAgeWire() {
-        const loEl = document.getElementById('rp-age-lo'), hiEl = document.getElementById('rp-age-hi');
-        if (!loEl || !hiEl || loEl._w) return;
-        loEl._w = hiEl._w = 1;
-        const on = (e) => {
-          let lo = +loEl.value, hi = +hiEl.value;
-          if (e.target === loEl && lo > hi) { lo = hi; loEl.value = lo; }
-          if (e.target === hiEl && hi < lo) { hi = lo; hiEl.value = hi; }
-          rpFilter.age = { lo, hi };
-          rpAgePaint();
-          clearTimeout(_rpAgeT);
-          _rpAgeT = setTimeout(() => { rpBuild(); villaBuild(); rpEmptyNotify(); }, 150);
-        };
-        loEl.addEventListener('input', on);
-        hiEl.addEventListener('input', on);
-        rpAgePaint();
-      }
+      function rpAgePaint() { rpRangePaint('age', ['rp-age-lo', 'rp-age-hi', 'rp-age-fill'], RP_AMIN, RP_AMAX, rpAgeLabel); }
+      function rpAgeWire() { rpRangeWire('age', ['rp-age-lo', 'rp-age-hi'], rpAgePaint); }
       function rpAgeReset() {
         rpFilter.age = { lo: RP_AMIN, hi: RP_AMAX };
         rpAgePaint();
@@ -4576,7 +4571,7 @@
       
       
       function rpRefresh() {
-        [realpriceCluster, villaCluster, officelCluster].forEach((cl) => {
+        [realpriceCluster, villaCluster, officelCluster, officelSaleCluster, silvCluster].forEach((cl) => {
           if (!cl) return;
           cl.eachLayer((m) => {
             if (m._rpIcon) { try { m.setIcon(rpMarkerIcon(m._rp)); } catch (e) {} }
@@ -4604,30 +4599,20 @@
         setTimeout(() => {
           
           rpPriceWire(); rpAgeWire();
-          const wireU = (gid, key) => {
+          
+          const wireChips = (gid, onPick) => {
             const g = document.getElementById(gid);
             if (!g || g._w) return;
             g._w = 1;
             g.addEventListener('click', (ev) => {
               const b = ev.target.closest('.fav-cat'); if (!b) return;
-              uUnit[key] = b.dataset.v;
               g.querySelectorAll('.fav-cat').forEach((c) => c.classList.toggle('active', c === b));
-              rpRefresh();
+              onPick(b.dataset.v);
             });
           };
-          wireU('u-price', 'price');
-          wireU('u-area', 'area');
-          const wc = document.getElementById('rp-color');
-          if (wc && !wc._w) {
-            wc._w = 1;
-            wc.addEventListener('click', (ev) => {
-              const b = ev.target.closest('.fav-cat'); if (!b) return;
-              rpColorMode.v = b.dataset.v;
-              wc.querySelectorAll('.fav-cat').forEach((c) => c.classList.toggle('active', c === b));
-              rpLegendRows();
-              rpBuild();
-            });
-          }
+          wireChips('u-price', (v) => { uUnit.price = v; rpRefresh(); });
+          wireChips('u-area', (v) => { uUnit.area = v; rpRefresh(); });
+          wireChips('rp-color', (v) => { rpColorMode.v = v; rpLegendRows(); rpBuild(); });
           const rs = document.getElementById('rp-reset');
           if (rs && !rs._w) { rs._w = 1; rs.addEventListener('click', rpResetFilter); }
         }, 60);
@@ -4653,18 +4638,8 @@
       
       
       const villaCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 60 });
-      villaCluster.on('mouseover', (e) => {
-        const m = e.layer, d = m && m._rp;
-        if (!d || m._ttDone) return;
-        m._ttDone = 1;
-        m.bindTooltip(uPriceShort(d), { direction: 'top' }).openTooltip();
-      });
-      villaCluster.on('click', (e) => {
-        const m = e.layer;
-        if (!m || !m._rp) return;
-        ensurePop(m);
-        m.openPopup();
-      });
+      villaCluster.on('mouseover', rpHoverTip);
+      villaCluster.on('click', popOnClick);
 
       
       
@@ -4719,14 +4694,7 @@
           vuUnits(det);
         }, true);
       }
-      function vuYms() {
-        const out = [], now = new Date();
-        for (let k = 12; k >= 1; k--) {
-          const t = new Date(now.getFullYear(), now.getMonth() - k, 1);
-          out.push(t.getFullYear() + String(t.getMonth() + 1).padStart(2, '0'));
-        }
-        return out;
-      }
+      function vuYms() { return ymBack(12, 1).reverse(); }   
       
       
       
@@ -4847,14 +4815,12 @@
         box.innerHTML = s;
       }
 
-      let villaRows = null, _villaPromise = null;
+      let villaRows = null;
       function loadVilla() {
-        if (!_villaPromise) {
-          _villaPromise = fetch('realprice_villa.json').then((r) => r.json()).then((j) => {
+        return loadOnce('_villaPromise', () => fetch('realprice_villa.json').then((r) => r.json()).then((j) => {
             
             
-            const F = {};
-            j.fields.forEach((f, i) => { F[f] = i; });
+            const F = colIdx(j.fields);
             villaRows = j.rows.map((r) => ({
               name: r[F.name], gu: j.gus[r[F.gu]], dong: j.dongs[r[F.dong]], type: j.types[r[F.type]],
               lat: r[F.lat], lng: r[F.lng], priceEok: r[F.price], area: r[F.area], floor: r[F.floor],
@@ -4869,9 +4835,7 @@
             
             window.__villaRows = villaRows;
             return villaRows;
-          }).catch(() => { _villaPromise = null; return null; });
-        }
-        return _villaPromise;
+          }));
       }
       window.__loadVilla = loadVilla;   
 
@@ -4920,13 +4884,7 @@
             
             
             if (!j) { _houseRowsPromise = null; return null; }
-            houseRows = Object.entries(j)
-              .map(([key, v]) => {
-                if (!v.lat || !v.lng) return null;
-                const m = String(key).match(/^(\S+구) (.+)$/);
-                return { gu: m ? m[1] : '', dong: m ? m[2] : key, lat: v.lat, lng: v.lng, ...v };
-              })
-              .filter(Boolean);
+            houseRows = dongRows(j);
             return houseRows;
           }).catch(() => { _houseRowsPromise = null; return null; });
         }
@@ -4958,21 +4916,20 @@
 
       
       const houseRentCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 50 });
-      let houseRentRows = null, _houseRentRowsPromise = null;
+      let houseRentRows = null;
+      
+      function dongRows(j) {
+        return Object.entries(j).map(([key, v]) => {
+          if (!v.lat || !v.lng) return null;
+          const m = String(key).match(/^(\S+구) (.+)$/);
+          return { gu: m ? m[1] : '', dong: m ? m[2] : key, lat: v.lat, lng: v.lng, ...v };
+        }).filter(Boolean);
+      }
       function loadHouseRentRows() {
-        if (!_houseRentRowsPromise) {
-          _houseRentRowsPromise = fetch('realprice_house_rent.json').then((r) => r.json()).then((j) => {
-            houseRentRows = Object.entries(j)
-              .map(([key, v]) => {
-                if (!v.lat || !v.lng) return null;
-                const m = String(key).match(/^(\S+구) (.+)$/);
-                return { gu: m ? m[1] : '', dong: m ? m[2] : key, lat: v.lat, lng: v.lng, ...v };
-              })
-              .filter(Boolean);
+        return loadOnce('_houseRentRowsPromise', () => fetch('realprice_house_rent.json').then((r) => r.json()).then((j) => {
+            houseRentRows = dongRows(j);
             return houseRentRows;
-          }).catch(() => { _houseRentRowsPromise = null; return null; });
-        }
-        return _houseRentRowsPromise;
+          }));
       }
       function houseRentPopupHtml(d) {
         const jeonse = d.jc ? `전세 <b>${fmtAmtExact(d.jmed * 1e4)}</b> <span style="color:var(--c-muted);">${d.jc}건</span>` : '';
@@ -5000,18 +4957,11 @@
       
       
       const officelCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 60 });
-      officelCluster.on('click', (e) => {
-        const m = e.layer;
-        if (!m || !m._pop) return;
-        ensurePop(m);
-        m.openPopup();
-      });
-      let officelRows = null, _officelPromise = null;
+      officelCluster.on('click', popOnClick);
+      let officelRows = null;
       function loadOfficel() {
-        if (!_officelPromise) {
-          _officelPromise = fetch('realprice_officel.json').then((r) => r.json()).then((j) => {
-            const F = {};
-            j.fields.forEach((f, i) => { F[f] = i; });
+        return loadOnce('_officelPromise', () => fetch('realprice_officel.json').then((r) => r.json()).then((j) => {
+            const F = colIdx(j.fields);
             officelRows = j.rows.map((r) => ({
               name: r[F.name], gu: j.gus[r[F.gu]], dong: j.dongs[r[F.dong]],
               lat: r[F.lat], lng: r[F.lng], dep: r[F.dep], mon: r[F.mon], area: r[F.area],
@@ -5019,9 +4969,7 @@
               depMin: r[F.depMin], depMax: r[F.depMax],
             }));
             return officelRows;
-          }).catch(() => { _officelPromise = null; return null; });
-        }
-        return _officelPromise;
+          }));
       }
       function officelPopupHtml(d) {
         const dep = d.dep > 0 ? `보증금 ${fmtAmtExact(d.dep * 1e4)}` : '';
@@ -5064,15 +5012,12 @@
       
       
       const topisCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 50 });
-      let topisRows = null, _topisPromise = null;
+      let topisRows = null;
       function loadTopisCctv() {
-        if (!_topisPromise) {
-          _topisPromise = fetch('cctv_topis.json').then((r) => r.json()).then((j) => {
+        return loadOnce('_topisPromise', () => fetch('cctv_topis.json').then((r) => r.json()).then((j) => {
             topisRows = (j.rows || []).filter((r) => r.lat && r.lng && (r.hls || r.hls2));
             return topisRows;
-          }).catch(() => { _topisPromise = null; return null; });
-        }
-        return _topisPromise;
+          }));
       }
       function openTopisPopup(it) {
         const html = '<div class="cctv-pc">'
@@ -5154,38 +5099,28 @@
       
       
       
+      
+      const svcIconMemo = (k, make) => { const c = window._svcIconCache || (window._svcIconCache = {}); return c[k] || (c[k] = make()); };
       window.svcIcon = function (fi, bg, px) {
         px = Math.max(20, Math.round(px || 30));
-        const k = fi + '|' + bg + '|' + px;
-        if (!window._svcIconCache) window._svcIconCache = {};
-        if (!window._svcIconCache[k]) {
-          window._svcIconCache[k] = L.divIcon({
-            className: 'svc-pin-wrap',
-            html: `<span class="svc-pin" style="background:${bg};width:${px}px;height:${px}px;font-size:${Math.round(px * 0.48)}px;"><i class="fi ${fi}"></i></span>`,
-            iconSize: [px, px], iconAnchor: [Math.floor(px / 2), Math.floor(px / 2)],
-          });
-        }
-        return window._svcIconCache[k];
+        return svcIconMemo(fi + '|' + bg + '|' + px, () => L.divIcon({
+          className: 'svc-pin-wrap',
+          html: `<span class="svc-pin" style="background:${bg};width:${px}px;height:${px}px;font-size:${Math.round(px * 0.48)}px;"><i class="fi ${fi}"></i></span>`,
+          iconSize: [px, px], iconAnchor: [Math.floor(px / 2), Math.floor(px / 2)],
+        }));
       };
       
       
-      window.busIcon = function (color) {
-        const k = 'bus|' + color;
-        if (!window._svcIconCache) window._svcIconCache = {};
-        if (!window._svcIconCache[k]) {
-          window._svcIconCache[k] = L.divIcon({
-            className: 'svc-pin-wrap',
-            html: `<svg width="30" height="30" viewBox="0 0 32 32">`
-              + `<rect x="6.5" y="2.5" width="19" height="20" rx="4" fill="${color}" stroke="#fff" stroke-width="1.5"/>`
-              + `<rect x="9.5" y="5.5" width="13" height="6.5" rx="1.5" fill="#fff" opacity="0.93"/>`
-              + `<circle cx="10.5" cy="16.5" r="1.3" fill="#fff"/><circle cx="21.5" cy="16.5" r="1.3" fill="#fff"/>`
-              + `<circle cx="11" cy="24.5" r="2.5" fill="#2b2f36"/><circle cx="21" cy="24.5" r="2.5" fill="#2b2f36"/>`
-              + `</svg>`,
-            iconSize: [30, 30], iconAnchor: [15, 15],
-          });
-        }
-        return window._svcIconCache[k];
-      };
+      window.busIcon = (color) => svcIconMemo('bus|' + color, () => L.divIcon({
+        className: 'svc-pin-wrap',
+        html: `<svg width="30" height="30" viewBox="0 0 32 32">`
+          + `<rect x="6.5" y="2.5" width="19" height="20" rx="4" fill="${color}" stroke="#fff" stroke-width="1.5"/>`
+          + `<rect x="9.5" y="5.5" width="13" height="6.5" rx="1.5" fill="#fff" opacity="0.93"/>`
+          + `<circle cx="10.5" cy="16.5" r="1.3" fill="#fff"/><circle cx="21.5" cy="16.5" r="1.3" fill="#fff"/>`
+          + `<circle cx="11" cy="24.5" r="2.5" fill="#2b2f36"/><circle cx="21" cy="24.5" r="2.5" fill="#2b2f36"/>`
+          + `</svg>`,
+        iconSize: [30, 30], iconAnchor: [15, 15],
+      }));
       
       
       
@@ -5193,18 +5128,13 @@
       
       window.orgPin = function (src, px) {
         px = Math.max(22, Math.round(px || 26));
-        const k = 'org|' + src + '|' + px;
-        if (!window._svcIconCache) window._svcIconCache = {};
-        if (!window._svcIconCache[k]) {
-          window._svcIconCache[k] = L.divIcon({
-            className: 'svc-pin-wrap',
-            html: `<span class="svc-pin" style="background:#fff;width:${px}px;height:${px}px;padding:3px;">`
-              + `<img src="${src}" alt="" style="max-width:100%;max-height:100%;object-fit:contain;display:block;">`
-              + `</span>`,
-            iconSize: [px, px], iconAnchor: [Math.floor(px / 2), Math.floor(px / 2)],
-          });
-        }
-        return window._svcIconCache[k];
+        return svcIconMemo('org|' + src + '|' + px, () => L.divIcon({
+          className: 'svc-pin-wrap',
+          html: `<span class="svc-pin" style="background:#fff;width:${px}px;height:${px}px;padding:3px;">`
+            + `<img src="${src}" alt="" style="max-width:100%;max-height:100%;object-fit:contain;display:block;">`
+            + `</span>`,
+          iconSize: [px, px], iconAnchor: [Math.floor(px / 2), Math.floor(px / 2)],
+        }));
       };
       
       
@@ -5230,21 +5160,13 @@
       };
       const natlCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 60 });
       
-      natlCluster.on('click', (e) => {
-        const m = e.layer;
-        if (!m || !m._pop) return;
-        ensurePop(m);
-        m.openPopup();
-      });
-      let natlRows = null, _natlPromise = null;
+      natlCluster.on('click', popOnClick);
+      let natlRows = null;
       function loadNatlAsset() {
-        if (!_natlPromise) {
-          _natlPromise = fetch('natlasset.json').then((r) => r.json()).then((j) => {
+        return loadOnce('_natlPromise', () => fetch('natlasset.json').then((r) => r.json()).then((j) => {
             natlRows = (j.rows || []).filter((r) => r.lat && r.lng);
             return natlRows;
-          }).catch(() => { _natlPromise = null; return null; });
-        }
-        return _natlPromise;
+          }));
       }
       function natlPopupHtml(d) {
         const col = NATL_COLOR[d.way] || '#868e96';
@@ -5288,13 +5210,8 @@
       });
 
       const parkingCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 60 });
-      parkingCluster.on('click', (e) => {
-        const m = e.layer;
-        if (!m || !m._pop) return;
-        ensurePop(m);
-        m.openPopup();
-      });
-      let parkingRows = null, _parkingPromise = null;
+      parkingCluster.on('click', popOnClick);
+      let parkingRows = null;
       
       
       
@@ -5302,8 +5219,7 @@
       function decodeParking(j) {
         if (!j) return [];
         if (j.v !== 2) return (j.rows || []).filter((r) => r.lat && r.lng);   
-        const F = {};
-        (j.fields || []).forEach((f, i) => { F[f] = i; });
+        const F = colIdx(j.fields || []);
         const sg = j.sigungus || [];
         const out = [];
         for (const r of (j.rows || [])) {
@@ -5315,13 +5231,10 @@
         return out;
       }
       function loadParking() {
-        if (!_parkingPromise) {
-          _parkingPromise = fetch('parking.json').then((r) => r.json()).then((j) => {
+        return loadOnce('_parkingPromise', () => fetch('parking.json').then((r) => r.json()).then((j) => {
             parkingRows = decodeParking(j);
             return parkingRows;
-          }).catch(() => { _parkingPromise = null; return null; });
-        }
-        return _parkingPromise;
+          }));
       }
       function parkingPopupHtml(d) {
         const fee = d.fee === 'free' ? '무료' : d.fee === 'paid' ? '유료' : null;
@@ -5366,15 +5279,11 @@
       
       
       const PARKING_MAX = 3000;        
-      let _parkingFilter = null;
-      function parkingBuild(filter) {
+      
+      function parkingBuild() {
         if (!parkingRows) return;
-        _parkingFilter = filter || null;
         parkingCluster.clearLayers();
-        const b = map.getBounds().pad(0.15);
-        const base = filter ? parkingRows.filter(filter) : parkingRows;
-        const list = base.filter((d) => b.contains([d.lat, d.lng])).slice(0, PARKING_MAX);
-        parkingCluster.addLayers(list.map((d) => {
+        parkingCluster.addLayers(inViewRows(parkingRows, PARKING_MAX).map((d) => {
           const col = PARKING_COLOR[d.fee || 'unknown'];
           const m = L.marker([d.lat, d.lng], { icon: svcIcon('fi-rr-parking-circle', col, 30) });
           m._pop = (() => parkingPopupHtml(d));
@@ -5387,8 +5296,7 @@
         loadParking().then(() => parkingBuild());
       });
       
-      viewSearchAdd(() => map.hasLayer(parkingCluster) && !!parkingRows,
-        () => parkingBuild(_parkingFilter));
+      viewSearchAdd(() => map.hasLayer(parkingCluster) && !!parkingRows, () => parkingBuild());
 
       
       
@@ -5402,18 +5310,11 @@
       
       
       const officelSaleCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 60 });
-      officelSaleCluster.on('click', (e) => {
-        const m = e.layer;
-        if (!m || !m._pop) return;
-        ensurePop(m);
-        m.openPopup();
-      });
-      let officelSaleRows = null, _officelSalePromise = null;
+      officelSaleCluster.on('click', popOnClick);
+      let officelSaleRows = null;
       function loadOfficelSale() {
-        if (!_officelSalePromise) {
-          _officelSalePromise = fetch('realprice_officel_sale.json').then((r) => r.json()).then((j) => {
-            const F = {};
-            j.fields.forEach((f, i) => { F[f] = i; });
+        return loadOnce('_officelSalePromise', () => fetch('realprice_officel_sale.json').then((r) => r.json()).then((j) => {
+            const F = colIdx(j.fields);
             officelSaleRows = j.rows.map((r) => ({
               name: j.names[r[F.name]], gu: j.gus[r[F.gu]], dong: j.dongs[r[F.dong]],
               lat: r[F.lat], lng: r[F.lng], p: r[F.p], ym: r[F.ym], a: r[F.a],
@@ -5421,9 +5322,7 @@
             }));
             window.__officelRows = officelSaleRows;   
             return officelSaleRows;
-          }).catch(() => { _officelSalePromise = null; return null; });
-        }
-        return _officelSalePromise;
+          }));
       }
       function officelSalePopupHtml(d) {
         const rows = [];
@@ -5469,20 +5368,13 @@
       
       
       const silvCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 60 });
-      silvCluster.on('click', (e) => {
-        const m = e.layer;
-        if (!m || !m._pop) return;
-        ensurePop(m);
-        m.openPopup();
-      });
-      let silvRows = null, _silvPromise = null, _silvNoGeo = 0;
+      silvCluster.on('click', popOnClick);
+      let silvRows = null, _silvNoGeo = 0;
       function loadSilv() {
-        if (!_silvPromise) {
-          _silvPromise = fetch('realprice_silv.json')
+        return loadOnce('_silvPromise', () => fetch('realprice_silv.json')
             .then(okJson)
             .then((j) => {
-              const F = {};
-              j.fields.forEach((f, i) => { F[f] = i; });
+              const F = colIdx(j.fields);
               const all = j.rows.map((r) => ({
                 gu: j.gus[r[F.gu]], dong: r[F.dong], apt: r[F.apt], jibun: r[F.jibun],
                 area: r[F.area], floor: r[F.floor], amt: r[F.amt], ymd: r[F.ymd],
@@ -5491,10 +5383,7 @@
               silvRows = all.filter((d) => d.lat && d.lng);
               _silvNoGeo = all.length - silvRows.length;
               return silvRows;
-            })
-            .catch((e) => { _silvPromise = null; console.error('분양권전매 로드 실패:', e); return null; });
-        }
-        return _silvPromise;
+            }), '분양권전매');
       }
       function silvPopupHtml(d) {
         const rows = [];
@@ -5544,12 +5433,7 @@
       
       
       const busCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 50 });
-      busCluster.on('click', (e) => {
-        const m = e.layer;
-        if (!m || !m._pop) return;
-        ensurePop(m);
-        m.openPopup();
-      });
+      busCluster.on('click', popOnClick);
       
       
       
@@ -5577,40 +5461,31 @@
         return { r: hit, isDong: !!dong, gu: gu || null, seoul: seoul || null };
       }
 
-      let busRows = null, _busPromise = null;
+      let busRows = null;
       function loadBusStop() {
-        if (!_busPromise) {
-          _busPromise = fetch('transit_busstop.json')
+        return loadOnce('_busPromise', () => fetch('transit_busstop.json')
             .then(okJson)
             .then((j) => {
-              const F = {};
-              j.fields.forEach((f, i) => { F[f] = i; });
+              const F = colIdx(j.fields);
               busRows = j.rows.map((r) => ({
                 no: r[F.no], nm: r[F.nm], ty: j.tys[r[F.ty]], lat: r[F.lat], lng: r[F.lng],
               }));
               return busRows;
-            })
-            .catch((e) => { _busPromise = null; console.error('버스정류소 로드 실패:', e); return null; });
-        }
-        return _busPromise;
+            }), '버스정류소');
       }
       
       
       
-      let busVol = null, _busVolPromise = null;
+      let busVol = null;
       function loadBusVolume() {
-        if (!_busVolPromise) {
-          _busVolPromise = fetch('transit_busvolume.json')
+        return loadOnce('_busVolPromise', () => fetch('transit_busvolume.json')
             .then(okJson)
             .then((j) => {
               const m = new Map();
               (j.rows || []).forEach((r) => { m.set(String(r[0]), { on: r[1], off: r[2], rte: r[3], h: r[4] }); });
               busVol = { ym: j.ym, by: m };
               return busVol;
-            })
-            .catch((e) => { _busVolPromise = null; console.error('정류장 이용량 로드 실패:', e); return null; });
-        }
-        return _busVolPromise;
+            }), '정류장 이용량');
       }
       
       
@@ -5627,20 +5502,24 @@
         const mx = Math.max.apply(null, h);
         if (!mx) return '';
         const peak = h.indexOf(mx);
-        const bars = h.map((x, i) => {
-          const pct = Math.max(2, Math.round(x / mx * 100));
-          
-          const rush = (i >= 7 && i <= 9) || (i >= 18 && i <= 20);
-          return '<span title="' + i + '시 ' + x.toLocaleString('ko-KR') + '명" style="display:inline-block;'
-            + 'width:3.6%;height:' + pct + '%;background:' + (i === peak ? '#e8590c' : rush ? '#748ffc' : '#ced4da')
-            + ';vertical-align:bottom;"></span>';
-        }).join('');
         return '<div style="margin-top:4px;font-size:12px;">'
           + '일평균 <b>' + tot.toLocaleString('ko-KR') + '명</b>'
           + ' <span style="color:var(--c-muted);">승차 ' + (v.on || 0).toLocaleString('ko-KR')
           + ' · 하차 ' + (v.off || 0).toLocaleString('ko-KR') + '</span>'
           + (v.rte ? ' · 노선 ' + v.rte + '개' : '') + '</div>'
-          + '<div style="margin-top:3px;height:26px;line-height:0;">' + bars + '</div>'
+          + hourBarsHtml(h, mx, (i) => i, (x, i) => i === peak, peak);
+      }
+      
+      
+      function hourBarsHtml(h, mx, hr, hot, peak) {
+        const bars = h.map((v, i) => {
+          const pct = Math.max(2, Math.round(v / mx * 100)), hh = hr(i);
+          const rush = (hh >= 7 && hh <= 9) || (hh >= 18 && hh <= 20);
+          return '<span title="' + hh + '시 ' + v.toLocaleString('ko-KR') + '명" style="display:inline-block;'
+            + 'width:3.6%;height:' + pct + '%;background:' + (hot(v, i) ? '#e8590c' : rush ? '#748ffc' : '#ced4da')
+            + ';vertical-align:bottom;"></span>';
+        }).join('');
+        return '<div style="margin-top:3px;height:26px;line-height:0;">' + bars + '</div>'
           + '<div style="font-size:11px;color:var(--c-muted);">최다 ' + peak + '시'
           + ' <span style="color:#748ffc;">■</span> 출퇴근(7~9·18~20)</div>';
       }
@@ -5706,6 +5585,7 @@
         return same.length === 1 ? same[0] : null;
       }
       function busRouteHide() {
+        _busRouteSeq++;   
         if (_busRouteLine) { map.removeLayer(_busRouteLine); _busRouteLine = null; _busRouteKey = ''; }
       }
       async function busRouteLine(kind, rtid, no, city, label) {
@@ -5798,29 +5678,30 @@
             if (busPosRt !== rtid) return;          
             const buses = (j && j.buses) || [];
             busPosDraw(buses);
-            if (!buses.length) {
-              
-              if (!quiet) toast(no + '번 — ' + (j && j.msg ? j.msg : '지금 운행 중인 차량이 없음.'));
-              return;
-            }
-            if (!quiet) {
-              toast(no + '번 실시간 ' + buses.length + '대 — 25초마다 갱신됨(레이어를 끄면 멈춤)');
-              
-              const g = L.featureGroup(busPosLayer.getLayers());
-              try { map.fitBounds(g.getBounds().pad(0.15)); } catch (e) {  }
-            }
+            livePosNotify(j, buses.length, busPosLayer, no + '번', 25, quiet);
           })
           .catch(() => { if (!quiet) toast('실시간 위치를 불러오지 못함.'); });
       }
 
+      
+      
+      
+      function livePosNotify(j, n, layer, label, sec, quiet) {
+        if (quiet) return;
+        if (!n) { toast(label + ' — ' + (j && j.msg ? j.msg : '지금 운행 중인 차량이 없음.')); return; }
+        toast(label + ' 실시간 ' + n + '대 — ' + sec + '초마다 갱신됨(레이어를 끄면 멈춤)');
+        const g = L.featureGroup(layer.getLayers());
+        try { map.fitBounds(g.getBounds().pad(0.15)); } catch (e) {  }
+      }
+      function busPosTick() {
+        if (!map.hasLayer(busPosLayer) || !busPosRt) { busPosStop(); return; }
+        busPosLoad(busPosRt, busPosNo, true);
+      }
       function busPosStart(rtid, no) {
         busPosStop();
         busPosLoad(rtid, no, false);
         
-        busPosTimer = setInterval(() => {
-          if (!map.hasLayer(busPosLayer) || !busPosRt) { busPosStop(); return; }
-          busPosLoad(busPosRt, busPosNo, true);
-        }, 25000);
+        busPosTimer = setInterval(busPosTick, 25000);
       }
       
       map.on('overlayremove', (e) => { if (e.layer === busPosLayer) busPosStop(); });
@@ -5831,11 +5712,8 @@
         if (document.hidden) {
           if (busPosTimer) { clearInterval(busPosTimer); busPosTimer = null; }
         } else if (busPosRt && map.hasLayer(busPosLayer) && !busPosTimer) {
-          busPosLoad(busPosRt, busPosNo, true);
-          busPosTimer = setInterval(() => {
-            if (!map.hasLayer(busPosLayer) || !busPosRt) { busPosStop(); return; }
-            busPosLoad(busPosRt, busPosNo, true);
-          }, 25000);
+          busPosTick();
+          busPosTimer = setInterval(busPosTick, 25000);
         }
       });
 
@@ -5901,39 +5779,27 @@
             if (tagoPosKey !== key) return;          
             const buses = (j && j.buses) || [];
             tagoPosDraw(buses, label);
-            if (!buses.length) {
-              if (!quiet) toast(label + ' — ' + (j && j.msg ? j.msg : '지금 운행 중인 차량이 없음.'));
-              return;
-            }
-            if (!quiet) {
-              toast(label + ' 실시간 ' + buses.length + '대 — 30초마다 갱신됨(레이어를 끄면 멈춤)');
-              const g = L.featureGroup(tagoPosLayer.getLayers());
-              try { map.fitBounds(g.getBounds().pad(0.15)); } catch (e) {  }
-            }
+            livePosNotify(j, buses.length, tagoPosLayer, label, 30, quiet);
           })
           .catch(() => { if (!quiet) toast('실시간 위치를 불러오지 못함.'); });
+      }
+      function tagoPosTick() {
+        if (!map.hasLayer(tagoPosLayer) || !tagoPosKey) { tagoPosStop(); return; }
+        const [c, r] = tagoPosKey.split('/');
+        tagoPosLoad(c, r, tagoPosLabel, true);
       }
       function tagoPosStart(cc, rid, label, src) {
         tagoPosStop();
         tagoPosLoad(cc, rid, label, false, src);
-        tagoPosTimer = setInterval(() => {
-          if (!map.hasLayer(tagoPosLayer) || !tagoPosKey) { tagoPosStop(); return; }
-          const [c2, r2] = tagoPosKey.split('/');
-          tagoPosLoad(c2, r2, tagoPosLabel, true);
-        }, 30000);
+        tagoPosTimer = setInterval(tagoPosTick, 30000);
       }
       map.on('overlayremove', (e) => { if (e.layer === tagoPosLayer) tagoPosStop(); });
       document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
           if (tagoPosTimer) { clearInterval(tagoPosTimer); tagoPosTimer = null; }
         } else if (tagoPosKey && map.hasLayer(tagoPosLayer) && !tagoPosTimer) {
-          const [c2, r2] = tagoPosKey.split('/');
-          tagoPosLoad(c2, r2, tagoPosLabel, true);
-          tagoPosTimer = setInterval(() => {
-            if (!map.hasLayer(tagoPosLayer) || !tagoPosKey) { tagoPosStop(); return; }
-            const [c3, r3] = tagoPosKey.split('/');
-            tagoPosLoad(c3, r3, tagoPosLabel, true);
-          }, 30000);
+          tagoPosTick();
+          tagoPosTimer = setInterval(tagoPosTick, 30000);
         }
       });
       
@@ -5957,13 +5823,13 @@
           _tagoRoutesP = fetch('tago_routes.json')
             .then((r) => (r.ok ? r.json() : null))
             .then((j) => { _tagoRoutes = (j && j.rows) || []; })
-            .catch(() => { _tagoRoutes = []; });
+            .catch(() => { _tagoRoutes = []; _tagoRoutesP = null; });   
         }
         if (!_chomilRoutesP) {
           _chomilRoutesP = fetch('chomil_routes.json')
             .then((r) => (r.ok ? r.json() : null))
             .then((j) => { _chomilRoutes = (j && j.rows) || []; })
-            .catch(() => { _chomilRoutes = []; });
+            .catch(() => { _chomilRoutes = []; _chomilRoutesP = null; });
         }
         const nq = String(q || '').replace(/\s+/g, '').toLowerCase();
         if (nq.length < 2) return [];
@@ -6077,21 +5943,12 @@
       
       
       
-      bikeCluster.on('click', (e) => {
-        const m = e.layer;
-        if (!m || !m._pop) return;
-        ensurePop(m);
-        m.openPopup();
-      });
-      let bikeRows = null, _bikePromise = null;
+      bikeCluster.on('click', popOnClick);
+      let bikeRows = null;
       function loadBike() {
-        if (!_bikePromise) {
-          _bikePromise = fetch('transit_bike.json')
+        return loadOnce('_bikePromise', () => fetch('transit_bike.json')
             .then(okJson)
-            .then((j) => { bikeRows = j.rows || []; return bikeRows; })
-            .catch((e) => { _bikePromise = null; console.error('따릉이 로드 실패:', e); return null; });
-        }
-        return _bikePromise;
+            .then((j) => { bikeRows = j.rows || []; return bikeRows; }), '따릉이');
       }
       function bikePopupHtml(d) {
         const rows = ['<div><b>' + esc(d.nm || d.id) + '</b></div>'];
@@ -6126,22 +5983,12 @@
       
       const subCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 40 });
       
-      subCluster.on('click', (e) => {
-        const m = e.layer;
-        if (!m || !m._pop) return;
-        ensurePop(m);
-        m.openPopup();
-      });
-      let subRows = null, _subPromise = null;   
+      subCluster.on('click', popOnClick);
+      let subRows = null;   
       function loadSubway() {
-        if (!_subPromise) {
-          _subPromise = fetch('transit_subway.json')
-            .then(okJson)
-            .then((j) => { subRows = j.rows || []; subMeta = j; subStations = subRows; return subRows; })
-            .catch((e) => { _subPromise = null; console.error('지하철 로드 실패:', e); return null; });
-          loadTransfer();
-        }
-        return _subPromise;
+        if (!_onceP.has('_subPromise')) loadTransfer();   
+        return loadOnce('_subPromise', () => loadSubJson()
+          .then((j) => { subRows = j.rows || []; subMeta = j; subStations = subRows; return subRows; }), '지하철');
       }
       
       
@@ -6180,15 +6027,6 @@
         const hours = (subMeta && subMeta.hours) || [];
         const mx = Math.max.apply(null, h.concat([0]));
         const peak = mx ? hours[h.indexOf(mx)] : null;
-        const bars = mx ? h.map((v, i) => {
-          const pct = Math.max(2, Math.round(v / mx * 100));
-          const hh = hours[i];
-          
-          const rush = (hh >= 7 && hh <= 9) || (hh >= 18 && hh <= 20);
-          return '<span title="' + hh + '시 ' + v.toLocaleString('ko-KR') + '명" style="display:inline-block;'
-            + 'width:3.6%;height:' + pct + '%;background:'
-            + (v === mx ? '#e8590c' : rush ? '#748ffc' : '#ced4da') + ';vertical-align:bottom;"></span>';
-        }).join('') : '';
         const rows = [];
         rows.push('<div><b>' + esc(d.nm) + '</b></div>');
         if (d.ln && d.ln.length) {
@@ -6210,11 +6048,7 @@
             + ' <span style="color:var(--c-muted);">토 ' + Number(tr[1]).toLocaleString('ko-KR')
             + ' · 일 ' + Number(tr[2]).toLocaleString('ko-KR') + '</span></div>');
         }
-        if (bars) {
-          rows.push('<div style="margin-top:3px;height:26px;line-height:0;">' + bars + '</div>');
-          rows.push('<div style="font-size:11px;color:var(--c-muted);">최다 ' + peak + '시'
-            + ' <span style="color:#748ffc;">■</span> 출퇴근(7~9·18~20)</div>');
-        }
+        if (mx) rows.push(hourBarsHtml(h, mx, (i) => hours[i], (v) => v === mx, peak));
         rows.push('<div style="margin-top:5px;font-size:11px;color:var(--c-muted);">서울 열린데이터광장 지하철 승하차'
           + (subMeta && subMeta.ym ? ' · ' + subMeta.ym.slice(0, 4) + '.' + subMeta.ym.slice(4) + ' 일평균' : '') + '</div>');
         return '<div class="pc"><div class="pc-head">'
@@ -6240,14 +6074,10 @@
       
       function subwayNear(lat, lng) {
         if (!subRows) return null;
-        const R = 6371000, rad = Math.PI / 180;
         const out = [];
         for (const d of subRows) {
           if (Math.abs(d.lat - lat) > 0.012 || Math.abs(d.lng - lng) > 0.015) continue;
-          const dLat = (d.lat - lat) * rad, dLng = (d.lng - lng) * rad;
-          const a = Math.sin(dLat / 2) ** 2
-            + Math.cos(lat * rad) * Math.cos(d.lat * rad) * Math.sin(dLng / 2) ** 2;
-          const mm = 2 * R * Math.asin(Math.min(1, Math.sqrt(a)));
+          const mm = geoM(lat, lng, d.lat, d.lng);
           if (mm <= SUB_NEAR) out.push(Object.assign({ _d: Math.round(mm) }, d));
         }
         return out.sort((x, y) => x._d - y._d);
@@ -6265,15 +6095,10 @@
         '서부선남부연장': '#0d9488', '신림선북부연장': '#ca8a04',
         '면목선': '#4f46e5', '우이신설연장': '#B0CE18', '9호선4단계': '#BDB092',
       };
-      let _planPromise = null;
       function loadPlannedLines() {
-        if (!_planPromise) {
-          _planPromise = fetch('transit_planned_lines.json')
+        return loadOnce('_planPromise', () => fetch('transit_planned_lines.json')
             .then(okJson)
-            .then((j) => { planBuild(j); return j; })
-            .catch((e) => { _planPromise = null; console.error('계획노선 로드 실패:', e); return null; });
-        }
-        return _planPromise;
+            .then((j) => { planBuild(j); return j; }), '계획노선');
       }
       function planBuild(j) {
         planLayer.clearLayers();
@@ -6417,6 +6242,7 @@
       function subtrainStart() {
         subtrainStop();
         subTrainDead.clear();
+        subTrainFail = 0;   
         if (!map.hasLayer(subTrainLayer)) subTrainLayer.addTo(map);
         loadSubway().then(() => {
           if (!map.hasLayer(subTrainLayer)) return;
@@ -6441,26 +6267,22 @@
       const TRDAR_SE_COLOR = { 골목상권: '#2260C3', 발달상권: '#e8590c', 전통시장: '#7048e8', 관광특구: '#0ca678' };
       const trdarCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 50 });
       
-      trdarCluster.on('click', (e) => {
-        const m = e.layer;
-        if (!m || !m._pop) return;
-        ensurePop(m);
-        m.openPopup();
-      });
-      let trdarRows = null, _trdarPromise = null, trdarQ = null, trdarGuIx = null;
+      trdarCluster.on('click', popOnClick);
+      let trdarRows = null, trdarQ = null, trdarGuIx = null;
       function loadTrdar() {
-        if (!_trdarPromise) {
-          _trdarPromise = fetch('trdar.json')
+        return loadOnce('_trdarPromise', () => fetch('trdar.json')
             .then(okJson)
-            .then((j) => { trdarRows = j.rows || []; trdarQ = j.q || null; trdarGuIx = j.guIx || null; return trdarRows; })
-            .catch((e) => { _trdarPromise = null; console.error('상권 로드 실패:', e); return null; });
-        }
-        return _trdarPromise;
+            .then((j) => { trdarRows = j.rows || []; trdarQ = j.q || null; trdarGuIx = j.guIx || null; return trdarRows; }), '상권');
       }
       
       
       const qLabel = (q) => (/^\d{5}$/.test(String(q)) ? String(q).slice(0, 4) + '년 ' + String(q).slice(4) + '분기' : '');
       
+      
+      const trdarBars = (arr, mx, pk, top, h, w, color, tipOf) => '<div style="margin-top:' + top + 'px;height:' + h + 'px;line-height:0;">'
+        + arr.map((v, i) => '<span title="' + tipOf(v, i) + '" style="display:inline-block;'
+          + 'width:' + w + '%;height:' + Math.max(3, Math.round(v / mx * 100)) + '%;background:'
+          + (i === pk ? color : '#ced4da') + ';vertical-align:bottom;margin-right:1%;"></span>').join('') + '</div>';
       function trdarBody(d, dist) {
         const rows = [];
         
@@ -6483,11 +6305,7 @@
           const LB = ['0-6', '6-11', '11-14', '14-17', '17-21', '21-24'];
           const mx = Math.max.apply(null, d.tz);
           const peak = d.tz.indexOf(mx);
-          rows.push('<div style="margin-top:3px;height:22px;line-height:0;">'
-            + d.tz.map((v, i) => '<span title="' + LB[i] + '시 ' + fmtAmt(v) + '" style="display:inline-block;'
-              + 'width:15.5%;height:' + Math.max(3, Math.round(v / mx * 100)) + '%;background:'
-              + (i === peak ? '#e8590c' : '#ced4da') + ';vertical-align:bottom;margin-right:1%;"></span>').join('')
-            + '</div>'
+          rows.push(trdarBars(d.tz, mx, peak, 3, 22, 15.5, '#e8590c', (v, i) => LB[i] + '시 ' + fmtAmt(v))
             + '<div style="font-size:11px;color:var(--c-muted);">최다 ' + LB[peak] + '시'
             + (d.wk && (d.wk[0] + d.wk[1]) > 0
               ? ' · 주중 ' + Math.round(d.wk[0] / (d.wk[0] + d.wk[1]) * 100) + '% / 주말 '
@@ -6510,11 +6328,8 @@
             + ' <span style="color:var(--c-muted);">(여 ' + fPct + '%)</span>'
             + (R.hh ? ' · ' + fmtCnt(R.hh, '가구') : '') + '</div>');
           if (R.age && R.age.some((v) => v > 0)) {
-            rows.push('<div style="margin-top:2px;height:18px;line-height:0;">'
-              + R.age.map((v, i) => '<span title="' + AGE[i] + ' ' + nf(v) + '명" style="display:inline-block;'
-                + 'width:15.5%;height:' + Math.max(3, Math.round(v / amx * 100)) + '%;background:'
-                + (i === apk ? '#2260C3' : '#ced4da') + ';vertical-align:bottom;margin-right:1%;"></span>').join('')
-              + '</div><div style="font-size:11px;color:var(--c-muted);">연령 최다 ' + AGE[apk] + '</div>');
+            rows.push(trdarBars(R.age, amx, apk, 2, 18, 15.5, '#2260C3', (v, i) => AGE[i] + ' ' + nf(v) + '명')
+              + '<div style="font-size:11px;color:var(--c-muted);">연령 최다 ' + AGE[apk] + '</div>');
           }
         }
 
@@ -6576,11 +6391,8 @@
             const PL = ['1억↓', '1억', '2억', '3억', '4억', '5억', '6억↑'];
             const pmx = Math.max.apply(null, A.pc);
             const ppk = A.pc.indexOf(pmx);
-            rows.push('<div style="margin-top:2px;height:16px;line-height:0;">'
-              + A.pc.map((v, i) => '<span title="' + PL[i] + ' ' + nf(v) + '세대" style="display:inline-block;'
-                + 'width:13.2%;height:' + Math.max(3, Math.round(v / pmx * 100)) + '%;background:'
-                + (i === ppk ? '#7048e8' : '#ced4da') + ';vertical-align:bottom;margin-right:1%;"></span>').join('')
-              + '</div><div style="font-size:11px;color:var(--c-muted);">가격대 최다 ' + PL[ppk] + '</div>');
+            rows.push(trdarBars(A.pc, pmx, ppk, 2, 16, 13.2, '#7048e8', (v, i) => PL[i] + ' ' + nf(v) + '세대')
+              + '<div style="font-size:11px;color:var(--c-muted);">가격대 최다 ' + PL[ppk] + '</div>');
           }
         }
 
@@ -6601,9 +6413,7 @@
   rows.push((qParts.length ? '<div class="ls-fn" style="margin-top:5px;font-size:11px;color:var(--c-muted);">'
     + qParts.join(' · ') + '</div>' : '')
   + '<div class="ls-fo" style="margin-top:5px;font-size:11px;color:var(--c-muted);">서울 상권분석서비스'
-  + (q.sel ? ' · 매출 ' + qLabel(q.sel) : '')
-  + (q.wrc && q.wrc !== q.sel ? ' · 직장인구 ' + qLabel(q.wrc) : '')
-  + (q.stor && q.stor !== q.sel ? ' · 점포 ' + qLabel(q.stor) : '')
+  + qParts.map((p) => ' · ' + p).join('')
   + '<br>개업률·폐업률은 제공된 점포 수로 계산(개업점포수 ÷ 전체점포수)</div>');
         return rows.join('');
       }
@@ -6636,14 +6446,10 @@
       const TRDAR_NEAR = 700;
       function trdarNear(lat, lng) {
         if (!trdarRows) return null;
-        const R = 6371000, rad = Math.PI / 180;
         let best = null, bd = Infinity;
         for (const d of trdarRows) {
           if (Math.abs(d.lat - lat) > 0.011 || Math.abs(d.lng - lng) > 0.014) continue;
-          const dLat = (d.lat - lat) * rad, dLng = (d.lng - lng) * rad;
-          const a = Math.sin(dLat / 2) ** 2
-            + Math.cos(lat * rad) * Math.cos(d.lat * rad) * Math.sin(dLng / 2) ** 2;
-          const m = 2 * R * Math.asin(Math.min(1, Math.sqrt(a)));
+          const m = geoM(lat, lng, d.lat, d.lng);
           if (m < bd) { bd = m; best = d; }
         }
         return best && bd <= TRDAR_NEAR ? Object.assign({ _d: Math.round(bd) }, best) : null;
@@ -6663,53 +6469,31 @@
       
       
       
-      
-      
-      
-      const schLabel = (d) => d.lv || (schCatOf(d) ? schCatOf(d)[1] : (d.knd || ''));
       const schColor = (d) => SCHOOL_COLOR[d.lv] || (schCatOf(d) ? schCatOf(d)[2] : '#868e96');
       const schoolCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 50 });
       
-      schoolCluster.on('click', (e) => {
-        const m = e.layer;
-        if (!m || !m._pop) return;
-        ensurePop(m);
-        m.openPopup();
-      });
+      schoolCluster.on('click', popOnClick);
       const hospCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 55 });
       const emrgCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 45 });
-      [hospCluster, emrgCluster].forEach((cl) => cl.on('click', (e) => {
-        const m = e.layer;
-        if (!m || !m._pop) return;
-        ensurePop(m);
-        m.openPopup();
-      }));
+      [hospCluster, emrgCluster].forEach((cl) => cl.on('click', popOnClick));
       
       
       function schoolsNear(lat, lng, radius) {
         if (!schoolRows) return null;
-        const R = 6371000, rad = Math.PI / 180;
         const out = [];
         for (const d of schoolRows) {
           
           if (Math.abs(d.lat - lat) > 0.012 || Math.abs(d.lng - lng) > 0.015) continue;
-          const dLat = (d.lat - lat) * rad, dLng = (d.lng - lng) * rad;
-          const a = Math.sin(dLat / 2) ** 2
-            + Math.cos(lat * rad) * Math.cos(d.lat * rad) * Math.sin(dLng / 2) ** 2;
-          const m = 2 * R * Math.asin(Math.min(1, Math.sqrt(a)));
+          const m = geoM(lat, lng, d.lat, d.lng);
           if (m <= radius) out.push(Object.assign({ d: Math.round(m) }, d));
         }
         return out.sort((x, y) => x.d - y.d);
       }
-      let schoolRows = null, _schoolPromise = null;
+      let schoolRows = null;
       function loadSchool() {
-        if (!_schoolPromise) {
-          _schoolPromise = fetch('school.json')
+        return loadOnce('_schoolPromise', () => fetch('school.json')
             .then(okJson)
-            .then((j) => { schoolRows = j.rows || []; return schoolRows; })
-            .catch((e) => { _schoolPromise = null; console.error('학교 로드 실패:', e); return null; });
-        }
-        return _schoolPromise;
+            .then((j) => { schoolRows = j.rows || []; return schoolRows; }), '학교');
       }
       function schoolPopupHtml(d) {
         const rows = [`<div style="margin-bottom:3px;"><b>${esc(d.nm)}</b></div>`];
@@ -6754,42 +6538,32 @@
           return m;
         }));
       }
-      let hospRows = null, _hospPromise = null;
+      let hospRows = null;
       function loadHosp() {
-        if (!_hospPromise) {
-          _hospPromise = fetch('health_hosp.json')
+        return loadOnce('_hospPromise', () => fetch('health_hosp.json')
             .then(okJson)
             .then((j) => {
-              const F = {};
-              j.fields.forEach((f, i) => { F[f] = i; });
+              const F = colIdx(j.fields);
               hospRows = j.rows.map((r) => ({
                 nm: r[F.nm], cl: j.cls[r[F.cl]], gu: j.gus[r[F.gu]], dong: j.dongs[r[F.dong]],
                 addr: String(r[F.addr] || '').trim(), tel: r[F.tel], dr: r[F.dr],
                 lat: r[F.lat], lng: r[F.lng],
               }));
               return hospRows;
-            })
-            .catch((e) => { _hospPromise = null; console.error('병원 로드 실패:', e); return null; });
-        }
-        return _hospPromise;
+            }), '병원');
       }
-      let emrgRows = null, _emrgPromise = null;
+      let emrgRows = null;
       function loadEmrg() {
-        if (!_emrgPromise) {
-          _emrgPromise = fetch('health_emrg.json')
+        return loadOnce('_emrgPromise', () => fetch('health_emrg.json')
             .then(okJson)
             .then((j) => {
-              const F = {};
-              j.fields.forEach((f, i) => { F[f] = i; });
+              const F = colIdx(j.fields);
               emrgRows = j.rows.map((r) => ({
                 nm: r[F.nm], kind: r[F.kind], addr: r[F.addr],
                 tel: r[F.tel], ertel: r[F.ertel], lat: r[F.lat], lng: r[F.lng],
               }));
               return emrgRows;
-            })
-            .catch((e) => { _emrgPromise = null; console.error('응급의료 로드 실패:', e); return null; });
-        }
-        return _emrgPromise;
+            }), '응급의료');
       }
       const telLink = (t) => (t ? '<a href="tel:' + esc(String(t).replace(/[^0-9+]/g, '')) + '">' + esc(t) + '</a>' : '');
       function hospPopupHtml(d) {
@@ -6889,12 +6663,7 @@
       
       
       const evCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 60 });
-      evCluster.on('click', (e) => {
-        const m = e.layer;
-        if (!m || !m._pop) return;
-        ensurePop(m);
-        m.openPopup();
-      });
+      evCluster.on('click', popOnClick);
       let evRows = null, _evPromise = null;
       function loadEv() {
         if (!_evPromise) {
@@ -6902,8 +6671,7 @@
           
           
           _evPromise = fetch('evcharger.json').then(okJson).then((j) => {
-            const F = {};
-            j.fields.forEach((f, i) => { F[f] = i; });
+            const F = colIdx(j.fields);
             evRows = j.rows.map((r) => ({
               name: r[F.name], addr: r[F.addr], lat: r[F.lat], lng: r[F.lng],
               useTime: r[F.useTime], parkingFree: r[F.parkingFree], kind: r[F.kind],
@@ -6942,14 +6710,8 @@
       });
       
       
-      
-      
-      let _svcRedrawT = null;
-      
-      
       viewSearchAdd(() => map.hasLayer(evCluster) && !!evRows, () => evBuild());
       viewSearchAdd(() => map.hasLayer(hospCluster) && !!hospRows, () => hospBuild());
-      
       
 
       
@@ -6957,19 +6719,13 @@
       
       
       const agedCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 60 });
-      agedCluster.on('click', (e) => {
-        const m = e.layer;
-        if (!m || !m._pop) return;
-        ensurePop(m);
-        m.openPopup();
-      });
+      agedCluster.on('click', popOnClick);
       let agedRows = null, _agedPromise = null;
       function loadAgedFclty() {
         if (!_agedPromise) {
           
           _agedPromise = fetch('aged_facility.json').then(okJson).then((j) => {
-            const F = {};
-            j.fields.forEach((f, i) => { F[f] = i; });
+            const F = colIdx(j.fields);
             agedRows = j.rows.map((r) => ({
               name: r[F.name], gbn: r[F.gbn], addr: r[F.addr], cplYmd: r[F.cplYmd],
               grade: r[F.grade], mngMby: r[F.mngMby], chckYmd: r[F.chckYmd],
@@ -7018,10 +6774,15 @@
           }
         };
         let left = 2;                        
+        
+        
+        let partial = false;
         const done = () => {
           if (--left > 0) return;
           out.sort((a, b) => FAC_ORDER.indexOf(a.label) - FAC_ORDER.indexOf(b.label));
           _facCache.set(ck, out);
+          
+          if (partial) setTimeout(() => { if (_facCache.get(ck) === out) _facCache.delete(ck); }, 60000);
           cb(out);
         };
 
@@ -7044,9 +6805,11 @@
             near(kinderRows, '유치원', (r) => r.nm,
               (r) => [r.est || '', r.cap ? '정원 ' + r.cap + '명' : ''].filter(Boolean).join(' · '));
           }
-          near(schoolRows.filter((r) => r.lv === '초'), '초등학교', (r) => r.nm, _schSub);
-          near(schoolRows.filter((r) => r.lv === '중'), '중학교', (r) => r.nm, _schSub);
-          near(schoolRows.filter((r) => r.lv === '고'), '고등학교', (r) => r.nm, _schSub);
+          if (!schoolRows || !subRows || !busRows || (!kinderRows && !kinderMissing)) partial = true;
+          const sch = schoolRows || [];
+          near(sch.filter((r) => r.lv === '초'), '초등학교', (r) => r.nm, _schSub);
+          near(sch.filter((r) => r.lv === '중'), '중학교', (r) => r.nm, _schSub);
+          near(sch.filter((r) => r.lv === '고'), '고등학교', (r) => r.nm, _schSub);
           near(subRows, '지하철', (r) => r.nm + '역', (r) => {
             const ln = (r.ln || []).slice(0, 2).join('·');
             const tot = (r.on || 0) + (r.off || 0);
@@ -7054,7 +6817,7 @@
           });
           near(busRows, '버스', (r) => r.nm, (r) => r.ty || '');
           done();
-        }).catch(done);
+        }).catch(() => { partial = true; done(); });
 
         if (!(window.kakao && kakao.maps && kakao.maps.services)) { done(); return; }
         const svc = new kakao.maps.services.Places();
@@ -7062,9 +6825,11 @@
         const KCATS = [['HP8', '병원'], ['PM9', '약국'], ['MT1', '마트'], ['BK9', '은행']];
         let kleft = KCATS.length;
         const kdone = () => { if (--kleft === 0) done(); };
-        const kguard = setTimeout(() => { kleft = 1; kdone(); }, 7000);   
+        const kguard = setTimeout(() => { partial = true; kleft = 1; kdone(); }, 7000);   
         KCATS.forEach(([code, label]) => {
           svc.categorySearch(code, (data, status) => {
+            if (kleft <= 0) return;   
+            if (status === kakao.maps.services.Status.ERROR) partial = true;   
             try {
               if (status === kakao.maps.services.Status.OK && data && data.length) {
                 const p = data[0];
@@ -7081,16 +6846,12 @@
       
       
       
-      let kinderRows = null, _kinderPromise = null;
+      let kinderRows = null, kinderMissing = false;
+      
       function loadKinder() {
-        if (!_kinderPromise) {
-          _kinderPromise = fetch('kinder.json')
-            .then((r) => (r.ok ? r.json() : null))
-            .then((j) => { kinderRows = (j && j.rows) || null; return kinderRows; })
-            
-            .catch(() => { _kinderPromise = null; return null; });
-        }
-        return _kinderPromise;
+        return loadOnce('_kinderPromise', () => fetch('kinder.json')
+            .then((r) => { if (r.status === 404) { kinderMissing = true; return null; } return okJson(r); })
+            .then((j) => { kinderRows = (j && j.rows) || null; return kinderRows; }));
       }
       const FAC_ORDER = ['유치원', '초등학교', '중학교', '고등학교',
         '병원', '약국', '마트', '은행', '지하철', '버스'];
@@ -7482,8 +7243,7 @@
             }),
           ]).then(([j, ph, idxData]) => {
             _auctionIdx = idxData;
-            const F = {};
-            j.fields.forEach((f, i) => { F[f] = i; });
+            const F = colIdx(j.fields);
             const getPhotos = (cn) => (ph[cn] && ph[cn].length ? ph[cn].filter((p) => p && p.file) : []);
             auctionRows = j.rows.filter((r) => r[F.lat] && r[F.lng]).map((r, i) => ({
               court: j.courts[r[F.court]], cn: r[F.cn], no: r[F.no], addr: r[F.addr], note: r[F.note],
@@ -7996,13 +7756,12 @@
         
         if (!k) return aucShopKey(d) && window.__loadNonres
           ? window.__loadNonres().catch(() => null) : Promise.resolve(null);
-        if (k === 'apt') return window.__rpRows ? Promise.resolve(1)
-          : (window.__loadRp ? window.__loadRp().catch(() => null) : Promise.resolve(null));
+        
+        const ensure = (rows, load) => (rows ? Promise.resolve(1) : (load ? load().catch(() => null) : Promise.resolve(null)));
+        if (k === 'apt') return ensure(window.__rpRows, window.__loadRp);
         if (k === 'house') return aucHouseEnsure();
-        if (k === 'villa') return window.__villaRows ? Promise.resolve(1)
-          : (window.__loadVilla ? window.__loadVilla().catch(() => null) : Promise.resolve(null));
-        return window.__officelRows ? Promise.resolve(1)
-          : (window.__loadOfficel ? window.__loadOfficel().catch(() => null) : Promise.resolve(null));
+        if (k === 'villa') return ensure(window.__villaRows, window.__loadVilla);
+        return ensure(window.__officelRows, window.__loadOfficel);
       }
       
       
@@ -8020,25 +7779,25 @@
           return m ? (+m[1]) * 100 + (+m[2]) : 0;
         };
         const out = [];
-        const push = (lat, lng, eok, area, ym, name, dong) => {
+        
+        const push = (lat, lng, eok, area, ymRaw, name, dong) => {
           if (!eok || !area || area < 3) return;
-          if (ym && ym < cut) return;
           if (lat == null || lng == null) return;
           const km = kmDist(d.lat, d.lng, lat, lng);
           if (km > AUC_NEAR_KM) return;
+          const ym = ymNum(ymRaw);
+          if (ym && ym < cut) return;
           out.push({ km, eok, area, unit: eok * 10000 / area, name, dong });  
         };
         if (k === 'apt') {
           (window.__rpRows || []).forEach((r) => {
             if (r.cancel) return;                 
-            push(r.lat, r.lng, r.priceEok, r.area, ymNum(r.ymd), r.name, r.dong);
+            push(r.lat, r.lng, r.priceEok, r.area, r.ymd, r.name, r.dong);
           });
         } else if (k === 'villa') {
-          (window.__villaRows || []).forEach((r) => {
-            push(r.lat, r.lng, r.priceEok, r.area, ymNum(r.ymd), r.name, r.dong);
-          });
+          (window.__villaRows || []).forEach((r) => push(r.lat, r.lng, r.priceEok, r.area, r.ymd, r.name, r.dong));
         } else {
-          (window.__officelRows || []).forEach((r) => push(r.lat, r.lng, r.p, r.a, ymNum(r.ym), r.name, r.dong));
+          (window.__officelRows || []).forEach((r) => push(r.lat, r.lng, r.p, r.a, r.ym, r.name, r.dong));
         }
         return { k, list: out };
       }
@@ -8064,7 +7823,7 @@
       };
       function aucHouseStat(d) {
         if (!_aucHouse) return null;
-        const k = aucGuDong(d && d.addr) || aucGuDong(((d && d.detail && d.detail.objct) || [])[0] || {} && (((d.detail || {}).objct || [])[0] || {}).addr);
+        const k = aucGuDong(d && d.addr) || aucGuDong(o0(d).addr);
         const h = k && _aucHouse[k];
         return h && h.cnt ? Object.assign({ key: k }, h) : null;
       }
@@ -8075,17 +7834,19 @@
       
       
       const AUC_RATE_MIN = 5;
-      let _aucSold = null;
+      let _aucSold = null, _aucSoldP = null;
       function aucSoldEnsure() {
         if (_aucSold) return Promise.resolve(_aucSold);
         
         
         
         
-        return fetch('auction_sold.json?v=1')
-          .then((r) => (r.ok ? r.json() : null))
+        
+        
+        return _aucSoldP || (_aucSoldP = fetch('auction_sold.json?v=1')
+          .then((r) => (r.status === 404 ? null : okJson(r)))
           .then((j) => { _aucSold = (j && j.rows) || []; return _aucSold; })
-          .catch(() => { _aucSold = []; return _aucSold; });
+          .catch(() => { _aucSoldP = null; return []; }));
       }
       const AUC_USE_MATCH = { apt: /아파트/, villa: /연립|다세대|빌라/, offi: /오피스텔/, house: /단독|다가구/,
         shop: /상가|근린|점포/ };
@@ -8244,9 +8005,7 @@
           out.push(r.lup);
         });
         if (out.length < AUC_NEAR_MIN) return 0;
-        out.sort((a, b) => a - b);
-        return out.length % 2 ? out[(out.length - 1) / 2]
-          : (out[out.length / 2 - 1] + out[out.length / 2]) / 2;
+        return medianOf(out);
       }
       
       
@@ -8271,7 +8030,6 @@
       
       
       function aucSummaryText(d) {
-        const det = (d && d.detail) || {};
         const bits = [];
         const st = aucStatusText(d), dd = aucDday(d);
         const nr = aucNear(d), rt = aucRights(d), cost = aucCostRange(d);
@@ -8577,10 +8335,7 @@
         if (list.length < AUC_SHOP_MIN) return null;
         const area = aucShopArea(d);
         const areaSrc = aucShopAreaSrc(d);
-        const med = (a) => {
-          const v = a.slice().sort((x, y) => x - y);
-          return v.length % 2 ? v[(v.length - 1) / 2] : (v[v.length / 2 - 1] + v[v.length / 2]) / 2;
-        };
+        const med = medianOf;
         const same = area ? list.filter((x) => Math.abs(x.a - area) / area <= AUC_SHOP_TOL) : [];
         if (same.length >= AUC_SHOP_MIN) {
           const midEok = med(same.map((x) => x.p));
@@ -8714,23 +8469,24 @@
         
         
         
-        if (kind === 'house') {
-          const low0 = aucLowEok(d);
-          const h = aucHouseStat(d);
-          const a0 = aucArea(d && d.detail) || (br && br.area) || 0;
-          
-          
-          
-          if (!low0 || !a0 || !h || !h.med || !h.area) return { why: '' };
-          const mid0 = h.med * 10000 / h.area;      
-          const mine0 = low0 * 10000 / a0;
-          return { kind, area: a0, areaSrc, tier: 'dong', tierNm: `${h.key} 단독·다가구`,
-            n: h.cnt, mid: mid0, mine: mine0, pct: Math.round(mine0 / mid0 * 100),
-            note: '동 단위 집계(국토부가 단독·다가구 지번을 마스킹해 건물 단위 비교 불가)' };
-        }
+        
+        
         
         const area = aucArea(d && d.detail) || (br && br.area) || 0;
         const areaSrc = aucArea(d && d.detail) ? '' : (br && br.area ? '건축물대장' : '');
+        if (kind === 'house') {
+          const low0 = aucLowEok(d);
+          const h = aucHouseStat(d);
+          
+          
+          
+          if (!low0 || !area || !h || !h.med || !h.area) return { why: '' };
+          const mid0 = h.med * 10000 / h.area;      
+          const mine0 = low0 * 10000 / area;
+          return { kind, area, areaSrc, tier: 'dong', tierNm: `${h.key} 단독·다가구`,
+            n: h.cnt, mid: mid0, mine: mine0, pct: Math.round(mine0 / mid0 * 100),
+            note: '동 단위 집계(국토부가 단독·다가구 지번을 마스킹해 건물 단위 비교 불가)' };
+        }
         if (!area) return { why: (d.detail && (d.detail.objct || []).length > 1)
           ? '일괄매각이라 면적 합산이 필요해 비교 생략'
           : (br && br.capped
@@ -8739,10 +8495,7 @@
         const low = aucLowEok(d);
         if (!low) return { why: '최저매각가격 없음으로 비교 불가' };
         const { list } = aucNearUnits(d);
-        const med = (arr) => {
-          const a = arr.slice().sort((x, y) => x - y);
-          return a.length % 2 ? a[(a.length - 1) / 2] : (a[a.length / 2 - 1] + a[a.length / 2]) / 2;
-        };
+        const med = medianOf;
         
         
         
@@ -10088,8 +9841,7 @@
           _onbidPromise = fetch('onbid.json')
             .then(okJson)
             .then((j) => {
-              const F = {};
-              j.fields.forEach((f, i) => { F[f] = i; });
+              const F = colIdx(j.fields);
               onbidRows = j.rows
                 .filter((r) => r[F.lat] != null && r[F.lng] != null)
                 .map((r, i) => ({
@@ -10453,12 +10205,7 @@
       };
       
       map.on('popupopen', (e) => wireObDtl(e.popup));
-      onbidCluster.on('click', (e) => {
-        const m = e.layer;
-        if (!m || !m._pop) return;
-        ensurePop(m);
-        m.openPopup();
-      });
+      onbidCluster.on('click', popOnClick);
       
       viewSearchAdd(() => map.hasLayer(onbidCluster) && !!onbidRows, () => onbidBuild());
       function onbidBuild() {
@@ -10518,12 +10265,7 @@
       
       const auctionSchedCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 60 });
       
-      auctionSchedCluster.on('click', (e) => {
-        const m = e.layer;
-        if (!m || !m._pop) return;
-        ensurePop(m);
-        m.openPopup();
-      });
+      auctionSchedCluster.on('click', popOnClick);
       let auctionSchedRows = null, _auctionSchedPromise = null;
       
       const AUC_SCHED_COLOR = '#7048e8';
@@ -10532,8 +10274,7 @@
           _auctionSchedPromise = fetch('auction_sched.json')
             .then((r) => (r.ok ? r.json() : Promise.reject(new Error('sched HTTP ' + r.status))))
             .then((j) => {
-              const F = {};
-              (j.fields || []).forEach((f, i) => { F[f] = i; });
+              const F = colIdx(j.fields || []);
               auctionSchedRows = (j.rows || []).filter((r) => r[F.lat] && r[F.lng]).map((r) => ({
                 court: j.courts[r[F.court]], cn: r[F.cn], no: r[F.no], addr: r[F.addr], note: r[F.note],
                 appr: r[F.appr], dept: r[F.dept], sale: r[F.sale], use: r[F.use], low: r[F.low],
@@ -11269,7 +11010,7 @@
       
       let _srListed = false;
       if (typeof aucSoldEnsure === 'function') aucSoldEnsure().then(() => {
-        if (_srListed) return; _srListed = true;
+        if (_srListed || !_aucSold) return; _srListed = true;   
         try { if (auctionRows && typeof auctionPanel !== 'undefined' && auctionPanel && !auctionPanel.hidden && typeof auctionRenderList === 'function') auctionRenderList(); } catch (e) {}
       });
       
@@ -13454,12 +13195,7 @@
       
       let _jbRpZone = null;
       const jbRpLayer = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 60 });
-      jbRpLayer.on('click', (e) => {
-        const m = e.layer;
-        if (!m || !m._rp) return;
-        ensurePop(m);
-        m.openPopup();
-      });
+      jbRpLayer.on('click', popOnClick);
       const jbRpBar = document.createElement('div');
       jbRpBar.id = 'jb-rp-bar';
       jbRpBar.style.display = 'none';
@@ -13909,23 +13645,15 @@
       };
       const pubrentCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 60 });
       const pubrentNoticeLayer = L.layerGroup();
-      pubrentCluster.on('click', (e) => {
-        const m = e.layer;
-        if (!m || !m._pop) return;
-        ensurePop(m);
-        m.openPopup();
-      });
-      let pubrentData = null, _pubrentPromise = null;
+      pubrentCluster.on('click', popOnClick);
+      let pubrentData = null;
       function loadPubrent() {
-        if (!_pubrentPromise) {
-          _pubrentPromise = fetch('pubrent.json').then((r) => r.json()).then((j) => {
+        return loadOnce('_pubrentPromise', () => fetch('pubrent.json').then((r) => r.json()).then((j) => {
             pubrentData = j;
             
             
             return loadPubrentUnits().then(() => j);
-          }).catch(() => { _pubrentPromise = null; return null; });
-        }
-        return _pubrentPromise;
+          }));
       }
       
       
@@ -14300,10 +14028,10 @@
         };
       }
       function subPopupHtml(it) {
-        const range = (a, b) => (a || '?') + (b && b !== a ? ' ~ ' + b : '');
+        const range = (a, b) => esc(a || '?') + (b && b !== a ? ' ~ ' + esc(b) : '');
         const rows = [`<b>${esc(it.name)}</b>`, esc(it.addr)];
         if (it.supply) rows.push(`총 <b>${Number(it.supply).toLocaleString()}</b>세대`);
-        if (it.pblancDe) rows.push(`모집공고일: ${it.pblancDe}`);
+        if (it.pblancDe) rows.push(`모집공고일: ${esc(it.pblancDe)}`);
         if (it.spStart) rows.push(`특별공급 접수: ${range(it.spStart, it.spEnd)}`);
         if (it.rcptStart) rows.push(`일반(1순위) 접수: ${range(it.rcptStart, it.rcptEnd)}`);
         
@@ -15284,13 +15012,9 @@
       
       
       
-      let _zoneData = null, _zonePromise = null;
+      let _zoneData = null;
       function loadZonePolys() {
-        if (!_zonePromise) {
-          _zonePromise = fetch('zone_polygons.json?v=1').then(okJson).then((j) => { _zoneData = j; return j; })
-            .catch((e) => { _zonePromise = null; console.error('구역 폴리곤 로드 실패:', e); return null; });
-        }
-        return _zonePromise;
+        return loadOnce('_zonePromise', () => fetch('zone_polygons.json?v=1').then(okJson).then((j) => { _zoneData = j; return j; }), '구역 폴리곤');
       }
       const _vwz = [];   
       function zoneLayer(kind, color, label) {
@@ -18804,8 +18528,7 @@
       _kamLoading = new Promise((done) => {
         dgkFetch('kamcoRlcBidTrgtCltr', 'cltrLst', { numOfRows: 100, pageNo: 1, resultType: 'json' }, (j) => {
           const b = j && ((j.response && j.response.body) || j.body);
-          const it = b && b.items && (b.items.item || b.items);
-          const a = asArr(it);
+          const a = bodyItems(b);
           
           
           
@@ -18907,8 +18630,7 @@
         dgkFetch('GetFundBrokInfoService_V2', 'getFundBrokInfo_V2',
           { numOfRows: 50, pageNo: 1, resultType: 'json' }, (j) => {
             const b = dgkBody(j);
-            const it = b && b.items && (b.items.item || b.items);
-            const a = asArr(it);
+            const a = bodyItems(b);
           
           
           
@@ -20457,16 +20179,7 @@
           return Number.isFinite(_q) ? _q : null;
         });
       
-      const months = () => {
-        if (_engyLatestYm) return [_engyLatestYm];
-        const out = [];
-        const now = new Date();
-        for (let i = 0; i < 8; i++) {
-          const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-          out.push(String(d.getFullYear()) + String(d.getMonth() + 1).padStart(2, '0'));
-        }
-        return out;
-      };
+      const months = () => aptMonths(_engyLatestYm);
       
       
       
@@ -20509,16 +20222,16 @@
     
     
     
-    const aptMonths = (cached) => {
-      if (cached) return [cached];
-      const out = [];
-      const now = new Date();
-      for (let i = 0; i < 8; i++) {
+    
+    function ymBack(n, from = 0) {
+      const out = [], now = new Date();
+      for (let i = from; i < from + n; i++) {
         const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
         out.push(String(d.getFullYear()) + String(d.getMonth() + 1).padStart(2, '0'));
       }
       return out;
-    };
+    }
+    const aptMonths = (cached) => (cached ? [cached] : ymBack(8));
     
     
     
@@ -20991,19 +20704,15 @@
       
       
     };
-    let lvpRows = null, lvpMeta = null, _lvpPromise = null;
+    let lvpRows = null, lvpMeta = null;
     function loadLivingPop() {
-      if (!_lvpPromise) {
-        _lvpPromise = fetch('livingpop.json')
+      return loadOnce('_lvpPromise', () => fetch('livingpop.json')
           .then(okJson)
           .then((j) => {
             lvpMeta = j;
             lvpRows = new Map((j.rows || []).map((x) => [x.cd, x]));
             return lvpRows;
-          })
-          .catch((e) => { _lvpPromise = null; console.error('생활인구 로드 실패:', e); return null; });
-      }
-      return _lvpPromise;
+          }), '생활인구');
     }
     
     
@@ -21015,15 +20724,11 @@
     
     
     
-    let rgData = null, _rgPromise = null;
+    let rgData = null;
     function loadRoneGu() {
-      if (!_rgPromise) {
-        _rgPromise = fetch('rone_gu.json')
+      return loadOnce('_rgPromise', () => fetch('rone_gu.json')
           .then(okJson)
-          .then((j) => { rgData = j; return j; })
-          .catch((e) => { _rgPromise = null; console.error('자치구 동향 로드 실패:', e); return null; });
-      }
-      return _rgPromise;
+          .then((j) => { rgData = j; return j; }), '자치구 동향');
     }
     
     
@@ -21448,8 +21153,7 @@
         put(buy, r.ymd, Number(r.priceEok) * 10000 / py);
         put(jns, r.ymd, Number(r.jeonse) * 10000 / py);
       }
-      const med = (a) => { const b2 = a.slice().sort((x, y) => x - y); const h = b2.length >> 1;
-        return b2.length % 2 ? b2[h] : (b2[h - 1] + b2[h]) / 2; };
+      const med = medianOf;
       const ymNum = (k) => { const p2 = String(k).split('.'); return Number(p2[0]) * 12 + Number(p2[1] || 1); };
       const series = (m) => [...m.entries()]
         .filter(([, a]) => a.length >= PRICE_CHART_MIN_N)
@@ -25424,7 +25128,7 @@
       const ranked = [];
       groups.forEach((rows) => {
         if (rows.length < 3) return;
-        const sorted = rows.slice().sort((a, b) => String(a.ymd).localeCompare(String(b.ymd)));
+        const sorted = rows.slice().sort((a, b) => ymdN(a.ymd) - ymdN(b.ymd));
         const mid = Math.floor(sorted.length / 2);
         const early = sorted.slice(0, mid), late = sorted.slice(mid);
         if (!early.length || !late.length) return;
