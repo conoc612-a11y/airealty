@@ -33,6 +33,16 @@
   var ARROW_MAX = 80;      // 긴 경로에서 마커가 무한정 늘지 않게 상한을 둔다.
 
   function style(type) { return PALETTE[type] || PALETTE.car; }
+  // 구간 경계(환승 지점) 좌표 + 다음 구간 색 — 두 어댑터(Leaflet·네이버)가 각자 마커로 그린다.
+  function segBoundaries(segs) {
+    var out = [];
+    for (var i = 1; i < segs.length; i++) {
+      var prev = segs[i - 1].coords;
+      if (!prev || !prev.length) continue;
+      out.push({ c: prev[prev.length - 1], color: style(segs[i].type).color });
+    }
+    return out;
+  }
 
   // 흰 꺾쇠 한 개. rotate 는 화면 기준 각도(도)다.
   function chevronHTML(deg) {
@@ -135,14 +145,11 @@
           }).addTo(layer);
         });
         // 구간 경계(환승 지점) — 구간이 2개 이상일 때만 의미가 있다
-        for (var i = 1; i < segs.length; i++) {
-          var prev = segs[i - 1].coords;
-          if (!prev || !prev.length) continue;
-          var c = prev[prev.length - 1];
-          L.marker([c[0], c[1]], { interactive: false, keyboard: false,
-            icon: L.divIcon({ className: 'mj-rl-node', html: nodeHTML(style(segs[i].type).color), iconSize: [13, 13], iconAnchor: [7, 7] })
+        segBoundaries(segs).forEach(function (b) {
+          L.marker([b.c[0], b.c[1]], { interactive: false, keyboard: false,
+            icon: L.divIcon({ className: 'mj-rl-node', html: nodeHTML(b.color), iconSize: [13, 13], iconAnchor: [7, 7] })
           }).addTo(layer);
-        }
+        });
         return this;
       },
       bounds: function () {
@@ -197,13 +204,10 @@
             strokeWeight: st.weight, strokeOpacity: 0.95, strokeLineCap: 'round', strokeLineJoin: 'round',
             strokeStyle: st.dashed ? 'dot' : 'solid', clickable: false }));
         });
-        for (var i = 1; i < segs.length; i++) {
-          var prev = segs[i - 1].coords;
-          if (!prev || !prev.length) continue;
-          var c = prev[prev.length - 1];
-          objs.push(new naver.maps.Marker({ map: map, position: new naver.maps.LatLng(c[0], c[1]), clickable: false,
-            icon: { content: nodeHTML(style(segs[i].type).color), anchor: new naver.maps.Point(7, 7) } }));
-        }
+        segBoundaries(segs).forEach(function (b) {
+          objs.push(new naver.maps.Marker({ map: map, position: new naver.maps.LatLng(b.c[0], b.c[1]), clickable: false,
+            icon: { content: nodeHTML(b.color), anchor: new naver.maps.Point(7, 7) } }));
+        });
         drawArrows();
         listener = naver.maps.Event.addListener(map, 'idle', drawArrows);
         return this;
@@ -225,7 +229,6 @@
   }
 
   window.RouteLine = {
-    PALETTE: PALETTE,
     leaflet: leafletAdapter,
     naver: naverAdapter
   };

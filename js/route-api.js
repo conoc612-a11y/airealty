@@ -52,33 +52,32 @@
   // 🔴 **경유지를 받는다.** OSRM 은 좌표를 `;` 로 이어 붙이면 그 순서대로 지난다.
   //   `osrm(profile, o, d)` 로 부르던 옛 호출은 그대로 둔다(via 를 안 주면 예전과 같다).
   //   ⚠️ 좌표 순서는 **경도,위도** 다. 뒤집으면 엉뚱한 곳으로 간다.
+  // OSRM 응답 → { coords:[[lat,lng]…], distance, duration }. 경로가 없으면 null.
+  function osrmRoute(j) {
+    var rt = j && j.routes && j.routes[0];
+    if (!rt) return null;
+    return {
+      coords: rt.geometry.coordinates.map(function (c) { return [c[1], c[0]]; }),
+      distance: rt.distance,
+      duration: rt.duration
+    };
+  }
   function osrm(profile, o, d, via) {
     var base = profile === 'foot' ? OSRM_FOOT : OSRM_CAR;
     var pts = [o].concat(Array.isArray(via) ? via.filter(Boolean) : []).concat([d]);
     var path = pts.map(function (p) { return p.lng + ',' + p.lat; }).join(';');
     var url = base + path + '?overview=full&geometries=geojson';
-    return jget(url).then(function (j) {
-      var rt = j && j.routes && j.routes[0];
-      if (!rt) return null;
-      return {
-        coords: rt.geometry.coordinates.map(function (c) { return [c[1], c[0]]; }),
-        distance: rt.distance,
-        duration: rt.duration
-      };
-    }).catch(function () {
+    return jget(url).then(osrmRoute).catch(function () {
       // 한쪽이 죽거나 느리면 다른 쪽으로 넘어간다. 둘 다 무료 공개 서버라 언제든 흔들린다.
       var alt = profile === 'foot' ? OSRM_CAR : OSRM_CAR_ALT;
       return jget(alt + path + '?overview=full&geometries=geojson', TIMEOUT_ALT_MS)
         .then(function (j) {
-          var rt = j && j.routes && j.routes[0];
-          if (!rt) return null;
-          return {
-            coords: rt.geometry.coordinates.map(function (c) { return [c[1], c[0]]; }),
-            distance: rt.distance,
-            // 도보를 차량 서버로 대체했을 때는 소요시간을 그대로 쓸 수 없다 — 4.5km/h 로 환산한다.
-            duration: profile === 'foot' ? rt.distance / 1.25 : rt.duration,
-            approx: profile === 'foot'      // 차량 도로 기하로 대체했다는 표시
-          };
+          var r = osrmRoute(j);
+          if (!r) return null;
+          // 도보를 차량 서버로 대체했을 때는 소요시간을 그대로 쓸 수 없다 — 4.5km/h 로 환산한다.
+          if (profile === 'foot') r.duration = r.distance / 1.25;
+          r.approx = profile === 'foot';      // 차량 도로 기하로 대체했다는 표시
+          return r;
         }).catch(function () { return null; });
     });
   }

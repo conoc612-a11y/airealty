@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=857ec80" />
+  <link rel="stylesheet" href="css/tokens.css?v=d4d76c4" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=857ec80"></script>
+  <script src="js/auth-guard.js?v=d4d76c4"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=857ec80" />
+  <link rel="stylesheet" href="css/buttons.css?v=d4d76c4" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=857ec80" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=d4d76c4" />
   <style>
     :root {
       
@@ -1991,7 +1991,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=857ec80"></script>
+  <script src="js/ie-guard.js?v=d4d76c4"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2313,25 +2313,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-24 00:16 · 857ec80</span></span>
+          · <span class="build-tag">build 2026-09-25 02:01 · d4d76c4</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=857ec80"></script>
+  <script src="js/joinkey.js?v=d4d76c4"></script>
   
-  <script src="js/identity.js?v=857ec80"></script>
-  <script src="js/common.js?v=857ec80"></script>
-  <script src="js/ui-resize.js?v=857ec80"></script>
-  <script src="js/footer-resize.js?v=857ec80"></script>
-  <script src="js/route-line.js?v=857ec80"></script>
-  <script src="js/route-api.js?v=857ec80"></script>
-  <script src="js/footer-stats.js?v=857ec80"></script>
+  <script src="js/identity.js?v=d4d76c4"></script>
+  <script src="js/common.js?v=d4d76c4"></script>
+  <script src="js/ui-resize.js?v=d4d76c4"></script>
+  <script src="js/footer-resize.js?v=d4d76c4"></script>
+  <script src="js/route-line.js?v=d4d76c4"></script>
+  <script src="js/route-api.js?v=d4d76c4"></script>
+  <script src="js/footer-stats.js?v=d4d76c4"></script>
   
 
-  <script src="js/ad-consent.js?v=857ec80"></script>
+  <script src="js/ad-consent.js?v=d4d76c4"></script>
   <script>
     
     
@@ -2360,6 +2360,17 @@
     
     
     
+    
+    function wireRouteSvButtons(node, lat, lng, close) {
+      if (!node) return;
+      const sBtn = node.querySelector('.rt-start'), eBtn = node.querySelector('.rt-end');
+      if (sBtn) sBtn.onclick = () => { setRoutePoint('start', lat, lng); close(); };
+      if (eBtn) eBtn.onclick = () => { setRoutePoint('end', lat, lng); close(); };
+      const svBtn = node.querySelector('.sv-btn');
+      if (svBtn) svBtn.onclick = () => showStreetView(lat, lng);
+    }
+    
+    const pnuOf = (st) => st.addrPnu || (st.bld && st.bld.pnu) || (st.parcel && st.parcel.pnu);
     const popOnClick = (e) => { const m = e.layer; if (!m || !m._pop) return; ensurePop(m); m.openPopup(); };
     const colIdx = (fields) => Object.fromEntries(fields.map((f, i) => [f, i]));   
     const pnuQ = (pp) => `&bjdongCd=${pp.bjdongCd}&platGbCd=${pp.platGbCd}&bun=${pp.bun}&ji=${pp.ji}`;
@@ -4174,6 +4185,16 @@
     const kmDist = (lat1, lng1, lat2, lng2) => { const dy = (lat1 - lat2) * 111, dx = (lng1 - lng2) * 88; return Math.sqrt(dx * dx + dy * dy); };
     
     const medianOf = (a) => { const v = a.slice().sort((x, y) => x - y), h = v.length >> 1; return v.length % 2 ? v[h] : (v[h - 1] + v[h]) / 2; };
+    
+    function rpRadiusStats(lat, lng, radiusKm) {
+      let cnt = 0, sum = 0, sumCnt = 0, minP = Infinity, maxP = -Infinity;
+      (rpRows || []).forEach((r) => {
+        if (r.lat == null || !(kmDist(lat, lng, r.lat, r.lng) < radiusKm)) return;
+        cnt++;
+        if (r.priceEok != null) { sum += r.priceEok; sumCnt++; if (r.priceEok < minP) minP = r.priceEok; if (r.priceEok > maxP) maxP = r.priceEok; }
+      });
+      return { cnt, sum, sumCnt, minP, maxP };
+    }
     
     
     function geoM(lat1, lng1, lat2, lng2) {
@@ -6956,6 +6977,9 @@
       const aucYmdDot = (y) => (y ? String(y).replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3') : '');
       
       
+      const aucNormYmd = (v) => { const m = String(v || '').match(/(\d{4})[.\-](\d{1,2})[.\-](\d{1,2})/); return m ? `${m[1]}.${String(m[2]).padStart(2, '0')}.${String(m[3]).padStart(2, '0')}` : ''; };
+      
+      
       
       
       
@@ -7679,9 +7703,8 @@
         if (!doc || !doc.senior) return null;
         const sen = doc.senior;                      
         const les = (det.curst && det.curst.dlt_ordTsLserLtn) || [];
-        const norm = (v) => { const m = String(v || '').match(/(\d{4})[.\-](\d{1,2})[.\-](\d{1,2})/); return m ? `${m[1]}.${String(m[2]).padStart(2, '0')}.${String(m[3]).padStart(2, '0')}` : ''; };
         const rows = les.map((L) => {
-          const mv = norm(L.mvinDtlCtt);
+          const mv = aucNormYmd(L.mvinDtlCtt);
           return { mv, before: mv ? mv < sen : null,
             dep: String(L.lesDposDts || '').replace(/[^\d]/g, '') };
         });
@@ -8718,12 +8741,11 @@
         const apprEok = aucApprEok(d);
         const r = aucRights(d);
         const les = (d.detail && d.detail.curst && d.detail.curst.dlt_ordTsLserLtn) || [];
-        const norm = (v) => { const m = String(v || '').match(/(\d{4})[.\-](\d{1,2})[.\-](\d{1,2})/); return m ? `${m[1]}.${String(m[2]).padStart(2, '0')}.${String(m[3]).padStart(2, '0')}` : ''; };
         let assumeMan = 0, assumeUnknown = 0, assumeKnown = false;
         const shop = aucIsShop(d);
         if (r && !r.conflict && !r.noTenant && !shop) {
           les.forEach((L) => {
-            const mv = norm(L.mvinDtlCtt);
+            const mv = aucNormYmd(L.mvinDtlCtt);
             if (mv && mv < r.senior) {
               assumeKnown = true;
               const v = Number(String((L && L.lesDposDts) || '').replace(/[^\d]/g, '')) / 1e4;
@@ -8822,11 +8844,10 @@
         const rows = _aucSold.filter((x) => String(x.sa || '') === String(saNo) && Number(x.sold) > 0);
         if (!rows.length) return '';
         const sr = (typeof aucSoldRate === 'function') ? aucSoldRate(d) : null;
-        const dot = (v) => (/^\d{8}$/.test(v || '') ? v.slice(0, 4) + '.' + v.slice(4, 6) + '.' + v.slice(6) : (v || ''));
         const lines = rows.map((x) => {
           const soldMan = Number(x.sold) / 1e4, apprMan = Number(x.appr) / 1e4;
           const pct = apprMan > 0 ? Math.round(soldMan / apprMan * 100) : null;
-          let s = `낙찰 ${fmtAmtExact(soldMan)}${pct != null ? ` (감정가의 ${pct}%)` : ''} · ${esc(dot(x.ymd))}`;
+          let s = `낙찰 ${fmtAmtExact(soldMan)}${pct != null ? ` (감정가의 ${pct}%)` : ''} · ${esc(aucYmdDot(x.ymd))}`;
           if (x.fail != null && String(x.fail) !== '') s += ` · 유찰 ${esc(String(x.fail))}회`;
           if (sr && apprMan > 0) s += ` — 현재 중앙값 ${sr.mid}%로는 ${fmtAmtExact(apprMan * sr.mid / 100)}`;
           if (x.bigo) s += `<br><span style="color:var(--c-muted);">${esc(String(x.bigo).slice(0, 90))}</span>`;
@@ -8843,10 +8864,9 @@
         if (!r || !r.senior || r.conflict) return '';
         if (aucIsShop(d)) return '';   
         const les = (d.detail && d.detail.curst && d.detail.curst.dlt_ordTsLserLtn) || [];
-        const norm = (v) => { const m = String(v || '').match(/(\d{4})[.\-](\d{1,2})[.\-](\d{1,2})/); return m ? `${m[1]}.${String(m[2]).padStart(2, '0')}.${String(m[3]).padStart(2, '0')}` : ''; };
         const cands = [];
         les.forEach((L) => {
-          const mv = norm(L.mvinDtlCtt);
+          const mv = aucNormYmd(L.mvinDtlCtt);
           if (!mv) return;
           const dep = Number(String((L && L.lesDposDts) || '').replace(/[^\d]/g, '')) / 1e4;
           cands.push({ mv, dep, risky: mv < r.senior });
@@ -9566,7 +9586,7 @@
       
       
       const bankruptCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 60 });
-      let bankruptRows = null, _bkPromise = null;
+      let bankruptRows = null;
       const _bkIconCache = {};
       function bkIcon(color) {
         if (!_bkIconCache[color]) {
@@ -9578,20 +9598,15 @@
         }
         return _bkIconCache[color];
       }
+      
+      
+      function loadLayerJson(key, url, onRows, msg, tag) {
+        return loadOnce(key, () => fetch(url).then(okJson).then(onRows)
+          .catch((e) => { onRows([]); toast(msg); console.warn(tag, e); throw e; }));
+      }
       function loadBankrupt() {
-        if (!_bkPromise) {
-          _bkPromise = fetch('bankrupt.json')
-            .then(okJson)
-            .then((rows) => { bankruptRows = rows.filter((x) => x.lat && x.lng); })
-            .catch((e) => {
-              _bkPromise = null;   
-              
-              bankruptRows = [];
-              toast('파산금융 매물을 불러오지 못함 (bankrupt.json — 수집기 실행 필요)');
-              console.warn('파산금융 로드 실패:', e);
-            });
-        }
-        return _bkPromise;
+        return loadLayerJson('_bkPromise', 'bankrupt.json', (rows) => { bankruptRows = rows.filter((x) => x.lat && x.lng); },
+          '파산금융 매물을 불러오지 못함 (bankrupt.json — 수집기 실행 필요)', '파산금융 로드 실패:');
       }
       function bkPopupHtml(d) {
         const won = (v) => (v ? Math.round(v).toLocaleString('ko-KR') + '원' : '미공개');
@@ -9620,10 +9635,12 @@
         }
       }
       
-      bankruptCluster.on('click', (e) => {
+      
+      const clusterPopClick = (maxWidth) => (e) => {
         const f = e.layer && e.layer._pop;
-        if (f) L.popup({ maxWidth: 320 }).setLatLng(e.latlng).setContent(f()).openOn(map);
-      });
+        if (f) L.popup({ maxWidth }).setLatLng(e.latlng).setContent(f()).openOn(map);
+      };
+      bankruptCluster.on('click', clusterPopClick(320));
 
       
       
@@ -9638,20 +9655,10 @@
       
       
       const tzoneLayer = L.layerGroup();
-      let _tzRows = null, _tzPromise = null;
+      let _tzRows = null;
       function loadTradeZone() {
-        if (!_tzPromise) {
-          _tzPromise = fetch('tradezone.json')
-            .then(okJson)
-            .then((rows) => { _tzRows = rows; })
-            .catch((e) => {
-              _tzPromise = null;   
-              _tzRows = [];
-              toast('상권 영역을 불러오지 못함 (tradezone.json)');
-              console.warn('상권 영역 로드 실패:', e);
-            });
-        }
-        return _tzPromise;
+        return loadLayerJson('_tzPromise', 'tradezone.json', (rows) => { _tzRows = rows; },
+          '상권 영역을 불러오지 못함 (tradezone.json)', '상권 영역 로드 실패:');
       }
       function drawTradeZone() {
         tzoneLayer.clearLayers();
@@ -9680,7 +9687,7 @@
       }
 
       const lifeCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 50 });
-      let lifeRows = null, _lifePromise = null;
+      let lifeRows = null;
       
       const LIFE_TY = { DP: '백화점', LM: '대형마트', SM: '기업형슈퍼', CS: '편의점' };
       window.LIFE_TY = LIFE_TY;
@@ -9690,18 +9697,8 @@
       
       window.__lifeStores = (cb) => loadLifePrice().then(() => cb(lifeRows || []));
       function loadLifePrice() {
-        if (!_lifePromise) {
-          _lifePromise = fetch('lifeprice.json')
-            .then(okJson)
-            .then((rows) => { lifeRows = rows; })
-            .catch((e) => {
-              _lifePromise = null;   
-              lifeRows = [];
-              toast('생필품 판매점을 불러오지 못함 (lifeprice.json — 수집기 실행 필요)');
-              console.warn('생필품 로드 실패:', e);
-            });
-        }
-        return _lifePromise;
+        return loadLayerJson('_lifePromise', 'lifeprice.json', (rows) => { lifeRows = rows; },
+          '생필품 판매점을 불러오지 못함 (lifeprice.json — 수집기 실행 필요)', '생필품 로드 실패:');
       }
       function drawLifePrice() {
         lifeCluster.clearLayers();
@@ -9723,10 +9720,7 @@
         }
       }
       
-      lifeCluster.on('click', (e) => {
-        const f = e.layer && e.layer._pop;
-        if (f) L.popup({ maxWidth: 300 }).setLatLng(e.latlng).setContent(f()).openOn(map);
-      });
+      lifeCluster.on('click', clusterPopClick(300));
 
       
       
@@ -9735,21 +9729,11 @@
       
       
       const greenCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 50 });
-      let grnMapRows = null, _grnMapPromise = null;
+      let grnMapRows = null;
       const _grnIcon = svcIcon('fi-rr-leaf', '#2f9e44', 30);
       function loadGreenMap() {
-        if (!_grnMapPromise) {
-          _grnMapPromise = fetch('greenbuild.json')
-            .then(okJson)
-            .then((rows) => { grnMapRows = rows; })
-            .catch((e) => {
-              _grnMapPromise = null;   
-              grnMapRows = [];
-              toast('녹색건축 인증을 불러오지 못함 (greenbuild.json)');
-              console.warn('녹색건축 로드 실패:', e);
-            });
-        }
-        return _grnMapPromise;
+        return loadLayerJson('_grnMapPromise', 'greenbuild.json', (rows) => { grnMapRows = rows; },
+          '녹색건축 인증을 불러오지 못함 (greenbuild.json)', '녹색건축 로드 실패:');
       }
       function drawGreenMap() {
         greenCluster.clearLayers();
@@ -9774,10 +9758,7 @@
         if (miss > 0) toast(`녹색건축 ${geo.length}건 표시 · ${miss}건은 좌표가 없어 팝업(동 단위)에만 나옵니다`);
       }
       
-      greenCluster.on('click', (e) => {
-        const f = e.layer && e.layer._pop;
-        if (f) L.popup({ maxWidth: 300 }).setLatLng(e.latlng).setContent(f()).openOn(map);
-      });
+      greenCluster.on('click', clusterPopClick(300));
 
       
       
@@ -9787,21 +9768,11 @@
       
       
       const rstCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 50 });
-      let rstMapRows = null, _rstMapPromise = null;
+      let rstMapRows = null;
       const _rstIcon = svcIcon('fi-rr-toilet', '#1c7ed6', 30);
       function loadRestroomMap() {
-        if (!_rstMapPromise) {
-          _rstMapPromise = fetch('restroom.json')
-            .then(okJson)
-            .then((rows) => { rstMapRows = rows; })
-            .catch((e) => {
-              _rstMapPromise = null;   
-              rstMapRows = [];
-              toast('공중화장실을 불러오지 못함 (restroom.json)');
-              console.warn('공중화장실 로드 실패:', e);
-            });
-        }
-        return _rstMapPromise;
+        return loadLayerJson('_rstMapPromise', 'restroom.json', (rows) => { rstMapRows = rows; },
+          '공중화장실을 불러오지 못함 (restroom.json)', '공중화장실 로드 실패:');
       }
       function drawRestroomMap() {
         rstCluster.clearLayers();
@@ -9831,10 +9802,7 @@
         if (miss > 0) toast(`공중화장실 ${geo.length}곳 표시 · ${miss}곳은 좌표가 없어 팝업(동 단위)에만 나옵니다`);
       }
       
-      rstCluster.on('click', (e) => {
-        const f = e.layer && e.layer._pop;
-        if (f) L.popup({ maxWidth: 300 }).setLatLng(e.latlng).setContent(f()).openOn(map);
-      });
+      rstCluster.on('click', clusterPopClick(300));
 
       function loadOnbid() {
         if (!_onbidPromise) {
@@ -10455,7 +10423,7 @@
               .map((fav_key) => ({ user_id: a.uid, fav_key }));
             if (adds.length) await a.sb.from('auction_favs').upsert(adds, { onConflict: 'user_id,fav_key' });
             const gone = [...server].filter((k) => local.indexOf(k) < 0);
-            if (gone.length) await a.sb.from('auction_favs').delete().eq('user_id', a.uid).in_('fav_key', gone);
+            if (gone.length) await a.sb.from('auction_favs').delete().eq('user_id', a.uid).in('fav_key', gone);
           } catch (e) {  }
         })();
       }
@@ -11648,7 +11616,6 @@
               
               const _rt = aucRights(d);
               const _sen = _rt && _rt.senior ? _rt.senior : '';
-              const _nrm = (v) => { const m = String(v || '').match(/(\d{4})[.\-](\d{1,2})[.\-](\d{1,2})/); return m ? `${m[1]}.${String(m[2]).padStart(2, '0')}.${String(m[3]).padStart(2, '0')}` : ''; };
               _cuHtml += '<table class="rp-deals" style="width:100%;margin-top:6px;">'
                 + '<thead><tr><th>전입일자</th><th>확정일자</th><th>보증금</th><th>차임</th><th>점유부분</th><th>결과</th></tr></thead><tbody>'
                 
@@ -11659,7 +11626,7 @@
                   + `<td colspan="4" style="white-space:normal;">말소기준권리${_rt.right ? ' · ' + esc(_rt.right) : ''}</td>`
                   + `<td>기준</td></tr>` : '')
                 + _les.map((L) => {
-                  const mv = _nrm(L.mvinDtlCtt);
+                  const mv = aucNormYmd(L.mvinDtlCtt);
                   const before = (_sen && mv) ? mv < _sen : null;
                   const res = before === null ? '-' : (before ? '인수' : '소멸');
                   return `<tr><td>${_d(L.mvinDtlCtt)}</td><td>${_d(L.rgstryCrtcpCfmtnCtt)}</td>`
@@ -11971,40 +11938,24 @@
       }
       
       const RAIL_W = 22;
-      window.__apTab = makeSlideTab($('ap-resizer'), auctionPanel, {
-        side: 'left', defaultWidth: 340, collapsedWidth: RAIL_W,
-        resize: { minW: 200, maxW: 640, bodyClass: 'ap-resizing', gripClass: 'dragging' },
-      });
-      window.__rpTab = makeSlideTab($('rp-panel-resizer'), $('rp-panel'), {
-        side: 'left', defaultWidth: 300, collapsedWidth: RAIL_W,
-        resize: { minW: 220, maxW: 520, bodyClass: 'ap-resizing', gripClass: 'dragging' },
-      });
-      window.__jbTab = makeSlideTab($('jb-panel-resizer'), $('jb-panel'), {
-        side: 'left', defaultWidth: 300, collapsedWidth: RAIL_W,
-        resize: { minW: 220, maxW: 520, bodyClass: 'ap-resizing', gripClass: 'dragging' },
-      });
-      window.__spTab = makeSlideTab($('sp-panel-resizer'), $('sp-panel'), {
-        side: 'right', defaultWidth: 300, collapsedWidth: RAIL_W,
-        resize: { minW: 220, maxW: 520, reverseW: true, bodyClass: 'ap-resizing', gripClass: 'dragging' },
-      });
-      window.__dpTab = makeSlideTab($('dp-panel-resizer'), $('dp-panel'), {
-        side: 'left', defaultWidth: 360, collapsedWidth: RAIL_W,
-        resize: { minW: 260, maxW: 640, bodyClass: 'ap-resizing', gripClass: 'dragging' },
-      });
-      window.__chatTab = makeSlideTab($('chat-panel-resizer'), $('chat-panel'), {
-        side: 'right', defaultWidth: 340, collapsedWidth: RAIL_W,
-        resize: { minW: 280, maxW: 520, reverseW: true, bodyClass: 'ap-resizing', gripClass: 'dragging' },
-      });
-      window.__newsTab = makeSlideTab($('news-panel-resizer'), $('news-panel'), {
-        side: 'right', defaultWidth: 340, collapsedWidth: RAIL_W,
-        resize: { minW: 280, maxW: 560, reverseW: true, bodyClass: 'ap-resizing', gripClass: 'dragging' },
-      });
       
       
       
-      window.__lpTab = makeSlideTab($('lp-panel-resizer'), $('lp-panel'), {
-        side: 'right', defaultWidth: 300, collapsedWidth: RAIL_W,
-        resize: { minW: 220, maxW: 520, reverseW: true, bodyClass: 'ap-resizing', gripClass: 'dragging' },
+      
+      [
+        ['__apTab', 'ap-resizer', auctionPanel, 'left', 340, 200, 640],
+        ['__rpTab', 'rp-panel-resizer', 'rp-panel', 'left', 300, 220, 520],
+        ['__jbTab', 'jb-panel-resizer', 'jb-panel', 'left', 300, 220, 520],
+        ['__spTab', 'sp-panel-resizer', 'sp-panel', 'right', 300, 220, 520],
+        ['__dpTab', 'dp-panel-resizer', 'dp-panel', 'left', 360, 260, 640],
+        ['__chatTab', 'chat-panel-resizer', 'chat-panel', 'right', 340, 280, 520],
+        ['__newsTab', 'news-panel-resizer', 'news-panel', 'right', 340, 280, 560],
+        ['__lpTab', 'lp-panel-resizer', 'lp-panel', 'right', 300, 220, 520],
+      ].forEach(([key, rz, pn, side, w, minW, maxW]) => {
+        window[key] = makeSlideTab($(rz), typeof pn === 'string' ? $(pn) : pn, {
+          side, defaultWidth: w, collapsedWidth: RAIL_W,
+          resize: Object.assign({ minW, maxW }, side === 'right' ? { reverseW: true } : {}, { bodyClass: 'ap-resizing', gripClass: 'dragging' }),
+        });
       });
       
       
@@ -12283,11 +12234,7 @@
         };
         paint();
         btn.onclick = () => { togglePropSave(d); paint(); if (landMode === 'favorites') render(); };
-        const sBtn = node.querySelector('.rt-start'), eBtn = node.querySelector('.rt-end');
-        if (sBtn) sBtn.onclick = () => { setRoutePoint('start', d.lat, d.lng); m.closePopup(); };
-        if (eBtn) eBtn.onclick = () => { setRoutePoint('end', d.lat, d.lng); m.closePopup(); };
-        const svBtn = node.querySelector('.sv-btn');
-        if (svBtn) svBtn.onclick = () => showStreetView(d.lat, d.lng);
+        wireRouteSvButtons(node, d.lat, d.lng, () => m.closePopup());
         enrichAptName(node, d.name, d.dong || d.gu, d.lat, d.lng);  
         
         
@@ -12303,12 +12250,7 @@
         }
         
         if (rpRows && rpRows.length) {
-          let cnt700 = 0, sum = 0, sumCnt = 0;
-          rpRows.forEach((r) => {
-            if (r.lat == null) return;
-            const dist = kmDist(d.lat, d.lng, r.lat, r.lng);
-            if (dist < 0.7) { cnt700++; if (r.priceEok != null) { sum += r.priceEok; sumCnt++; } }
-          });
+          const { cnt: cnt700, sum, sumCnt } = rpRadiusStats(d.lat, d.lng, 0.7);
           const avgEl = node.querySelector('.rp-radius-stat');
           if (avgEl && cnt700 > 0) {
             avgEl.textContent = `반경 700m 실거래 ${cnt700}건 · 평균 ${sumCnt ? fmtAmt(sum / sumCnt * 1e4) : '-'}`;
@@ -12768,6 +12710,7 @@
         jbSelApplyStyles();
       }
       let _jbGroupCountsFor = null, _jbGroupCounts = null;
+      let _jbDupOkFor = null, _jbDupOk = null;   
       
       
       let _jbSig = null, _jbSigRows = null, _jbSigPolys = null, _jbSigCount = -1;
@@ -12879,13 +12822,18 @@
         
         const visSet = new Set(visible);
         
-        const _dupKeep = new Map(), _dupOk = new Set();
-        for (const _d of jbRows) {
-          const k = jbDupKey(_d);
-          if (!k) { _dupOk.add(_d); continue; }
-          const arr = _dupKeep.get(k) || [];
-          if (!arr.some((z) => jbSameComplex(z, _d))) { arr.push(_d); _dupKeep.set(k, arr); _dupOk.add(_d); }
+        if (_jbDupOkFor !== jbRows) {   
+          _jbDupOkFor = jbRows;
+          _jbDupOk = new Set();
+          const dupKeep = new Map();
+          for (const _d of jbRows) {
+            const k = jbDupKey(_d);
+            if (!k) { _jbDupOk.add(_d); continue; }
+            const arr = dupKeep.get(k) || [];
+            if (!arr.some((z) => jbSameComplex(z, _d))) { arr.push(_d); dupKeep.set(k, arr); _jbDupOk.add(_d); }
+          }
         }
+        const _dupOk = _jbDupOk;
         const fullRebuild = (_jbLiveBadge !== showStageBadge) || _jbLiveRows !== jbRows || _jbLivePolys !== jbPolys;
         if (fullRebuild) {
           jbCluster.clearLayers();
@@ -13113,11 +13061,7 @@
         const node = e.popup._contentNode || e.popup.getElement();
         const d = m._jb;
         pushRecent({ key: 'jb' + d.name + d.jibun, name: d.name, lat: d.lat, lng: d.lng });
-        const sBtn = node.querySelector('.rt-start'), eBtn = node.querySelector('.rt-end');
-        if (sBtn) sBtn.onclick = () => { setRoutePoint('start', d.lat, d.lng); m.closePopup(); };
-        if (eBtn) eBtn.onclick = () => { setRoutePoint('end', d.lat, d.lng); m.closePopup(); };
-        const svBtn = node.querySelector('.sv-btn');
-        if (svBtn) svBtn.onclick = () => showStreetView(d.lat, d.lng);
+        wireRouteSvButtons(node, d.lat, d.lng, () => m.closePopup());
         
         const communityBtn = node.querySelector('.jb-community-btn'), communityBox = node.querySelector('.jb-community');
         if (communityBtn && communityBox) {
@@ -13171,17 +13115,9 @@
         if (rpFilterBtn) rpFilterBtn.onclick = () => toggleJbRp(d);
         
         if (rpRows && rpRows.length) {
-          let cnt=0, sum=0, sumCnt=0, minP=Infinity, maxP=-Infinity;
-          rpRows.forEach((r) => {
-            if (r.lat==null) return;
-            if (kmDist(d.lat, d.lng, r.lat, r.lng) < 0.5) {
-              cnt++;
-              if (r.priceEok!=null) { sum+=r.priceEok; sumCnt++; if(r.priceEok<minP)minP=r.priceEok; if(r.priceEok>maxP)maxP=r.priceEok; }
-            }
-          });
+          const { cnt, sum, sumCnt, minP, maxP } = rpRadiusStats(d.lat, d.lng, 0.5);
           const statEl = node.querySelector('.jb-rp-stat');
           if (statEl && cnt > 0) {
-            const r1 = (x) => Math.round(Number(x) * 10) / 10;   
             
             statEl.innerHTML = `500m 내 아파트 ${cnt}건 · 평균 <b>${sumCnt ? fmtAmt(sum / sumCnt * 1e4) : '-'}</b>`
               + (sumCnt >= 2 ? ` (${fmtAmt(minP * 1e4)}~${fmtAmt(maxP * 1e4)})` : '');
@@ -13298,15 +13234,19 @@
           .catch(() => null);
       }
       
+      
+      function nearestPick(arr, it, threshold) {
+        if (!Array.isArray(arr) || !arr.length) return null;
+        const near = arr
+          .map((x) => ({ x, dd: Math.abs(x.lat - it.lat) + Math.abs(x.lng - it.lng) }))
+          .sort((a, b) => a.dd - b.dd);
+        const byName = it.name && near.find((n) => n.x.name === it.name);
+        return byName || (near[0].dd < threshold ? near[0] : null);
+      }
       function nearestStill(it) {
         const d = 0.004;   
         return itsStill(it.lng - d, it.lng + d, it.lat - d, it.lat + d).then((arr) => {
-          if (!Array.isArray(arr) || !arr.length) return null;
-          const near = arr
-            .map((x) => ({ x, dd: Math.abs(x.lat - it.lat) + Math.abs(x.lng - it.lng) }))
-            .sort((a, b) => a.dd - b.dd);
-          const byName = it.name && near.find((n) => n.x.name === it.name);
-          const pick = byName || (near[0].dd < 0.0012 ? near[0] : null);   
+          const pick = nearestPick(arr, it, 0.0012);   
           return (pick && pick.x.url) || null;
         }).catch(() => null);
       }
@@ -13425,6 +13365,7 @@
         
         
         const fail = (why) => {
+          clearTimeout(guard);   
           slot.innerHTML = `<div style="padding:14px;text-align:center;line-height:1.5;">`
             + `<div style="color:#9aa3af;font-size:13px;">${esc(why)}</div>`
             + `<div class="cctv-still" style="margin-top:8px;"></div>`
@@ -13532,12 +13473,7 @@
         const d = 0.004;   
         return itsDirect(it.lng - d, it.lng + d, it.lat - d, it.lat + d)
           .then((arr) => {
-            if (!Array.isArray(arr) || !arr.length) return it.url;
-            const near = arr
-              .map((x) => ({ x, dd: Math.abs(x.lat - it.lat) + Math.abs(x.lng - it.lng) }))
-              .sort((a, b) => a.dd - b.dd);
-            const byName = it.name && near.find((n) => n.x.name === it.name);
-            const pick = byName || (near[0].dd < 0.0006 ? near[0] : null);   
+            const pick = nearestPick(arr, it, 0.0006);   
             return (pick && pick.x.url) || it.url;
           })
           .catch(() => it.url);
@@ -13566,7 +13502,7 @@
             
             const refetch = () => freshCctvUrl(Object.assign({}, it, { _live: false }));
             const still = () => nearestStill(it);
-            freshCctvUrl(it).then((u) => mountCctvVideo(slot, u, refetch, still));
+            freshCctvUrl(it).then((u) => { if (map.hasLayer(popup)) mountCctvVideo(slot, u, refetch, still); });   
           }, 0);
         } else {
           
@@ -13695,7 +13631,7 @@
         
         const main = (c.types || [])[0] || '공공임대';
         const col = PUBRENT_COLOR[main] || '#495057';
-        const badges = c.types.map((t) => `<span style="font-size:12px;background:${PUBRENT_COLOR[t] || '#495057'};color:#fff;padding:1px 8px;border-radius:999px;">${esc(t)}</span>`).join(' ');
+        const badges = (c.types || []).map((t) => `<span style="font-size:12px;background:${PUBRENT_COLOR[t] || '#495057'};color:#fff;padding:1px 8px;border-radius:999px;">${esc(t)}</span>`).join(' ');
         const t = pubrentTitle(c);
         const rows = [];
         
@@ -13832,15 +13768,17 @@
         closed: { label: '마감',     color: '#868e96' },
         unknown:{ label: '공공지원민간임대', color: '#e64980' },
       };
-      function pubrentNoticeState(n) {
-        const today = new Date();
-        const ymd = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
-        const b = Number(n.rcptBgn), e = Number(n.rcptEnd || n.rcptBgn);
-        if (!b || !/^\d{8}$/.test(String(n.rcptBgn))) return PUBRENT_STATE.unknown;
-        if (ymd < b) return PUBRENT_STATE.soon;
-        if (ymd > e) return PUBRENT_STATE.closed;
-        return PUBRENT_STATE.open;
+      
+      function pubrentDateState(beginRaw, endRaw, table) {
+        const t = new Date();
+        const ymd = t.getFullYear() * 10000 + (t.getMonth() + 1) * 100 + t.getDate();
+        const b = Number(beginRaw), e = Number(endRaw || beginRaw);
+        if (!b || !/^\d{8}$/.test(String(beginRaw))) return table.unknown;
+        if (ymd < b) return table.soon;
+        if (ymd > e) return table.closed;
+        return table.open;
       }
+      function pubrentNoticeState(n) { return pubrentDateState(n.rcptBgn, n.rcptEnd, PUBRENT_STATE); }
       function pubrentNoticePopupHtml(n) {
         const range = (a, b) => (a || '?') + (b && b !== a ? ' ~ ' + b : '');
         const de = (v) => (v && /^\d{8}$/.test(v) ? v.slice(0, 4) + '.' + v.slice(4, 6) + '.' + v.slice(6) : (v || ''));
@@ -13882,15 +13820,7 @@
         closed: { label: '마감',     color: '#868e96' },
         unknown:{ label: '모집공고', color: '#2f9e44' },
       };
-      function pubrentRcritState(r) {
-        const t = new Date();
-        const ymd = t.getFullYear() * 10000 + (t.getMonth() + 1) * 100 + t.getDate();
-        const b = Number(r.beginDe), e = Number(r.endDe || r.beginDe);
-        if (!b || !/^\d{8}$/.test(String(r.beginDe))) return PUBRENT_RCRIT_STATE.unknown;
-        if (ymd < b) return PUBRENT_RCRIT_STATE.soon;
-        if (ymd > e) return PUBRENT_RCRIT_STATE.closed;
-        return PUBRENT_RCRIT_STATE.open;
-      }
+      function pubrentRcritState(r) { return pubrentDateState(r.beginDe, r.endDe, PUBRENT_RCRIT_STATE); }
       function pubrentRcritPopupHtml(r) {
         const de = (v) => (v && /^\d{8}$/.test(v) ? v.slice(0, 4) + '.' + v.slice(4, 6) + '.' + v.slice(6) : (v || ''));
         const st = pubrentRcritState(r);
@@ -13927,20 +13857,24 @@
         _pubrentRcritRendered = true;
         
         
-        const rank = { '마감': 0, '모집공고': 1, '모집예정': 2, '모집중': 3 };
-        (pubrentData.rcrit || []).filter((r) => r.lat && r.lng)
-          .map((r) => ({ r, st: pubrentRcritState(r) }))
+        pubrentBadgeMarkers(pubrentData.rcrit, pubrentRcritState, { '마감': 0, '모집공고': 1, '모집예정': 2, '모집중': 3 },
+          pubrentRcritLayer, pubrentRcritPopupHtml);
+      }
+      
+      function pubrentBadgeMarkers(rows, stateOf, rank, layer, popupOf) {
+        (rows || []).filter((x) => x.lat && x.lng)
+          .map((x) => ({ x, st: stateOf(x) }))
           .sort((a, b) => (rank[a.st.label] || 0) - (rank[b.st.label] || 0))
-          .forEach(({ r, st }) => {
+          .forEach(({ x, st }) => {
             const w = Math.max(46, st.label.length * 13 + 18);
-            L.marker([r.lat, r.lng], {
+            L.marker([x.lat, x.lng], {
               icon: L.divIcon({
                 className: 'sub-badge-wrap',
                 html: `<span class="sub-badge" style="background:${st.color};${st.label === '마감' ? 'opacity:.75;' : ''}">${st.label}</span>`,
                 iconSize: [w, 20], iconAnchor: [w / 2, 10],
               }),
-              title: (r.nm || '') + ' — ' + st.label,
-            }).addTo(pubrentRcritLayer).bindPopup(pubrentRcritPopupHtml(r));
+              title: (x.nm || '') + ' — ' + st.label,
+            }).addTo(layer).bindPopup(popupOf(x));
           });
       }
 
@@ -13950,22 +13884,8 @@
         _pubrentNoticeRendered = true;
         
         
-        const order = { closed: 0, unknown: 1, soon: 2, open: 3 };
-        const list = (pubrentData.notices || []).filter((n) => n.lat && n.lng)
-          .map((n) => ({ n, st: pubrentNoticeState(n) }))
-          .sort((a, b) => (order[a.st.label === '마감' ? 'closed' : a.st.label === '접수예정' ? 'soon' : a.st.label === '접수중' ? 'open' : 'unknown'] || 0)
-            - (order[b.st.label === '마감' ? 'closed' : b.st.label === '접수예정' ? 'soon' : b.st.label === '접수중' ? 'open' : 'unknown'] || 0));
-        list.forEach(({ n, st }) => {
-          const w = Math.max(46, st.label.length * 13 + 18);
-          L.marker([n.lat, n.lng], {
-            icon: L.divIcon({
-              className: 'sub-badge-wrap',
-              html: `<span class="sub-badge" style="background:${st.color};${st.label === '마감' ? 'opacity:.75;' : ''}">${st.label}</span>`,
-              iconSize: [w, 20], iconAnchor: [w / 2, 10],
-            }),
-            title: (n.nm || '') + ' — ' + st.label,
-          }).addTo(pubrentNoticeLayer).bindPopup(pubrentNoticePopupHtml(n));
-        });
+        pubrentBadgeMarkers(pubrentData.notices, pubrentNoticeState, { '마감': 0, '공공지원민간임대': 1, '접수예정': 2, '접수중': 3 },
+          pubrentNoticeLayer, pubrentNoticePopupHtml);
       }
       map.on('overlayadd', (e) => {
         if (e.layer === pubrentCluster) loadPubrent().then(() => pubrentBuild());
@@ -14151,7 +14071,7 @@
           meta: [pubrentNoticeState(n).label, n.addr].filter(Boolean).join(' · '),
           lat: n.lat, lng: n.lng, popup: () => pubrentNoticePopupHtml(n),
         });
-        const today = chungakToday();
+        const today = chungakToday().replace(/-/g, '');   
         for (const x of lh || []) {
           if (String(x.CNP_CD_NM || '').indexOf('서울') !== 0) continue;
           const e = String(x.CLSG_DT || '').replace(/\D/g, '');
@@ -14422,12 +14342,7 @@
       function makeStdLayer(key) {
         const C = STD_SRC[key];
         const cluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 60 });
-        cluster.on('click', (e) => {
-          const m = e.layer;
-          if (!m || !m._pop) return;
-          if (!m.getPopup()) m.bindPopup(m._pop());
-          m.openPopup();
-        });
+        cluster.on('click', popOnClick);
         let index = null;
         let idxP = null;
         const cache = new Map();     
@@ -14850,12 +14765,7 @@
           kisCluster.clearLayers();
         }
       }
-      kisCluster.on('click', (e) => {
-        const m = e.layer;
-        if (!m || !m._pop) return;
-        if (!m.getPopup()) m.bindPopup(m._pop());
-        m.openPopup();
-      });
+      kisCluster.on('click', popOnClick);
       
       
       
@@ -14902,7 +14812,13 @@
           if (pop._adjustPan) pop._adjustPan();
         });
       });
-      map.on('moveend zoomend', () => { if (map.hasLayer(kisCluster) && kisOn.size) kisLoad(); });
+      
+      let _kisMoveT = 0;
+      map.on('moveend zoomend', () => {
+        if (!map.hasLayer(kisCluster) || !kisOn.size) return;
+        clearTimeout(_kisMoveT);
+        _kisMoveT = setTimeout(kisLoad, 400);
+      });
       
       window._kis = { cluster: kisCluster, rows: () => kisRows, on: kisOn, geo: kisGeo, load: () => kisLoad(), map };
       
@@ -15872,7 +15788,7 @@
               '15129462': 'dgk',   
               '15134735': 'pms',   
               '15135963': 'engy',   
-              '15135987': 'sht',   
+              '15135987': 'mtn',   
               '15136267': 'pms',   
               '15136560': 'hpms',   
               '15137093': 'sht',   
@@ -15930,7 +15846,6 @@
             const n = s.querySelector('.lp-head .lp-name');
             if (n) secByName[n.textContent.trim()] = s;
           });
-          const newSecs = [];
           const ensureSec = (name) => {
             if (secByName[name]) return secByName[name];
             const sec = L.DomUtil.create('div', 'lp-sec closed', body);
@@ -15941,7 +15856,6 @@
             L.DomUtil.create('div', 'lp-kids', sec);
             hd.onclick = (e) => { if (!e.target.closest('.lp-cb')) sec.classList.toggle('closed'); };
             secByName[name] = sec;
-            newSecs.push(sec);
             return sec;
           };
           
@@ -15964,6 +15878,7 @@
             const hit = ORG_LOGO.find(([k]) => String(t || '').indexOf(k) === 0);
             return hit || null;
           };
+          const cbsByWKey = {};   
           const addRow = (kids, it) => {
             const row = L.DomUtil.create('div', '', kids);
             const btn = L.DomUtil.create('div', '', row);
@@ -15992,6 +15907,7 @@
             const cb = btn.querySelector('.lp-cb');
             if (cb) {
               cb.checked = !!wantInfo[wKey];
+              (cbsByWKey[wKey] = cbsByWKey[wKey] || []).push(cb);
               cb.onclick = (e) => { e.stopPropagation(); };
               cb.onchange = () => {
                 const pair = _infoMap.find((x) => x[1] === wKey);
@@ -16000,6 +15916,8 @@
                   else { map.removeLayer(pair[0]); map.fire('overlayremove', { layer: pair[0] }); }
                 }
                 wantInfo[wKey] = cb.checked;
+                
+                cbsByWKey[wKey].forEach((o) => { if (o !== cb) o.checked = cb.checked; });
                 if (window.__mjPopup) {
                   if (cb.checked) window.__mjPopup.reload();
                   else window.__mjPopup.clearAndRender(UA_STATE_FIELDS[wKey] || []);
@@ -16078,11 +15996,7 @@
             '사업자·재무', '기타 공공데이터', '지도·기반 서비스',
           ];
           {
-            const byName = {};
-            body.querySelectorAll('.lp-sec').forEach((s) => {
-              const n = s.querySelector('.lp-head .lp-name');
-              if (n) byName[n.textContent.trim()] = s;
-            });
+            const byName = secByName;   
             
             let ref = hdrEl.nextSibling;
             SECTION_ORDER.forEach((nm) => {
@@ -16386,7 +16300,7 @@
           {"t": "국토교통부_(도시계획)개발행위허가정보서비스", "pk": "15058480", "u": 1, "n": 1, "o": ["selectPrmisnPrjct"], "w": ""},
           {"t": "국토교통부_건축HUB_건물에너지정보 서비스", "pk": "15135963", "u": 2, "n": 2, "o": ["getBeElctyUsgInfo", "getBeGasUsgInfo"], "w": "에너지 사용량 (전기·가스)"},
           {"t": "국토교통부_건축HUB_건축물대장정보 서비스", "pk": "15134735", "u": 10, "n": 10, "o": ["getBrTitleInfo", "getBrBasisOulnInfo", "getBrFlrOulnInfo", "getBrExposPubuseAreaInfo"], "w": "건축 인허가 이력"},
-          {"t": "국토교통부_건축HUB_건축물유지점검정보 서비스", "pk": "15135987", "u": 2, "n": 2, "o": ["getInspectionAgency", "getMaintenanceHistory"], "w": "철거·말소 이력 (폐쇄말소대장)"},
+          {"t": "국토교통부_건축HUB_건축물유지점검정보 서비스", "pk": "15135987", "u": 2, "n": 2, "o": ["getInspectionAgency", "getMaintenanceHistory"], "w": "유지점검 이력"},
           {"t": "국토교통부_건축HUB_건축인허가정보 서비스", "pk": "15136267", "u": 17, "n": 17, "o": ["getApBasisOulnInfo", "getApDongOulnInfo", "getApFlrOulnInfo", "getApHoOulnInfo"], "w": "건축 인허가 이력"},
           {"t": "국토교통부_건축HUB_주택인허가정보 서비스", "pk": "15136560", "u": 16, "n": 16, "o": ["getHpBasisOulnInfo", "getHpDongOulnInfo", "getHpFlrOulnInfo", "getHpHoOulnInfo"], "w": "주택 인허가 이력"},
           {"t": "국토교통부_건축HUB_폐쇄말소대장정보 서비스", "pk": "15137093", "u": 10, "n": 10, "o": ["getSrBasisOulnInfo", "getSrRecapTitleInfo", "getSrTitleInfo", "getSrFlrOulnInfo"], "w": "철거·말소 이력 (폐쇄말소대장)"},
@@ -16417,7 +16331,7 @@
           {"t": "국토교통부_오피스텔 전월세 실거래가 자료", "pk": "15126475", "u": 1, "n": 1, "o": ["getRTMSDataSvcOffiRent"], "w": "단독·다가구 매매 (동 단위) · 단독·다가구 전월세 (동 단위) · 아파트 분양권·입주권 전매 · 아파트 실거래가·노후도 · 연립·다세대 실거래가 · 오피스텔"},
           {"t": "국토교통부_키스콘 건설업체정보 서비스", "pk": "15061362", "u": 2, "n": 2, "o": ["ConAdminInfoSvc1", "GongsiReg"], "w": "건설업체 (키스콘)"},
           {"t": "국토안전관리원_노후화된 공공시설물현황", "pk": "15017291", "u": 2, "n": 2, "o": ["OldFacilService", "getFacil30YearsOldList"], "w": "노후 공공시설물 (안전등급) · 병원·의원 (심평원) · 전기차 충전소"},
-          {"t": "예금보험공사 파산금융회사 매물현황(정보)", "pk": "3035683", "u": 2, "n": 2, "o": ["GetBankruptcyEstatesGoodsService2020081", "getRealEstateDetail2020081"], "w": "건축 인허가 이력 · 공공데이터 더보기 · 공매 (온비드 · 압류재산) · 공중화장실 (동 단위) · 공중화장실 (비상벨·CCTV) · 국민연금 가입현황 (자치구"},
+          {"t": "예금보험공사 파산금융회사 매물현황(정보)", "pk": "3035683", "u": 2, "n": 2, "o": ["GetBankruptcyEstatesGoodsService2020081", "getRealEstateDetail2020081"], "w": "건축 인허가 이력 · 공공데이터 더보기 · 공중화장실 (동 단위) · 공중화장실 (비상벨·CCTV) · 국민연금 가입현황 (자치구) · 녹색건축 인증 (G-SEE"},
           {"t": "한국부동산원_공동주택 단지 식별정보 조회 서비스", "pk": "15106817", "u": 3, "n": 3, "o": ["getAptInfo", "getDongInfo", "getHistInfo"], "w": "아파트 실거래가·노후도 · 연립·다세대 실거래가"},
           {"t": "한국부동산원_녹색건축 인증현황 조회 서비스", "pk": "15099344", "u": 1, "n": 1, "o": ["getGreenBuildCertify"], "w": "건축 인허가 이력 · 공공데이터 더보기 · 공중화장실 (동 단위) · 공중화장실 (비상벨·CCTV) · 국민연금 가입현황 (자치구) · 녹색건축 인증 (G-SEE"},
           {"t": "한국부동산원_전국지가변동률조사 마이크로데이터 조회 서비스", "pk": "15121307", "u": 1, "n": 1, "o": ["getLfrMicro"], "w": ""},
@@ -16579,7 +16493,8 @@
           p: '프록시 <code>svc=BldEngyHubService</code> · 포털 pk <a href="https://www.data.go.kr/data/15135963/openapi.do" target="_blank" rel="noopener">15135963</a>',
         },
         '장기수선충당금': {
-          d: '팝업 · 아파트 보유비용 + 레이어 토글. 정식명 <b>국토교통부_공동주택관리비(장기수선충당금)정보서비스</b>. 🔑 <code>kaptCode</code> 가 필요해 <b>공동주택 단지 목록</b>(PNU→kaptCode 브리지)을 먼저 부른다.',
+          d: '팝업 · 아파트 보유비용 + 레이어 토글. 정식명 <b>국토교통부_공동주택관리비(장기수선충당금)정보서비스</b>. 프록시 연동 + 실데이터 확인 완료. 🔑 <code>kaptCode</code> 가 필요해 <b>공동주택 단지 목록</b>(PNU→kaptCode 브리지)을 먼저 부른다. '
+            + '경로: <code>PNU 앞10 → bjdCode → kaptCode → sTot</code>. ⚠️ 300세대↑ 의무관리대상만 공개되므로 빈 값이 정상인 단지가 많다.',
           o: ['getHsmpReserveBalanceInfoV3'],
           p: '프록시 <code>svc=AptRepairsCostServiceV3</code> · 포털 pk <a href="https://www.data.go.kr/data/15059160/openapi.do" target="_blank" rel="noopener">15059160</a>',
         },
@@ -16909,11 +16824,6 @@
           o: ['getApBasisOulnInfo — 개요', 'getApDongOulnInfo — 동별 개요', 'getApFlrOulnInfo — 층별 개요'],
           p: '필수: sigunguCd · bjdongCd · platGbCd · bun · ji (건축물대장과 동일 분해)'
         },
-        '장기수선충당금': {
-          d: '아파트 보유비용. 프록시 연동 + 실데이터 확인 완료. '
-            + '경로: <code>PNU 앞10 → bjdCode → kaptCode → sTot</code>. 남은 것은 팝업 연결뿐이다. '
-            + '⚠️ 300세대↑ 의무관리대상만 공개되므로 빈 값이 정상인 단지가 많다.',
-        },
         '공동주택 단지 목록(kaptCode 브리지)': {
           d: 'PNU 앞 10자리(법정동코드)로 <code>kaptCode</code> 를 얻는 다리. 이것 없이는 관리비·장기수선충당금을 '
             + '부를 수 없음.',
@@ -17161,9 +17071,12 @@
         const cat = order[i][1];
         const name = '__vwgeo_' + Date.now() + '_' + (++_vwRevSeq);
         let done = false;
-        const next = () => { if (done) return; done = true; try { delete window[name]; } catch (e) {} step(i + 1); };
+        const next = () => { if (done) return; done = true; clearTimeout(timer); try { delete window[name]; } catch (e) {} step(i + 1); };
+        
+        const timer = setTimeout(next, 7000);
         window[name] = (data) => {
           if (done) return;
+          clearTimeout(timer);
           const items = (data && data.response && data.response.result && data.response.result.items) || [];
           const it = items[0];
           
@@ -17195,16 +17108,18 @@
     let _vwRevSeq = 0;
     function reverseGeocode(lat, lng, cb) {
       const name = '__vwrev_' + Math.floor(lat * 1e6) + '_' + Math.floor(lng * 1e6) + '_' + (++_vwRevSeq);
+      let done = false;   
+      const finish = (addr) => { if (done) return; done = true; try { delete window[name]; } catch (e) {} cb(addr); };
       window[name] = (data) => {
-        try { delete window[name]; } catch (e) {}
         let addr = '';
         try { const r = data.response.result; addr = (r && r[0] && r[0].text) || ''; } catch (e) {}
-        cb(addr);
+        finish(addr);
       };
       const s = document.createElement('script');
       s.src = `https://api.vworld.kr/req/address?service=address&request=getAddress&version=2.0&crs=epsg:4326&point=${lng},${lat}&format=json&type=both&key=${VWORLD_KEY}&callback=${name}`;
-      s.onerror = () => { try { delete window[name]; } catch (e) {} cb(''); };
+      s.onerror = () => finish('');
       document.head.appendChild(s);
+      setTimeout(() => finish(''), 7000);
     }
 
     
@@ -17669,28 +17584,32 @@
     
     
     
-    const _hpmsCache = new Map();
-    function loadHsPms(pnu, cb) {
+    
+    
+    
+    
+    
+    function molitList(pnu, svc, op, rows, cache, cb) {
       const pp = pnuParts(pnu);
       if (!pp) { cb(null); return; }
-      if (_hpmsCache.has(pnu)) { cb(_hpmsCache.get(pnu)); return; }
-      const q = `svc=HsPmsHubService&op=getHpActOulnInfo&sigunguCd=${pp.sigunguCd}`
+      if (cache.has(pnu)) { cb(cache.get(pnu)); return; }
+      const q = `svc=${svc}&op=${op}&sigunguCd=${pp.sigunguCd}`
         + pnuQ(pp)
-        + '&numOfRows=100&pageNo=1';
+        + `&numOfRows=${rows}&pageNo=1`;
       fetch(`${MOLIT_PROXY}?${q}`)
         .then((r) => (r.ok ? r.json() : null))
         .then((j) => {
           const b = dgkBody(j);
-          const it = b && b.items && b.items.item;
-          const arr = asArr(it);
-          
-          
-          
-          if (b) _hpmsCache.set(pnu, arr);
+          const arr = itemsArr(b && b.items);
+          if (b) cache.set(pnu, arr);
           cb(b ? arr : null);
         })
         .catch(() => cb(null));
     }
+    const _hpmsCache = new Map();
+    
+    
+    function loadHsPms(pnu, cb) { molitList(pnu, 'HsPmsHubService', 'getHpActOulnInfo', 100, _hpmsCache, cb); }
 
     
     
@@ -17700,24 +17619,7 @@
     
     
     const _hstpCache = new Map();
-    function loadHouseType(pnu, cb) {
-      const pp = pnuParts(pnu);
-      if (!pp) { cb(null); return; }
-      if (_hstpCache.has(pnu)) { cb(_hstpCache.get(pnu)); return; }
-      const q = `svc=ArchPmsHubService&op=getApHsTpInfo&sigunguCd=${pp.sigunguCd}`
-        + pnuQ(pp)
-        + '&numOfRows=50&pageNo=1';
-      fetch(`${MOLIT_PROXY}?${q}`)
-        .then((r) => (r.ok ? r.json() : null))
-        .then((j) => {
-          const b = dgkBody(j);
-          const it = b && b.items && b.items.item;
-          const arr = asArr(it);
-          if (b) _hstpCache.set(pnu, arr);   
-          cb(b ? arr : null);
-        })
-        .catch(() => cb(null));
-    }
+    function loadHouseType(pnu, cb) { molitList(pnu, 'ArchPmsHubService', 'getApHsTpInfo', 50, _hstpCache, cb); }
 
     
     
@@ -17726,48 +17628,14 @@
     
     
     const _pklotCache = new Map();
-    function loadParkingLot(pnu, cb) {
-      const pp = pnuParts(pnu);
-      if (!pp) { cb(null); return; }
-      if (_pklotCache.has(pnu)) { cb(_pklotCache.get(pnu)); return; }
-      const q = `svc=ArchPmsHubService&op=getApPklotInfo&sigunguCd=${pp.sigunguCd}`
-        + pnuQ(pp)
-        + '&numOfRows=50&pageNo=1';
-      fetch(`${MOLIT_PROXY}?${q}`)
-        .then((r) => (r.ok ? r.json() : null))
-        .then((j) => {
-          const b = dgkBody(j);
-          const it = b && b.items && b.items.item;
-          const arr = asArr(it);
-          if (b) _pklotCache.set(pnu, arr);
-          cb(b ? arr : null);
-        })
-        .catch(() => cb(null));
-    }
+    function loadParkingLot(pnu, cb) { molitList(pnu, 'ArchPmsHubService', 'getApPklotInfo', 50, _pklotCache, cb); }
 
     
     
     
     
     const _imprCache = new Map();
-    function loadRemodel(pnu, cb) {
-      const pp = pnuParts(pnu);
-      if (!pp) { cb(null); return; }
-      if (_imprCache.has(pnu)) { cb(_imprCache.get(pnu)); return; }
-      const q = `svc=ArchPmsHubService&op=getApImprprInfo&sigunguCd=${pp.sigunguCd}`
-        + pnuQ(pp)
-        + '&numOfRows=50&pageNo=1';
-      fetch(`${MOLIT_PROXY}?${q}`)
-        .then((r) => (r.ok ? r.json() : null))
-        .then((j) => {
-          const b = dgkBody(j);
-          const it = b && b.items && b.items.item;
-          const arr = asArr(it);
-          if (b) _imprCache.set(pnu, arr);
-          cb(b ? arr : null);
-        })
-        .catch(() => cb(null));
-    }
+    function loadRemodel(pnu, cb) { molitList(pnu, 'ArchPmsHubService', 'getApImprprInfo', 50, _imprCache, cb); }
 
     
     
@@ -17789,27 +17657,8 @@
     
     const _tmpbCache = new Map();
     const _hdcrCache = new Map();
-    
-    function loadApList(pnu, op, cache, cb) {
-      const pp = pnuParts(pnu);
-      if (!pp) { cb(null); return; }
-      if (cache.has(pnu)) { cb(cache.get(pnu)); return; }
-      const q = `svc=ArchPmsHubService&op=${op}&sigunguCd=${pp.sigunguCd}`
-        + pnuQ(pp)
-        + '&numOfRows=30&pageNo=1';
-      fetch(`${MOLIT_PROXY}?${q}`)
-        .then((r) => (r.ok ? r.json() : null))
-        .then((j) => {
-          const b = dgkBody(j);
-          const it = b && b.items;
-          const arr = itemsArr(it);
-          if (b) cache.set(pnu, arr);   
-          cb(b ? arr : null);
-        })
-        .catch(() => cb(null));
-    }
-    const loadTmpBld = (pnu, cb) => loadApList(pnu, 'getApTmpBldInfo', _tmpbCache, cb);
-    const loadHdcr = (pnu, cb) => loadApList(pnu, 'getApHdcrMgmRgstInfo', _hdcrCache, cb);
+    const loadTmpBld = (pnu, cb) => molitList(pnu, 'ArchPmsHubService', 'getApTmpBldInfo', 30, _tmpbCache, cb);
+    const loadHdcr = (pnu, cb) => molitList(pnu, 'ArchPmsHubService', 'getApHdcrMgmRgstInfo', 30, _hdcrCache, cb);
 
     
     
@@ -17830,25 +17679,7 @@
     
     
     const _demolCache = new Map();
-    function loadDemol(pnu, cb) {
-      const pp = pnuParts(pnu);
-      if (!pp) { cb(null); return; }
-      if (_demolCache.has(pnu)) { cb(_demolCache.get(pnu)); return; }
-      const q = `svc=ArchPmsHubService&op=getApDemolExtngMgmRgstInfo&sigunguCd=${pp.sigunguCd}`
-        + pnuQ(pp)
-        + '&numOfRows=30&pageNo=1';
-      fetch(`${MOLIT_PROXY}?${q}`)
-        .then((r) => (r.ok ? r.json() : null))
-        .then((j) => {
-          const b = dgkBody(j);
-          const it = b && b.items;
-          const arr = itemsArr(it);
-          
-          if (b) _demolCache.set(pnu, arr);
-          cb(b ? arr : null);
-        })
-        .catch(() => cb(null));
-    }
+    function loadDemol(pnu, cb) { molitList(pnu, 'ArchPmsHubService', 'getApDemolExtngMgmRgstInfo', 30, _demolCache, cb); }
 
     
     
@@ -17857,24 +17688,7 @@
     
     
     const _coopCache = new Map();
-    function loadHpComplex(pnu, cb) {
-      const pp = pnuParts(pnu);
-      if (!pp) { cb(null); return; }
-      if (_coopCache.has(pnu)) { cb(_coopCache.get(pnu)); return; }
-      const q = `svc=HsPmsHubService&op=getHpMgmCoopTpOulnInfo&sigunguCd=${pp.sigunguCd}`
-        + pnuQ(pp)
-        + '&numOfRows=50&pageNo=1';
-      fetch(`${MOLIT_PROXY}?${q}`)
-        .then((r) => (r.ok ? r.json() : null))
-        .then((j) => {
-          const b = dgkBody(j);
-          const it = b && b.items && b.items.item;
-          const arr = asArr(it);
-          if (b) _coopCache.set(pnu, arr);
-          cb(b ? arr : null);
-        })
-        .catch(() => cb(null));
-    }
+    function loadHpComplex(pnu, cb) { molitList(pnu, 'HsPmsHubService', 'getHpMgmCoopTpOulnInfo', 50, _coopCache, cb); }
 
     
     
@@ -17893,45 +17707,10 @@
     
     
     const _wlfarCache = new Map();
-    function loadHpWlfar(pnu, cb) {
-      const pp = pnuParts(pnu);
-      if (!pp) { cb(null); return; }
-      if (_wlfarCache.has(pnu)) { cb(_wlfarCache.get(pnu)); return; }
-      const q = `svc=HsPmsHubService&op=getHpMgmCoopSbsdWlfarFcInfo&sigunguCd=${pp.sigunguCd}`
-        + pnuQ(pp)
-        + '&numOfRows=20&pageNo=1';
-      fetch(`${MOLIT_PROXY}?${q}`)
-        .then((r) => (r.ok ? r.json() : null))
-        .then((j) => {
-          const b = dgkBody(j);
-          const it = b && b.items;
-          const arr = itemsArr(it);
-          if (b) _wlfarCache.set(pnu, arr);
-          cb(b ? arr : null);
-        })
-        .catch(() => cb(null));
-    }
+    function loadHpWlfar(pnu, cb) { molitList(pnu, 'HsPmsHubService', 'getHpMgmCoopSbsdWlfarFcInfo', 20, _wlfarCache, cb); }
 
     const _pmsCache = new Map();
-    function loadArchPms(pnu, cb) {
-      const pp = pnuParts(pnu);
-      if (!pp) { cb(null); return; }
-      if (_pmsCache.has(pnu)) { cb(_pmsCache.get(pnu)); return; }
-      const q = `svc=ArchPmsHubService&op=getApBasisOulnInfo&sigunguCd=${pp.sigunguCd}`
-        + pnuQ(pp)
-        + '&numOfRows=100&pageNo=1';
-      fetch(`${MOLIT_PROXY}?${q}`)
-        .then((r) => (r.ok ? r.json() : null))
-        .then((j) => {
-          const b = dgkBody(j);
-          const it = b && b.items;
-          const arr = itemsArr(it);
-          
-          if (b) _pmsCache.set(pnu, arr);
-          cb(b ? arr : null);
-        })
-        .catch(() => cb(null));
-    }
+    function loadArchPms(pnu, cb) { molitList(pnu, 'ArchPmsHubService', 'getApBasisOulnInfo', 100, _pmsCache, cb); }
     const SBIZ_PROXY = SUPABASE_URL + '/functions/v1/sbiz-proxy';
     const _sbizCache = new Map();
     
@@ -17950,25 +17729,7 @@
     
     
     const _shtCache = new Map();
-    function loadSht(pnu, cb) {
-      const pp = pnuParts(pnu);
-      if (!pp) { cb(null); return; }
-      if (_shtCache.has(pnu)) { cb(_shtCache.get(pnu)); return; }
-      const q = `svc=ShtRgstHubService&op=getSrTitleInfo&sigunguCd=${pp.sigunguCd}`
-        + pnuQ(pp)
-        + '&numOfRows=20&pageNo=1';
-      fetch(`${MOLIT_PROXY}?${q}`)
-        .then((r) => (r.ok ? r.json() : null))
-        .then((j) => {
-          const b = dgkBody(j);
-          const it = b && b.items;
-          const arr = itemsArr(it);
-          
-          if (b) _shtCache.set(pnu, arr);
-          cb(b ? arr : null);
-        })
-        .catch(() => cb(null));
-    }
+    function loadSht(pnu, cb) { molitList(pnu, 'ShtRgstHubService', 'getSrTitleInfo', 20, _shtCache, cb); }
 
     
     
@@ -17982,25 +17743,7 @@
     
     
     const _shtPrcCache = new Map();
-    function loadShtPrice(pnu, cb) {
-      const pp = pnuParts(pnu);
-      if (!pp) { cb(null); return; }
-      if (_shtPrcCache.has(pnu)) { cb(_shtPrcCache.get(pnu)); return; }
-      const q = `svc=ShtRgstHubService&op=getSrHsprcInfo&sigunguCd=${pp.sigunguCd}`
-        + pnuQ(pp)
-        + '&numOfRows=20&pageNo=1';
-      fetch(`${MOLIT_PROXY}?${q}`)
-        .then((r) => (r.ok ? r.json() : null))
-        .then((j) => {
-          const b = dgkBody(j);
-          const it = b && b.items;
-          const arr = itemsArr(it);
-          
-          if (b) _shtPrcCache.set(pnu, arr);
-          cb(b ? arr : null);
-        })
-        .catch(() => cb(null));
-    }
+    function loadShtPrice(pnu, cb) { molitList(pnu, 'ShtRgstHubService', 'getSrHsprcInfo', 20, _shtPrcCache, cb); }
 
     
     
@@ -18022,8 +17765,7 @@
         .then((j) => {
           const b = (j && (j.response ? j.response.body : j.body)) || null;
           if (!b) { cb(null); return; }
-          const it = b.items && (b.items.item || b.items);
-          const arr = asArr(it);
+          const arr = bodyItems(b);
           const hit = arr.find((x) => String(x.trgtLwdgCd || '') === bjd) || null;
           _jnseCache.set(bjd, hit);   
           cb(hit);
@@ -18090,8 +17832,9 @@
       if (_restroomIdx) { cb(_restroomIdx); return; }
       if (_restroomLoading) { _restroomLoading.then(() => cb(_restroomIdx)); return; }
       _restroomLoading = fetch('restroom.json')
-        .then((r) => (r.ok ? r.json() : []))
+        .then((r) => (r.ok ? r.json() : null))
         .then((arr) => {
+          if (!arr) { _restroomLoading = null; return; }   
           const idx = new Map();
           for (const x of arr) {
             const k = _dongKey(x.lot);
@@ -18101,7 +17844,7 @@
           }
           _restroomIdx = idx;
         })
-        .catch(() => { _restroomIdx = new Map(); });
+        .catch(() => { _restroomLoading = null; });
       _restroomLoading.then(() => cb(_restroomIdx));
     }
 
@@ -18180,8 +17923,7 @@
         { corpNm: s, pageNo: 1, numOfRows: 3, resultType: 'json' }, (j) => {
           const b = j && (j.response || j).body;
           if (!b) { cb(null); return; }          
-          const it = b.items;
-          const arr = flexArr(it);
+          const arr = flexArr(b.items);
           const out = arr.length ? { total: Number(b.totalCount) || arr.length, top: arr[0] } : { total: 0, top: null };
           _corpCache.set(s, out);
           cb(out);
@@ -18234,8 +17976,7 @@
         { crno, pageNo: 1, numOfRows: 5, resultType: 'json' }, (j) => {
           const b = j && (j.response || j).body;
           if (!b) { cb(null); return; }
-          const it = b.items;
-          const arr = flexArr(it);
+          const arr = flexArr(b.items);
           
           arr.sort((a, b2) => Number(b2.sthdEoteShrRatCtt || 0) - Number(a.sthdEoteShrRatCtt || 0));
           const out = { total: Number(b.totalCount) || arr.length, top: arr.slice(0, 3) };
@@ -18291,8 +18032,7 @@
         { crno, pageNo: 1, numOfRows: 10, resultType: 'json' }, (j) => {
           const b = j && (j.response || j).body;
           if (!b) { cb(null); return; }
-          const it = b.items;
-          const arr = flexArr(it);
+          const arr = flexArr(b.items);
           if (!arr.length) { _corpUnregCache.set(crno, null); cb(null); return; }
           
           arr.sort((a, b2) => Number(b2.bizYear || 0) - Number(a.bizYear || 0));
@@ -18329,8 +18069,7 @@
         const [op, label] = ops[i];
         dgkFetch('GetFnCoDiscInfoService_V2', op, { crno, pageNo: 1, numOfRows: 3, resultType: 'json' }, (j) => {
           const b = j && (j.response || j).body;
-          const it = b && b.items;
-          const arr = flexArr(it);
+          const arr = flexArr(b && b.items);
           if (arr.length) hits.push({ label, n: arr.length });
           seq(i + 1);
         });
@@ -18352,8 +18091,7 @@
         { itmsNm: s, pageNo: 1, numOfRows: 1, resultType: 'json' }, (j) => {
           const b = j && (j.response || j).body;
           if (!b) { cb(null); return; }
-          const it = b.items;
-          const arr = flexArr(it);
+          const arr = flexArr(b.items);
           _stockCache.set(s, arr[0] || null);
           cb(arr[0] || null);
         });
@@ -18411,8 +18149,7 @@
         .then((r) => (r.ok ? r.json() : null))
         .then((j) => {
           const b = j && (j.response ? j.response.body : j.body);
-          const it = b && b.items && (b.items.item || b.items);
-          const arr = asArr(it);
+          const arr = bodyItems(b);
           cb(arr.length ? arr : null);
         })
         .catch(() => cb(null));
@@ -18436,8 +18173,7 @@
       ops.forEach((op) => {
         dgkFetch('ApHusMntMngHistInfoOfferServiceV3', op, { kaptCode, numOfRows: 20, pageNo: 1 }, (j) => {
           const b = dgkBody(j);
-          const it = b && b.items && (b.items.item || b.items);
-          const a = asArr(it);
+          const a = bodyItems(b);
           a.forEach((x) => got.push(x));
           if (--left === 0) cb(got.length ? got : null);
         });
@@ -19139,6 +18875,11 @@
         if (kind === 'start') originMarker = mk; else destMarker = mk;
       };
 
+      
+      const osrmSeg = async (mode, type, a, b) => {
+        const rt = await RouteAPI.osrm(mode, a, b).catch(() => null);
+        return { type, coords: (rt && rt.coords && rt.coords.length > 1) ? rt.coords : [[a.lat, a.lng], [b.lat, b.lng]] };
+      };
       const spDrawPath = async (path, o, d) => {
         if (!path || !path.legs) return;
         const legs = path.legs.filter((l) => l.fy && l.fx && l.ty && l.tx);
@@ -19161,19 +18902,9 @@
             });
             return { type: 'subway', coords: pts || [[a.lat, a.lng], [b.lat, b.lng]] };
           }
-          const rt = await RouteAPI.osrm('car', a, b).catch(() => null);
-          return {
-            type: 'bus',
-            coords: (rt && rt.coords && rt.coords.length > 1) ? rt.coords : [[a.lat, a.lng], [b.lat, b.lng]],
-          };
+          return osrmSeg('car', 'bus', a, b);
         }));
-        const walkTo = async (from, to) => {
-          const rt = await RouteAPI.osrm('foot', from, to).catch(() => null);
-          return {
-            type: 'walk',
-            coords: (rt && rt.coords && rt.coords.length > 1) ? rt.coords : [[from.lat, from.lng], [to.lat, to.lng]],
-          };
-        };
+        const walkTo = (from, to) => osrmSeg('foot', 'walk', from, to);
         const full = [await walkTo(o, { lat: legs[0].fy, lng: legs[0].fx })];
         full.push(...segs);
         const last = legs[legs.length - 1];
@@ -19864,25 +19595,29 @@
     const _frNorm = (x) => String(x || '').replace(/[\s()·.,'"-]/g, '').toLowerCase();
     function loadFranchise(cb) {
       if (_frIdx) { cb(_frIdx); return; }
-      if (_frLoading) { _frLoading.then(() => cb(_frIdx)); return; }
+      if (_frLoading) { _frLoading.then(() => cb(_frIdx || {})); return; }
       _frLoading = fetch('franchise.json')
         .then((r) => (r.ok ? r.json() : null))
         .then((j) => { _frIdx = j || {}; _frKeys = Object.keys(_frIdx); })
-        .catch(() => { _frIdx = {}; _frKeys = []; });
-      _frLoading.then(() => cb(_frIdx));
+        .catch(() => { _frLoading = null; });   
+      _frLoading.then(() => cb(_frIdx || {}));
     }
     let _frKeys = [];
     
-    function frMatch(shopName) {
-      if (!_frIdx || !_frKeys.length) return null;
+    
+    function _bestKeyMatch(idx, keys, shopName) {
+      if (!idx || !keys.length) return null;
       const n = _frNorm(shopName);
       if (n.length < 2) return null;
       let best = null;
-      for (const k of _frKeys) {
+      for (const k of keys) {
         if (k.length >= 2 && n.includes(k) && (!best || k.length > best.length)) best = k;
       }
-      if (!best) return null;
-      const v = _frIdx[best];
+      return best ? idx[best] : null;
+    }
+    function frMatch(shopName) {
+      const v = _bestKeyMatch(_frIdx, _frKeys, shopName);
+      if (!v) return null;
       return { nm: v[0], corp: v[1], lcls: v[2], mcls: v[3], cnt: v[4], sls: v[5], unit: v[6], end: v[7] };
     }
 
@@ -19896,24 +19631,17 @@
     let _itLoading = null, _itIdx = null, _itKeys = [];
     function loadInterior(cb) {
       if (_itIdx) { cb(_itIdx); return; }
-      if (_itLoading) { _itLoading.then(() => cb(_itIdx)); return; }
+      if (_itLoading) { _itLoading.then(() => cb(_itIdx || {})); return; }
       _itLoading = fetch('interior.json')
         .then((r) => (r.ok ? r.json() : null))
         .then((j) => { _itIdx = j || {}; _itKeys = Object.keys(_itIdx); })
-        .catch(() => { _itIdx = {}; _itKeys = []; });
-      _itLoading.then(() => cb(_itIdx));
+        .catch(() => { _itLoading = null; });   
+      _itLoading.then(() => cb(_itIdx || {}));
     }
     
     function itMatch(shopName) {
-      if (!_itIdx || !_itKeys.length) return null;
-      const n = _frNorm(shopName);
-      if (n.length < 2) return null;
-      let best = null;
-      for (const k of _itKeys) {
-        if (k.length >= 2 && n.includes(k) && (!best || k.length > best.length)) best = k;
-      }
-      if (!best) return null;
-      const v = _itIdx[best];
+      const v = _bestKeyMatch(_itIdx, _itKeys, shopName);
+      if (!v) return null;
       
       return { nm: v[0], lcls: v[1], mcls: v[2], unit: v[3], ar: v[4], amt: v[5], yr: v[6] };
     }
@@ -19928,12 +19656,12 @@
     let _opLoading = null, _opIdx = null;
     function loadOrderPlan(cb) {
       if (_opIdx) { cb(_opIdx); return; }
-      if (_opLoading) { _opLoading.then(() => cb(_opIdx)); return; }
+      if (_opLoading) { _opLoading.then(() => cb(_opIdx || {})); return; }
       _opLoading = fetch('orderplan.json')
         .then((r) => (r.ok ? r.json() : null))
         .then((j) => { _opIdx = j || {}; })
-        .catch(() => { _opIdx = {}; });
-      _opLoading.then(() => cb(_opIdx));
+        .catch(() => { _opLoading = null; });   
+      _opLoading.then(() => cb(_opIdx || {}));
     }
 
     
@@ -19946,12 +19674,12 @@
     let _gpLoading = null, _gpIdx = null;
     function loadGoodPrice(cb) {
       if (_gpIdx) { cb(_gpIdx); return; }
-      if (_gpLoading) { _gpLoading.then(() => cb(_gpIdx)); return; }
+      if (_gpLoading) { _gpLoading.then(() => cb(_gpIdx || {})); return; }
       _gpLoading = fetch('goodprice.json')
         .then((r) => (r.ok ? r.json() : null))
         .then((j) => { _gpIdx = j || {}; })
-        .catch(() => { _gpIdx = {}; });
-      _gpLoading.then(() => cb(_gpIdx));
+        .catch(() => { _gpLoading = null; });   
+      _gpLoading.then(() => cb(_gpIdx || {}));
     }
 
     
@@ -19967,12 +19695,12 @@
     let _busIdx = null, _busLoading = null;
     function loadBusDongVolume(cb) {
       if (_busIdx) { cb(_busIdx); return; }
-      if (_busLoading) { _busLoading.then(() => cb(_busIdx)); return; }
+      if (_busLoading) { _busLoading.then(() => cb(_busIdx || { dong: {} })); return; }
       _busLoading = fetch('busvolume.json')
         .then((r) => (r.ok ? r.json() : null))
         .then((j) => { _busIdx = j || { dong: {} }; })
-        .catch(() => { _busIdx = { dong: {} }; });
-      _busLoading.then(() => cb(_busIdx));
+        .catch(() => { _busLoading = null; });   
+      _busLoading.then(() => cb(_busIdx || { dong: {} }));
     }
 
     
@@ -19986,7 +19714,7 @@
     let _greenIdx = null, _greenLoading = null;
     function loadGreen(cb) {
       if (_greenIdx) { cb(_greenIdx); return; }
-      if (_greenLoading) { _greenLoading.then(() => cb(_greenIdx)); return; }
+      if (_greenLoading) { _greenLoading.then(() => cb(_greenIdx || new Map())); return; }
       _greenLoading = fetch('greenbuild.json')
         .then((r) => (r.ok ? r.json() : []))
         .then((arr) => {
@@ -19999,8 +19727,8 @@
           }
           _greenIdx = idx;
         })
-        .catch(() => { _greenIdx = new Map(); });
-      _greenLoading.then(() => cb(_greenIdx));
+        .catch(() => { _greenLoading = null; });   
+      _greenLoading.then(() => cb(_greenIdx || new Map()));
     }
 
     
@@ -20069,24 +19797,7 @@
     
     
     const _shtRecapCache = new Map();
-    function loadShtRecap(pnu, cb) {
-      const pp = pnuParts(pnu);
-      if (!pp) { cb(null); return; }
-      if (_shtRecapCache.has(pnu)) { cb(_shtRecapCache.get(pnu)); return; }
-      const q = `svc=ShtRgstHubService&op=getSrRecapTitleInfo&sigunguCd=${pp.sigunguCd}`
-        + pnuQ(pp)
-        + '&numOfRows=20&pageNo=1';
-      fetch(`${MOLIT_PROXY}?${q}`)
-        .then((r) => (r.ok ? r.json() : null))
-        .then((j) => {
-          const b = dgkBody(j);
-          const it = b && b.items && b.items.item;
-          const arr = asArr(it);
-          if (b) _shtRecapCache.set(pnu, arr);
-          cb(b ? arr : null);
-        })
-        .catch(() => cb(null));
-    }
+    function loadShtRecap(pnu, cb) { molitList(pnu, 'ShtRgstHubService', 'getSrRecapTitleInfo', 20, _shtRecapCache, cb); }
 
     
     
@@ -20096,48 +19807,14 @@
     
     
     const _shtJjCache = new Map();
-    function loadShtJijigu(pnu, cb) {
-      const pp = pnuParts(pnu);
-      if (!pp) { cb(null); return; }
-      if (_shtJjCache.has(pnu)) { cb(_shtJjCache.get(pnu)); return; }
-      const q = `svc=ShtRgstHubService&op=getSrJijiguInfo&sigunguCd=${pp.sigunguCd}`
-        + pnuQ(pp)
-        + '&numOfRows=20&pageNo=1';
-      fetch(`${MOLIT_PROXY}?${q}`)
-        .then((r) => (r.ok ? r.json() : null))
-        .then((j) => {
-          const b = dgkBody(j);
-          const it = b && b.items;
-          const arr = itemsArr(it);
-          if (b) _shtJjCache.set(pnu, arr);
-          cb(b ? arr : null);
-        })
-        .catch(() => cb(null));
-    }
+    function loadShtJijigu(pnu, cb) { molitList(pnu, 'ShtRgstHubService', 'getSrJijiguInfo', 20, _shtJjCache, cb); }
 
     
     
     
     
     const _mtnCache = new Map();
-    function loadMtnChk(pnu, cb) {
-      const pp = pnuParts(pnu);
-      if (!pp) { cb(null); return; }
-      if (_mtnCache.has(pnu)) { cb(_mtnCache.get(pnu)); return; }
-      const q = `svc=MtnChkHubService&op=getMaintenanceHistory&sigunguCd=${pp.sigunguCd}`
-        + pnuQ(pp)
-        + '&numOfRows=20&pageNo=1';
-      fetch(`${MOLIT_PROXY}?${q}`)
-        .then((r) => (r.ok ? r.json() : null))
-        .then((j) => {
-          const b = dgkBody(j);
-          const it = b && b.items;
-          const arr = itemsArr(it);
-          if (b) _mtnCache.set(pnu, arr);
-          cb(b ? arr : null);
-        })
-        .catch(() => cb(null));
-    }
+    function loadMtnChk(pnu, cb) { molitList(pnu, 'MtnChkHubService', 'getMaintenanceHistory', 20, _mtnCache, cb); }
 
     
     
@@ -20557,6 +20234,13 @@
     
     
     
+    
+    function molitAsk(svc, op, kv) {
+      return fetch(`${MOLIT_PROXY}?svc=${svc}&op=${op}&${kv}&numOfRows=100&pageNo=1`)
+        .then(okJson)
+        .then((j) => { const b = dgkBody(j); return flexArr(b && b.items); })
+        .catch(() => null);
+    }
     const _bidCache = new Map();   
     function loadBidInfo(pnu, bldNm, cb) {
       const s = String(pnu || '');
@@ -20568,14 +20252,7 @@
         const yrs = [];
         const now = new Date().getFullYear();
         for (let y = now; y >= now - 3; y--) yrs.push(String(y));
-        const ask = (svc, op, kv) => fetch(`${MOLIT_PROXY}?svc=${svc}&op=${op}&${kv}&numOfRows=100&pageNo=1`)
-          .then(okJson)
-          .then((j) => {
-            const b = dgkBody(j);
-            const it = b && b.items;
-            return flexArr(it);
-          })
-          .catch(() => null);
+        const ask = molitAsk;
         const scan = (svc, op, kv, acc, i, done) => {
           if (i >= yrs.length) { done(acc); return; }
           ask(svc, op, kv + '&searchYear=' + yrs[i]).then((rows) => {
@@ -20620,16 +20297,11 @@
       const s = String(bidNum || '');
       if (!/^\d{6,25}$/.test(s)) { cb(null); return; }
       if (_bidResCache.has(s)) { cb(_bidResCache.get(s)); return; }
-      fetch(`${MOLIT_PROXY}?svc=ApHusBidResultNoticeInfoOfferServiceV3&op=getBidEntrpsInfoSearchV3&bidNum=${s}&numOfRows=100&pageNo=1`)
-        .then(okJson)
-        .then((j) => {
-          const b = dgkBody(j);
-          const it = b && b.items;
-          const arr = flexArr(it);
-          _bidResCache.set(s, arr);
-          cb(arr);
-        })
-        .catch(() => cb(null));
+      molitAsk('ApHusBidResultNoticeInfoOfferServiceV3', 'getBidEntrpsInfoSearchV3', 'bidNum=' + s).then((arr) => {
+        if (arr === null) { cb(null); return; }   
+        _bidResCache.set(s, arr);
+        cb(arr);
+      });
     }
 
     function loadStores(pnu, cb) {
@@ -21254,8 +20926,7 @@
       }
       if (v.length < LSHARE_MIN_N) return '';
       v.sort((a, b) => a - b);
-      const h = v.length >> 1;
-      const med = Math.round(v.length % 2 ? v[h] : (v[h - 1] + v[h]) / 2);
+      const med = Math.round(medianOf(v));
       const lo = v[Math.floor(v.length * 0.25)], hi = v[Math.floor(v.length * 0.75)];
       return '<div class="ls-sec sec-lshare"><b>대지지분 시세</b>' + srcTier('deal')
         + ' <span style="font-size:12px;color:var(--c-muted);">연립·다세대 · 반경 ' + LSHARE_KM + 'km · '
@@ -21274,6 +20945,7 @@
     
     function landInfoHtml(st, noDetail, lat, lng) {
       if (!st) return '';
+      const tr = (v) => String(v == null ? '' : v).trim();   
       const rows = [];
       let badge = '';
 
@@ -21437,7 +21109,6 @@
       
       let hpmsHtml = '';
       if (st.hpms && st.hpms.length) {
-        const tr = (v) => String(v == null ? '' : v).trim();
         const ymd6 = (v) => (/^\d{8}$/.test(tr(v)) ? tr(v).slice(0, 4) + '.' + tr(v).slice(4, 6) : '');
         const list = st.hpms.slice().sort((a, b) =>
           tr(b.stcnsSchedDay || b.crtnDay).localeCompare(tr(a.stcnsSchedDay || a.crtnDay)));
@@ -22252,7 +21923,6 @@
       }
       let pmsHtml = '';
       if (st.pms && st.pms.length) {
-        const tr = (v) => String(v == null ? '' : v).trim();
         const ymd = (v) => (/^\d{8}$/.test(tr(v)) ? tr(v).slice(0, 4) + '.' + tr(v).slice(4, 6) : '');
         const list = st.pms.slice().sort((a, b) => tr(b.archPmsDay).localeCompare(tr(a.archPmsDay)));
         const thisYear = new Date().getFullYear();
@@ -22360,7 +22030,6 @@
       
       
       if (wantInfo.sht && ((st.sht && st.sht.length) || (st.demol && st.demol.length))) {
-        const tr = (v) => String(v == null ? '' : v).trim();
         const ymd = (v) => (/^\d{8}$/.test(tr(v)) ? tr(v).slice(0, 4) + '.' + tr(v).slice(4, 6) + '.' + tr(v).slice(6, 8) : '');
         const list = (st.sht || []).slice().sort((a, b) => tr(b.shterDay).localeCompare(tr(a.shterDay)));
         const rows2 = list.slice(0, 3).map((x) => {
@@ -22461,7 +22130,6 @@
       
       let mtnHtml = '';
       if (st.mtn && st.mtn.length) {
-        const tr = (v) => String(v == null ? '' : v).trim();
         const ymd = (v) => (/^\d{8}$/.test(tr(v)) ? tr(v).slice(0, 4) + '.' + tr(v).slice(4, 6) : '');
         const list = st.mtn.slice().sort((a, b) => tr(b.chkStrtDay).localeCompare(tr(a.chkStrtDay)));
         const rows2 = list.slice(0, 3).map((x) => {
@@ -22722,7 +22390,7 @@
       
       
       let luHtml = '';
-      const _luArea = (st.addrPnu || (st.bld && st.bld.pnu) || (st.parcel && st.parcel.pnu) || '').slice(0, 5);
+      const _luArea = (pnuOf(st) || '').slice(0, 5);
       if (st.zoneCode && _luArea) {
         const box = (inner, cta) => '<div class="ls-sec sec-lu' + (cta ? ' cta-only' : '') + '">' + inner + '</div>';
         if (st.landuse === 'loading') {
@@ -22812,7 +22480,7 @@
       
       
       
-      const vuPnu = st.addrPnu || (st.bld && st.bld.pnu) || (st.parcel && st.parcel.pnu) || '';
+      const vuPnu = pnuOf(st) || '';
       const vuDm = String((st.parcel && st.parcel.addr) || '').match(/(\S+구)\s+(\S+?[동가])(?:\s|$)/);
       const vuLat = Number(lat), vuLng = Number(lng);
       const vuHtml = (vuPnu || (isFinite(vuLat) && isFinite(vuLng)))
@@ -22912,7 +22580,7 @@
     ];
     function loadLedgerDetail(st, render) {
       if (!st || st.detail || st._ldBusy) return;
-      const pnu = st.addrPnu || (st.bld && st.bld.pnu) || (st.parcel && st.parcel.pnu);
+      const pnu = pnuOf(st);
       if (!pnu) return;
       
       const isComplex = !st.br || st.br.regstrGbCdNm !== '일반';
@@ -23166,21 +22834,23 @@
           };
         });
         
-        const mb = slot.querySelector('.ld-mgmt');
-        if (mb) mb.onclick = (ev) => {
-          stop(ev);
-          st.mgmt = 'loading';
-          st.mgmtFull = null;      
-          render();
-          
-          const _pnu = st.addrPnu || (st.bld && st.bld.pnu) || (st.parcel && st.parcel.pnu) || '';
-          loadMgmtCost(_pnu, (st.br && st.br.bldNm) || '', (r) => {
-            
-            st.mgmt = r || null;
-            if (!r) toast('관리비를 불러오지 못함. 다시 시도해 주세요.');
+        
+        
+        const clickLoad = (btn, key, loader, failMsg, before) => {
+          if (btn) btn.onclick = (ev) => {
+            stop(ev);
+            st[key] = 'loading';
+            if (before) before();
             render();
-          });
+            loader(pnuOf(st) || '', (st.br && st.br.bldNm) || '', (r) => {
+              st[key] = r || null;
+              if (!r) toast(failMsg);
+              render();
+            });
+          };
         };
+        
+        clickLoad(slot.querySelector('.ld-mgmt'), 'mgmt', loadMgmtCost, '관리비를 불러오지 못함. 다시 시도해 주세요.', () => { st.mgmtFull = null; });
         
         
         const mba = slot.querySelector('.ld-mgmt-all');
@@ -23262,18 +22932,7 @@
           }));
         };
         
-        const bb = slot.querySelector('.ld-bid');
-        if (bb) bb.onclick = (ev) => {
-          stop(ev);
-          st.bid = 'loading';
-          render();
-          const _pnu = st.addrPnu || (st.bld && st.bld.pnu) || (st.parcel && st.parcel.pnu) || '';
-          loadBidInfo(_pnu, (st.br && st.br.bldNm) || '', (r) => {
-            st.bid = r || null;
-            if (!r) toast('입찰정보를 불러오지 못함. 다시 시도해 주세요.');
-            render();
-          });
-        };
+        clickLoad(slot.querySelector('.ld-bid'), 'bid', loadBidInfo, '입찰정보를 불러오지 못함. 다시 시도해 주세요.');
         
         slot.querySelectorAll('.ld-res').forEach((bn) => {
           bn.onclick = (ev) => {
@@ -23303,7 +22962,7 @@
       if (lb) lb.onclick = (ev) => {
         stop(ev);
         
-        const _pnu = st.addrPnu || (st.bld && st.bld.pnu) || (st.parcel && st.parcel.pnu) || '';
+        const _pnu = pnuOf(st) || '';
         const areaCd = _pnu.slice(0, 5);
         if (!areaCd || !st.zoneCode) { toast('용도지역 코드를 얻지 못해 조회할 수 없음.'); return; }
         st.landuse = 'loading';
@@ -23389,24 +23048,22 @@
         }
         
         
-        const pnu = st.addrPnu || (st.bld && st.bld.pnu) || (st.parcel && st.parcel.pnu);
+        const pnu = pnuOf(st);
         if (!pnu) return;
+        
+        const setArr = (k) => (arr) => { if (arr && arr.length) { st[k] = arr; render(); } };
         buildingRegister(pnu, (it) => {
           if (it) { st.br = it; render(); }
         });
         
         
-        loadStores(pnu, (arr) => {
-          if (arr && arr.length) { st.stores = arr; render(); }
-        });
+        loadStores(pnu, setArr('stores'));
         
         
         
         
         
-        ledgerOp('getBrJijiguInfo', pnu, (arr) => {
-          if (arr && arr.length) { st.jijigu = arr; render(); }
-        });
+        ledgerOp('getBrJijiguInfo', pnu, setArr('jijigu'));
         
         
         
@@ -23417,38 +23074,20 @@
         
         
         
-        if (wantInfo.pms) loadHouseType(pnu, (arr) => {
-          if (arr && arr.length) { st.hstp = arr; render(); }
-        });
-        if (wantInfo.pms) loadParkingLot(pnu, (arr) => {
-          if (arr && arr.length) { st.pklot = arr; render(); }
-        });
-        if (wantInfo.pms) loadRemodel(pnu, (arr) => {
-          if (arr && arr.length) { st.impr = arr; render(); }
-        });
+        if (wantInfo.pms) loadHouseType(pnu, setArr('hstp'));
+        if (wantInfo.pms) loadParkingLot(pnu, setArr('pklot'));
+        if (wantInfo.pms) loadRemodel(pnu, setArr('impr'));
         
-        if (wantInfo.pms) loadTmpBld(pnu, (arr) => {
-          if (arr && arr.length) { st.tmpb = arr; render(); }
-        });
-        if (wantInfo.pms) loadHdcr(pnu, (arr) => {
-          if (arr && arr.length) { st.hdcr = arr; render(); }
-        });
-        if (wantInfo.pms) loadArchPms(pnu, (arr) => {
-          if (arr && arr.length) { st.pms = arr; render(); }
-        });
+        if (wantInfo.pms) loadTmpBld(pnu, setArr('tmpb'));
+        if (wantInfo.pms) loadHdcr(pnu, setArr('hdcr'));
+        if (wantInfo.pms) loadArchPms(pnu, setArr('pms'));
         
         
-        if (wantInfo.hpms) loadHsPms(pnu, (arr) => {
-          if (arr && arr.length) { st.hpms = arr; render(); }
-        });
+        if (wantInfo.hpms) loadHsPms(pnu, setArr('hpms'));
         
         
-        if (wantInfo.hpms) loadHpWlfar(pnu, (arr) => {
-          if (arr && arr.length) { st.hpwlf = arr; render(); }
-        });
-        if (wantInfo.hpms) loadHpComplex(pnu, (arr) => {
-          if (arr && arr.length) { st.hpcoop = arr; render(); }
-        });
+        if (wantInfo.hpms) loadHpWlfar(pnu, setArr('hpwlf'));
+        if (wantInfo.hpms) loadHpComplex(pnu, setArr('hpcoop'));
         }, 4000);   
         
         
@@ -23575,38 +23214,22 @@
         
         
         
-        if (wantInfo.sht) loadShtPrice(pnu, (arr) => {
-          if (arr && arr.length) { st.shtPrc = arr; render(); }
-        });
-        if (wantInfo.sht) loadShtJijigu(pnu, (arr) => {
-          if (arr && arr.length) { st.shtJj = arr; render(); }
-        });
-        if (wantInfo.sht) loadShtRecap(pnu, (arr) => {
-          if (arr && arr.length) { st.shtRecap = arr; render(); }
-        });
-        if (wantInfo.sht) loadSht(pnu, (arr) => {
-          if (arr && arr.length) { st.sht = arr; render(); }
-        });
+        if (wantInfo.sht) loadShtPrice(pnu, setArr('shtPrc'));
+        if (wantInfo.sht) loadShtJijigu(pnu, setArr('shtJj'));
+        if (wantInfo.sht) loadShtRecap(pnu, setArr('shtRecap'));
+        if (wantInfo.sht) loadSht(pnu, setArr('sht'));
         
         
-        if (wantInfo.sht) loadDemol(pnu, (arr) => {
-          if (arr && arr.length) { st.demol = arr; render(); }
-        });
+        if (wantInfo.sht) loadDemol(pnu, setArr('demol'));
         
-        if (wantInfo.mtn) loadMtnChk(pnu, (arr) => {
-          if (arr && arr.length) { st.mtn = arr; render(); }
-        });
+        if (wantInfo.mtn) loadMtnChk(pnu, setArr('mtn'));
         
         
-        if (wantInfo.engy) loadBldEngy(pnu, (arr) => {
-          if (arr && arr.length) { st.engy = arr; render(); }
-        });
+        if (wantInfo.engy) loadBldEngy(pnu, setArr('engy'));
         
         
         
-        if (wantInfo.fund) loadReserveFund(pnu, (st.br && st.br.bldNm) || '', (arr) => {
-          if (arr && arr.length) { st.reserve = arr; render(); }
-        });
+        if (wantInfo.fund) loadReserveFund(pnu, (st.br && st.br.bldNm) || '', setArr('reserve'));
         }, 6000);   
         
         const nk = nonresKey(st.parcel && st.parcel.addr, st.parcel && st.parcel.jibun);
@@ -23670,7 +23293,7 @@
           
           
           if (wantInfo.dgk) {
-            const _pnu10 = (st.addrPnu || (st.bld && st.bld.pnu) || (st.parcel && st.parcel.pnu) || '').slice(0, 10);
+            const _pnu10 = (pnuOf(st) || '').slice(0, 10);
             if (/^\d{10}$/.test(_pnu10)) {
               loadBusDongVolume((j) => {
                 const d = j && j.dong && j.dong[_pnu10];
@@ -23961,11 +23584,7 @@
       const bindRtBtns = () => {
         clearTimeout(_stuckGuard);  
         const el = clickMarker && clickMarker.getPopup() && clickMarker.getPopup().getElement();
-        const sBtn = el && el.querySelector('.rt-start'), eBtn = el && el.querySelector('.rt-end');
-        if (sBtn) sBtn.onclick = () => { setRoutePoint('start', lat, lng); clickMarker.closePopup(); };
-        if (eBtn) eBtn.onclick = () => { setRoutePoint('end', lat, lng); clickMarker.closePopup(); };
-        const svBtn = el && el.querySelector('.sv-btn');
-        if (svBtn) svBtn.onclick = () => showStreetView(lat, lng);
+        wireRouteSvButtons(el, lat, lng, () => clickMarker.closePopup());
       };
       {
         
@@ -24119,7 +23738,8 @@
             refreshSaveBtn();
             saveBtn.onclick = () => { togglePropSave(clickPropRec()); refreshSaveBtn(); if (landMode === 'favorites') render(); };
           }
-          fillLandInfo(_pel, () => clickMarker && clickMarker.getPopup(), lat, lng, (s) => { if (myGen !== _clickGen) return; clickPropInfo = s; refreshSaveBtn(); }, false, jibun);
+          
+          fillLandInfo(_pel, () => (myGen === _clickGen && clickMarker ? clickMarker.getPopup() : null), lat, lng, (s) => { if (myGen !== _clickGen) return; clickPropInfo = s; refreshSaveBtn(); }, false, jibun);
           
           
           
@@ -24389,8 +24009,7 @@
         }
       });
     }
-    let routeOrigin = null, routeDest = null, routeLine = null, routeMode = 'car', originMarker = null, destMarker = null, routeCtrl = null;
-    function highlightMode() { document.querySelectorAll('.rt-mode').forEach((b) => b.classList.toggle('on', b.dataset.m === routeMode)); }
+    let routeOrigin = null, routeDest = null, routeLine = null, originMarker = null, destMarker = null;
     function updatePts() { const el = document.getElementById('rt-pts'); if (el) el.innerHTML = `출발 ${routeOrigin ? '✓' : '미지정'} · 도착 ${routeDest ? '✓' : '미지정'}`; }
     
     function setRoutePoint(kind, lat, lng) {
@@ -24708,20 +24327,32 @@
 
     
     
-    function renderOff() {
+    
+    
+    function clearMarkersObj() {
       Object.values(markers).forEach((m) => map.removeLayer(m));
-      for (const k in markers) delete markers[k];   
-      agentMarkers.forEach((m) => map.removeLayer(m)); agentMarkers = [];
+      for (const k in markers) delete markers[k];
+    }
+    function clearPropMarkers() { clearMarkersObj(); agentMarkers.forEach((m) => map.removeLayer(m)); agentMarkers = []; }
+    function renderOff() {
+      clearPropMarkers();
       $('banner').textContent = '위의 탭을 누르면 목록이 나옵니다. (켠 탭을 한 번 더 누르면 닫힙니다)';
       $('rec-list').innerHTML = '';
       updateCmpBar();
     }
 
     
+    
+    function agentPinIcon(size, border, img) {
+      return L.divIcon({
+        className: '',
+        html: `<div style="width:${size}px;height:${size}px;background:#7048e8;border:${border}px solid #fff;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;"><img src="icons/house-key.png" style="width:${img}px;height:${img}px;filter:invert(1)" alt=""></div>`,
+        iconSize: [size, size],
+        iconAnchor: [size / 2, size / 2],
+      });
+    }
     function renderFavProps() {
-      Object.values(markers).forEach((m) => map.removeLayer(m));
-      for (const k in markers) delete markers[k]; 
-      agentMarkers.forEach((m) => map.removeLayer(m)); agentMarkers = [];
+      clearPropMarkers();
       let list = loadSavedProps();
       if (propCat !== '전체') list = list.filter((x) => propGroup(x.type) === propCat);
       
@@ -24812,12 +24443,7 @@
       
       agentList.forEach((a) => {
         if (a.lat == null || a.lng == null) return;
-        const icon = L.divIcon({
-          className: '',
-          html: '<div style="width:22px;height:22px;background:#7048e8;border:2px solid #fff;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;"><img src="icons/house-key.png" style="width:13px;height:13px;filter:invert(1)" alt=""></div>',
-          iconSize: [22, 22],
-          iconAnchor: [11, 11],
-        });
+        const icon = agentPinIcon(22, 2, 13);
         const m = L.marker([a.lat, a.lng], { icon }).addTo(map)
           .bindPopup(`<b>${esc(a.name)}</b><br>${esc(a.phone || '')}${a.url ? '<br><a href="' + safeUrl(a.url) + '" target="_blank" rel="noopener">카카오맵</a>' : ''}`)
           .bindTooltip(esc(a.name), { direction: 'top' });
@@ -25033,9 +24659,7 @@
     let kakaoTries = 0;
     let lastAgentCenter = null;  
     function renderAgents() {
-      Object.values(markers).forEach((m) => map.removeLayer(m));
-      for (const k in markers) delete markers[k]; 
-      agentMarkers.forEach((m) => map.removeLayer(m)); agentMarkers = [];
+      clearPropMarkers();
       if (!(window.kakao && kakao.maps && kakao.maps.services)) {
         if (kakaoTries++ < 8) { $('rec-list').innerHTML = '<div style="text-align:center;color:var(--muted);padding:24px 0;">장소검색 로딩 중…</div>'; setTimeout(() => { if (landMode === 'agents') renderAgents(); }, 800); }
         else { $('banner').textContent = '인근 공인중개사'; $('rec-list').innerHTML = '<div style="text-align:center;color:var(--muted);padding:24px 0;">장소검색(카카오)을 불러오지 못했어요.<br>즐겨찾기 탭은 정상 이용 가능.</div>'; }
@@ -25061,12 +24685,7 @@
         }).join('');
         
         data.forEach((p) => {
-          const icon = L.divIcon({
-            className: '',
-            html: '<div style="width:24px;height:24px;background:#7048e8;border:2.5px solid #fff;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;"><img src="icons/house-key.png" style="width:14px;height:14px;filter:invert(1)" alt=""></div>',
-            iconSize: [24, 24],
-            iconAnchor: [12, 12],
-          });
+          const icon = agentPinIcon(24, 2.5, 14);
           
           
           const addr = p.road_address_name || p.address_name || '';
@@ -25143,9 +24762,7 @@
       return ranked;
     }
     function renderRanking() {
-      Object.values(markers).forEach((m) => map.removeLayer(m));
-      for (const k in markers) delete markers[k]; 
-      agentMarkers.forEach((m) => map.removeLayer(m)); agentMarkers = [];
+      clearPropMarkers();
       $('banner').textContent = '아파트 실거래가로 전반기 대비 후반기 평균가를 비교한 자체 계산 랭킹 (AI 예측 아님).';
       loadRp().then(() => {
         if (landMode !== 'ranking') return;
@@ -25316,7 +24933,7 @@
       if (rpClusterRef) rpClusterRef.eachLayer((m) => { if (found || !m._rp) return; if (m._rp.name === r.name && m._rp.gu === r.gu && m._rp.dong === r.dong) found = m; });
       if (found && rpClusterRef) {
         rpClusterRef.zoomToShowLayer(found, () => {
-          if (!found.getPopup()) found.bindPopup(found._pop());
+          ensurePop(found);
           found.openPopup();
         });
         return;
@@ -25403,7 +25020,6 @@
       '강서구': 11500, '구로구': 11530, '금천구': 11545, '영등포구': 11560, '동작구': 11590,
       '관악구': 11620, '서초구': 11650, '강남구': 11680, '송파구': 11710, '강동구': 11740,
     };
-    const _brokerCache = new Map();          
     
     const brokerKey = (s) => String(s || '')
       .replace(/[\s()（）·・.,-]/g, '')
@@ -25411,8 +25027,8 @@
     function loadBrokers(guName) {
       const code = SEOUL_SGG_CODE[guName];
       if (!code) return Promise.resolve(null);          
-      if (!_brokerCache.has(code)) {
-        _brokerCache.set(code, fetch('brokers/' + code + '.json')
+      
+      return loadOnce('_broker_' + code, () => fetch('brokers/' + code + '.json')
           .then((r) => (r.ok ? r.json() : null))
           .then((j) => {
             if (!j || !Array.isArray(j.rows)) return null;
@@ -25424,10 +25040,7 @@
               m.get(k).push(r);
             }
             return m;
-          })
-          .catch(() => null));
-      }
-      return _brokerCache.get(code);
+          }));
     }
     
     const guOf = (addr) => (String(addr || '').match(/([가-힣]+구)(?=\s|$)/) || [])[1] || '';
@@ -25488,8 +25101,7 @@
     }
 
     function renderKakao(data) {
-      Object.values(markers).forEach((m) => map.removeLayer(m));
-      for (const k in markers) delete markers[k]; 
+      clearMarkersObj();
       clearKakaoMarkers();
       var back = '<button class="kakao-back" id="s-back">← 뒤로</button>';
       $('rec-list').innerHTML = back + data.map(function (p, i) {
@@ -25726,7 +25338,7 @@
         } catch (e) { wait.innerHTML = esc('죄송합니다. 잠시 후 다시 질문해 주세요.') + HANDOFF; }
         bodyEl.scrollTop = bodyEl.scrollHeight;
       } catch (e) { bubble('b', '답변 준비 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.'); }
-      busy = false; sendEl.disabled = false;
+      finally { busy = false; sendEl.disabled = false; }   
     };
     inputEl.addEventListener('keydown', (e) => { if (e.key === 'Enter') run(); });
     sendEl.addEventListener('click', run);
@@ -25764,12 +25376,14 @@
     
     
     if (typeof window !== 'undefined' && typeof MutationObserver !== 'undefined') {
-    new MutationObserver(() => {
+    const _panelMo = new MutationObserver(() => {
       const pn = $('news-panel');
       if (pn && !pn.classList.contains('collapsed') && !_news) renderNews();
       const cp = $('chat-panel');
       if (cp && !cp.classList.contains('collapsed')) seedChat();
-    }).observe(document.body, { attributes: true, attributeFilter: ['class'], subtree: true });
+    });
+    
+    ['news-panel', 'chat-panel'].forEach((id) => { const el = $(id); if (el) _panelMo.observe(el, { attributes: true, attributeFilter: ['class'] }); });
     }
   })();
   </script>

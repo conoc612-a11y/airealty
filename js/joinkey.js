@@ -58,11 +58,6 @@
     return d.length >= 10 ? d.slice(0, 10) : d;
   }
 
-  /** 법인등록번호(crno) → 숫자 13자리. 금융위 재무·지배구조가 이걸로만 좁혀진다. */
-  function mjCrno(v) {
-    return String(v == null ? '' : v).replace(/\D/g, '').slice(0, 13);
-  }
-
   /**
    * 주소 → 지오코딩 캐시 키.
    * ⚠️ 괄호 안 법정동(`… 42   (도곡동)`)과 층·호는 **좌표를 바꾸지 않는다** → 지운다.
@@ -103,7 +98,7 @@
     return '';
   }
 
-  const API = { mjNameKey, mjBizno, mjCrno, mjAddrKey, mjBucket, mjNameMatch };
+  const API = { mjNameKey, mjBizno, mjAddrKey, mjBucket, mjNameMatch };
   for (const k of Object.keys(API)) g[k] = API[k];
   if (typeof module !== 'undefined' && module.exports) module.exports = API;
 }(typeof globalThis !== 'undefined' ? globalThis : this));
