@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=93a9b34" />
+  <link rel="stylesheet" href="css/tokens.css?v=5fc2074" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=93a9b34"></script>
+  <script src="js/auth-guard.js?v=5fc2074"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=93a9b34" />
+  <link rel="stylesheet" href="css/buttons.css?v=5fc2074" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=93a9b34" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=5fc2074" />
   <style>
     :root {
       
@@ -1841,6 +1841,13 @@
     .leaflet-popup-content-wrapper { overflow:visible; }
     .leaflet-popup-tip { background:var(--card); }
     
+    .leaflet-zoom-anim .leaflet-popup.leaflet-zoom-animated { transition:transform .25s cubic-bezier(0,0,.25,1), left .25s cubic-bezier(0,0,.25,1), bottom .25s cubic-bezier(0,0,.25,1); }
+    
+    .leaflet-popup.pp-below .leaflet-popup-tip-container { top:0; transform:translateY(-100%) rotate(180deg); }
+    
+
+    .leaflet-popup.pp-off, .leaflet-popup.pp-off * { visibility:hidden; transition:none; }
+    
     .leaflet-container a.leaflet-popup-close-button { display:none; }
     
     
@@ -1991,7 +1998,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=93a9b34"></script>
+  <script src="js/ie-guard.js?v=5fc2074"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2313,25 +2320,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-25 00:18 · 93a9b34</span></span>
+          · <span class="build-tag">build 2026-09-25 18:35 · 5fc2074</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=93a9b34"></script>
+  <script src="js/joinkey.js?v=5fc2074"></script>
   
-  <script src="js/identity.js?v=93a9b34"></script>
-  <script src="js/common.js?v=93a9b34"></script>
-  <script src="js/ui-resize.js?v=93a9b34"></script>
-  <script src="js/footer-resize.js?v=93a9b34"></script>
-  <script src="js/route-line.js?v=93a9b34"></script>
-  <script src="js/route-api.js?v=93a9b34"></script>
-  <script src="js/footer-stats.js?v=93a9b34"></script>
+  <script src="js/identity.js?v=5fc2074"></script>
+  <script src="js/common.js?v=5fc2074"></script>
+  <script src="js/ui-resize.js?v=5fc2074"></script>
+  <script src="js/footer-resize.js?v=5fc2074"></script>
+  <script src="js/route-line.js?v=5fc2074"></script>
+  <script src="js/route-api.js?v=5fc2074"></script>
+  <script src="js/footer-stats.js?v=5fc2074"></script>
   
 
-  <script src="js/ad-consent.js?v=93a9b34"></script>
+  <script src="js/ad-consent.js?v=5fc2074"></script>
   <script>
     
     
@@ -12781,6 +12788,10 @@
         
         
         
+        
+        
+        
+        
         const jbCurStep = (d) => {
           const ev = [...((d && d.tl) || []), ...((d && d.up) || [])].filter((x) => x && x.date && x.name);
           ev.sort((a, b) => String(b.date).localeCompare(String(a.date)));
@@ -12795,22 +12806,6 @@
           layer.bindTooltip(badge ? stageBadgeHtml(d) : plainTipHtml(d, !!layer._approx),
             { sticky: !badge, permanent: badge, direction: 'top', className: badge ? 'jb-perm-tt' : '' });
         };
-        const badgeOff = new Set();
-        if (showStageBadge) {
-          const cell = new Map();
-          for (const _i of visible) {
-            const z = jbRows[_i];
-            const k = (z.gu || '') + '|' + Math.round(z.lat * 5000) + ':' + Math.round(z.lng * 5000);
-            if (!cell.has(k)) cell.set(k, []);
-            cell.get(k).push(_i);
-          }
-          for (const arr of cell.values()) {
-            if (arr.length < 2) continue;
-            let best = arr[0], bp = -1;
-            for (const _i of arr) { const p = jbPct(jbEffStage(jbRows[_i])); if (p > bp) { bp = p; best = _i; } }
-            for (const _i of arr) if (_i !== best) badgeOff.add(_i);
-          }
-        }
         
         
         
@@ -12834,6 +12829,27 @@
           }
         }
         const _dupOk = _jbDupOk;
+        const badgeOff = new Set();
+        if (showStageBadge) {
+          const NEAR_KM = 0.025, G = 3000;   
+          const order = visible.filter((_i) => _dupOk.has(jbRows[_i]))
+            .map((_i) => [_i, jbPct(jbEffStage(jbRows[_i]))])
+            .sort((a, b) => b[1] - a[1]);    
+          const kept = new Map();            
+          for (const [_i] of order) {
+            const z = jbRows[_i];
+            const cy = Math.round(z.lat * G), cx = Math.round(z.lng * G);
+            let near = false;
+            for (let a = -1; a <= 1 && !near; a++) for (let b = -1; b <= 1 && !near; b++) {
+              const arr = kept.get((cy + a) + ':' + (cx + b));
+              if (arr) near = arr.some((j) => jbDupDist(z, jbRows[j]) <= NEAR_KM);
+            }
+            if (near) { badgeOff.add(_i); continue; }
+            const k = cy + ':' + cx;
+            if (!kept.has(k)) kept.set(k, []);
+            kept.get(k).push(_i);
+          }
+        }
         const fullRebuild = (_jbLiveBadge !== showStageBadge) || _jbLiveRows !== jbRows || _jbLivePolys !== jbPolys;
         if (fullRebuild) {
           jbCluster.clearLayers();
@@ -20691,64 +20707,131 @@
     
     
     const POPUP_PAD = 12;
-    function clampPopup(p) {
+    const POP_MIN_BODY = 120;   
+    
+    
+    
+    function popupViewRect() {
+      const m = map.getContainer().getBoundingClientRect();
+      let l = m.left, r = m.right;
+      const lp = document.querySelector('.left-panels'), rp = document.querySelector('.right-panels');
+      if (lp) { const q = lp.getBoundingClientRect(); if (q.width > 1) l = Math.max(l, q.right); }
+      if (rp) { const q = rp.getBoundingClientRect(); if (q.width > 1) r = Math.min(r, q.left); }
+      return { m, l: l + POPUP_PAD, r: r - POPUP_PAD, t: m.top + POPUP_PAD, b: m.bottom - POPUP_PAD };
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    function clampPopup(p, at) {
       if (!p || !p.isOpen || !p.isOpen()) return;
       const map = p._map;
       if (!map) return;
       
-      
-      if (map._animatingZoom) return;
+      if (map._animatingZoom && !at) return;
       if (!p.getElement) return;
       const el = p.getElement();
-      if (!el) return;
-      const m = map.getContainer().getBoundingClientRect();
-      const r = el.getBoundingClientRect();
-      
-      let dx = 0, dy = 0;
-      if (r.bottom > m.bottom - POPUP_PAD) dy = r.bottom - (m.bottom - POPUP_PAD);
-      
-      
-      
-      
+      const ll = p.getLatLng ? p.getLatLng() : null;
+      if (!el || !ll) return;
+      if (!p._baseOff) p._baseOff = L.point(p.options.offset || [0, 0]);
+      const base = p._baseOff, off = L.point(p.options.offset || [0, 0]);
+      const v = popupViewRect();
+      const now = map.latLngToContainerPoint(ll);
+      const A = at || now;
+      const ax = v.m.left + A.x, ay = v.m.top + A.y;
       
       
       
-      let topLimit = m.top + POPUP_PAD;
-      if (r.top - dy < topLimit) dy = r.top - topLimit;
-      if (r.right > m.right - POPUP_PAD) dx = r.right - (m.right - POPUP_PAD);
-      if (r.left - dx < m.left + POPUP_PAD) dx = r.left - (m.left + POPUP_PAD);
-      const off = L.point(p.options.offset || [0, 0]);
-      if (!dx && !dy) {
-        
-        
-        if ((off.x || off.y)
-          && r.top > m.top + 40 && r.bottom < m.bottom - 40
-          && r.left > m.left + 40 && r.right < m.right - 40) {
-          p.options.offset = L.point(0, 0);
-          try { p._updatePosition(); } catch (e) {}
-          return;
-        }
-      } else {
-        p.options.offset = L.point(off.x - dx, off.y - dy);
-        try { p._updatePosition(); } catch (e) {}
+      
+      const wide = el.offsetWidth > v.r - v.l;
+      if (wide) { v.l = v.m.left + POPUP_PAD; v.r = v.m.right - POPUP_PAD; }
+      
+      
+      
+      const underL = ax < v.l - POPUP_PAD && ax >= v.m.left, underR = ax > v.r + POPUP_PAD && ax <= v.m.right;
+      if (!at && (underL || underR) && ay >= v.t && ay <= v.b && !p._userMoved
+        && (!p._openedAt || Date.now() - p._openedAt < 3000)) {
+        const need = underL ? (v.l + CTL_GAP) - ax : ax - (v.r - CTL_GAP);
+        map.panBy([underL ? -need : need, 0], { animate: false });
+        return;
       }
       
+      const out = ax < v.l - POPUP_PAD || ax > v.r + POPUP_PAD || ay < v.t - POPUP_PAD || ay > v.b + POPUP_PAD;
+      if (out !== !!p._offView) { p._offView = out; el.classList.toggle('pp-off', out); }
+      if (out) return;
+      
+      const content = p._contentNode;
+      if (p._fitH) { if (content && !p._lpH) content.style.maxHeight = ''; p._fitH = 0; }
+      const r = el.getBoundingClientRect();
       
       
-      try {
-        const tipC = el.querySelector('.leaflet-popup-tip-container');
-        const ll = p.getLatLng ? p.getLatLng() : null;
-        if (tipC && ll && map) {
-          tipC.style.left = '';
-          const m2 = map.getContainer().getBoundingClientRect();
-          const tr = tipC.getBoundingClientRect();
-          const ax = map.latLngToContainerPoint(ll).x;
-          const tipX = tr.left + tr.width / 2 - m2.left;
-          const half = Math.max(0, el.getBoundingClientRect().width / 2 - 34);
-          const sh = Math.max(-half, Math.min(half, Math.round(ax - tipX)));
-          if (sh) tipC.style.left = `calc(50% + ${sh}px)`;
+      
+      const w = el.offsetWidth, cw0 = p._containerWidth || w;
+      const recenter = Math.round(cw0 / 2) - Math.round(w / 2);
+      p._containerWidth = w;
+      
+      const sx = (A.x - now.x) - (off.x - base.x) + recenter, sy = (A.y - now.y) - (off.y - base.y);
+      const L0 = r.left + sx, R0 = r.right + sx, T0 = r.top + sy, B0 = r.bottom + sy, H = B0 - T0;
+      
+      const roomUp = B0 - v.t;
+      
+      
+      const tipC = el.querySelector('.leaflet-popup-tip-container');
+      const tipH = (tipC && tipC.offsetHeight) || 20;
+      const belowTop = ay + tipH + 2;            
+      const roomDown = v.b - belowTop;
+      let below = false, need = 0;
+      if (H > roomUp) {
+        if (H <= roomDown) below = true;
+        else { below = roomDown > roomUp; need = H - (below ? roomDown : roomUp); }
+      }
+      if (need > 0 && content && !p._lpH) {
+        const ch = content.getBoundingClientRect().height;
+        
+        
+        const floor = content.classList.contains('auc-popbox') ? Math.min(360, Math.round(window.innerHeight * 0.6)) : POP_MIN_BODY;
+        const cap = Math.max(floor, Math.floor(ch - need));
+        if (cap < ch) { content.style.maxHeight = cap + 'px'; p._fitH = cap; }
+      }
+      const H2 = p._fitH ? el.getBoundingClientRect().height : H;
+      
+      let dy = below ? Math.round(belowTop - T0 - (H - H2)) : 0;
+      
+      
+      if (!below) { const s = v.t - (B0 - H2); if (s > 0) dy = Math.round(s); }
+      else { const o = belowTop + H2 - v.b; if (o > 0) dy -= Math.round(o); }
+      
+      
+      
+      
+      const half = Math.max(0, w / 2 - 22);
+      let dx = 0;
+      if (R0 > v.r) dx = Math.min(v.r + POPUP_PAD - CTL_GAP - R0, Math.max(v.r - R0, -half));
+      if (L0 + dx < v.l) dx = Math.max(v.l - POPUP_PAD + CTL_GAP - L0, Math.min(v.l - L0, half));
+      dx = Math.round(dx);
+      el.classList.toggle('pp-below', below);
+      const nx = base.x + dx, ny = base.y + dy;
+      if (nx !== off.x || ny !== off.y || recenter) {
+        p.options.offset = L.point(nx, ny);
+        if (at) {
+          
+          
+          
+          el.style.left = (-Math.round(w / 2) + nx) + 'px';
+          el.style.bottom = (-ny) + 'px';
+        } else {
+          try { p._updatePosition(); } catch (e) {}
         }
-      } catch (e) {}
+      }
+      
+      if (tipC) {
+        const sh = Math.max(-half, Math.min(half, -dx));
+        tipC.style.left = sh ? `calc(50% + ${sh}px)` : '';
+      }
     }
     function repanPopup(p, precise) {
       if (!p || !p.isOpen || !p.isOpen()) return;
@@ -23857,6 +23940,20 @@
     
     
     map.on('zoomend', () => repanPopup(map._popup, true));
+    
+    map.on('zoomanim', (e) => {
+      const p = map._popup;
+      if (!p || !p.getLatLng || !p.getLatLng()) return;
+      const at = map.project(p.getLatLng(), e.zoom).subtract(map.project(e.center, e.zoom)).add(map.getSize().divideBy(2));
+      clampPopup(p, at);
+    });
+    
+    
+    
+    map.on('moveend', () => clampPopup(map._popup));
+    
+    map.on('popupopen', (e) => { e.popup._openedAt = Date.now(); e.popup._userMoved = false; });
+    map.on('zoomstart dragstart', () => { if (map._popup) map._popup._userMoved = true; });
 
     
     const NAVER_KEY = 'kw4t9xfkhz';
