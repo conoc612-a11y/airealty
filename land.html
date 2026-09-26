@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=38296ba" />
+  <link rel="stylesheet" href="css/tokens.css?v=4409503" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=38296ba"></script>
+  <script src="js/auth-guard.js?v=4409503"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=38296ba" />
+  <link rel="stylesheet" href="css/buttons.css?v=4409503" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=38296ba" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=4409503" />
   <style>
     :root {
       
@@ -365,7 +365,10 @@
     .profile-menu a:not(#who):hover, .profile-menu button:hover { border-color:#D92A14; }
     
     .ac-wrap { position:relative; flex:1; }
-    .ac { position:absolute; left:0; right:0; top:calc(100% + 4px); background:var(--card); border:1px solid var(--line); border-radius:8px; z-index:1500; max-height:240px; overflow-y:auto; display:none; box-shadow:var(--c-shadow-lg); }
+    
+
+
+    .ac { position:fixed; left:0; top:0; width:0; background:var(--card); border:1px solid var(--line); border-radius:8px; z-index:2100; max-height:240px; overflow-y:auto; display:none; box-shadow:var(--c-shadow-lg); }
     .ac.on { display:block; }
     .ac-item { padding:10px 14px; font-size:14px; cursor:pointer; display:flex; gap:8px; align-items:center; }
     .ac-item:hover { background:var(--c-hover); }
@@ -2001,7 +2004,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=38296ba"></script>
+  <script src="js/ie-guard.js?v=4409503"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2233,7 +2236,6 @@
       <div class="search-row">
         <div class="ac-wrap">
           <input type="text" id="search" class="search-inp" placeholder="주소 · 지역명 · 정비구역명 검색 (Enter)" autocomplete="off" />
-          <div id="ac" class="ac"></div>
         </div>
         <button id="geo-btn" class="gps-btn" title="내 위치" aria-label="내 위치"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="7"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/></svg></button>
       </div>
@@ -2323,25 +2325,27 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-26 13:31 · 38296ba</span></span>
+          · <span class="build-tag">build 2026-09-26 15:40 · 4409503</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=38296ba"></script>
+  <script src="js/joinkey.js?v=4409503"></script>
   
-  <script src="js/identity.js?v=38296ba"></script>
-  <script src="js/common.js?v=38296ba"></script>
-  <script src="js/ui-resize.js?v=38296ba"></script>
-  <script src="js/footer-resize.js?v=38296ba"></script>
-  <script src="js/route-line.js?v=38296ba"></script>
-  <script src="js/route-api.js?v=38296ba"></script>
-  <script src="js/footer-stats.js?v=38296ba"></script>
+  <script src="js/identity.js?v=4409503"></script>
+  <script src="js/common.js?v=4409503"></script>
+  <script src="js/ui-resize.js?v=4409503"></script>
+  <script src="js/footer-resize.js?v=4409503"></script>
+  <script src="js/route-line.js?v=4409503"></script>
+  <script src="js/route-api.js?v=4409503"></script>
+  <script src="js/footer-stats.js?v=4409503"></script>
   
 
-  <script src="js/ad-consent.js?v=38296ba"></script>
+  <script src="js/ad-consent.js?v=4409503"></script>
+  
+  <div id="ac" class="ac"></div>
   <script>
     
     
@@ -25099,6 +25103,17 @@
       tmp.addTo(map).bindPopup(tmp._pop()).openPopup();
       map.setView([r.lat, r.lng], Math.max(map.getZoom(), 15));
     }
+    
+    function acPlace() {
+      const ac = $('ac');
+      if (!ac || !ac.classList.contains('on')) return;
+      const r = $('search').getBoundingClientRect();
+      ac.style.left = r.left + 'px';
+      ac.style.width = r.width + 'px';
+      ac.style.top = (r.bottom + 4) + 'px';
+    }
+    document.addEventListener('scroll', acPlace, true);
+    document.addEventListener('resize', acPlace);
     function renderAC() {
       const raw = $('search').value.trim(), ac = $('ac');
       if (!raw) { ac.className = 'ac'; ac.innerHTML = ''; return; }
@@ -25127,6 +25142,7 @@
       const busItems = busRt.map((d, i) => `<div class="ac-item" data-bus="${i}"><span style="opacity:.7;">🚌</span>${esc(d.n || d.no)} · ${esc(d.c || d.city || '')}${d.src === 'ultra' ? '(정밀)' : ''}<span class="t">버스노선</span></div>`).join('');
       ac.innerHTML = placeItem + aptItems + jbItems + busItems;
       ac.className = 'ac on';
+      acPlace();
       ac.querySelector('.ac-item[data-place="1"]').addEventListener('mousedown', (ev) => { ev.preventDefault(); runSearch(); ac.className = 'ac'; });
       ac.querySelectorAll('.ac-item[data-apt]').forEach((el) => el.addEventListener('mousedown', (ev) => {
         ev.preventDefault();
@@ -25536,6 +25552,6 @@
     ['news-panel', 'chat-panel'].forEach((id) => { const el = $(id); if (el) _panelMo.observe(el, { attributes: true, attributeFilter: ['class'] }); });
     }
   })();
-  </script>
-</body>
+    </script>
+  </body>
 </html>
