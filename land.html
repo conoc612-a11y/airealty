@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=167dbbc" />
+  <link rel="stylesheet" href="css/tokens.css?v=38296ba" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=167dbbc"></script>
+  <script src="js/auth-guard.js?v=38296ba"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=167dbbc" />
+  <link rel="stylesheet" href="css/buttons.css?v=38296ba" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=167dbbc" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=38296ba" />
   <style>
     :root {
       
@@ -2001,7 +2001,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=167dbbc"></script>
+  <script src="js/ie-guard.js?v=38296ba"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2323,25 +2323,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-26 00:23 · 167dbbc</span></span>
+          · <span class="build-tag">build 2026-09-26 13:31 · 38296ba</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=167dbbc"></script>
+  <script src="js/joinkey.js?v=38296ba"></script>
   
-  <script src="js/identity.js?v=167dbbc"></script>
-  <script src="js/common.js?v=167dbbc"></script>
-  <script src="js/ui-resize.js?v=167dbbc"></script>
-  <script src="js/footer-resize.js?v=167dbbc"></script>
-  <script src="js/route-line.js?v=167dbbc"></script>
-  <script src="js/route-api.js?v=167dbbc"></script>
-  <script src="js/footer-stats.js?v=167dbbc"></script>
+  <script src="js/identity.js?v=38296ba"></script>
+  <script src="js/common.js?v=38296ba"></script>
+  <script src="js/ui-resize.js?v=38296ba"></script>
+  <script src="js/footer-resize.js?v=38296ba"></script>
+  <script src="js/route-line.js?v=38296ba"></script>
+  <script src="js/route-api.js?v=38296ba"></script>
+  <script src="js/footer-stats.js?v=38296ba"></script>
   
 
-  <script src="js/ad-consent.js?v=167dbbc"></script>
+  <script src="js/ad-consent.js?v=38296ba"></script>
   <script>
     
     
@@ -4870,6 +4870,24 @@
       }
       window.__loadVilla = loadVilla;   
 
+      
+      
+      
+      
+      
+      
+      function dotIcon(fill, op) {
+        return L.divIcon({
+          className: '',
+          html: '<div style="width:20px;height:20px;border-radius:50%;box-sizing:border-box;'
+            + 'border:2px solid #000;background:' + fill + ';opacity:' + (op == null ? 0.9 : op) + ';"></div>',
+          iconSize: [20, 20], iconAnchor: [10, 10],
+        });
+      }
+      function dotMarker(d, fill, op) {
+        return L.marker([d.lat, d.lng], { icon: dotIcon(fill, op), keyboard: false });
+      }
+
       function villaBuild() {
         if (!villaRows) return;
         villaCluster.clearLayers();
@@ -4878,7 +4896,7 @@
         
         
         villaCluster.addLayers(inViewRows(villaRows.filter((d) => inPrice(d.priceEok) && inAge(d.build))).map((d) => {
-          const m = L.circleMarker([d.lat, d.lng], { radius: 10, color: '#000', weight: 2, fillColor: ageColor(d.build), fillOpacity: 0.9 });
+          const m = dotMarker(d, ageColor(d.build), 0.9);
           m._rp = d;                       
           m._isVilla = 1;                  
           m._pop = (() => villaPopupHtml(d));
@@ -4935,7 +4953,7 @@
         if (!houseRows) return;
         houseCluster.clearLayers();
         houseCluster.addLayers(inViewRows(houseRows).map((d) => {
-          const m = L.circleMarker([d.lat, d.lng], { radius: 10, color: '#000', weight: 2, fillColor: '#f08c00', fillOpacity: 0.85 });
+          const m = dotMarker(d, '#f08c00', 0.85);
           m.bindPopup(housePopupHtml(d));
           return m;
         }));
@@ -4949,11 +4967,15 @@
       const houseRentCluster = L.markerClusterGroup({ chunkedLoading: true, maxClusterRadius: 50 });
       let houseRentRows = null;
       
+      
+      
+      
+      
       function dongRows(j) {
         return Object.entries(j).map(([key, v]) => {
           if (!v.lat || !v.lng) return null;
-          const m = String(key).match(/^(\S+구) (.+)$/);
-          return { gu: m ? m[1] : '', dong: m ? m[2] : key, lat: v.lat, lng: v.lng, ...v };
+          const s = String(key), i = s.lastIndexOf(' ');
+          return i > 0 ? { gu: s.slice(0, i), dong: s.slice(i + 1), lat: v.lat, lng: v.lng, ...v } : null;
         }).filter(Boolean);
       }
       function loadHouseRentRows() {
@@ -4973,7 +4995,7 @@
         if (!houseRentRows) return;
         houseRentCluster.clearLayers();
         houseRentCluster.addLayers(inViewRows(houseRentRows).map((d) => {
-          const m = L.circleMarker([d.lat, d.lng], { radius: 10, color: '#000', weight: 2, fillColor: '#339af0', fillOpacity: 0.85 });
+          const m = dotMarker(d, '#339af0', 0.85);
           m.bindPopup(houseRentPopupHtml(d));
           return m;
         }));
@@ -5017,7 +5039,7 @@
         if (!officelRows) return;
         officelCluster.clearLayers();
         officelCluster.addLayers(inViewRows(officelRows).map((d) => {
-          const m = L.circleMarker([d.lat, d.lng], { radius: 10, color: '#000', weight: 2, fillColor: '#7048e8', fillOpacity: 0.9 });
+          const m = dotMarker(d, '#7048e8', 0.9);
           m._pop = (() => officelPopupHtml(d));
           return m;
         }));
@@ -5381,7 +5403,7 @@
         if (!officelSaleRows) return;
         officelSaleCluster.clearLayers();
         officelSaleCluster.addLayers(inViewRows(officelSaleRows).map((d) => {
-          const m = L.circleMarker([d.lat, d.lng], { radius: 10, color: '#000', weight: 2, fillColor: '#f76707', fillOpacity: 0.9 });
+          const m = dotMarker(d, '#f76707', 0.9);
           m._pop = (() => officelSalePopupHtml(d));
           return m;
         }));
@@ -5439,9 +5461,7 @@
         if (!silvRows) return;
         silvCluster.clearLayers();
         silvCluster.addLayers(inViewRows(silvRows).map((d) => {
-          const m = L.circleMarker([d.lat, d.lng], {
-            radius: 9, color: '#000', weight: 2, fillColor: '#9c36b5', fillOpacity: 0.9,
-          });
+          const m = dotMarker(d, '#9c36b5', 0.9);
           m._pop = (() => silvPopupHtml(d));
           return m;
         }));
@@ -5810,6 +5830,12 @@
             if (tagoPosKey !== key) return;          
             const buses = (j && j.buses) || [];
             tagoPosDraw(buses, label);
+            
+            
+            
+            if (!quiet && tagoPosLayer.getLayers().length) {
+              try { map.fitBounds(tagoPosLayer.getBounds().pad(0.25), { maxZoom: 15 }); } catch (e) {}
+            }
             livePosNotify(j, buses.length, tagoPosLayer, label, 30, quiet);
           })
           .catch(() => { if (!quiet) toast('실시간 위치를 불러오지 못함.'); });
@@ -6552,7 +6578,7 @@
           + (d.yr ? ' · 학급·학생수 ' + d.yr + '년 공시' : '') + '</div>');
         return `<div class="pc"><div class="pc-head">`
           + `<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${schColor(d)};flex-shrink:0;"></span>`
-          + `<span class="rp-name">${esc(d.knd || '학교')}</span></div><div class="pc-body">${rows.join('')}</div></div>`;
+          + `<span class="rp-name">${esc([d.nm, d.knd].filter(Boolean).join(' · ') || '학교')}</span></div><div class="pc-body">${rows.join('')}</div></div>`;
       }
       
       viewSearchAdd(() => map.hasLayer(schoolCluster) && !!schoolRows, () => schoolBuild());
@@ -6605,7 +6631,7 @@
         rows.push('<div style="margin-top:5px;font-size:11px;color:var(--c-muted);">건강보험심사평가원 병원정보</div>');
         return `<div class="pc"><div class="pc-head">`
           + `<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${HOSP_COLOR[d.cl] || '#f8a5c2'};flex-shrink:0;"></span>`
-          + `<span class="rp-name">병원·의원</span></div><div class="pc-body">${rows.join('')}</div></div>`;
+          + `<span class="rp-name">${esc([d.nm, d.cl].filter(Boolean).join(' · ') || '병원·의원')}</span></div><div class="pc-body">${rows.join('')}</div></div>`;
       }
       function emrgPopupHtml(d) {
         const rows = [`<div style="margin-bottom:3px;"><b>${esc(d.nm)}</b></div>`];
@@ -6617,7 +6643,7 @@
         rows.push('<div style="margin-top:5px;font-size:11px;color:var(--c-muted);">국립중앙의료원 응급의료기관</div>');
         return `<div class="pc"><div class="pc-head">`
           + `<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#e03131;flex-shrink:0;"></span>`
-          + `<span class="rp-name">응급의료</span></div><div class="pc-body">${rows.join('')}</div></div>`;
+          + `<span class="rp-name">${esc([d.nm, d.kind].filter(Boolean).join(' · ') || '응급의료')}</span></div><div class="pc-body">${rows.join('')}</div></div>`;
       }
       function hospBuild() {
         if (!hospRows) return;
@@ -13184,7 +13210,7 @@
         rpRows.forEach((r) => {
           if (r.lat == null) return;
           if (!rings.some((ring) => pointInRing(r.lat, r.lng, ring))) return;
-          const m = L.circleMarker([r.lat, r.lng], { radius: 10, color: '#000', weight: 2, fillColor: '#2260C3', fillOpacity: 0.85 });
+          const m = dotMarker(r, '#2260C3', 0.85);
           m._rp = r;
           m._pop = (() => `<b>${esc(r.name)}</b><br>매매 ${r.priceEok == null ? '-' : fmtAmtExact(r.priceEok * 1e4)} · ${esc(r.gu)} ${esc(r.dong)}<br><a href="https://map.naver.com/p/search/${encodeURIComponent(r.name + ' ' + (r.dong || r.gu || ''))}" target="_blank" rel="noopener">네이버 부동산</a>`);
           ms.push(m);
@@ -14744,6 +14770,15 @@
             
             if (!rows.length) { toast(a.sgg + ' 최근 3년 공시가 없음.'); kisDraw(); return; }
             const need = rows.filter((r) => kisOn.has(r.item));
+            
+            
+            
+            
+            if (!need.length) {
+              toast(a.sgg + ' 최근 3년 공시 ' + rows.length + '건 중 고른 업종은 없음 — 업종을 바꿔 보세요.');
+              kisDraw();
+              return;
+            }
             kisGeocodeAll(need, () => {}, (miss) => {
               if (my !== kisSeq) return;
               kisDraw();
