@@ -320,6 +320,31 @@
     });
   }
 
+  // ── GG Data Dream / GG.openAPI Edge 프록시 호출 ─────────────────────
+  // Supabase Edge Function base URL (배포 시 실제 URL로 교체)
+  var EDGE_BASE = (typeof SUPABASE_EDGE_BASE !== 'undefined' ? SUPABASE_EDGE_BASE
+    : 'https://bhgijvaxxjnocgfnaaeu.supabase.co/functions/v1');
+
+  // 공통 fetch 헬퍼
+  function edgeFetch(path, params) {
+    var url = EDGE_BASE + path + '?' + new URLSearchParams(params).toString();
+    return fetch(url, { signal: AbortSignal.timeout(15000) })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .catch(function (e) { console.error('Edge fetch error:', e); return null; });
+  }
+
+  // GG Data Dream 광역버스 승하차 인원 조회
+  // params: { oprt_ymd, tmzon, route_no, station_id, station_nm, pIndex, pSize }
+  function ggBusPassenger(params) {
+    return edgeFetch('/gg-bus-passenger', params);
+  }
+
+  // GG.openAPI 도로·교통 7종 조회
+  // params: { op: 'getRoadInfoList'|'getRoadLinkInfoList'|..., routeId, linkId, laeId, ... }
+  function ggRoadTraffic(params) {
+    return edgeFetch('/gg-road-traffic', params);
+  }
+
   window.RouteAPI = { osrm: osrm, transit: transit, transitSteps: transitSteps, kmBetween: kmBetween,
-    stats: stats };   // { net, hit } — 캐시가 먹는지 확인용
+    stats: stats, ggBusPassenger: ggBusPassenger, ggRoadTraffic: ggRoadTraffic };
 })();
