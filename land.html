@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=97dbef8" />
+  <link rel="stylesheet" href="css/tokens.css?v=3fc025e" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=97dbef8"></script>
+  <script src="js/auth-guard.js?v=3fc025e"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=97dbef8" />
+  <link rel="stylesheet" href="css/buttons.css?v=3fc025e" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=97dbef8" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=3fc025e" />
   <style>
     :root {
       
@@ -260,6 +260,71 @@
     
     html.soil :is(.ap-row, .rec) { border-radius:4px; border-style:double; border-width:3px; }
     html.soil .ap-badge { border-radius:4px; }
+    
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+    :root.soil .leaflet-control-zoom a { width:44px; height:44px; line-height:44px; font-size:20px; }
+    :root.soil .leaflet-bar a.leaflet-control-zoom-in:first-child  { border-top-left-radius:4px; border-top-right-radius:4px; }
+    :root.soil .leaflet-bar a.leaflet-control-zoom-out:last-child { border-bottom-left-radius:4px; border-bottom-right-radius:4px; }
+
+    
+    :root.soil .gps-btn { font-size:13px; }
+
+    
+    :root.soil .stat-bar { font-size:13px; }
+
+    
+
+
+
+
+    :root.soil .rec .actions { align-items:stretch; }
+    :root.soil .rec .actions a, :root.soil .rec .actions button,
+    :root.soil .agent-save { min-height:32px; box-sizing:border-box; }
+    
+    :root.soil .rec .actions a[href^="tel:"] { flex:1 1 auto; }
+
+    
+
+
+    :root.soil .lp-kids > div > div + div { border-top:1px solid var(--line); }
+    
+
+
+    #soil-hub { display:none; }
+    :root.soil #soil-hub { display:flex; align-items:center; gap:10px; flex-shrink:0;
+      padding:7px 16px; background:var(--c-card); border-bottom:1px solid var(--line);
+      font-size:13px; overflow-x:auto; }
+    :root.soil .sh-lbl { color:var(--c-muted); font-weight:700; white-space:nowrap; }
+    :root.soil .sh-q { display:flex; gap:6px; flex:0 0 auto; }
+    :root.soil .sh-q input { width:220px; font:inherit; font-size:13px; padding:6px 10px;
+      border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--text); }
+    :root.soil .sh-q input:focus { outline:2px solid var(--mx-accent); outline-offset:-1px; }
+    :root.soil .sh-q button, :root.soil .sh-role { font:inherit; font-size:13px; font-weight:600;
+      padding:6px 12px; border-radius:8px; cursor:pointer; white-space:nowrap;
+      border:1px solid var(--line); background:var(--card); color:var(--text); }
+    :root.soil .sh-q button { background:var(--mx-accent); border-color:var(--mx-accent); color:#fff; }
+    :root.soil .sh-role:hover { border-color:var(--mx-accent); color:var(--mx-accent); }
+    :root.soil .sh-role.on { background:var(--mx-accent); border-color:var(--mx-accent); color:#fff; }
+    :root.soil .sh-roles { display:flex; gap:6px; flex:0 0 auto; }
+
     
 
 
@@ -2004,7 +2069,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=97dbef8"></script>
+  <script src="js/ie-guard.js?v=3fc025e"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2023,7 +2088,7 @@
     </div>
     <div class="right">
       <button id="panel-toggle-btn" class="icon-btn" title="패널 접기/펼치기" aria-label="패널 접기/펼치기">◫</button>
-      <button id="theme-btn" class="icon-btn" title="클릭: 기본·다크·신·골드·틸·토 전환" aria-label="화면모드 전환"></button>
+      <button id="theme-btn" class="icon-btn" title="색상버튼 — 클릭: 레드·다크·블루·골드·그린·브라운" aria-label="색상버튼"></button>
       <div class="profile">
         <button id="profile-btn" class="nav-tab profile-tab">내 정보 <span style="opacity:.6;">▾</span></button>
         <div id="profile-menu" class="profile-menu">
@@ -2036,6 +2101,18 @@
     </div>
     <div class="footer-resize header-resize" id="header-resize" title="끌어서 세로 크기 조절"></div>
   </header>
+    
+
+
+    <div id="soil-hub" aria-label="빠른 이동">
+      <span class="sh-lbl">무엇을 보시나요</span>
+      <span class="sh-q">
+        <input type="text" id="sh-q" placeholder="예: 2024타경2532 감정가" autocomplete="off" aria-label="상담 질문 입력">
+        <button type="button" id="sh-ask" aria-label="AI 상담 열기">물어보기</button>
+      </span>
+      <span class="sh-roles" id="sh-roles"></span>
+    </div>
+
   <div id="stat-bar" class="stat-bar">
     <span>정비사업 <b id="stat-jb">—</b>구역</span>
     <span>실거래 <b id="stat-rp">—</b>건</span>
@@ -2325,25 +2402,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-28 02:23 · 97dbef8</span></span>
+          · <span class="build-tag">build 2026-09-28 15:49 · 3fc025e</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=97dbef8"></script>
+  <script src="js/joinkey.js?v=3fc025e"></script>
   
-  <script src="js/identity.js?v=97dbef8"></script>
-  <script src="js/common.js?v=97dbef8"></script>
-  <script src="js/ui-resize.js?v=97dbef8"></script>
-  <script src="js/footer-resize.js?v=97dbef8"></script>
-  <script src="js/route-line.js?v=97dbef8"></script>
-  <script src="js/route-api.js?v=97dbef8"></script>
-  <script src="js/footer-stats.js?v=97dbef8"></script>
+  <script src="js/identity.js?v=3fc025e"></script>
+  <script src="js/common.js?v=3fc025e"></script>
+  <script src="js/ui-resize.js?v=3fc025e"></script>
+  <script src="js/footer-resize.js?v=3fc025e"></script>
+  <script src="js/route-line.js?v=3fc025e"></script>
+  <script src="js/route-api.js?v=3fc025e"></script>
+  <script src="js/footer-stats.js?v=3fc025e"></script>
   
 
-  <script src="js/ad-consent.js?v=97dbef8"></script>
+  <script src="js/ad-consent.js?v=3fc025e"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -2433,8 +2510,16 @@
     
 
 
-    const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
-    const THEME_TOAST = { base: '기본 화면', dark: '다크모드', mock: '신 디자인', lux: '블랙·골드', teal: '틸·글래스', soil: '토·부동산' };
+    
+    
+
+
+
+
+
+
+const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
+    const THEME_TOAST = { base: '레드모드', dark: '다크모드', mock: '블루모드', lux: '골드모드', teal: '그린모드', soil: '브라운모드' };
     function curTheme() { const c = document.documentElement.classList; return c.contains('lux') ? 'lux' : c.contains('teal') ? 'teal' : c.contains('soil') ? 'soil' : (c.contains('mock') ? 'mock' : (c.contains('dark') ? 'dark' : 'base')); }
     function altThemeOn() { const t = curTheme(); return t === 'mock' || t === 'lux' || t === 'teal' || t === 'soil'; }
     function initThemeBtn() { const b = $('theme-btn'); if (!b) return; b.addEventListener('click', () => { const nx = THEME_ORDER[(THEME_ORDER.indexOf(curTheme()) + 1) % THEME_ORDER.length]; setTheme(nx); toast(THEME_TOAST[nx]); }); }
@@ -16166,6 +16251,49 @@
           };
         });
 
+
+        
+        
+        
+        
+        
+        (function hubWire() {
+          const hub = $('soil-hub'); if (!hub) return;
+          const soil = () => document.documentElement.classList.contains('soil');
+          const openChat = () => {
+            const cp = $('chat-panel');
+            if (window.__chatTab && cp && cp.classList.contains('collapsed')) window.__chatTab.toggle();
+            const inp = $('chat-input'); if (inp) setTimeout(() => inp.focus(), 60);
+          };
+          
+          const src = [...roleBar.querySelectorAll('.lp-role:not(.lp-role-off)')];
+          const dst = $('sh-roles');
+          src.forEach((b) => {
+            const t = document.createElement('button');
+            t.type = 'button'; t.className = 'sh-role'; t.dataset.i = b.dataset.i;
+            t.textContent = b.textContent; t.title = b.title || '';
+            t.addEventListener('click', () => {
+              if (!soil()) return;
+              
+              const lp = $('lp-panel');
+              if (window.__lpTab && lp && lp.classList.contains('collapsed')) window.__lpTab.toggle();
+              dst.querySelectorAll('.sh-role').forEach((x) => x.classList.remove('on'));
+              t.classList.add('on');
+              b.click();
+            });
+            dst.appendChild(t);
+          });
+          $('sh-ask').addEventListener('click', () => { if (soil()) openChat(); });
+          $('sh-q').addEventListener('keydown', (e) => {
+            if (e.key !== 'Enter' || !soil()) return;
+            const v = $('sh-q').value.trim(); if (!v) return;
+            const inp = $('chat-input');
+            openChat();
+            if (inp) { inp.value = v; inp.focus(); }
+            
+            
+          });
+        })();
         
         
         
