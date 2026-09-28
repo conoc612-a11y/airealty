@@ -19,6 +19,18 @@
         try { localStorage.setItem(key, String(el.offsetHeight)); } catch (e) {}
       }
     });
+    // 접기/펴기 버튼 — 손잡이 안에 `.band-toggle` 이 있으면 최소↔최대를 오간다.
+    // 드래그와 겹치지 않는다: makeResizable 의 pointerdown 이 그립 안의 button 을 걸러낸다.
+    var btn = handle.querySelector('.band-toggle');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var max = typeof opts.maxH === 'function' ? opts.maxH() : opts.maxH;
+      // 최소보다 2px 넘게 크면 '펴진 상태'로 본다 — 드래그로 맞춰 둔 중간 높이에서도 접힌다.
+      var next = (el.offsetHeight > opts.minH + 2) ? opts.minH : max;
+      el.style.height = next + 'px';
+      btn.setAttribute('aria-expanded', String(next !== opts.minH));
+      try { localStorage.setItem(key, String(next)); } catch (e) {}
+    });
   }
   var wideOnly = function () { return window.matchMedia('(min-width:641px)').matches; };
 
@@ -33,6 +45,12 @@
   // minH 44 = 34px 아이콘 버튼 + 상하 여백이 들어가는 최소값.
   setupResize(document.querySelector('header'), document.getElementById('header-resize'), 'mj-header-height',
     { minH: 44, maxH: 160, wide: wideOnly });
+
+  // 상담 줄(#soil-hub) — 헤더·통계 띠와 같은 부품. 손잡이는 자식이 아니라 **바로 뒤 형제**다
+  // (#soil-hub 가 overflow-x:auto 라 자식 absolute 손잡이가 잘린다 — land.html .hub-resize 주석).
+  // minH 28 = 13px 글자 + 상하 패딩이 들어가는 최소값. maxH 120 = 역할 칩이 두 줄 나도 남는 값.
+  setupResize(document.getElementById('soil-hub'), document.getElementById('hub-resize'), 'mj-hub-height',
+    { minH: 28, maxH: 120, wide: wideOnly });
 
   // 통계 띠 — 지도와의 경계선. 헤더와 같은 부품·같은 방향이다(손잡이가 띠 **아래**).
   // minH 18 = 12.5px 글자가 잘리지 않는 최소값.
