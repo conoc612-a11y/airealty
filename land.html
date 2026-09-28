@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=762326b" />
+  <link rel="stylesheet" href="css/tokens.css?v=ba5cb89" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=762326b"></script>
+  <script src="js/auth-guard.js?v=ba5cb89"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=762326b" />
+  <link rel="stylesheet" href="css/buttons.css?v=ba5cb89" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=762326b" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=ba5cb89" />
   <style>
     :root {
       
@@ -200,7 +200,6 @@
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .lp-role:hover { border-color:var(--mx-accent); color:var(--mx-accent); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .lp-role.on { background:var(--mx-accent); border-color:var(--mx-accent); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .bm-item:hover { border-color:var(--mx-accent); }
-    :is(:root.mock,:root.lux,:root.teal,:root.soil) .bm-item.on { border-color:var(--mx-accent); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .lp-toggle { color:var(--mx-accent); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .lp-hstat b { color:var(--mx-accent); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .tag.hit { background:var(--mx-accent); }
@@ -334,7 +333,7 @@
 
     #soil-hub { display:flex; align-items:center; gap:10px; flex-shrink:0;
       padding:7px 16px; background:var(--c-card);
-      font-size:13px; overflow-x:auto; height:46px; box-sizing:border-box; }
+      font-size:13px; overflow-x:auto; overflow-y:hidden; height:46px; box-sizing:border-box; }
     .sh-lbl { color:var(--c-muted); font-weight:700; white-space:nowrap; }
     .sh-q { display:flex; gap:6px; flex:0 0 auto; }
     .sh-q input { width:220px; font:inherit; font-size:13px; padding:6px 10px;
@@ -418,7 +417,13 @@
       color:#e69240; font-weight:400; font-size:17px; letter-spacing:.2px;
       margin-left:3px; position:relative; top:1px; }
     .brand-group { display:flex; align-items:center; gap:8px; flex-wrap:wrap; min-width:0; }
-    .info-chip { display:flex; align-items:center; gap:5px; padding:4px 9px; border-radius:999px; background:var(--c-hover); font-size:13px; color:var(--muted); white-space:nowrap; border:none; cursor:default; font-family:inherit; }
+    
+
+
+    .info-chip { display:flex; align-items:center; gap:5px; padding:7px 9px; border-radius:8px;
+      background:var(--card); font-size:13px; color:var(--muted); white-space:nowrap;
+      border:1px solid var(--line); cursor:default; font-family:inherit;
+      height:34px; box-sizing:border-box; }
     .info-chip b { color:var(--text); font-weight:700; }
     .info-chip svg { width:16px; height:16px; flex-shrink:0; }
     .info-chip.fx-up b { color:var(--c-danger); }
@@ -1369,10 +1374,13 @@
     
 
     .bm-picker { display:flex; background:none; border:none; padding:0; box-shadow:none; }
-    .bm-item { font:inherit; padding:0; border:2px solid var(--line); border-radius:8px; background:var(--card); cursor:pointer; overflow:hidden; width:32px; height:32px; }
+    
+
+
+
+    .bm-item { font:inherit; padding:0; border:1px solid var(--line); border-radius:8px; background:var(--card); cursor:pointer; overflow:hidden; width:34px; height:34px; }
     .bm-item:hover { border-color:#D92A14; }
     .bm-thumb { display:block; width:100%; height:100%; background-size:cover; background-position:center; background-color:var(--line); }
-    .bm-item.on { border-color:#D92A14; }
     
 
     
@@ -2098,7 +2106,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=762326b"></script>
+  <script src="js/ie-guard.js?v=ba5cb89"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2128,10 +2136,7 @@
         </div>
       </div>
     </div>
-    <div class="footer-resize header-resize" id="header-resize" title="끌어서 세로 크기 조절">
-      <button type="button" class="band-toggle" id="header-toggle-btn"
-        title="머리글 접기/펴기" aria-label="머리글 접기/펴기">◫</button>
-    </div>
+    <div class="footer-resize header-resize" id="header-resize" title="끌어서 세로 크기 조절"></div>
   </header>
     
 
@@ -2141,13 +2146,11 @@
       <span class="sh-q">
         <input type="text" id="sh-q" placeholder="예: 2024타경2532 감정가" autocomplete="off" aria-label="상담 질문 입력">
         <button type="button" id="sh-ask" aria-label="AI 상담 열기">AI상담</button>
+        <button type="button" id="sh-news" aria-label="부동산 뉴스 열기">부동산뉴스</button>
       </span>
       <span class="sh-roles" id="sh-roles"></span>
     </div>
-    <div class="footer-resize hub-resize" id="hub-resize" title="끌어서 세로 크기 조절">
-      <button type="button" class="band-toggle" id="hub-toggle-btn"
-        title="상담 줄 접기/펴기" aria-label="상담 줄 접기/펴기">◫</button>
-    </div>
+    <div class="footer-resize hub-resize" id="hub-resize" title="끌어서 세로 크기 조절"></div>
 
   <div id="stat-bar" class="stat-bar">
     <span>정비사업 <b id="stat-jb">—</b>구역</span>
@@ -2439,25 +2442,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-29 05:52 · 762326b</span></span>
+          · <span class="build-tag">build 2026-09-29 06:21 · ba5cb89</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=762326b"></script>
+  <script src="js/joinkey.js?v=ba5cb89"></script>
   
-  <script src="js/identity.js?v=762326b"></script>
-  <script src="js/common.js?v=762326b"></script>
-  <script src="js/ui-resize.js?v=762326b"></script>
-  <script src="js/footer-resize.js?v=762326b"></script>
-  <script src="js/route-line.js?v=762326b"></script>
-  <script src="js/route-api.js?v=762326b"></script>
-  <script src="js/footer-stats.js?v=762326b"></script>
+  <script src="js/identity.js?v=ba5cb89"></script>
+  <script src="js/common.js?v=ba5cb89"></script>
+  <script src="js/ui-resize.js?v=ba5cb89"></script>
+  <script src="js/footer-resize.js?v=ba5cb89"></script>
+  <script src="js/route-line.js?v=ba5cb89"></script>
+  <script src="js/route-api.js?v=ba5cb89"></script>
+  <script src="js/footer-stats.js?v=ba5cb89"></script>
   
 
-  <script src="js/ad-consent.js?v=762326b"></script>
+  <script src="js/ad-consent.js?v=ba5cb89"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -9550,19 +9553,21 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       
       const _aucIconCache = {};
       
+      
+      
+      
+      
+      
+      
+      
+      
       function aucIcon(color, hi, label) {
-        const hc = document.documentElement.classList;
-        const mock = hc.contains('mock') || hc.contains('lux') || hc.contains('teal');
-        const key = color + (hi ? '!' : '') + (mock ? '@' + (label || '') : '');
+        const key = color + (hi ? '!' : '') + '@' + (label || '');
         if (!_aucIconCache[key]) {
-          _aucIconCache[key] = L.divIcon(mock ? {
+          _aucIconCache[key] = L.divIcon({
             className: '',
-            html: `<div style="width:38px;height:38px;background:${color};border:2px solid #fff;border-radius:50% 50% 50% 6px;transform:rotate(-45deg);box-shadow:0 4px 12px rgba(0,0,0,.35)${hi ? ',0 0 0 3px #3B82F6' : ''};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:${label && label.length > 3 ? 10 : 12}px;font-family:inherit;">${label ? `<span style="transform:rotate(45deg);line-height:1;">${label}</span>` : `<img src="icons/auction-gavel.png" style="width:16px;height:16px;filter:invert(1);transform:rotate(45deg);" alt="">`}</div>`,
+            html: `<div class="${hi ? 'auc-hi' : ''}" style="width:38px;height:38px;background:${color};border:2px solid #fff;border-radius:50% 50% 50% 6px;transform:rotate(-45deg);box-shadow:0 4px 12px rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:${label && label.length > 3 ? 10 : 12}px;font-family:inherit;">${label ? `<span style="transform:rotate(45deg);line-height:1;">${label}</span>` : `<img src="icons/auction-gavel.png" style="width:16px;height:16px;filter:invert(1);transform:rotate(45deg);" alt="">`}</div>`,
             iconSize: [38, 38], iconAnchor: [19, 34],
-          } : {
-            className: '',
-            html: `<div class="${hi ? 'auc-hi' : ''}" style="width:26px;height:26px;background:${color};border:2px solid #fff;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;"><img src="icons/auction-gavel.png" style="width:14px;height:14px;filter:invert(1)" alt=""></div>`,
-            iconSize: [26, 26], iconAnchor: [13, 13],
           });
         }
         return _aucIconCache[key];
@@ -16325,6 +16330,12 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             dst.appendChild(t);
           });
           $('sh-ask').addEventListener('click', openChat);
+          
+          
+          $('sh-news').addEventListener('click', () => {
+            const np = $('news-panel');
+            if (window.__newsTab && np && np.classList.contains('collapsed')) window.__newsTab.toggle();
+          });
           $('sh-q').addEventListener('keydown', (e) => {
             if (e.key !== 'Enter') return;
             const v = $('sh-q').value.trim(); if (!v) return;

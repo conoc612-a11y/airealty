@@ -19,20 +19,21 @@
         try { localStorage.setItem(key, String(el.offsetHeight)); } catch (e) {}
       }
     });
-    // 접기/펴기 버튼 — 손잡이 안에 `.band-toggle` 이 있으면 최소↔최대를 오간다.
-    // 드래그와 겹치지 않는다: makeResizable 의 pointerdown 이 그립 안의 button 을 걸러낸다.
-    var btn = handle.querySelector('.band-toggle');
-    if (!btn) return;
-    btn.addEventListener('click', function () {
-      var max = typeof opts.maxH === 'function' ? opts.maxH() : opts.maxH;
-      // 최소보다 2px 넘게 크면 '펴진 상태'로 본다 — 드래그로 맞춰 둔 중간 높이에서도 접힌다.
-      var next = (el.offsetHeight > opts.minH + 2) ? opts.minH : max;
-      el.style.height = next + 'px';
-      btn.setAttribute('aria-expanded', String(next !== opts.minH));
-      try { localStorage.setItem(key, String(next)); } catch (e) {}
-    });
   }
   var wideOnly = function () { return window.matchMedia('(min-width:641px)').matches; };
+
+  // 🔴 2026-09-29 — 없앤 ◫ 접기/펴기 버튼이 써 놓은 높이를 **한 번만** 지운다.
+  // 그 버튼은 최소↔최대만 오갔기 때문에, 통계 띠가 60px(최대)로 저장된 채 남으면
+  // 13px 글자 위아래로 빈 줄이 하나 더 있는 것처럼 보인다(사용자 지적).
+  // 버튼이 사라져 되돌릴 수단도 없으므로 저장값을 비우고 CSS 기본값으로 되돌린다.
+  // ⛔ 이 블록을 지우지 마라 — 이미 저장된 브라우저는 지금도 그 값을 되살린다.
+  try {
+    if (localStorage.getItem('mj-band-h-reset') !== '1') {
+      ['mj-header-height', 'mj-hub-height', 'mj-statbar-height']
+        .forEach(function (k) { localStorage.removeItem(k); });
+      localStorage.setItem('mj-band-h-reset', '1');
+    }
+  } catch (e) {}
 
   // 푸터 — 핸들이 위쪽에 있으므로 위로 끌면 커진다(reverseH).
   setupResize(document.getElementById('site-footer'), document.getElementById('footer-resize'), 'mj-footer-height',
