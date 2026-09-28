@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=cae1b48" />
+  <link rel="stylesheet" href="css/tokens.css?v=62466a5" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=cae1b48"></script>
+  <script src="js/auth-guard.js?v=62466a5"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=cae1b48" />
+  <link rel="stylesheet" href="css/buttons.css?v=62466a5" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=cae1b48" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=62466a5" />
   <style>
     :root {
       
@@ -2069,7 +2069,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=cae1b48"></script>
+  <script src="js/ie-guard.js?v=62466a5"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2249,12 +2249,13 @@
       </div>
       <div class="ap-resizer" id="ap-resizer" title="드래그해서 너비 조절"></div>
     </aside>
-      <aside id="sub-panel" class="side-panel" hidden aria-label="분양·청약 공고 목록">
+      <aside id="sub-panel" class="side-panel collapsed" aria-label="분양·청약 공고 목록">
         <div class="sp-inner">
-          <div class="sp-head"><b class="sp-title">분양·청약 공고</b><span id="sub-count" style="color:var(--c-muted);font-size:12px;"></span><button type="button" id="sub-panel-close" class="ap-close" title="패널 닫기 (레이어는 유지)" aria-label="패널 닫기">✕</button></div>
+          <div class="sp-head"><b class="sp-title">분양·청약 공고</b><span id="sub-count" style="color:var(--c-muted);font-size:12px;"></span><button type="button" id="sub-panel-toggle" class="ap-close" title="접기/펼치기" aria-label="접기/펼치기" style="margin-right:4px;">▼</button><button type="button" id="sub-panel-close" class="ap-close" title="패널 닫기 (레이어는 유지)" aria-label="패널 닫기">✕</button></div>
           <div style="padding:6px 12px;border-bottom:1px solid var(--line);"><input type="search" id="sub-search" placeholder="공고명·지역 검색" autocomplete="off" aria-label="분양 공고 검색" style="width:100%;box-sizing:border-box;font:inherit;font-size:13px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--text);outline:none;"></div>
           <div class="sp-body ui-scroll" id="sub-panel-body"></div>
         </div>
+      <div class="side-resizer" id="sub-panel-resizer" title="드래그해서 너비 조절"></div>
       </aside>
       <aside id="rp-panel" class="side-panel" hidden aria-label="실거래가 필터">
       <div class="sp-inner">
@@ -2402,25 +2403,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-28 20:50 · cae1b48</span></span>
+          · <span class="build-tag">build 2026-09-28 21:40 · 62466a5</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=cae1b48"></script>
+  <script src="js/joinkey.js?v=62466a5"></script>
   
-  <script src="js/identity.js?v=cae1b48"></script>
-  <script src="js/common.js?v=cae1b48"></script>
-  <script src="js/ui-resize.js?v=cae1b48"></script>
-  <script src="js/footer-resize.js?v=cae1b48"></script>
-  <script src="js/route-line.js?v=cae1b48"></script>
-  <script src="js/route-api.js?v=cae1b48"></script>
-  <script src="js/footer-stats.js?v=cae1b48"></script>
+  <script src="js/identity.js?v=62466a5"></script>
+  <script src="js/common.js?v=62466a5"></script>
+  <script src="js/ui-resize.js?v=62466a5"></script>
+  <script src="js/footer-resize.js?v=62466a5"></script>
+  <script src="js/route-line.js?v=62466a5"></script>
+  <script src="js/route-api.js?v=62466a5"></script>
+  <script src="js/footer-stats.js?v=62466a5"></script>
   
 
-  <script src="js/ad-consent.js?v=cae1b48"></script>
+  <script src="js/ad-consent.js?v=62466a5"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -12076,6 +12077,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         ['__chatTab', 'chat-panel-resizer', 'chat-panel', 'right', 340, 280, 520],
         ['__newsTab', 'news-panel-resizer', 'news-panel', 'right', 340, 280, 560],
         ['__lpTab', 'lp-panel-resizer', 'lp-panel', 'right', 300, 220, 520],
+        ['__subTab', 'sub-panel-resizer', 'sub-panel', 'right', 300, 220, 520],
       ].forEach(([key, rz, pn, side, w, minW, maxW]) => {
         window[key] = makeSlideTab($(rz), typeof pn === 'string' ? $(pn) : pn, {
           side, defaultWidth: w, collapsedWidth: RAIL_W,
@@ -25680,6 +25682,8 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       newsBody.querySelectorAll('.news-chip').forEach((c) => c.addEventListener('click', () => { _newsT = c.dataset.t; renderNews(); }));
     };
     $('news-panel-close').addEventListener('click', () => { if (window.__newsTab) window.__newsTab.toggle(); });
+    $('sub-panel-close').addEventListener('click', () => { if (window.__subTab) window.__subTab.toggle(); });
+    $('sub-panel-toggle').addEventListener('click', () => { if (window.__subTab) window.__subTab.toggle(); });
     $('news-panel').addEventListener('click', () => { if (!_news) renderNews(); });
     
     
