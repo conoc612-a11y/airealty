@@ -49,9 +49,13 @@
 
   // 상담 줄(#soil-hub) — 헤더·통계 띠와 같은 부품. 손잡이는 자식이 아니라 **바로 뒤 형제**다
   // (#soil-hub 가 overflow-x:auto 라 자식 absolute 손잡이가 잘린다 — land.html .hub-resize 주석).
-  // minH 28 = 13px 글자 + 상하 패딩이 들어가는 최소값. maxH 120 = 역할 칩이 두 줄 나도 남는 값.
+  // 🔴 minH 48 = 버튼 33.5px + 상하 패딩 7+7 = 47.5 를 올린 값이다(실측).
+  //    ⛔ 28 로 내리지 마라 — #soil-hub 는 overflow-y:hidden 이라 그 아래로 끌면
+  //       AI상담·부동산뉴스·역할 칩이 **잘려서 깨져 보인다**(2026-09-29 사용자 지적).
+  //    버튼 padding 이나 글자 크기를 바꾸면 이 값도 다시 재라.
+  // maxH 120 = 역할 칩이 두 줄 나도 남는 값.
   setupResize(document.getElementById('soil-hub'), document.getElementById('hub-resize'), 'mj-hub-height',
-    { minH: 28, maxH: 120, wide: wideOnly });
+    { minH: 48, maxH: 120, wide: wideOnly });
 
   // 통계 띠 — 지도와의 경계선. 헤더와 같은 부품·같은 방향이다(손잡이가 띠 **아래**).
   // minH 18 = 12.5px 글자가 잘리지 않는 최소값.
