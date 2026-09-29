@@ -1170,6 +1170,8 @@
     #apd-lb-view.zoomed { cursor:grab; }
     #apd-lb-view.zoomed.panning { cursor:grabbing; }
     
+    #apd-lb-lens { position:absolute; width:168px; height:168px; border-radius:999px; border:2px solid rgba(255,255,255,.85); box-shadow:0 4px 18px rgba(0,0,0,.5); background-repeat:no-repeat; background-color:#111; pointer-events:none; display:none; z-index:3; }
+    
 
 
 
@@ -11983,6 +11985,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         $('apd-lb-title').textContent = lbD.addr || '경매 사진';
         $('apd-lb-cap').textContent = `${p.name} · ${lbIdx + 1} / ${photos.length}`;
         lbSetZoom(1);   
+        lbLens.style.display = 'none';   
       }
       
       function lbApplyTransform() {
@@ -12022,6 +12025,30 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       lbView.addEventListener('pointerup', lbEndDrag);
       lbView.addEventListener('pointercancel', lbEndDrag);
       lbImg.ondblclick = () => lbSetZoom(lbZoom > 1 ? 1 : 2.2);
+      
+      
+      const LB_MAG = 2.5, LB_R = 84;
+      const lbLens = document.createElement('div');
+      lbLens.id = 'apd-lb-lens';
+      lbView.appendChild(lbLens);
+      lbView.addEventListener('pointermove', (e) => {
+        if (e.pointerType !== 'mouse' || lbZoom > 1) { lbLens.style.display = 'none'; return; }
+        const vr = lbView.getBoundingClientRect();
+        const iw = lbImg.naturalWidth, ih = lbImg.naturalHeight;
+        if (!iw || !ih) { lbLens.style.display = 'none'; return; }
+        
+        const s = Math.min(vr.width / iw, vr.height / ih);
+        const dw = iw * s, dh = ih * s;
+        const px = e.clientX - vr.left - (vr.width - dw) / 2, py = e.clientY - vr.top - (vr.height - dh) / 2;
+        if (px < 0 || py < 0 || px > dw || py > dh) { lbLens.style.display = 'none'; return; }
+        if (lbLens._src !== lbImg.src) { lbLens._src = lbImg.src; lbLens.style.backgroundImage = `url("${lbImg.src}")`; }
+        lbLens.style.backgroundSize = `${dw * LB_MAG}px ${dh * LB_MAG}px`;
+        lbLens.style.backgroundPosition = `${LB_R - px * LB_MAG}px ${LB_R - py * LB_MAG}px`;
+        lbLens.style.left = `${e.clientX - vr.left - LB_R}px`;
+        lbLens.style.top = `${e.clientY - vr.top - LB_R}px`;
+        lbLens.style.display = 'block';
+      });
+      lbView.addEventListener('pointerleave', () => { lbLens.style.display = 'none'; });
       $('apd-lb-zoom-in').onclick = (e) => { e.stopPropagation(); lbSetZoom(lbZoom * 1.4); };
       $('apd-lb-zoom-out').onclick = (e) => { e.stopPropagation(); lbSetZoom(lbZoom / 1.4); };
       
