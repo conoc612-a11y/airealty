@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=0ec0d0d" />
+  <link rel="stylesheet" href="css/tokens.css?v=a45c5f2" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=0ec0d0d"></script>
+  <script src="js/auth-guard.js?v=a45c5f2"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=0ec0d0d" />
+  <link rel="stylesheet" href="css/buttons.css?v=a45c5f2" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=0ec0d0d" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=a45c5f2" />
   <style>
     :root {
       
@@ -234,8 +234,15 @@
     
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .ap-list { padding:10px; }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .ap-row { background:#FFFFFF; border:1px solid var(--mx-line); border-radius:8px; padding:12px; margin-bottom:10px; }
-    :is(:root.mock,:root.lux,:root.teal,:root.soil) .ap-badge { background:var(--mx-accent); color:#fff; border-color:var(--mx-accent); }
-    :is(:root.mock,:root.lux,:root.teal,:root.soil) .ap-badge.fail { background:var(--mx-hot); border-color:var(--mx-hot); color:#fff; }
+    
+
+
+
+
+    :is(:root.mock,:root.lux,:root.teal,:root.soil) .ap-badge { color:var(--mx-accent); border-color:var(--mx-accent); }
+    
+
+    :is(:root.mock,:root.lux,:root.teal,:root.soil) .ap-badge.fail { color:var(--c-text); border-color:var(--mx-hot); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .ap-addr { color:var(--mx-ink); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .ap-filt-row { flex-wrap:wrap; }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .ap-filt-row select { border-radius:999px; background:var(--mx-soft); }
@@ -256,7 +263,8 @@
     html.lux :is(.header-resize::before, .stat-resize::before) { background:var(--mx-hot); }
     html.lux .ap-badge { border-radius:4px; }
     
-    :is(:root.lux) .ap-row .ap-badge { background:#0A0A0A; border-color:#0A0A0A; color:#FFD43B; }
+    
+    :is(:root.lux) .ap-row .ap-badge { border-color:#0A0A0A; color:#0A0A0A; }
     
     html.teal :is(.ap-row, .rec) { background:rgba(255,255,255,.78); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
     html.teal .leaflet-popup-content-wrapper { background:rgba(255,255,255,.86); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid var(--mx-line); }
@@ -923,8 +931,10 @@
 
 
 
+
+
     .ap-badge { flex-shrink:0; font-size:11px; padding:0 7px; border-radius:999px; margin-top:1px;
-      background:#fff !important; color:var(--c-muted); border:1px solid var(--c-line); line-height:1.5; }
+      background:transparent; color:var(--c-muted); border:1px solid var(--c-line); line-height:1.5; }
     
 
     .ap-badge.fail { color:var(--c-text); border-color:var(--c-line); font-weight:700; }
@@ -2133,7 +2143,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=0ec0d0d"></script>
+  <script src="js/ie-guard.js?v=a45c5f2"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2469,25 +2479,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-29 01:30 · 0ec0d0d</span></span>
+          · <span class="build-tag">build 2026-09-29 10:59 · a45c5f2</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=0ec0d0d"></script>
+  <script src="js/joinkey.js?v=a45c5f2"></script>
   
-  <script src="js/identity.js?v=0ec0d0d"></script>
-  <script src="js/common.js?v=0ec0d0d"></script>
-  <script src="js/ui-resize.js?v=0ec0d0d"></script>
-  <script src="js/footer-resize.js?v=0ec0d0d"></script>
-  <script src="js/route-line.js?v=0ec0d0d"></script>
-  <script src="js/route-api.js?v=0ec0d0d"></script>
-  <script src="js/footer-stats.js?v=0ec0d0d"></script>
+  <script src="js/identity.js?v=a45c5f2"></script>
+  <script src="js/common.js?v=a45c5f2"></script>
+  <script src="js/ui-resize.js?v=a45c5f2"></script>
+  <script src="js/footer-resize.js?v=a45c5f2"></script>
+  <script src="js/route-line.js?v=a45c5f2"></script>
+  <script src="js/route-api.js?v=a45c5f2"></script>
+  <script src="js/footer-stats.js?v=a45c5f2"></script>
   
 
-  <script src="js/ad-consent.js?v=0ec0d0d"></script>
+  <script src="js/ad-consent.js?v=a45c5f2"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -13221,16 +13231,6 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       
       
       
-      function jbDropDupRaster() {
-        setTimeout(() => {
-          
-          
-          
-          document.querySelectorAll('input.lp-cb[data-sec="정비·개발사업"][data-id]:not([data-vec])').forEach((cb) => {
-            if (cb.checked) { cb.checked = false; if (cb.onchange) cb.onchange(); }
-          });
-        }, 0);
-      }
       
       function applyJbBz(mid) {
         const ids = [...mid._on];
@@ -13250,7 +13250,6 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       map.on('overlayadd', (e) => {
         if (e.layer !== jbCluster) return;
         buildJbPanel(); document.getElementById('jb-panel').hidden = false; jbPolyLayer.addTo(map); jbStageBar.style.display = ''; document.body.classList.add('jb-stage-on');
-        jbDropDupRaster();
         renderNotices();
         setTimeout(() => {
           document.querySelectorAll('.jb-f').forEach((cb) => { if (cb._w) return; cb._w = 1; cb.addEventListener('change', () => { jbFilter[cb.dataset.g] = cb.checked; jbBuild(); }); });
