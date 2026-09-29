@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=7770730" />
+  <link rel="stylesheet" href="css/tokens.css?v=4c62441" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=7770730"></script>
+  <script src="js/auth-guard.js?v=4c62441"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=7770730" />
+  <link rel="stylesheet" href="css/buttons.css?v=4c62441" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=7770730" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=4c62441" />
   <style>
     :root {
       
@@ -332,7 +332,7 @@
 .hub-resize { position:relative; top:auto; bottom:auto; left:auto; right:auto;
   height:9px; margin:-4.5px 0; flex-shrink:0; z-index:901; }
 .hub-resize::before { content:''; position:absolute; left:0; right:0; top:auto; bottom:4.5px;
-  height:2px; background:var(--c-primary); z-index:2; }
+  height:1.5px; background:var(--c-primary); z-index:2; }
 .hub-resize::after { top:auto; bottom:2px; z-index:1; }
 @media (max-width:640px) { .hub-resize { display:none; } }
 
@@ -431,7 +431,7 @@
 
 
     .header-resize::before { content:''; position:absolute; left:0; right:0; top:auto; bottom:2.5px;
-      height:2px; background:var(--c-primary); z-index:2; }
+      height:1.5px; background:var(--c-primary); z-index:2; }
     .header-resize::after { top:auto; bottom:0; z-index:1; }
 
     @media (max-width:640px) { .header-resize { display:none; } }
@@ -479,14 +479,15 @@
 
 
     
-
-
     .icon-btn { width:34px; height:34px; flex:none; border:1px solid var(--line); background:var(--c-hover); color:var(--text); border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:16px; line-height:1; }
     .icon-btn svg { width:18px; height:18px; }
     #theme-btn img { width:18px; height:18px; display:block; }
     
     :root.dark #theme-btn img { filter:invert(1); }
     .icon-btn:hover { background:var(--line); }
+    
+
+    header :is(.icon-btn,.nav-tab,.bm-item,.lp-toggle):hover { border-color:var(--brand); }
     .profile { position:relative; }
     .profile-tab { display:flex; align-items:center; gap:3px; }
     .profile-menu { position:absolute; right:0; top:calc(100% + 8px); background:var(--card); border:1px solid var(--line); border-radius:8px; box-shadow:var(--c-shadow-lg); min-width:170px; display:none; z-index:3000; overflow:hidden; }
@@ -547,7 +548,7 @@
       flex-shrink:0; border-bottom:2px solid transparent; position:relative; z-index:900; }
     .stat-resize { top:auto; bottom:-4.5px; height:14px; }
     .stat-resize::before { content:''; position:absolute; left:0; right:0; top:auto; bottom:2.5px;
-      height:2px; background:var(--c-primary); z-index:2; }
+      height:1.5px; background:var(--c-primary); z-index:2; }
     .stat-resize::after { top:auto; bottom:0; z-index:1; }
     @media (max-width:640px) { .stat-resize { display:none; } }
     .stat-bar b { font-weight:800; }
@@ -2145,7 +2146,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=7770730"></script>
+  <script src="js/ie-guard.js?v=4c62441"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2480,25 +2481,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-29 19:22 · 7770730</span></span>
+          · <span class="build-tag">build 2026-09-29 20:13 · 4c62441</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=7770730"></script>
+  <script src="js/joinkey.js?v=4c62441"></script>
   
-  <script src="js/identity.js?v=7770730"></script>
-  <script src="js/common.js?v=7770730"></script>
-  <script src="js/ui-resize.js?v=7770730"></script>
-  <script src="js/footer-resize.js?v=7770730"></script>
-  <script src="js/route-line.js?v=7770730"></script>
-  <script src="js/route-api.js?v=7770730"></script>
-  <script src="js/footer-stats.js?v=7770730"></script>
+  <script src="js/identity.js?v=4c62441"></script>
+  <script src="js/common.js?v=4c62441"></script>
+  <script src="js/ui-resize.js?v=4c62441"></script>
+  <script src="js/footer-resize.js?v=4c62441"></script>
+  <script src="js/route-line.js?v=4c62441"></script>
+  <script src="js/route-api.js?v=4c62441"></script>
+  <script src="js/footer-stats.js?v=4c62441"></script>
   
 
-  <script src="js/ad-consent.js?v=7770730"></script>
+  <script src="js/ad-consent.js?v=4c62441"></script>
   
   <div id="ac" class="ac"></div>
   <script>
