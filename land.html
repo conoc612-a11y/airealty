@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=986a825" />
+  <link rel="stylesheet" href="css/tokens.css?v=0443e54" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=986a825"></script>
+  <script src="js/auth-guard.js?v=0443e54"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=986a825" />
+  <link rel="stylesheet" href="css/buttons.css?v=0443e54" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=986a825" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=0443e54" />
   <style>
     :root {
       
@@ -2146,7 +2146,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=986a825"></script>
+  <script src="js/ie-guard.js?v=0443e54"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2481,25 +2481,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-30 16:50 · 986a825</span></span>
+          · <span class="build-tag">build 2026-09-30 19:16 · 0443e54</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=986a825"></script>
+  <script src="js/joinkey.js?v=0443e54"></script>
   
-  <script src="js/identity.js?v=986a825"></script>
-  <script src="js/common.js?v=986a825"></script>
-  <script src="js/ui-resize.js?v=986a825"></script>
-  <script src="js/footer-resize.js?v=986a825"></script>
-  <script src="js/route-line.js?v=986a825"></script>
-  <script src="js/route-api.js?v=986a825"></script>
-  <script src="js/footer-stats.js?v=986a825"></script>
+  <script src="js/identity.js?v=0443e54"></script>
+  <script src="js/common.js?v=0443e54"></script>
+  <script src="js/ui-resize.js?v=0443e54"></script>
+  <script src="js/footer-resize.js?v=0443e54"></script>
+  <script src="js/route-line.js?v=0443e54"></script>
+  <script src="js/route-api.js?v=0443e54"></script>
+  <script src="js/footer-stats.js?v=0443e54"></script>
   
 
-  <script src="js/ad-consent.js?v=986a825"></script>
+  <script src="js/ad-consent.js?v=0443e54"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -15725,7 +15725,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         roleBar.innerHTML = '<div class="lp-roles-lbl">업무별 추천 레이어</div>'
           + ROLE_PRESETS.map(([nm, tip], i) => '<button type="button" class="lp-role" data-i="' + i
             + '" title="' + esc(tip) + '">' + esc(nm) + '</button>').join('')
-          + '<button type="button" class="lp-role lp-role-off" title="모든 레이어를 끕니다">전체 해제</button>';
+          + '<button type="button" class="lp-role lp-role-off" title="지도 레이어를 모두 끕니다 (필지 팝업 항목은 그대로 둡니다)">전체 해제</button>';
         
         
         
@@ -15803,6 +15803,8 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
               + `<input type="checkbox" class="lp-cb lp-midcb">${soloSw}<span class="lp-name">${mid.name}</span></div>`;
             const midCb = row.querySelector('.lp-midcb');
             midCbs.push(midCb);
+            
+            if (mid.layer && _infoMap.some((x) => x[0] === mid.layer)) row.dataset.popup = '1';
             
             
             
@@ -16338,6 +16340,9 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         
         
         
+        
+        
+        
         function applyRolePreset(spec) {
           const want = new Map(spec);
           const missed = [];
@@ -16351,6 +16356,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
               if (!cb) return;
               seen.push(midNm);
               const on = w === '*' ? true : (Array.isArray(w) ? w.indexOf(midNm) >= 0 : false);
+              if (!on && row.dataset.popup) return;   
               if (cb.checked !== on) { cb.checked = on; cb.dataset.wasInd = '0'; cb.onchange(); }
             });
             
@@ -16363,6 +16369,8 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             console.warn('역할 프리셋에서 찾지 못한 레이어 이름 — LAYER_TREE 와 ROLE_PRESETS 를 맞출 것:', missed);
           }
           saveLayerState();
+          
+          if (window.__mjHdrUpdate) window.__mjHdrUpdate();
         }
         roleBar.querySelectorAll('.lp-role').forEach((b) => {
           b.onclick = (e) => {
@@ -25664,10 +25672,16 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         return s.length > 600 ? s.slice(0, 600) : s;
       } catch (_e) { return ''; }
     }
+    
+    
+    
+    const chatHist = [];
     async function askFree(q, ctx) {
+      const body = { q, hist: chatHist.slice(-6) };
+      if (ctx) body.ctx = ctx;
       const r = await fetch(SB_URL + '/functions/v1/chat', {
         method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(ctx ? { q, ctx } : { q }),
+        body: JSON.stringify(body),
         signal: AbortSignal.timeout(60000),   
       });
       if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -25698,6 +25712,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         const wait = bubble('b', '관련 정보를 찾아보는 중입니다…');
         try {
           const r = await askFree(q, await buildChatCtx());
+          if (r && r.answer) { chatHist.push({ q, a: String(r.answer).slice(0, 1500) }); if (chatHist.length > 6) chatHist.shift(); }
           wait.innerHTML = esc(r.answer) + ((r.sources && r.sources.length)
             ? '<span class="cb-src">출처: ' + r.sources.map((s) => (/^https?:\/\//i.test(s.url || '')   
               ? '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.title) + '</a>'
