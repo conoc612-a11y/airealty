@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=3d21cbb" />
+  <link rel="stylesheet" href="css/tokens.css?v=144a5d4" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=3d21cbb"></script>
+  <script src="js/auth-guard.js?v=144a5d4"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=3d21cbb" />
+  <link rel="stylesheet" href="css/buttons.css?v=144a5d4" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=3d21cbb" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=144a5d4" />
   <style>
     :root {
       
@@ -1714,6 +1714,24 @@
 
     #dp-panel-body .cta-only { display:none; }
     
+
+
+
+
+    #dp-panel-body .doc-h { display:flex; flex-wrap:wrap; align-items:baseline; gap:0 8px; margin-bottom:2px; }
+    #dp-panel-body .doc-h > b { font-weight:700; color:var(--text); }
+    #dp-panel-body .doc-sub, #dp-panel-body .doc-note { color:var(--c-muted); font-weight:400; }
+    #dp-panel-body .doc-note { margin-top:4px; line-height:1.6; word-break:keep-all; overflow-wrap:anywhere; }
+    #dp-panel-body .ls-fo table.rp-deals { margin-top:4px; }
+    
+    #dp-panel-body .ls-fo table.rp-deals td:last-child { white-space:normal; word-break:keep-all; overflow-wrap:anywhere; }
+    #dp-panel-body details.doc-more > summary { cursor:pointer; color:var(--c-primary); margin-top:4px; list-style:none; }
+    #dp-panel-body details.doc-more > summary::-webkit-details-marker { display:none; }
+    #dp-panel-body details.doc-more > summary::after { content:' ▾'; }
+    #dp-panel-body details.doc-more[open] > summary::after { content:' ▴'; }
+    
+    .ls-base .ls-sec > .ls-fn:first-child > b:first-child { font-weight:700; }
+    
     details.ls-sec > summary { cursor:pointer; list-style:none; }
     details.ls-sec > summary::-webkit-details-marker { display:none; }
     details.ls-sec > summary::after { content:'▾'; margin-left:5px; color:var(--c-muted); font-size:11px; }
@@ -2169,7 +2187,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=3d21cbb"></script>
+  <script src="js/ie-guard.js?v=144a5d4"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2505,25 +2523,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-30 20:15 · 3d21cbb</span></span>
+          · <span class="build-tag">build 2026-09-30 21:25 · 144a5d4</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=3d21cbb"></script>
+  <script src="js/joinkey.js?v=144a5d4"></script>
   
-  <script src="js/identity.js?v=3d21cbb"></script>
-  <script src="js/common.js?v=3d21cbb"></script>
-  <script src="js/ui-resize.js?v=3d21cbb"></script>
-  <script src="js/footer-resize.js?v=3d21cbb"></script>
-  <script src="js/route-line.js?v=3d21cbb"></script>
-  <script src="js/route-api.js?v=3d21cbb"></script>
-  <script src="js/footer-stats.js?v=3d21cbb"></script>
+  <script src="js/identity.js?v=144a5d4"></script>
+  <script src="js/common.js?v=144a5d4"></script>
+  <script src="js/ui-resize.js?v=144a5d4"></script>
+  <script src="js/footer-resize.js?v=144a5d4"></script>
+  <script src="js/route-line.js?v=144a5d4"></script>
+  <script src="js/route-api.js?v=144a5d4"></script>
+  <script src="js/footer-stats.js?v=144a5d4"></script>
   
 
-  <script src="js/ad-consent.js?v=3d21cbb"></script>
+  <script src="js/ad-consent.js?v=144a5d4"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -21008,12 +21026,6 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
     }
     function houseStatHtml(st) {
       if (!st) return '';
-      const rows = [`거래 <b>${st.cnt}건</b> · 중앙값 <b>${fmtAmt(st.med * 1e4)}</b>` + (st.max > st.min ? ` <span style="color:var(--c-muted);">(${st.min}~${st.max}억원)</span>` : '')];
-      const ar = [];
-      if (st.plot) ar.push(`대지 ${fmtArea(st.plot)}`);
-      if (st.area) ar.push(`연면적 ${fmtArea(st.area)}`);
-      if (ar.length) rows.push(`<span style="color:var(--c-muted);">중앙값 ${ar.join(' · ')}</span>`);
-      if (st.build) rows.push(`<span style="color:var(--c-muted);">건축년도 중앙값 ${st.build}년</span>`);
       
       
       
@@ -21028,7 +21040,15 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         ? `<br><span style="color:var(--c-muted);">중앙값 ${_ar2.join(' · ')}</span>` : '';
       return `<div class="sec-nr" style="margin-top:5px;padding-top:5px;border-top:1px dashed var(--c-border);">`
         + `<div class="ls-fn"><b>이 동 단독·다가구 시세</b>${srcTier('deal')} <span style="font-size:12px;color:var(--c-muted);">최근 12개월</span> · ${_hs2[0]}${_line2}</div>`
-        + `<div class="ls-fo"><b>이 동 단독·다가구 시세</b>${srcTier('deal')} <span style="font-size:12px;color:var(--c-muted);">최근 12개월</span><br>${rows.join('<br>')}</div>`
+        + `<div class="ls-fo">${docHead('이 동 단독·다가구 시세', tierTxt('deal') + ' · 최근 12개월 · 값은 중앙값')}`
+        + docKv([
+          ['거래', `<b>${st.cnt}건</b>`],
+          ['가격', `<b>${fmtAmt(st.med * 1e4)}</b>`
+            + (st.max > st.min ? ` <span class="doc-sub">${fmtAmt(st.min * 1e4)} ~ ${fmtAmt(st.max * 1e4)}</span>` : '')],
+          ['대지', st.plot ? fmtArea(st.plot) : ''],
+          ['연면적', st.area ? fmtArea(st.area) : ''],
+          ['건축년도', st.build ? st.build + '년' : ''],
+        ]) + `</div>`
         + `</div>`;
     }
 
@@ -21124,9 +21144,19 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       });
       const more = deals.length > top.length
         ? ' <span style="font-size:12px;color:var(--c-muted);">외 ' + (deals.length - top.length) + '건</span>' : '';
-      return '<div class="ls-sec sec-nonres">'
+      
+      const docRows = deals.map((d) => {
+        const bits = [[NONRES_LABEL[d.k] || d.k, d.n].filter(Boolean).join(' ')];
+        if (nonresFloorOk(d.f, bounds)) bits.push(d.f + '층');
+        if (d.y) bits.push(d.y + '년');
+        return [esc(d.ym), '<b>' + fmtAmtExact(d.p * 1e4) + '</b>', d.a ? fmtArea(d.a) : '',
+          esc(bits.join(' · ')) + (d.u ? '<div class="doc-sub">' + esc(d.u) + '</div>' : '')];
+      });
+      return '<div class="ls-sec sec-nonres"><div class="ls-fn">'
         + '<b>이 건물 비주거 실거래</b>' + srcTier('deal') + ' <span style="font-size:12px;color:var(--c-muted);">최근 12개월 ' + deals.length + '건</span>' + more
-        + '<br>' + rows.join('<br>') + '</div>';
+        + '<br>' + rows.join('<br>') + '</div>'
+        + '<div class="ls-fo">' + docHead('이 건물 비주거 실거래', tierTxt('deal') + ' · 최근 12개월 · ' + deals.length + '건')
+        + docList(['계약', '금액', '면적', '내용'], docRows) + '</div></div>';
     }
 
     
@@ -21359,7 +21389,8 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       let lo = Math.min(...all.map((x) => x.v)), hi = Math.max(...all.map((x) => x.v));
       if (hi === lo) { hi = lo + 1; }
       const pad = (hi - lo) * 0.12; lo = Math.max(0, lo - pad); hi = hi + pad;
-      const W = 320, H = 150, L = 46, R = 8, T = 10, Bm = 20;   
+      
+      const W = 320, H = 150, L = 62, R = 8, T = 10, Bm = 24;   
       const px = (t) => (t1 === t0 ? L : L + (t - t0) / (t1 - t0) * (W - L - R));
       const py = (v) => T + (1 - (v - lo) / (hi - lo)) * (H - T - Bm);
       const path = (arr) => arr.map((d, i) => (i ? 'L' : 'M') + px(d.t).toFixed(1) + ' ' + py(d.v).toFixed(1)).join(' ');
@@ -21369,7 +21400,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       const ticks = [lo, (lo + hi) / 2, hi].map((v) => {
         const y = py(v).toFixed(1);
         return `<line x1="${L}" y1="${y}" x2="${W - R}" y2="${y}" stroke="var(--line)" stroke-width="1"/>`
-          + `<text x="${L - 5}" y="${y}" text-anchor="end" dominant-baseline="middle" font-size="9" fill="var(--c-muted)">${man(v)}</text>`;
+          + `<text x="${L - 5}" y="${y}" text-anchor="end" dominant-baseline="middle" font-size="12" fill="var(--c-muted)">${man(v)}</text>`;
       }).join('');
       const yrTxt = (t) => Math.floor((t - 1) / 12) + '.' + String(((t - 1) % 12) + 1).padStart(2, '0');
       const last = (arr) => (arr.length ? arr[arr.length - 1] : null);
@@ -21385,22 +21416,20 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             + ' <span style="font-size:12px;color:var(--c-muted);">' + esc(fmtYm(lb.k)) + '</span></div>' : '')
         + '</div>';
       return '<div class="ls-sec" style="font-size:13px;">' + _fnSum
-        + '<div class="ls-fo"><div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:4px;">'
-        + '<b>주변 시세 추이</b>' + srcTier('deal')
-        + `<span style="font-size:12px;color:var(--c-muted);">반경 ${PRICE_CHART_KM}km · 매매·전세 함께 잡힌 거래 ${s.cnt.toLocaleString()}건</span></div>`
-        + `<div style="font-size:12px;margin:2px 0 1px;"><span style="color:${CB};">●</span> 매매 평당가`
+        + '<div class="ls-fo">'
+        + docHead('주변 시세 추이', tierTxt('deal') + ` · 반경 ${PRICE_CHART_KM}km · 매매·전세 함께 잡힌 거래 ${s.cnt.toLocaleString()}건`)
+        + (lb ? docKv([['최근 ' + esc(fmtYm(lb.k)), `매매 <b>${man(lb.v)}</b>${lj ? ' · 전세 <b>' + man(lj.v) + '</b>' : ''} <span class="doc-sub">평당</span>`]]) : '')
+        + `<div class="doc-sub" style="margin-top:4px;"><span style="color:${CB};">●</span> 매매 평당가`
         + (s.jeonse.length ? ` <span style="color:${CJ};margin-left:6px;">●</span> 전세 평당가` : '')
-        + (lb ? `<b style="float:right;">${esc(fmtYm(lb.k))} 매매 ${man(lb.v)}${lj ? ' · 전세 ' + man(lj.v) : ''}</b>` : '')
         + '</div>'
         + `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:150px;display:block;">${ticks}`
         + `<path d="${path(s.buy)}" fill="none" stroke="${CB}" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>`
         + (s.jeonse.length >= 2 ? `<path d="${path(s.jeonse)}" fill="none" stroke="${CJ}" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>` : '')
         + dot(lb, CB) + dot(lj, CJ)
-        + `<text x="${L}" y="${H - 6}" font-size="9" fill="var(--c-muted)">${yrTxt(t0)}</text>`
-        + `<text x="${W - R}" y="${H - 6}" text-anchor="end" font-size="9" fill="var(--c-muted)">${yrTxt(t1)}</text>`
+        + `<text x="${L}" y="${H - 6}" font-size="12" fill="var(--c-muted)">${yrTxt(t0)}</text>`
+        + `<text x="${W - R}" y="${H - 6}" text-anchor="end" font-size="12" fill="var(--c-muted)">${yrTxt(t1)}</text>`
         + '</svg>'
-         + '<div style="font-size:11px;color:var(--c-muted);">실거래 평당가 · 월별 중앙값(월 '
-         + PRICE_CHART_MIN_N + '건 이상)</div></div></div>';
+        + docNote('실거래 평당가 · 월별 중앙값(월 ' + PRICE_CHART_MIN_N + '건 이상)') + '</div></div>';
     }
     
     
@@ -21429,6 +21458,31 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
     
     
     
+    const DOC_KEEP = 5;   
+    const tierTxt = (k) => (SRC_TIER[k] ? '<span title="' + SRC_TIER[k][4] + '">' + SRC_TIER[k][0] + '</span>' : '');
+    function docHead(title, src) {
+      return '<div class="doc-h"><b>' + title + '</b>' + (src ? '<span class="doc-sub">' + src + '</span>' : '') + '</div>';
+    }
+    function docKv(rows) {           
+      const r = rows.filter((x) => x && x[1] != null && x[1] !== '');
+      return r.length ? '<table class="ls-tbl">' + r.map((x) => '<tr><th>' + x[0] + '</th><td>' + x[1] + '</td></tr>').join('') + '</table>' : '';
+    }
+    function docList(head, rows) {   
+      if (!rows.length) return '';
+      const tbl = (rs) => '<table class="rp-deals"><tr>' + head.map((h) => '<th>' + h + '</th>').join('') + '</tr>'
+        + rs.map((r) => '<tr>' + r.map((c) => '<td>' + (c == null ? '' : c) + '</td>').join('') + '</tr>').join('') + '</table>';
+      if (rows.length <= DOC_KEEP) return tbl(rows);
+      return tbl(rows.slice(0, DOC_KEEP)) + '<details class="doc-more"><summary>'
+        + (rows.length - DOC_KEEP).toLocaleString('ko-KR') + '건 더 보기</summary>' + tbl(rows.slice(DOC_KEEP)) + '</details>';
+    }
+    const docNote = (html) => (html ? '<div class="doc-note">' + html + '</div>' : '');
+
+    
+    
+    
+    
+    
+    
     const LSHARE_KM = 1.0;
     const LSHARE_MIN_N = 3;
     function landShareHtml(lat, lng) {
@@ -21444,7 +21498,8 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       v.sort((a, b) => a - b);
       const med = Math.round(medianOf(v));
       const lo = v[Math.floor(v.length * 0.25)], hi = v[Math.floor(v.length * 0.75)];
-      return '<div class="ls-sec sec-lshare"><b>대지지분 시세</b>' + srcTier('deal')
+      
+      return '<div class="ls-sec sec-lshare"><div class="ls-fn"><b>대지지분 시세</b>' + srcTier('deal')
         + ' <span style="font-size:12px;color:var(--c-muted);">연립·다세대 · 반경 ' + LSHARE_KM + 'km · '
         + fmtCnt(v.length, '개 건물') + '</span>'
         + '<div style="margin-top:2px;">대지지분당 <b>' + fmtUnit(med) + '/㎡</b>'
@@ -21452,7 +21507,15 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         + fmtUnit(lo) + '~' + fmtUnit(hi) + '</span></div>'
         + '<div style="font-size:11px;color:var(--c-muted);margin-top:2px;">'
         + '재개발·재건축 물건은 전용면적이 아니라 <b>대지지분</b>으로 값을 매깁니다.'
-        + ' 아파트는 실거래에 대지권면적이 없어 빠짐.</div></div>';
+        + ' 아파트는 실거래에 대지권면적이 없어 빠짐.</div></div>'
+        + '<div class="ls-fo">'
+        + docHead('대지지분 시세', tierTxt('deal') + ' · 연립·다세대 · 반경 ' + LSHARE_KM + 'km · ' + fmtCnt(v.length, '개 건물'))
+        + docKv([
+          ['대지지분당', '<b>' + fmtUnit(med) + '/㎡</b> <span class="doc-sub">중앙값</span>'],
+          ['사분위', fmtUnit(lo) + ' ~ ' + fmtUnit(hi)],
+        ])
+        + docNote('재개발·재건축 물건은 전용면적이 아니라 대지지분으로 값을 매깁니다. 아파트는 실거래에 대지권면적이 없어 빠집니다.')
+        + '</div></div>';
     }
 
     
@@ -21672,7 +21735,40 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         list.forEach((x) => { const a = tr(x.actGbCdNm) || '기타'; actCnt[a] = (actCnt[a] || 0) + 1; });
         const actSum = Object.entries(actCnt).sort((a, b) => b[1] - a[1])
           .slice(0, 3).map(([k, v]) => esc(k) + ' ' + v).join(' · ');
-        hpmsHtml = '<div class="ls-sec sec-hpms">'
+        
+        
+        const _coop = (st.hpcoop || []).filter((x) => String(x.cmplxNm || '').trim())[0];
+        const _d10 = (v) => (/^\d{8}$/.test(String(v || '')) ? String(v).slice(0, 4) + '.' + String(v).slice(4, 6) + '.' + String(v).slice(6, 8) : '');
+        const _w = (st.hpwlf || [])[0];
+        const _n = (v) => Number(v) || 0;
+        const _pk = _w ? (() => {
+          const gp = _n(_w.grndPklotUtcnt), up = _n(_w.ugrndPklotUtcnt), tp = _n(_w.totPklotUtcnt) || (gp + up);
+          return tp ? `<b>${tp.toLocaleString('ko-KR')}면</b> <span class="doc-sub">지하 ${up.toLocaleString('ko-KR')} · 지상 ${gp.toLocaleString('ko-KR')} · 지하비율 ${Math.round(up / tp * 100)}%</span>` : '';
+        })() : '';
+        const _fac = _w ? [
+          _n(_w.plgndCnt) ? '놀이터 ' + _n(_w.plgndCnt) : '', _n(_w.jmExcsFcCnt) ? '주민운동 ' + _n(_w.jmExcsFcCnt) : '',
+          _n(_w.guardrmCnt) ? '경비실 ' + _n(_w.guardrmCnt) : '', _n(_w.lndscArea) ? '조경 ' + fmtArea(_w.lndscArea) : '',
+          _n(_w.mgmOffcArea) ? '관리사무소 ' + fmtArea(_w.mgmOffcArea) : '', _n(_w.kgtLotArea) ? '유치원 ' + fmtArea(_w.kgtLotArea) : '',
+          _n(_w.mediFcArea) ? '의료 ' + fmtArea(_w.mediFcArea) : ''].filter(Boolean).join(' · ') : '';
+        const hpmsDoc = '<div class="ls-fo">'
+          + docHead('주택 인허가', '건축HUB · 같은 필지 · 행위 ' + list.length.toLocaleString('ko-KR') + '건')
+          + docKv([
+            ['단지', names.length ? '<b>' + esc(names.slice(0, 2).join(' / ')) + '</b>'
+              : (_coop ? '<b>' + esc(String(_coop.cmplxNm).trim()) + '</b>' : '')],
+            ['주용도', esc(purps.join('·'))],
+            ['세대', hh ? hh.toLocaleString('ko-KR') + '세대' : ''],
+            ['행위 분포', actSum],
+            ['사업주체', _coop ? esc(String(_coop.bizBodyNm || '').trim()) : ''],
+            ['사업승인', _coop ? esc(_d10(_coop.bizApprvDay)) : ''],
+            ['사용검사', _coop ? esc(_d10(_coop.useInsptDay)) : ''],
+            ['주차', _pk],
+            ['부대시설', esc(_fac)],
+          ])
+          + docList(['행위', '착공예정', '사용검사', '동·호'], list.map((x) => [
+            esc(tr(x.actGbCdNm) || '기타'), ymd6(x.stcnsSchedDay), ymd6(x.useInsptSchedDay),
+            esc(tr(x.cmplxFlrCntDongCnt)) + (Number(x.grndFlrCnt) ? ' (' + Number(x.grndFlrCnt) + '층)' : '')]))
+          + '</div>';
+        hpmsHtml = '<div class="ls-sec sec-hpms"><div class="ls-fn">'
           + '<b>주택 인허가</b> '
           + (head.length ? '<span style="font-size:12px;">' + head.join(' · ') + '</span>' : '')
           + `<div style="font-size:12px;color:var(--c-muted);margin-top:2px;">행위 ${list.length}건 — ${actSum}</div>`
@@ -21723,7 +21819,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
               + (fac.length ? `<div style="color:var(--c-muted);margin-top:2px;">${esc(fac.join(' · '))}</div>` : '')
               + '</div>';
           })()
-          + '</div>';
+          + '</div>' + hpmsDoc + '</div>';
       }
       
       
@@ -22239,12 +22335,32 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         if (W) bits.push('정화조 ' + (W.ps ? W.ps + '인용' : '') + (W.ty ? ' ' + esc(W.ty.split(',')[0]) : ''));
         if (bits.length) rows2.push(`<div style="font-size:11px;margin-top:3px;">${bits.join(' · ')}</div>`);
         if (rows2.length) {
-          kcrHtml = '<div class="ls-sec sec-kcr">'
+          
+          const kcrDoc = '<div class="ls-fo">'
+            + docHead('건축인허가 (서울시)', '서울시 건축인허가대장 · 필지 단위')
+            + docKv([
+              ['용도', B && B.usg ? '<b>' + esc(B.usg) + '</b>' + (B.se ? ' <span class="doc-sub">' + esc(B.se) + '</span>' : '') : ''],
+              ['상태', B ? (B.apr ? '사용승인' : '<b>준공 전</b>') : ''],
+              ['허가일', B && B.day ? esc(B.day) : ''],
+              ['대지', B && B.si ? m2(B.si) + '㎡' : ''],
+              ['연면적', B && B.gfa ? m2(B.gfa) + '㎡' : ''],
+              ['건폐·용적', B && (B.cvr || B.far) ? [B.cvr ? '건폐 ' + m2(B.cvr) + '%' : '', B.far ? '용적 ' + m2(B.far) + '%' : ''].filter(Boolean).join(' · ') : ''],
+              ['동', D ? `${D.n}개` + (D.st ? ' · ' + esc(D.st.split(',')[0]) : '') + (D.elv ? ' · 승강기 ' + D.elv : '') : ''],
+              ['층수', F ? '지상 ' + F.gf + '층' + (F.bf ? ' · 지하 ' + F.bf + '층' : '') : ''],
+              ['호', H ? `${H.n}호` + (H.ho ? ' (' + esc(H.ho) + ')' : '') : ''],
+              ['전유·공용', E && (E.ex || E.pb) ? '전유 ' + m2(E.ex) + '㎡ · 공용 ' + m2(E.pb) + '㎡' : ''],
+              ['세대', B && B.hh ? B.hh + '세대' : ''],
+              ['주차', B && B.pk ? B.pk + '대' : ''],
+              ['정화조', W ? ((W.ps ? W.ps + '인용' : '') + (W.ty ? ' ' + esc(W.ty.split(',')[0]) : '')).trim() : ''],
+            ])
+            + docNote('준공 전 인허가 단계라 건축물대장에 없는 건도 나옵니다.')
+            + '</div>';
+          kcrHtml = '<div class="ls-sec sec-kcr"><div class="ls-fn">'
             + '<b>건축인허가 (서울시)</b>'
             + rows2.join('')
             + '<div style="font-size:11px;color:var(--c-muted);margin-top:3px;">'
             + '서울시 건축인허가대장 · <b>준공 전 인허가 단계</b>라 건축물대장에 없는 건도 나옵니다.</div>'
-            + '</div>';
+            + '</div>' + kcrDoc + '</div>';
         }
       }
       
@@ -22459,7 +22575,54 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             + (bits ? `<br><span style="font-size:12px;color:var(--c-muted);">${esc(bits)}</span>` : '');
         });
         const more = list.length > 3 ? ` <span style="font-size:12px;color:var(--c-muted);">외 ${list.length - 3}건</span>` : '';
-        pmsHtml = '<div class="ls-sec sec-pms">'
+        
+        
+        const pmsRows = list.map((x) => {
+          const py = parseInt(tr(x.archPmsDay).slice(0, 4), 10) || 0;
+          const done = /^\d{8}$/.test(tr(x.useAprDay));
+          const live = !done && py && (thisYear - py) <= 5;
+          const ar = Number(x.totArea) || 0, hh = Number(x.hhldCnt) || 0;
+          const what = '<b>' + esc(tr(x.archGbCdNm) || '인허가') + '</b>' + (tr(x.mainPurpsCdNm) ? ' · ' + esc(tr(x.mainPurpsCdNm)) : '');
+          const state = live ? ' <b style="color:var(--c-danger);">진행 중</b>'
+            : (done ? '<div class="doc-sub">' + ymd(x.useAprDay) + ' 사용승인</div>' : '');
+          return [esc(ymd(x.archPmsDay) || '-'), ar ? fmtArea(ar) : '', hh ? hh.toLocaleString('ko-KR') + '세대' : '', what + state];
+        });
+        const _loc = (v) => Number(v).toLocaleString('ko-KR');
+        const _hsMap = new Map();
+        (st.hstp || []).filter((x) => String(x.hstpGbCdNm || '').trim()).forEach((x) => {
+          const k = String(x.hstpGbCdNm).trim();
+          _hsMap.set(k, (_hsMap.get(k) || 0) + (Number(x.silHoHhldCnt) || 0));
+        });
+        const _hsTxt = [..._hsMap.entries()].slice(0, 3)
+          .map(([k, n]) => esc(k) + (n ? ' <span class="doc-sub">' + _loc(n) + '세대</span>' : '')).join(' · ');
+        const _ps = st.pklot || [];
+        const _psum = (k) => _ps.reduce((a, x) => a + (Number(x[k]) || 0), 0);
+        const _pin = _psum('indrAutoUtcnt') + _psum('indrMechUtcnt'), _pout = _psum('oudrAutoUtcnt') + _psum('oudrMechUtcnt');
+        const _pmech = _psum('indrMechUtcnt') + _psum('oudrMechUtcnt'), _pnei = _psum('neigAutoUtcnt') + _psum('neigMechUtcnt');
+        const _ptot = _pin + _pout + _pnei;
+        const _pkTxt = _ptot ? '<b>' + _loc(_ptot) + '대</b> <span class="doc-sub">'
+          + esc([_pin ? '옥내 ' + _loc(_pin) : '', _pout ? '옥외 ' + _loc(_pout) : '', _pmech ? '기계식 ' + _loc(_pmech) : '',
+            _pnei ? '인근 ' + _loc(_pnei) : ''].filter(Boolean).join(' · ')) + '</span>' : '';
+        const _im = (st.impr || []).map((x) => String(x.imprprGbCdNm || '').trim()).filter(Boolean);
+        const _imTxt = _im.length ? '<b>' + _im.length + '건</b> <span class="doc-sub">' + esc([...new Set(_im)].slice(0, 3).join(' · ')) + '</span>' : '';
+        const _tb = st.tmpb || [];
+        const _tbAr = _tb.reduce((a, x) => a + (Number(x.totArea) || 0), 0);
+        const _tbUse = [...new Set(_tb.map((x) => String(x.mainPurpsCdNm || '').trim()).filter(Boolean))].slice(0, 3);
+        const _tbSub = [_tbAr ? '연면적 ' + fmtArea(_tbAr) : '', _tbUse.join(' · ')].filter(Boolean).join(' · ');
+        const _tbTxt = _tb.length ? '<b>' + _tb.length + '건</b>' + (_tbSub ? ' <span class="doc-sub">' + esc(_tbSub) + '</span>' : '') : '';
+        const _hd = st.hdcr || [];
+        const _hdTxt = _hd.length ? '<b>' + _hd.length + '건</b> <span class="doc-sub">' + esc(_hd.map((x) => {
+          const k = String(x.hdcrKindCdNm || '').trim() || '공작물';
+          const h = Number(x.heit) || 0, l = Number(x.len) || 0;
+          const sz = h ? `높이 ${h}m` : (l ? `길이 ${l}m` : '');
+          return sz ? `${k}(${sz})` : k;
+        }).slice(0, 3).join(' · ')) + '</span>' : '';
+        const pmsDoc = '<div class="ls-fo">'
+          + docHead('건축 인허가', '이 필지 ' + list.length.toLocaleString('ko-KR') + '건')
+          + docList(['허가', '연면적', '세대', '구분·용도'], pmsRows)
+          + docKv([['주택유형', _hsTxt], ['주차', _pkTxt], ['대수선', _imTxt], ['가설건축물', _tbTxt], ['공작물', _hdTxt]])
+          + '</div>';
+        pmsHtml = '<div class="ls-sec sec-pms"><div class="ls-fn">'
           + `<b>건축 인허가</b> <span style="font-size:12px;color:var(--c-muted);">이 필지 ${list.length}건</span>${more}<br>`
           + rows2.join('<br>')
           
@@ -22534,7 +22697,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
               + `<b>${hs.length}건</b> <span style="color:var(--c-muted);">${esc(kinds.slice(0, 3).join(' · '))}</span>`
               + '</div>';
           })()
-          + '</div>';
+          + '</div>' + pmsDoc + '</div>';
       }
 
       
@@ -24118,15 +24281,26 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           const npy = best.area && best.priceEok && uUnit.price === 'total' ? ' · ' + uPriceSub(best).replace('평단가 ', '') : '';
           const nOld = parseInt(best.build, 10) <= 1994
             ? '<span style="background:#e03131;color:#fff;font-size:11px;padding:1px 5px;border-radius:8px;margin-left:4px;">30년↑</span>' : '';
-          nearHtml = `<div class="ls-sec sec-apt-fo" style="font-size:13px;">`
+          
+          const nearUrl = naverSearchUrl(best.name + ' ' + (best.dong || best.gu || ''), best.lat, best.lng);
+          const nearDoc = '<div class="ls-fo">'
+            + docHead('근처 아파트 실거래', `참고 · 반경 700m ${cnt}건${cnt ? '' : ' · 1.5km 안 가장 가까운 단지'}`)
+            + docKv([
+              ['단지', `<b>${esc(best.name)}</b> <span class="doc-sub">여기서 ${Math.round(bd * 1000)}m</span>`],
+              ['매매', `<b>${esc(uPriceMain(best))}</b>` + (npy ? ` <span class="doc-sub">${esc(npy.replace(/^ · /, ''))}</span>` : '')],
+              ['전용·층', `${uAreaTxt(best.area) || '?'} · ${esc(best.floor || '?')}층`],
+              ['준공', best.build ? esc(best.build) + '년' + (parseInt(best.build, 10) <= 1994 ? ' <span class="doc-sub">30년 이상</span>' : '') : ''],
+              ['바로가기', `<a href="${nearUrl}" target="_blank" rel="noopener">네이버 부동산 ↗</a>`],
+            ]) + '</div>';
+          nearHtml = `<div class="ls-sec sec-apt-fo" style="font-size:13px;"><div class="ls-fn">`
             + `<b>근처 아파트 실거래</b> <span style="font-size:12px;color:var(--c-muted);">참고 · 반경 700m ${cnt}건${cnt ? '' : ' (아래는 1.5km 내 가장 가까운 단지)'}</span><br>`
             + `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${ageColor(best.build)};margin-right:5px;"></span>`
             + `<b>${esc(best.name)}</b> <span style="color:var(--c-muted);font-size:12px;">여기서 ${Math.round(bd * 1000)}m</span><br>`
             + `<span style="color:var(--c-price);font-weight:700;">매매 ${uPriceMain(best)}</span>`
             + `${npy ? ` <span style="color:var(--c-muted);">${npy}</span>` : ''}<br>`
             + `전용 ${uAreaTxt(best.area) || '?'} · ${esc(best.floor || '?')}층 · ${esc(best.build || '?')}년${nOld}`
-            + ` <a href="${naverSearchUrl(best.name + ' ' + (best.dong || best.gu || ''), best.lat, best.lng)}" target="_blank" rel="noopener" style="color:var(--c-primary);font-size:12px;">네이버 ↗</a>`
-            + `</div>`;
+            + ` <a href="${nearUrl}" target="_blank" rel="noopener" style="color:var(--c-primary);font-size:12px;">네이버 ↗</a>`
+            + `</div>` + nearDoc + `</div>`;
         }
         let jbNearHtml = '';
         if (_jbRowsGlobal && _jbRowsGlobal.length) {
@@ -24160,11 +24334,22 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
               if (kmDist(lat, lng, r.lat, r.lng) > 0.25) continue;
               const nOld = parseInt(r.build, 10) <= 1994 ? ' <span style="background:#e03131;color:#fff;font-size:11px;padding:1px 5px;border-radius:8px;">30년↑</span>' : '';
               const npy = r.area && r.priceEok && uUnit.price === 'total' ? ' <span style="color:var(--c-muted);">' + uPriceSub(r).replace('평단가 ', '') + '</span>' : '';
-              mApHtml = `<div class="ls-sec" style="font-size:13px;"><b>이 건물의 아파트 실거래</b> <span style="font-size:12px;color:var(--c-muted);">${esc(r.name)} · ${esc(r.gu)} ${esc(r.dong)}</span><br>`
+              
+              const mApDoc = '<div class="ls-fo">'
+                + docHead('이 건물의 아파트 실거래', tierTxt('deal') + ` · ${esc(r.name)} · ${esc(r.gu)} ${esc(r.dong)}`)
+                + docKv([
+                  ['최근 매매', `<b>${esc(uPriceMain(r))}</b> <span class="doc-sub">${esc(fmtYm(r.ymd))} 거래</span>`],
+                  ['표시', rpFlagsHtml(r)],
+                  ['평단가', r.area && r.priceEok && uUnit.price === 'total' ? esc(uPriceSub(r).replace('평단가 ', '')) : ''],
+                  ['전용·층', `${uAreaTxt(r.area)} · ${esc(r.floor || '?')}층`],
+                  ['준공', r.build ? esc(r.build) + '년' + (parseInt(r.build, 10) <= 1994 ? ' <span class="doc-sub">30년 이상</span>' : '') : ''],
+                ])
+                + jeonseHtml(r, '평형 기준') + rpTrendHtml(r) + rpDealTableHtml(r) + '</div>';
+              mApHtml = `<div class="ls-sec" style="font-size:13px;"><div class="ls-fn"><b>이 건물의 아파트 실거래</b> <span style="font-size:12px;color:var(--c-muted);">${esc(r.name)} · ${esc(r.gu)} ${esc(r.dong)}</span><br>`
                 + `${rpFlagsHtml(r)}<span class="pc-price">매매 ${uPriceMain(r)}`
                 + ` <span style="font-size:12px;font-weight:400;color:var(--c-muted);">${esc(fmtYm(r.ymd))} 거래</span></span>${npy}<br>`
                 + `전용 ${uAreaTxt(r.area)} · ${esc(r.floor || '?')}층${nOld}`
-                + `${jeonseHtml(r, '평형 기준')}${rpTrendHtml(r)}${rpDealTableHtml(r)}</div>`;
+                + `${jeonseHtml(r, '평형 기준')}${rpTrendHtml(r)}${rpDealTableHtml(r)}</div>` + mApDoc + `</div>`;
             }
           }
           
@@ -25723,10 +25908,10 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
 
 
 
-    body :is(.pc-head, .sp-title, .ap-title, #dp-title, .pc-price, .lp-hstat b) {
+    body :is(.pc-head, .sp-title, .ap-title, #dp-title, .pc-price, .lp-hstat b, #dp-panel-body .blk-h) {
       font-size:15px !important;
     }
-    body :is(.news-meta, .lp-roles-lbl, .pc-addrline,
+    body :is(.news-meta, .lp-roles-lbl, .pc-addrline, .doc-sub, .doc-note, .doc-more > summary,
       [style*="color:var(--muted)"], [style*="color:var(--c-muted)"], [style*="color: var(--c-muted"]):not(input, textarea, select, button) {
       font-size:12px !important;
     }
