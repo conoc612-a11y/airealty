@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>관리자 모드</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<link rel="stylesheet" href="css/buttons.css?v=4c62441" />
-<link rel="stylesheet" href="css/tokens.css?v=4c62441" />
+<link rel="stylesheet" href="css/buttons.css?v=ef82cb5" />
+<link rel="stylesheet" href="css/tokens.css?v=ef82cb5" />
 <style>
   :root { --bg:#0f1520; --card:#1a2332; --line:#2a3564; --text:#e8eef7; --muted:#8b9bb4; --accent:var(--brand-lt); }
   * { margin:0; }
@@ -130,6 +130,9 @@
         <button id="tab-member" class="on" onclick="showTab('member')">회원관리</button>
         <button id="tab-stat" onclick="showTab('stat')">방문자 통계</button>
         <button id="tab-loc" onclick="showTab('loc')">방문자 위치</button>
+        <button id="tab-api" onclick="showTab('api')">API 기관별 서비스</button>
+        <button id="tab-ad" onclick="showTab('ad')">광고관리</button>
+        <button id="tab-arch" onclick="showTab('arch')">아키텍처 관리</button>
         <button id="tab-health" onclick="showTab('health')">관제센터</button>
       </div>
 
@@ -182,10 +185,202 @@
         </div>
         <div class="tablebox" id="health-list" style="max-height:430px;"></div>
       </div>
+
+      
+      <div id="view-api" class="hidden">
+        <div class="row">
+          <div class="sub" style="margin:0;">각 기관별 제공 API 서비스 현황 (ENDPOINTS.md 기준)</div>
+          <button class="btn" onclick="loadApiServices()">새로고침</button>
+        </div>
+        <div class="tablebox" id="api-list" style="max-height:520px;"></div>
+      </div>
+
+      
+      <div id="view-ad" class="hidden">
+        <div class="row">
+          <div style="display:flex;gap:8px;align-items:center;">
+            <button class="btn" onclick="showAdForm()">광고 등록</button>
+            <button class="btn" onclick="exportAds()">광고 CSV</button>
+          </div>
+        </div>
+        <div class="tablebox" id="ad-list" style="max-height:520px;"></div>
+      </div>
+
+      
+      <div id="ad-form-view" class="hidden">
+        <div style="max-width:700px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px;">
+          <h2 style="font-size:17px;margin-bottom:18px;" id="ad-form-title">광고 등록</h2>
+          <input type="hidden" id="ad-form-id">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">광고명 *</label>
+              <input type="text" id="ad-name" placeholder="예: 메인배너_2026_Q4" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:14px;">
+            </div>
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">위치 *</label>
+              <select id="ad-position" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:14px;">
+                <option value="main-top">메인 상단</option>
+                <option value="main-bottom">메인 하단</option>
+                <option value="land-sidebar">부동산 사이드바</option>
+                <option value="land-footer">부동산 푸터</option>
+                <option value="sidebar-left">좌측 사이드바</option>
+                <option value="sidebar-right">우측 사이드바</option>
+              </select>
+            </div>
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">랜딩 URL *</label>
+            <input type="url" id="ad-url" placeholder="https://airealty.co.kr/landing" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:14px;">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">이미지 URL (데스크톱)</label>
+              <input type="url" id="ad-img-desktop" placeholder="https://img.airealty.co.kr/ad/banner_desktop.jpg" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:14px;">
+            </div>
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">이미지 URL (모바일)</label>
+              <input type="url" id="ad-img-mobile" placeholder="https://img.airealty.co.kr/ad/banner_mobile.jpg" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:14px;">
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;">
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">시작일</label>
+              <input type="date" id="ad-start" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:14px;">
+            </div>
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">종료일</label>
+              <input type="date" id="ad-end" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:14px;">
+            </div>
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">우선순위</label>
+              <input type="number" id="ad-priority" value="100" min="0" max="999" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:14px;">
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">타겟팅 (JSON)</label>
+              <textarea id="ad-targeting" rows="3" placeholder='{"region":["서울","경기"],"device":["mobile"]}' style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:13px;font-family:monospace;"></textarea>
+            </div>
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">메모</label>
+              <textarea id="ad-memo" rows="3" placeholder="운영 메모..." style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:13px;"></textarea>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;">
+            <button class="btn" onclick="hideAdForm()">취소</button>
+            <button class="btn" style="background:var(--accent);color:#fff;border-color:var(--accent);" onclick="saveAd()">저장</button>
+          </div>
+        </div>
+      </div>
+
+      
+      <div id="view-arch" class="hidden">
+        <div class="row">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <div class="sub" style="margin:0;">서버·DB·외부서비스 연결 관계 관리</div>
+            <button class="btn" onclick="showArchForm()">서버/서비스 추가</button>
+            <button class="btn" onclick="exportArch()">구성 CSV</button>
+            <button class="btn" onclick="loadArch()">새로고침</button>
+          </div>
+        </div>
+        <div class="tablebox" id="arch-list" style="max-height:520px;"></div>
+      </div>
+
+      
+      <div id="arch-form-view" class="hidden">
+        <div style="max-width:700px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px;">
+          <h2 style="font-size:17px;margin-bottom:18px;" id="arch-form-title">서버/서비스 등록</h2>
+          <input type="hidden" id="arch-form-id">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">이름 *</label>
+              <input type="text" id="arch-name" placeholder="예: Supabase Main DB" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:14px;">
+            </div>
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">유형 *</label>
+              <select id="arch-type" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:14px;">
+                <option value="database">데이터베이스</option>
+                <option value="api-gateway">API 게이트웨이</option>
+                <option value="edge-function">Edge Function</option>
+                <option value="external-api">외부 API</option>
+                <option value="storage">스토리지</option>
+                <option value="cdn">CDN</option>
+                <option value="monitoring">모니터링</option>
+                <option value="other">기타</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">호스트/엔드포인트 *</label>
+              <input type="text" id="arch-host" placeholder="예: bhgijvaxxjnocgfnaaeu.supabase.co" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:14px;">
+            </div>
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">포트</label>
+              <input type="number" id="arch-port" placeholder="443" min="1" max="65535" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:14px;">
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">연결 대상 (JSON)</label>
+              <textarea id="arch-connections" rows="2" placeholder='["api-gateway-main","edge-func-land"]' style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:13px;font-family:monospace;"></textarea>
+            </div>
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">인증 방식</label>
+              <select id="arch-auth" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:14px;">
+                <option value="none">없음</option>
+                <option value="service-role">Service Role Key</option>
+                <option value="anon">Anon Key</option>
+                <option value="api-key">API Key</option>
+                <option value="oauth">OAuth</option>
+                <option value="jwt">JWT</option>
+                <option value="custom">사용자 정의</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;">
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">상태</label>
+              <select id="arch-status" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:14px;">
+                <option value="active">운영 중</option>
+                <option value="maintenance">점검 중</option>
+                <option value="deprecated">사용 중단</option>
+                <option value="planning">계획 중</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">중요도</label>
+              <select id="arch-criticality" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:14px;">
+                <option value="critical">Critical (장애시 서비스 중단)</option>
+                <option value="high">High (기능 저하)</option>
+                <option value="medium">Medium (일부 영향)</option>
+                <option value="low">Low (선택적)</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">환경</label>
+              <select id="arch-env" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:14px;">
+                <option value="production">Production</option>
+                <option value="staging">Staging</option>
+                <option value="development">Development</option>
+                <option value="local">Local</option>
+              </select>
+            </div>
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">메모 / 구성 정보</label>
+            <textarea id="arch-memo" rows="3" placeholder="주요 설정, 스키마 버전, 마이그레이션 이력 등..." style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:13px;font-family:monospace;"></textarea>
+          </div>
+          <div style="display:flex;gap:8px;justify-content:flex-end;">
+            <button class="btn" onclick="hideArchForm()">취소</button>
+            <button class="btn" style="background:var(--accent);color:#fff;border-color:var(--accent);" onclick="saveArch()">저장</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-<script src="js/common.js?v=4c62441"></script>
+<script src="js/common.js?v=ef82cb5"></script>
 <script>
 const FN = SUPABASE_URL + '/functions/v1';
 let token = sessionStorage.getItem('admin_token');
