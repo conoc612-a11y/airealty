@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=0443e54" />
+  <link rel="stylesheet" href="css/tokens.css?v=6299b4c" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=0443e54"></script>
+  <script src="js/auth-guard.js?v=6299b4c"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=0443e54" />
+  <link rel="stylesheet" href="css/buttons.css?v=6299b4c" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=0443e54" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=6299b4c" />
   <style>
     :root {
       
@@ -2146,7 +2146,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=0443e54"></script>
+  <script src="js/ie-guard.js?v=6299b4c"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2481,25 +2481,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-30 19:16 · 0443e54</span></span>
+          · <span class="build-tag">build 2026-09-30 19:52 · 6299b4c</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=0443e54"></script>
+  <script src="js/joinkey.js?v=6299b4c"></script>
   
-  <script src="js/identity.js?v=0443e54"></script>
-  <script src="js/common.js?v=0443e54"></script>
-  <script src="js/ui-resize.js?v=0443e54"></script>
-  <script src="js/footer-resize.js?v=0443e54"></script>
-  <script src="js/route-line.js?v=0443e54"></script>
-  <script src="js/route-api.js?v=0443e54"></script>
-  <script src="js/footer-stats.js?v=0443e54"></script>
+  <script src="js/identity.js?v=6299b4c"></script>
+  <script src="js/common.js?v=6299b4c"></script>
+  <script src="js/ui-resize.js?v=6299b4c"></script>
+  <script src="js/footer-resize.js?v=6299b4c"></script>
+  <script src="js/route-line.js?v=6299b4c"></script>
+  <script src="js/route-api.js?v=6299b4c"></script>
+  <script src="js/footer-stats.js?v=6299b4c"></script>
   
 
-  <script src="js/ad-consent.js?v=0443e54"></script>
+  <script src="js/ad-consent.js?v=6299b4c"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -15648,6 +15648,10 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             ['토지규제', ['토지거래허가구역']],
             
             ['건설업체 (키스콘)', ['종합건설업']],
+            
+            ['도시계획시설', ['보건위생시설', '환경기초시설']],
+            
+            ['지적·경계', ['행정구역 (시군구)']],
           ]],
           ['경매업자', '경매·공매 물건을 발굴하고 권리를 본다', [
             ['경·공매', '*'],
@@ -15667,20 +15671,27 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             ['물건 상세 (대장·이력)', ['학군 (직선 800m)', '역세권 (직선 800m)', '주변 상권 (반경 150m)']],
             
             ['토지규제', ['토지거래허가구역']],
+            
+            ['도시계획시설', ['보건위생시설', '환경기초시설']],
+            
+            ['지적·경계', ['행정동 경계']],
           ]],
           
           ['임장업자', '현장에서 확인할 것 — 소음·동선·주변 여건', [
             
             ['입지·임장', '*'],
             ['실거래가', ['아파트 실거래가·노후도', '연립·다세대 실거래가']],
-            ['지적·경계', ['지적도 (필지 경계)']],
-            ['도시계획시설', ['도로', '주차장 (도시계획 결정구역)']],
+            
+            ['지적·경계', ['지적도 (필지 경계)', '행정동 경계']],
+            
+            ['도시계획시설', ['도로', '주차장 (도시계획 결정구역)', '보건위생시설', '환경기초시설']],
             ['물건 상세 (대장·이력)', ['생활인구 (행정동 낮/밤)']],
           ]],
           ['건축사', '이 땅에 무엇을 얼마나 지을 수 있나', [
             ['용도지역지구', '*'],
             ['지구단위계획', '*'],
-            ['도시계획시설', ['도로']],
+            
+            ['도시계획시설', '*'],
             ['도시분석 주제도', ['가로구역별 건축물 높이기준', '기후환경 공간유형', '생태현황도 (2025)']],
             ['물건 상세 (대장·이력)', ['건축 인허가 이력', '철거·말소 이력 (폐쇄말소대장)', '유지점검 이력']],
             
@@ -15692,7 +15703,9 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             ['지구단위계획', '*'],
             ['토지규제', '*'],
             ['실거래가', ['아파트 실거래가·노후도']],
-            ['지적·경계', ['지적도 (필지 경계)']],
+            ['지적·경계', ['지적도 (필지 경계)', '행정구역 (시군구)']],
+            
+            ['도시계획시설', '*'],
             ['물건 상세 (대장·이력)', ['지가 변동률 추세']],
             
             ['건설업체 (키스콘)', '*'],
@@ -15735,6 +15748,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         
         
         
+        
         const hdrEl = L.DomUtil.create('div', 'lp-hdr', body);
         hdrEl.innerHTML = '<div class="lp-hstat"><b id="lp-n-svc">—</b><span>연결 데이터</span></div>'
           + '<div class="lp-hstat"><b id="lp-n-auc">—</b><span>법원경매 물건</span></div>'
@@ -15751,6 +15765,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             let n = 0;
             div.querySelectorAll('.lp-sec').forEach((sec) => {
               sec.querySelectorAll('.lp-mid').forEach((row) => {
+                if (row.dataset.popup) return;
                 const subs = [...row.querySelectorAll('.lp-sub input')];
                 if (subs.length) n += subs.filter((c) => c.checked).length;
                 else { const mcb = row.querySelector('.lp-midcb'); if (mcb && mcb.checked) n += 1; }
@@ -16371,6 +16386,12 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           saveLayerState();
           
           if (window.__mjHdrUpdate) window.__mjHdrUpdate();
+          
+          
+          document.querySelectorAll('#sh-roles .sh-role').forEach((t) => {
+            const src = roleBar.querySelector('.lp-role[data-i="' + t.dataset.i + '"]');
+            t.classList.toggle('on', !!src && src.classList.contains('on'));
+          });
         }
         roleBar.querySelectorAll('.lp-role').forEach((b) => {
           b.onclick = (e) => {
@@ -16415,8 +16436,6 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
               
               
               b.click();
-              dst.querySelectorAll('.sh-role').forEach((x) => x.classList.remove('on'));
-              t.classList.toggle('on', b.classList.contains('on'));
             });
             dst.appendChild(t);
           });
