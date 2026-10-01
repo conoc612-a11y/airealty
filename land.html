@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=9a224fe" />
+  <link rel="stylesheet" href="css/tokens.css?v=1820d24" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=9a224fe"></script>
+  <script src="js/auth-guard.js?v=1820d24"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=9a224fe" />
+  <link rel="stylesheet" href="css/buttons.css?v=1820d24" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=9a224fe" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=1820d24" />
   <style>
     :root {
       
@@ -2186,7 +2186,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=9a224fe"></script>
+  <script src="js/ie-guard.js?v=1820d24"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2522,25 +2522,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-10-01 12:27 · 9a224fe</span></span>
+          · <span class="build-tag">build 2026-10-01 12:38 · 1820d24</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=9a224fe"></script>
+  <script src="js/joinkey.js?v=1820d24"></script>
   
-  <script src="js/identity.js?v=9a224fe"></script>
-  <script src="js/common.js?v=9a224fe"></script>
-  <script src="js/ui-resize.js?v=9a224fe"></script>
-  <script src="js/footer-resize.js?v=9a224fe"></script>
-  <script src="js/route-line.js?v=9a224fe"></script>
-  <script src="js/route-api.js?v=9a224fe"></script>
-  <script src="js/footer-stats.js?v=9a224fe"></script>
+  <script src="js/identity.js?v=1820d24"></script>
+  <script src="js/common.js?v=1820d24"></script>
+  <script src="js/ui-resize.js?v=1820d24"></script>
+  <script src="js/footer-resize.js?v=1820d24"></script>
+  <script src="js/route-line.js?v=1820d24"></script>
+  <script src="js/route-api.js?v=1820d24"></script>
+  <script src="js/footer-stats.js?v=1820d24"></script>
   
 
-  <script src="js/ad-consent.js?v=9a224fe"></script>
+  <script src="js/ad-consent.js?v=1820d24"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -9066,17 +9066,16 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           return { ...s, bidMan, taxLo: c.taxLo, taxHi: c.taxHi, rateLo: c.lo, rateHi: c.hi,
             totLo: bidMan + c.taxLo + knownExtra, totHi: bidMan + c.taxHi + knownExtra };
         }).filter(Boolean);
-        const rows = scens2.map((s) => {
-          const same = Math.abs(s.taxLo - s.taxHi) < 0.001;
-          const tot = `${fmtAmtExact(s.totLo)}` + (same ? '' : `~${fmtAmtExact(s.totHi)}`);
-          const tax = (same ? fmtAmtExact(s.taxLo) : `${fmtAmtExact(s.taxLo)}~${fmtAmtExact(s.taxHi)}`)
-            + `<div class="doc-sub">`
-            + (same ? `${s.rateLo.toFixed(1)}%` : `${s.rateLo.toFixed(1)}~${s.rateHi.toFixed(1)}%`) + `</div>`;
-          
-          return `<tr><td>${esc(s.t)}</td><td style="text-align:right;">${fmtAmtExact(s.bidMan)}</td>`
-            + `<td style="text-align:right;">${tax}</td><td style="text-align:right;white-space:normal;word-break:keep-all;">${insCell}</td>`
-            + `<td style="text-align:right;"><b>${tot}</b></td></tr>`;
-        }).join('');
+        
+        
+        
+        const _rng = (lo, hi) => (Math.abs(lo - hi) < 0.001 ? fmtAmtExact(lo) : `${fmtAmtExact(lo)}<br>~${fmtAmtExact(hi)}`);
+        const _cell = (h) => `<td style="text-align:right;">${h}</td>`;
+        const rows = scens2.length ? `<tr><td>입찰가</td>${scens2.map((s) => _cell(fmtAmtExact(s.bidMan))).join('')}</tr>`
+          + `<tr><td>취득세 등</td>${scens2.map((s) => _cell(_rng(s.taxLo, s.taxHi) + `<div class="doc-sub">`
+            + (Math.abs(s.rateLo - s.rateHi) < 0.001 ? `${s.rateLo.toFixed(1)}%` : `${s.rateLo.toFixed(1)}~${s.rateHi.toFixed(1)}%`) + `</div>`)).join('')}</tr>`
+          + `<tr><td>인수액</td><td colspan="${scens2.length}" style="text-align:right;white-space:normal;word-break:keep-all;">${insCell}</td></tr>`
+          + `<tr><td>합계</td>${scens2.map((s) => _cell(`<b>${_rng(s.totLo, s.totHi)}</b>`)).join('')}</tr>` : '';
         
         
         
@@ -9087,8 +9086,8 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         if (r && r.demandEnd) notes.push(`배당요구종기 ${esc(r.demandEnd)} — 경과 시 배당 불가.`);
         if (mg && mg.amt && !mg.pub) notes.push('전유부분 체납관리비는 원칙적으로 전 소유자 부담이라 합계에 미포함.');
         return `<div class="auc-doc-h">AI 낙찰 시뮬레이터</div>`
-          + `<table class="rp-deals" style="width:100%;"><thead><tr><th>시나리오</th><th>입찰가</th>`
-          + `<th>취득세 등</th><th>인수액</th><th>합계</th></tr></thead><tbody>${rows}</tbody></table>`
+          + `<table class="rp-deals" style="width:100%;"><thead><tr><th>항목</th>`
+          + `${scens2.map((s) => `<th>${esc(s.t)}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table>`
           + docNote(notes.join(' '));
       }
       
