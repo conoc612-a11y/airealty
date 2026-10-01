@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=6aa7991" />
+  <link rel="stylesheet" href="css/tokens.css?v=1cd117f" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=6aa7991"></script>
+  <script src="js/auth-guard.js?v=1cd117f"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=6aa7991" />
+  <link rel="stylesheet" href="css/buttons.css?v=1cd117f" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=6aa7991" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=1cd117f" />
   <style>
     :root {
       
@@ -2184,7 +2184,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=6aa7991"></script>
+  <script src="js/ie-guard.js?v=1cd117f"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2520,25 +2520,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-10-01 17:10 · 6aa7991</span></span>
+          · <span class="build-tag">build 2026-10-01 17:43 · 1cd117f</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=6aa7991"></script>
+  <script src="js/joinkey.js?v=1cd117f"></script>
   
-  <script src="js/identity.js?v=6aa7991"></script>
-  <script src="js/common.js?v=6aa7991"></script>
-  <script src="js/ui-resize.js?v=6aa7991"></script>
-  <script src="js/footer-resize.js?v=6aa7991"></script>
-  <script src="js/route-line.js?v=6aa7991"></script>
-  <script src="js/route-api.js?v=6aa7991"></script>
-  <script src="js/footer-stats.js?v=6aa7991"></script>
+  <script src="js/identity.js?v=1cd117f"></script>
+  <script src="js/common.js?v=1cd117f"></script>
+  <script src="js/ui-resize.js?v=1cd117f"></script>
+  <script src="js/footer-resize.js?v=1cd117f"></script>
+  <script src="js/route-line.js?v=1cd117f"></script>
+  <script src="js/route-api.js?v=1cd117f"></script>
+  <script src="js/footer-stats.js?v=1cd117f"></script>
   
 
-  <script src="js/ad-consent.js?v=6aa7991"></script>
+  <script src="js/ad-consent.js?v=1cd117f"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -24118,7 +24118,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       const st = { zone: '', parcel: null, br: null, bld: null, house: null, detail: null, addrPnu: null, trdar: null, sch: null, trd: null, sub: null, lvp: null, lvpWas: null, rg: null, rgSeoul: null, deal: deal || null };
       
       
-      popupEl._setDeal = (d) => { if (st.deal || !d) return; st.deal = d; render(); };
+      popupEl._lateApt = (d) => { if (d && !st.deal) st.deal = d; render(); };
       const render = () => {
         
         
@@ -24962,8 +24962,10 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         
         
         
-        let nearHtml = '';
-        if (best && bd < 1.5) {
+        
+        
+        const nearSecHtml = ({ best, bd, cnt }) => {
+          if (!(best && bd < 1.5)) return '';
           const npy = best.area && best.priceEok && uUnit.price === 'total' ? ' · ' + uPriceSub(best).replace('평단가 ', '') : '';
           const nOld = parseInt(best.build, 10) <= 1994
             ? '<span style="background:#e03131;color:#fff;font-size:11px;padding:1px 5px;border-radius:8px;margin-left:4px;">30년↑</span>' : '';
@@ -24978,7 +24980,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
               ['준공', best.build ? esc(best.build) + '년' + (parseInt(best.build, 10) <= 1994 ? ' <span class="doc-sub">30년 이상</span>' : '') : ''],
               ['바로가기', `<a href="${nearUrl}" target="_blank" rel="noopener">네이버 부동산 ↗</a>`],
             ]) + '</div>';
-          nearHtml = `<div class="ls-sec sec-apt-fo" style="font-size:13px;"><div class="ls-fn">`
+          return `<div class="ls-sec sec-apt-fo" style="font-size:13px;"><div class="ls-fn">`
             + `<b>근처 아파트 실거래</b> <span style="font-size:12px;color:var(--c-muted);">참고 · 반경 700m ${cnt}건${cnt ? '' : ' (아래는 1.5km 내 가장 가까운 단지)'}</span><br>`
             + `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${ageColor(best.build)};margin-right:5px;"></span>`
             + `<b>${esc(best.name)}</b> <span style="color:var(--c-muted);font-size:12px;">여기서 ${Math.round(bd * 1000)}m</span><br>`
@@ -24987,7 +24989,29 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             + `전용 ${uAreaTxt(best.area) || '?'} · ${esc(best.floor || '?')}층 · ${esc(best.build || '?')}년${nOld}`
             + ` <a href="${nearUrl}" target="_blank" rel="noopener" style="color:var(--c-primary);font-size:12px;">네이버 ↗</a>`
             + `</div>` + nearDoc + `</div>`;
-        }
+        };
+        
+        const mApSecHtml = (r) => {
+          if (!r) return '';
+          const nOld = parseInt(r.build, 10) <= 1994 ? ' <span style="background:#e03131;color:#fff;font-size:11px;padding:1px 5px;border-radius:8px;">30년↑</span>' : '';
+          const npy = r.area && r.priceEok && uUnit.price === 'total' ? ' <span style="color:var(--c-muted);">' + uPriceSub(r).replace('평단가 ', '') + '</span>' : '';
+          
+          const mApDoc = '<div class="ls-fo">'
+            + docHead('이 건물의 아파트 실거래', tierTxt('deal') + ` · ${esc(r.name)} · ${esc(r.gu)} ${esc(r.dong)}`)
+            + docKv([
+              ['최근 매매', `<b>${esc(uPriceMain(r))}</b> <span class="doc-sub">${esc(fmtYm(r.ymd))} 거래</span>`],
+              ['표시', rpFlagsHtml(r)],
+              ['평단가', r.area && r.priceEok && uUnit.price === 'total' ? esc(uPriceSub(r).replace('평단가 ', '')) : ''],
+              ['전용·층', `${uAreaTxt(r.area)} · ${esc(r.floor || '?')}층`],
+              ['준공', r.build ? esc(r.build) + '년' + (parseInt(r.build, 10) <= 1994 ? ' <span class="doc-sub">30년 이상</span>' : '') : ''],
+            ])
+            + jeonseHtml(r, '평형 기준') + rpTrendHtml(r) + rpDealTableHtml(r) + '</div>';
+          return `<div class="ls-sec" style="font-size:13px;"><div class="ls-fn"><b>이 건물의 아파트 실거래</b> <span style="font-size:12px;color:var(--c-muted);">${esc(r.name)} · ${esc(r.gu)} ${esc(r.dong)}</span><br>`
+            + `${rpFlagsHtml(r)}<span class="pc-price">매매 ${uPriceMain(r)}`
+            + ` <span style="font-size:12px;font-weight:400;color:var(--c-muted);">${esc(fmtYm(r.ymd))} 거래</span></span>${npy}<br>`
+            + `전용 ${uAreaTxt(r.area)} · ${esc(r.floor || '?')}층${nOld}`
+            + `${jeonseHtml(r, '평형 기준')}${rpTrendHtml(r)}${rpDealTableHtml(r)}</div>` + mApDoc + `</div>`;
+        };
         let jbNearHtml = '';
         if (_jbRowsGlobal && _jbRowsGlobal.length) {
           const near = _jbRowsGlobal.filter(r => r.lat && kmDist(lat, lng, r.lat, r.lng) < 0.5).slice(0, 3);
@@ -25006,33 +25030,13 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           
           
           
-          let mApHtml = '';
           const mApR = thisApt(bldName);   
-          {
-            const r = mApR;
-            if (r) {
-              const nOld = parseInt(r.build, 10) <= 1994 ? ' <span style="background:#e03131;color:#fff;font-size:11px;padding:1px 5px;border-radius:8px;">30년↑</span>' : '';
-              const npy = r.area && r.priceEok && uUnit.price === 'total' ? ' <span style="color:var(--c-muted);">' + uPriceSub(r).replace('평단가 ', '') + '</span>' : '';
-              
-              const mApDoc = '<div class="ls-fo">'
-                + docHead('이 건물의 아파트 실거래', tierTxt('deal') + ` · ${esc(r.name)} · ${esc(r.gu)} ${esc(r.dong)}`)
-                + docKv([
-                  ['최근 매매', `<b>${esc(uPriceMain(r))}</b> <span class="doc-sub">${esc(fmtYm(r.ymd))} 거래</span>`],
-                  ['표시', rpFlagsHtml(r)],
-                  ['평단가', r.area && r.priceEok && uUnit.price === 'total' ? esc(uPriceSub(r).replace('평단가 ', '')) : ''],
-                  ['전용·층', `${uAreaTxt(r.area)} · ${esc(r.floor || '?')}층`],
-                  ['준공', r.build ? esc(r.build) + '년' + (parseInt(r.build, 10) <= 1994 ? ' <span class="doc-sub">30년 이상</span>' : '') : ''],
-                ])
-                + jeonseHtml(r, '평형 기준') + rpTrendHtml(r) + rpDealTableHtml(r) + '</div>';
-              mApHtml = `<div class="ls-sec" style="font-size:13px;"><div class="ls-fn"><b>이 건물의 아파트 실거래</b> <span style="font-size:12px;color:var(--c-muted);">${esc(r.name)} · ${esc(r.gu)} ${esc(r.dong)}</span><br>`
-                + `${rpFlagsHtml(r)}<span class="pc-price">매매 ${uPriceMain(r)}`
-                + ` <span style="font-size:12px;font-weight:400;color:var(--c-muted);">${esc(fmtYm(r.ymd))} 거래</span></span>${npy}<br>`
-                + `전용 ${uAreaTxt(r.area)} · ${esc(r.floor || '?')}층${nOld}`
-                + `${jeonseHtml(r, '평형 기준')}${rpTrendHtml(r)}${rpDealTableHtml(r)}</div>` + mApDoc + `</div>`;
-            }
-          }
+          const mApHtml = mApSecHtml(mApR);
           
-          const searchName = bldName || (bd <= 0.1 && best && best.name ? (best.name + ' ' + (best.dong || best.gu || '')).trim() : '') || addr;
+          const near = best ? { best, bd, cnt } : nearestApt();
+          const nearHtml = nearSecHtml(near);
+          
+          const searchName = bldName || (near.bd <= 0.1 && near.best && near.best.name ? (near.best.name + ' ' + (near.best.dong || near.best.gu || '')).trim() : '') || addr;
           const naverLand = addr ? `<a href="${naverSearchUrl(searchName, lat, lng)}" target="_blank" rel="noopener" class="pc-btn pc-btn-primary">네이버 부동산 검색</a>` : '';
           
           
@@ -25122,16 +25126,22 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             saveBtn.onclick = () => { togglePropSave(clickPropRec()); refreshSaveBtn(); if (landMode === 'favorites') render(); };
           }
           
-          
-          const sumDeal = dealOf(mApR, best ? { best, bd } : nearestApt());
+          const sumDeal = dealOf(mApR, near);
           fillLandInfo(_pel, () => (myGen === _clickGen && clickMarker ? clickMarker.getPopup() : null), lat, lng, (s) => { if (myGen !== _clickGen) return; clickPropInfo = s; refreshSaveBtn(); }, false, jibun, sumDeal);
           
           
-          if (!sumDeal && !(rpRows && rpRows.length) && typeof loadRp === 'function') {
+          
+          if (!mApHtml && !nearHtml && !(rpRows && rpRows.length) && typeof loadRp === 'function') {
             loadRp().then(() => {
-              if (myGen !== _clickGen || !_pel || !_pel._setDeal) return;
-              const d2 = dealOf(thisApt(bldName), nearestApt());
-              if (d2) _pel._setDeal(d2);
+              if (myGen !== _clickGen || !_pel || !_pel.isConnected || !_pel._lateApt) return;
+              const r2 = thisApt(bldName), n2 = nearestApt();
+              
+              const d2 = dealOf(r2, n2);
+              if (!d2) return;
+              const sec = r2 ? mApSecHtml(r2) : nearSecHtml(n2);
+              const poi = _pel.querySelector('.poi-box');
+              if (sec && poi && !_pel.querySelector('.sec-apt-fo')) poi.insertAdjacentHTML('afterend', sec);
+              _pel._lateApt(d2);
             }).catch(() => {});
           }
           
