@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=fcf23b8" />
+  <link rel="stylesheet" href="css/tokens.css?v=c2c5271" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=fcf23b8"></script>
+  <script src="js/auth-guard.js?v=c2c5271"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=fcf23b8" />
+  <link rel="stylesheet" href="css/buttons.css?v=c2c5271" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=fcf23b8" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=c2c5271" />
   <style>
     :root {
       
@@ -2189,7 +2189,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=fcf23b8"></script>
+  <script src="js/ie-guard.js?v=c2c5271"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2525,25 +2525,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-10-01 10:32 · fcf23b8</span></span>
+          · <span class="build-tag">build 2026-10-01 11:08 · c2c5271</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=fcf23b8"></script>
+  <script src="js/joinkey.js?v=c2c5271"></script>
   
-  <script src="js/identity.js?v=fcf23b8"></script>
-  <script src="js/common.js?v=fcf23b8"></script>
-  <script src="js/ui-resize.js?v=fcf23b8"></script>
-  <script src="js/footer-resize.js?v=fcf23b8"></script>
-  <script src="js/route-line.js?v=fcf23b8"></script>
-  <script src="js/route-api.js?v=fcf23b8"></script>
-  <script src="js/footer-stats.js?v=fcf23b8"></script>
+  <script src="js/identity.js?v=c2c5271"></script>
+  <script src="js/common.js?v=c2c5271"></script>
+  <script src="js/ui-resize.js?v=c2c5271"></script>
+  <script src="js/footer-resize.js?v=c2c5271"></script>
+  <script src="js/route-line.js?v=c2c5271"></script>
+  <script src="js/route-api.js?v=c2c5271"></script>
+  <script src="js/footer-stats.js?v=c2c5271"></script>
   
 
-  <script src="js/ad-consent.js?v=fcf23b8"></script>
+  <script src="js/ad-consent.js?v=c2c5271"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -15193,20 +15193,25 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         
         
         
-        const bc = el && el.querySelector('.mj-bcomp:not([data-done])');
+        
+        
+        const bcs = el ? [...el.querySelectorAll('.mj-bcomp:not([data-done])')] : [];
+        const bc = bcs[0];
         if (bc && window.mjIdentity) {
-          bc.dataset.done = '1';
+          bcs.forEach((x) => { x.dataset.done = '1'; });
           const nm = bc.dataset.nm || '';
           window.mjIdentity.risk(nm, '', (res) => {
             const badge = window.mjIdentity.riskBadge(res);
             if (!badge) return;
-            
-            bc.innerHTML = badge;
-            if (res && res.confidence === 'name-ambiguous') {
-              bc.title = `같은 상호가 ${res.dup}곳 — 합산한 값.`;
-              bc.innerHTML += ' <span style="font-size:10px;color:var(--c-muted);">동명 '
-                + res.dup + '곳 합산</span>';
-            }
+            bcs.forEach((x) => {
+              
+              x.innerHTML = badge;
+              if (res && res.confidence === 'name-ambiguous') {
+                x.title = `같은 상호가 ${res.dup}곳 — 합산한 값.`;
+                x.innerHTML += ' <span style="font-size:10px;color:var(--c-muted);">동명 '
+                  + res.dup + '곳 합산</span>';
+              }
+            });
             if (pop._adjustPan) pop._adjustPan();
           });
         }
@@ -21535,9 +21540,13 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
     function docHead(title, src) {
       return '<div class="doc-h"><b>' + title + '</b>' + (src ? '<span class="doc-sub">' + src + '</span>' : '') + '</div>';
     }
-    function docKv(rows) {           
+    function docKv(rows, keep) {     
       const r = rows.filter((x) => x && x[1] != null && x[1] !== '');
-      return r.length ? '<table class="ls-tbl">' + r.map((x) => '<tr><th>' + x[0] + '</th><td>' + x[1] + '</td></tr>').join('') + '</table>' : '';
+      if (!r.length) return '';
+      const tbl = (rs) => '<table class="ls-tbl">' + rs.map((x) => '<tr><th>' + x[0] + '</th><td>' + x[1] + '</td></tr>').join('') + '</table>';
+      if (!keep || r.length <= keep) return tbl(r);
+      return tbl(r.slice(0, keep)) + '<details class="doc-more"><summary>'
+        + (r.length - keep).toLocaleString('ko-KR') + '건 더 보기</summary>' + tbl(r.slice(keep)) + '</details>';
     }
     function docList(head, rows) {   
       if (!rows.length) return '';
@@ -22219,10 +22228,12 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         if (m12 !== null) bits.push('최근 1년 <span style="color:' + col(m12) + ';font-weight:600;">' + sign(m12) + '</span>');
         
         let cmp = '';
+        let lpCmp = null;   
         if (A.seoul && m12 !== null) {
           const s12 = compound(A.seoul.m.slice(-12));
           if (s12 !== null) {
             const d = m12 - s12;
+            lpCmp = { s12, d };
             cmp = '<span style="color:var(--c-muted);">서울 평균 ' + sign(s12) + ' · </span>'
               
               
@@ -22251,14 +22262,8 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         for (let i = lpData.years.length - 1; i >= 0 && yv.length < 5; i--) {
           if (A.r.y[i] !== null) yv.unshift([lpData.years[i], A.r.y[i]]);
         }
-        const yLine = yv.length
-          ? '<div style="font-size:12px;margin-top:3px;">' + yv.map(([t, v]) =>
-              
-              
-              
-              '<span style="color:var(--c-muted);">' + t + '년</span> '
-              + '<span style="color:' + col(v) + ';">' + sign(v) + '</span>').join(' · ') + '</div>'
-          : '';
+        
+        
         const where = String(A.r.nm || '') + (A.isDong ? '' : ' (자치구 기준)');
         
         
@@ -22274,7 +22279,8 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             const mn2 = Math.min.apply(null, pts2), mx2 = Math.max.apply(null, pts2);
             const pad2 = (mx2 - mn2) * 0.12 || 1;
             const lo2 = mn2 - pad2, hi2 = mx2 + pad2;
-            const W2 = 320, H2 = 130, L2 = 46, R2 = 8, T2 = 10, B2 = 20;
+            
+            const W2 = 320, H2 = 130, L2 = 50, R2 = 8, T2 = 10, B2 = 24;
             const px2 = (i) => L2 + (pts2.length < 2 ? 0 : i / (pts2.length - 1) * (W2 - L2 - R2));
             const py2 = (v) => T2 + (1 - (v - lo2) / (hi2 - lo2)) * (H2 - T2 - B2);
             const dd = pts2.map((v, i) => (i ? 'L' : 'M') + px2(i).toFixed(1) + ' ' + py2(v).toFixed(1)).join(' ');
@@ -22284,7 +22290,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             const ticks2 = [lo2, (lo2 + hi2) / 2, hi2].map((v) => {
               const y = py2(v).toFixed(1);
               return '<line x1="' + L2 + '" y1="' + y + '" x2="' + (W2 - R2) + '" y2="' + y + '" stroke="var(--line)" stroke-width="1"/>'
-                + '<text x="' + (L2 - 5) + '" y="' + y + '" text-anchor="end" dominant-baseline="middle" font-size="9" fill="var(--c-muted)">' + idx(v) + '</text>';
+                + '<text x="' + (L2 - 5) + '" y="' + y + '" text-anchor="end" dominant-baseline="middle" font-size="12" fill="var(--c-muted)">' + idx(v) + '</text>';
             }).join('');
             const mo = lpData.months || [];
             const t0 = mo.length >= w2.length ? mo[mo.length - w2.length] : '';
@@ -22294,23 +22300,36 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
               + ticks2
               + '<path d="' + dd + '" fill="none" stroke="' + cc + '" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>'
               + '<circle cx="' + px2(pts2.length - 1).toFixed(1) + '" cy="' + py2(pts2[pts2.length - 1]).toFixed(1) + '" r="3" fill="#fff" stroke="' + cc + '" stroke-width="2"/>'
-              + '<text x="' + L2 + '" y="' + (H2 - 6) + '" font-size="9" fill="var(--c-muted)">' + ym(t0) + '</text>'
-              + '<text x="' + (W2 - R2) + '" y="' + (H2 - 6) + '" text-anchor="end" font-size="9" fill="var(--c-muted)">' + ym(t1) + '</text>'
+              + '<text x="' + L2 + '" y="' + (H2 - 6) + '" font-size="12" fill="var(--c-muted)">' + ym(t0) + '</text>'
+              + '<text x="' + (W2 - R2) + '" y="' + (H2 - 6) + '" text-anchor="end" font-size="12" fill="var(--c-muted)">' + ym(t1) + '</text>'
               + '</svg>'
-              + '<div style="font-size:11px;color:var(--c-muted);">최근 24개월 누적 지수(시작=100)</div>';
+              + '<div class="doc-sub">최근 24개월 누적 지수(시작=100)</div>';
           }
         }
         const _lpHead = '<b>지가 변동률</b>' + srcTier('gov') + ' <span style="font-size:12px;">' + esc(where) + '</span>'
           + (bits.length ? '<div style="font-size:12px;margin-top:2px;">' + bits.join(' · ') + '</div>' : '')
           + (cmp ? '<div style="font-size:12px;margin-top:2px;">' + cmp + '</div>' : '');
+        
+        
+        const _lpTag = (v) => '<span style="color:' + col(v) + ';font-weight:600;">' + sign(v) + '</span>';
+        const _lmT = lastM ? String(lpData.months[lastM[0]] || '') : '';
+        const lpDoc = '<div class="ls-fo">'
+          + docHead('지가 변동률', tierTxt('gov') + ' · ' + esc(where))
+          + docKv([
+            ['최근 월', lastM ? _lpTag(lastM[1]) + (_lmT ? ' <span class="doc-sub">' + _lmT.slice(0, 4) + '.' + _lmT.slice(4) + '</span>' : '') : ''],
+            ['최근 1년', m12 !== null ? _lpTag(m12) : ''],
+            ['서울 평균', lpCmp ? sign(lpCmp.s12) + ' · <span style="color:' + col(lpCmp.d) + ';font-weight:600;">'
+              + (lpCmp.d >= 0 ? '+' : '') + lpCmp.d.toFixed(2) + '%p ' + (lpCmp.d >= 0 ? '빠름' : '느림') + '</span>' : ''],
+          ])
+          + (lpChart || spark)
+          + docKv(yv.map(([t, v]) => [t + '년', _lpTag(v)]))
+          + docNote('한국부동산원 지가변동률 · ' + (A.isDong ? '법정동' : '자치구') + ' 단위')
+          + '</div>';
         lpHtml = '<div class="ls-sec sec-lp">'
           
           
           + '<div class="ls-fn">' + _lpHead + '</div>'
-          
-          + '<div class="ls-fo">' + _lpHead + (lpChart || spark) + yLine
-          + '<div style="font-size:11px;color:var(--c-muted);margin-top:3px;">한국부동산원 지가변동률 · '
-          + (A.isDong ? '법정동' : '자치구') + ' 단위</div></div>'
+          + lpDoc
           + '</div>';
       }
 
@@ -22320,11 +22339,16 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       if (st.jnse && Number(st.jnse.maxRentGrntAmt) > 0) {
         const won = Number(st.jnse.maxRentGrntAmt);
         const amt = fmtAmtExact(won / 1e4);
-        jnseHtml = '<div class="ls-sec sec-jnse">'
+        
+        jnseHtml = '<div class="ls-sec sec-jnse"><div class="ls-fn">'
           + `<b>전세보증 한도</b>${srcTier('gov')} <span style="font-size:12px;">최대 <b>${esc(amt)}</b></span>`
           + '<div style="font-size:11px;color:var(--c-muted);margin-top:3px;">'
           + '주택금융공사 일반전세자금보증(2D) · 이 법정동 기준 · 특례상품(청년·다자녀 등)은 한도가 다르다</div>'
-          + '</div>';
+          + '</div><div class="ls-fo">'
+          + docHead('전세보증 한도', tierTxt('gov') + ' · 이 법정동 기준')
+          + docKv([['최대 한도', '<b>' + esc(amt) + '</b>'], ['상품', '주택금융공사 일반전세자금보증(2D)']])
+          + docNote('특례상품(청년·다자녀 등)은 한도가 다릅니다.')
+          + '</div></div>';
       }
       
       
@@ -22472,14 +22496,22 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         const rows2 = list.slice(0, 3).map((x) => `<div style="font-size:11px;margin-top:2px;">`
           + `${esc(x.nm || '(이름없음)')} <span style="color:var(--c-muted);">${esc(x.grade)}`
           + `${x.gubun ? ' · ' + esc(x.gubun) : ''}${x.date ? ' · ' + esc(String(x.date).slice(0, 7)) : ''}</span></div>`).join('');
-        grnHtml = '<div class="ls-sec sec-grn">'
+        
+        
+        
+        const _gShort = (g) => String(g || '').replace(/\s*\((?:그린)?(\d)등급\)/, ' $1등급') || '-';
+        const grnDoc = '<div class="ls-fo">'
+          + docHead('녹색건축 인증', '이 동 ' + st.grn.length + '건 · 동 단위 집계')
+          + docKv(list.map((x) => [esc(_gShort(x.grade)), '<b>' + esc(x.nm || '(이름없음)') + '</b>'
+            + ((x.gubun || x.date) ? '<div class="doc-sub">' + esc([x.gubun, String(x.date || '').slice(0, 7)].filter(Boolean).join(' · ')) + '</div>' : '')]), DOC_KEEP)
+          + docNote('한국부동산원 G-SEED · 예비인증은 사업이 진행 중이라는 뜻입니다 · 좌표 미제공이라 동 단위로 셉니다.')
+          + '</div>';
+        grnHtml = '<div class="ls-sec sec-grn"><div class="ls-fn">'
           + `<b>녹색건축 인증</b> <span style="font-size:12px;">이 동 <b>${st.grn.length}건</b></span>`
           + rows2
           + '<div class="ls-fn" style="font-size:11px;color:var(--c-muted);margin-top:3px;">'
           + 'G-SEED · 예비인증=사업진행중 (동 단위 집계)</div>'
-          + '<div class="ls-fo" style="font-size:11px;color:var(--c-muted);margin-top:3px;">'
-          + '한국부동산원 G-SEED · 예비인증은 사업 진행 중이라는 뜻이다 (좌표 미제공이라 동 단위 집계)</div>'
-          + '</div>';
+          + '</div>' + grnDoc + '</div>';
       }
       
       
@@ -22547,6 +22579,9 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       let dgkHtml = '';
       {
         const rows2 = [];
+        
+        
+        const docRows = [];
         const A = st.aptBasis;
         if (A) {
           const bits = [A.codeSaleNm, A.codeHeatNm,
@@ -22562,17 +22597,27 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
               ? `<div style="font-size:11px;color:var(--c-muted);">시공 ${esc(String(A.kaptBcompany).slice(0, 40))}`
                 + ` <span class="mj-bcomp" data-nm="${esc(String(A.kaptBcompany))}"></span></div>`
               : ''));
+          docRows.push(['단지', '<b>' + esc(A.kaptName || '') + '</b>' + (bits.length ? ' <span class="doc-sub">' + esc(bits.join(' · ')) + '</span>' : '')]);
+          
+          if (A.kaptBcompany) docRows.push(['시공', esc(String(A.kaptBcompany).slice(0, 40))
+            + ` <span class="mj-bcomp" data-nm="${esc(String(A.kaptBcompany))}"></span>`]);
         }
         if (st.wrantPd && st.wrantPd.length) {
           const w = st.wrantPd[0];
           const pd = [w.wrantRspnsblPdSeCdNm, w.wrantRspnsblPdBeginDe, w.wrantRspnsblPdEndDe].filter(Boolean).join(' ');
           rows2.push(`<div style="font-size:11px;margin-top:3px;">하자담보책임 ${esc(pd || (st.wrantPd.length + '건'))}</div>`);
+          
+          const _d8 = (v) => { const t = String(v || '').replace(/[^\d]/g, ''); return t.length === 8 ? t.slice(0, 4) + '.' + t.slice(4, 6) + '.' + t.slice(6) : String(v || ''); };
+          const pd2 = [w.wrantRspnsblPdSeCdNm, [_d8(w.wrantRspnsblPdBeginDe), _d8(w.wrantRspnsblPdEndDe)].filter(Boolean).join(' ~ ')].filter(Boolean).join(' · ');
+          docRows.push(['하자담보책임', esc(pd2 || (st.wrantPd.length + '건'))]);
         }
         if (st.npsAge && st.npsAge.length) {
           rows2.push('<div style="font-size:11px;margin-top:3px;">연금 가입자(서울) '
             + st.npsAge.map((x) => `${x.age}대 ${x.n.toLocaleString()}명`).join(' · ') + '</div>'
             + '<div style="font-size:11px;color:var(--c-muted);">평균 예상연금 '
             + st.npsAge.map((x) => `${x.age}대 ${Math.round(x.amt / 10000)}만원`).join(' · ') + '</div>');
+          docRows.push(['연금 가입자', st.npsAge.map((x) => `${x.age}대 ${x.n.toLocaleString()}명`).join(' · ')
+            + '<div class="doc-sub">서울 · 평균 예상연금 ' + st.npsAge.map((x) => `${x.age}대 ${Math.round(x.amt / 10000)}만원`).join(' · ') + '</div>']);
         }
         
         if (st.aptId) {
@@ -22583,6 +22628,11 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             + (A2.UNIT_CNT ? ` · ${Number(A2.UNIT_CNT).toLocaleString('ko-KR')}세대` : '') + '</div>'
             + (A2.COMPLEX_NM1 ? `<div style="font-size:11px;color:var(--c-muted);">${esc(String(A2.COMPLEX_NM1))}`
               + `${A2.USEAPR_DT ? ' · ' + esc(String(A2.USEAPR_DT).slice(0, 4)) + '년 사용승인' : ''}</div>` : ''));
+          docRows.push(['단지코드', '<b>' + esc(String(A2.COMPLEX_PK || '')) + '</b>'
+            + (A2.DONG_CNT ? ` · ${A2.DONG_CNT}개동` : '')
+            + (A2.UNIT_CNT ? ` · ${Number(A2.UNIT_CNT).toLocaleString('ko-KR')}세대` : '')
+            + (A2.COMPLEX_NM1 ? '<div class="doc-sub">' + esc(String(A2.COMPLEX_NM1))
+              + (A2.USEAPR_DT ? ' · ' + esc(String(A2.USEAPR_DT).slice(0, 4)) + '년 사용승인' : '') + '</div>' : '')]);
         }
         if (st.mntnc && st.mntnc.length) {
           
@@ -22596,23 +22646,29 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             
             
             .sort((a, b) => _remYr(a.remainingYear) - _remYr(b.remainingYear));
+          const mmTxt = (x) => {
+            const nm = [x.parentName, x.subject].filter(Boolean).join(' ');
+            const rem = Number(x.remainingYear);
+            return esc(String(nm).slice(0, 30))
+              + (x.useYear ? ` 사용 ${esc(String(x.useYear))}년` : '')
+              + (Number.isFinite(rem) ? ` · 잔여 ${rem}년` : '');
+          };
           rows2.push(`<div style="font-size:11px;margin-top:3px;">유지관리 이력 <b>${st.mntnc.length}건</b></div>`
-            + mm.slice(0, 3).map((x) => {
-              const nm = [x.parentName, x.subject].filter(Boolean).join(' ');
-              const rem = Number(x.remainingYear);
-              return '<div style="font-size:11px;color:var(--c-muted);">' + esc(String(nm).slice(0, 30))
-                + (x.useYear ? ` 사용 ${esc(String(x.useYear))}년` : '')
-                + (Number.isFinite(rem) ? ` · 잔여 ${rem}년` : '') + '</div>';
-            }).join(''));
+            + mm.slice(0, 3).map((x) => '<div style="font-size:11px;color:var(--c-muted);">' + mmTxt(x) + '</div>').join(''));
+          docRows.push(['유지관리 이력', '<b>' + st.mntnc.length + '건</b> <span class="doc-sub">잔여연수 짧은 순</span>'
+            + mm.slice(0, 3).map((x) => '<div class="doc-sub">' + mmTxt(x) + '</div>').join('')]);
         }
         if (st.icost) {
           const c = st.icost;
-          const man = (v) => (v ? fmtUnit(v / 1e4) : '');
+          
+          const man = (v) => (v ? fmtAmt(v / 1e4) : '');
           const bits = [['전기', c.elec], ['수도', c.water], ['난방', c.heat], ['급탕', c.hotw]]
             .filter(([, v]) => v).map(([k, v]) => `${k} ${man(v)}`);
           if (bits.length) {
             rows2.push(`<div style="font-size:11px;margin-top:3px;">개별사용료 <span style="color:var(--c-muted);">${esc(c.ym)}</span></div>`
               + `<div style="font-size:11px;color:var(--c-muted);">${esc(bits.join(' · '))} <span style="opacity:.7;">(단지 전체)</span></div>`);
+            const _ym = /^\d{6}$/.test(String(c.ym || '')) ? String(c.ym).slice(0, 4) + '.' + String(c.ym).slice(4) : String(c.ym || '');
+            docRows.push(['개별사용료', esc(bits.join(' · ')) + ' <span class="doc-sub">' + esc([_ym, '단지 전체'].filter(Boolean).join(' · ')) + '</span>']);
           }
         }
         if (st.moveWait && st.moveWait.length) {
@@ -22623,70 +22679,90 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             + ` <span style="color:var(--c-muted);">(이 구 ${w.length}개 단지)</span></div>`
             + (big ? `<div style="font-size:11px;color:var(--c-muted);">최다 ${esc(big.nm.slice(0, 24))}`
               + ` ${big.wait.toLocaleString('ko-KR')}명${big.ty ? ' · ' + esc(big.ty) : ''}</div>` : ''));
+          docRows.push(['공공임대 대기', `<b>${tot.toLocaleString('ko-KR')}명</b> <span class="doc-sub">이 구 ${w.length}개 단지 · 예비입주</span>`
+            + (big ? `<div class="doc-sub">최다 ${esc(big.nm.slice(0, 24))} ${big.wait.toLocaleString('ko-KR')}명${big.ty ? ' · ' + esc(big.ty) : ''}</div>` : '')]);
         }
         if (st.medUse && st.medUse.length) {
           rows2.push('<div style="font-size:11px;margin-top:3px;">의료 이용률(전국 '
             + esc(st.medUse[0].yr) + ') <span style="color:var(--c-muted);">'
             + esc(st.medUse.slice(0, 3).map((x) => `${x.dvs.replace(/^연령__/, '')} 외래 ${x.out}%`).join(' · '))
             + '</span></div>');
+          docRows.push(['의료 이용률', esc(st.medUse.slice(0, 3).map((x) => `${x.dvs.replace(/^연령__/, '')} 외래 ${x.out}%`).join(' · '))
+            + ' <span class="doc-sub">전국 ' + esc(st.medUse[0].yr) + '</span>']);
         }
         if (st.kamco && st.kamco.total) {
           const k = st.kamco;
           const amts = k.rows.map((x) => Number(x.FRST_BID_AMT) || 0).filter(Boolean).sort((a, b) => a - b);
-          const eok2 = (v) => fmtAmt(v / 1e4);
+          const eok2 = (v) => fmtAmtExact(v / 1e4);   
           rows2.push(`<div style="font-size:11px;margin-top:3px;">국유일반재산 입찰대상 <b>${k.total.toLocaleString('ko-KR')}건</b></div>`
             + (amts.length ? `<div style="font-size:11px;color:var(--c-muted);">최초입찰가 ${eok2(amts[0])}~${eok2(amts[amts.length - 1])}`
               + ' <span style="opacity:.7;">(전국 · 이 API 는 주소를 주지 않아 지도에 못 올린다)</span></div>' : ''));
+          docRows.push(['국유재산 입찰', `<b>${k.total.toLocaleString('ko-KR')}건</b>`
+            + (amts.length ? ` <span class="doc-sub">최초입찰가 ${eok2(amts[0])}~${eok2(amts[amts.length - 1])} · 전국(주소 미제공)</span>` : '')]);
         }
         if (st.fundBrok && st.fundBrok.total) {
           const f = st.fundBrok;
           const nms = [...new Set(f.rows.map((x) => String(x.fundBrkrNm || '')).filter(Boolean))].slice(0, 2);
           rows2.push(`<div style="font-size:11px;margin-top:3px;">크라우드펀딩 중개업자 <b>${f.total.toLocaleString('ko-KR')}건</b>`
             + (nms.length ? ` <span style="color:var(--c-muted);">${esc(nms.join(' · '))}</span>` : '') + '</div>');
+          docRows.push(['크라우드펀딩', `<b>${f.total.toLocaleString('ko-KR')}건</b>`
+            + (nms.length ? ` <span class="doc-sub">${esc(nms.join(' · '))}</span>` : '')]);
         }
         if (st.lhSpl && st.lhSpl.rows.length) {
           
           const R = st.lhSpl.rows;
           const eok3 = (v) => {
             const x = Number(String(v || '').replace(/[^\d]/g, ''));
-            return fmtAmt(x / 1e4);
+            return fmtAmtExact(x / 1e4);   
           };
+          const lhLine = (x) => esc(String(x.LGDN_DTL_ADR || '').slice(0, 26))
+            + (x.LNO ? ' ' + esc(String(x.LNO)) : '')
+            + (x.LND_US_DS_CD_NM ? ' · ' + esc(String(x.LND_US_DS_CD_NM)) : '')
+            + (x.AR ? ' · ' + fmtArea(x.AR) : '')
+            + (eok3(x.SPL_XPC_AMT || x.SPL_AMT) ? ' · <b>' + eok3(x.SPL_XPC_AMT || x.SPL_AMT) + '</b>' : '');
           rows2.push(`<div style="font-size:11px;margin-top:3px;">LH 토지 공급 <b>${R.length}필지</b>`
             + ` <span style="color:var(--c-muted);">${esc(String(st.lhSpl.n.PAN_NM || '').slice(0, 24))}</span></div>`
-            + R.slice(0, 3).map((x) => '<div style="font-size:11px;color:var(--c-muted);">'
-              + esc(String(x.LGDN_DTL_ADR || '').slice(0, 26))
-              + (x.LNO ? ' ' + esc(String(x.LNO)) : '')
-              + (x.LND_US_DS_CD_NM ? ' · ' + esc(String(x.LND_US_DS_CD_NM)) : '')
-              + (x.AR ? ' · ' + fmtArea(x.AR) : '')
-              + (eok3(x.SPL_XPC_AMT || x.SPL_AMT) ? ' · <b>' + eok3(x.SPL_XPC_AMT || x.SPL_AMT) + '</b>' : '')
-              + '</div>').join(''));
+            + R.slice(0, 3).map((x) => '<div style="font-size:11px;color:var(--c-muted);">' + lhLine(x) + '</div>').join(''));
+          docRows.push(['LH 토지 공급', `<b>${R.length}필지</b> <span class="doc-sub">${esc(String(st.lhSpl.n.PAN_NM || '').slice(0, 24))}</span>`
+            + R.slice(0, 3).map((x) => '<div class="doc-sub">' + lhLine(x) + '</div>').join('')]);
         }
         if (st.landFluct) {
           const L = st.landFluct;
           rows2.push('<div style="font-size:11px;margin-top:3px;">지가변동률 마이크로데이터 '
             + (L.total ? `<b>${L.total.toLocaleString('ko-KR')}건</b>`
               : '<span style="color:var(--c-muted);">제공기관 자료 없음 (2026-09-03 확인)</span>') + '</div>');
+          
+          docRows.push(['지가 표본자료', L.total ? `<b>${L.total.toLocaleString('ko-KR')}건</b>`
+            : '<span class="doc-sub">제공기관 자료 없음 (2026-09-03 확인)</span>']);
         }
         if (st.mabyun && st.mabyun.length) {
           const names = [...new Set(st.mabyun.map((x) => x.nm).filter(Boolean))];
           rows2.push(`<div style="font-size:11px;margin-top:3px;">마을변호사 ${names.length}명`
             + (names.length ? ` — ${esc(names.slice(0, 3).join(' · '))}${names.length > 3 ? ' 외' : ''}` : '') + '</div>');
+          docRows.push(['마을변호사', `${names.length}명`
+            + (names.length ? ` <span class="doc-sub">${esc(names.slice(0, 3).join(' · '))}${names.length > 3 ? ' 외' : ''}</span>` : '')]);
         }
         if (st.npsScsn && st.npsScsn.total) {
           const names = (st.npsScsn.items || []).map((x) => x.nm).slice(0, 2);
           rows2.push(`<div style="font-size:11px;margin-top:3px;">폐업 사업장(이 법정동) <b>${st.npsScsn.total.toLocaleString('ko-KR')}곳</b>`
             + (names.length ? ` <span style="color:var(--c-muted);">${esc(names.join(' · '))}</span>` : '') + '</div>');
+          docRows.push(['폐업 사업장', `<b>${st.npsScsn.total.toLocaleString('ko-KR')}곳</b> <span class="doc-sub">이 법정동`
+            + (names.length ? ' · ' + esc(names.join(' · ')) : '') + '</span>']);
         }
         if (st.orderPlan && st.orderPlan.length) {
           const op = st.orderPlan;
           
           
-          const eok = (v) => (v >= 1e4 ? fmtAmt(v / 1e4) : Number(v).toLocaleString('ko-KR') + NB + '원');
+          
+          const eok = (v) => (v >= 1e4 ? fmtAmtExact(v / 1e4) : Number(v).toLocaleString('ko-KR') + NB + '원');
           const big = op.slice().sort((a, b) => b.amt - a.amt)[0];
           rows2.push(`<div style="font-size:11px;margin-top:3px;">공공공사 발주계획 <b>${op.length}건</b>`
             + (big && big.amt ? ` <span style="color:var(--c-muted);">최대 ${eok(big.amt)}</span>` : '') + '</div>'
             + (big && big.nm ? `<div style="font-size:11px;color:var(--c-muted);">${esc(big.nm.slice(0, 44))}`
               + `${big.inst ? ' · ' + esc(big.inst.slice(0, 20)) : ''}</div>` : ''));
+          docRows.push(['공공공사 발주', `<b>${op.length}건</b>`
+            + (big && big.amt ? ` <span class="doc-sub">최대 ${eok(big.amt)}</span>` : '')
+            + (big && big.nm ? `<div class="doc-sub">${esc(big.nm.slice(0, 44))}${big.inst ? ' · ' + esc(big.inst.slice(0, 20)) : ''}</div>` : '')]);
         }
         if (st.lifeStore && st.lifeStore.length) {
           const ls = st.lifeStore;
@@ -22695,6 +22771,8 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           rows2.push(`<div style="font-size:11px;margin-top:3px;">마트·백화점 <b>${ls.length}곳</b>`
             + ` <span style="color:var(--c-muted);">${esc(Object.entries(kinds).map(([k, v]) => k + ' ' + v).join(' · '))}</span></div>`
             + `<div style="font-size:11px;color:var(--c-muted);">${esc(ls.slice(0, 3).map((x) => x.nm).join(' · '))}</div>`);
+          docRows.push(['마트·백화점', `<b>${ls.length}곳</b> <span class="doc-sub">${esc(Object.entries(kinds).map(([k, v]) => k + ' ' + v).join(' · '))}</span>`
+            + `<div class="doc-sub">${esc(ls.slice(0, 3).map((x) => x.nm).join(' · '))}</div>`]);
         }
         
         if (st.busVol) {
@@ -22702,6 +22780,8 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           rows2.push(`<div style="font-size:11px;margin-top:3px;">버스 이용 <b>${(b.ride + b.goff).toLocaleString('ko-KR')}명</b>`
             + ` <span style="color:var(--c-muted);">승차 ${b.ride.toLocaleString('ko-KR')} · 하차 ${b.goff.toLocaleString('ko-KR')}</span></div>`
             + `<div style="font-size:11px;color:var(--c-muted);">${esc(b.nm)} · 정류장 ${b.stops}곳 · ${esc(b.ym.slice(0, 4))}.${esc(b.ym.slice(4))} 한 달</div>`);
+          docRows.push(['버스 이용', `<b>${(b.ride + b.goff).toLocaleString('ko-KR')}명</b> <span class="doc-sub">승차 ${b.ride.toLocaleString('ko-KR')} · 하차 ${b.goff.toLocaleString('ko-KR')}</span>`
+            + `<div class="doc-sub">${esc(b.nm)} · 정류장 ${b.stops}곳 · ${esc(b.ym.slice(0, 4))}.${esc(b.ym.slice(4))} 한 달</div>`]);
         }
         if (st.goodPrice && st.goodPrice.length) {
           const g = st.goodPrice;
@@ -22712,10 +22792,14 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             + (kinds.length ? ` <span style="color:var(--c-muted);">${esc(kinds.join(' · '))}</span>` : '') + '</div>'
             + (cheap ? `<div style="font-size:11px;color:var(--c-muted);">최저가 ${esc(cheap.nm)} `
               + `${esc(cheap.menu[0][0])} ${cheap.menu[0][1].toLocaleString()}원</div>` : ''));
+          docRows.push(['착한가격업소', `<b>${g.length}곳</b>` + (kinds.length ? ` <span class="doc-sub">${esc(kinds.join(' · '))}</span>` : '')
+            + (cheap ? `<div class="doc-sub">최저가 ${esc(cheap.nm)} ${esc(cheap.menu[0][0])} ${cheap.menu[0][1].toLocaleString()}원</div>` : '')]);
         }
         if (st.wthrWrn && st.wthrWrn.length) {
           rows2.push(`<div style="font-size:11px;margin-top:3px;color:var(--c-warn,#c47f00);">`
             + `⚠ ${esc(String(st.wthrWrn[0]).slice(0, 60))}</div>`);
+          
+          docRows.push(['기상특보', `<span style="color:var(--c-warn,#c47f00);">⚠ ${esc(String(st.wthrWrn[0]).slice(0, 60))}</span>`]);
         }
         
         
@@ -22726,10 +22810,22 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             + `<div style="margin-top:4px;"><button type="button" class="pc-btn pc-btn-outline sp-open" data-from="${esc(from)}">좌패널에서 경로 보기</button></div>`
             + '</div>');
         }
-        if (rows2.length) {
-          dgkHtml = '<div class="ls-sec sec-dgk"><b>공공데이터 더보기</b>' + rows2.join('')
+        
+        
+        
+        if (docRows.length) {
+          
+          
+          
+          const dgkDoc = '<div class="ls-fo">'
+            + docHead('공공데이터 더보기', '이 필지·동·구에 걸리는 연결 데이터')
+            + docKv(docRows)
+            + docNote('공동주택 기본정보 · 하자담보책임기간 · 국민연금 가입현황 · 마을변호사 · 기상특보 · 착한가격업소 · 폐업 사업장 · 공공공사 발주계획 · 마트·백화점 · 버스 이용량')
+            + '</div>';
+          dgkHtml = '<div class="ls-sec sec-dgk"><div class="ls-fn"><b>공공데이터 더보기</b>' + rows2.join('')
             + '<div style="font-size:11px;color:var(--c-muted);margin-top:3px;">'
-            + '공동주택 기본정보 · 하자담보책임기간 · 국민연금 가입현황 · 마을변호사 · 기상특보 · 착한가격업소 · 폐업 사업장 · 공공공사 발주계획 · 마트·백화점 · 버스 이용량 · 지하철 최단경로</div></div>';
+            + '공동주택 기본정보 · 하자담보책임기간 · 국민연금 가입현황 · 마을변호사 · 기상특보 · 착한가격업소 · 폐업 사업장 · 공공공사 발주계획 · 마트·백화점 · 버스 이용량 · 지하철 최단경로</div></div>'
+            + dgkDoc + '</div>';
         }
       }
       let pmsHtml = '';
@@ -22903,7 +22999,45 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             + (bits ? `<br><span style="font-size:12px;color:var(--c-muted);">${esc(bits)}</span>` : '');
         });
         const more = list.length > 3 ? ` <span style="font-size:12px;color:var(--c-muted);">외 ${list.length - 3}건</span>` : '';
+        
+        
+        const _flr = (x) => [Number(x.grndFlrCnt) ? '지상' + Number(x.grndFlrCnt) : '', Number(x.ugrndFlrCnt) ? '지하' + Number(x.ugrndFlrCnt) : ''].filter(Boolean).join('/');
+        const _ds = (st.demol || []).slice().sort((a, b) =>
+          tr(b.demolEndDay || b.demolExtngDay || b.demolStrtDay).localeCompare(tr(a.demolEndDay || a.demolExtngDay || a.demolStrtDay)));
+        const _ps = (st.shtPrc || []).filter((x) => Number(x.hsprc) > 0).sort((a, b) => String(b.crtnDay || '').localeCompare(String(a.crtnDay || '')));
+        const _js = (st.shtJj || []).filter((x) => String(x.jijiguCdNm || '').trim());
+        const _rc = (st.shtRecap || []).filter((x) => Number(x.totArea) > 0 || Number(x.platArea) > 0)[0];
+        const _rcBits = _rc ? [Number(_rc.platArea) > 0 ? '대지 ' + fmtArea(_rc.platArea) : '', Number(_rc.totArea) > 0 ? '연면적 ' + fmtArea(_rc.totArea) : '',
+          Number(_rc.hhldCnt) > 0 ? Number(_rc.hhldCnt).toLocaleString('ko-KR') + '세대' : '', Number(_rc.totPkngCnt) > 0 ? '주차 ' + Number(_rc.totPkngCnt).toLocaleString('ko-KR') + '대' : ''].filter(Boolean) : [];
+        const shtDoc = '<div class="ls-fo">'
+          + '<div class="doc-h"><b style="color:#e03131;">철거·말소 이력</b>'
+          + (list.length ? '<span class="doc-sub">이 필지 ' + list.length + '건</span>' : '') + '</div>'
+          + docList(['말소일', '면적', '층', '구분·건물·용도'], list.map((x) => [
+            esc(ymd(x.shterDay) || '-'), Number(x.totArea) ? fmtArea(Number(x.totArea)) : '', esc(_flr(x)),
+            '<b style="color:#e03131;">' + esc(tr(x.shterGbCdNm) || '말소') + '</b>'
+              + (tr(x.bldNm) ? ' ' + esc(tr(x.bldNm)) : '') + (tr(x.mainPurpsCdNm) ? '<div class="doc-sub">' + esc(tr(x.mainPurpsCdNm)) + '</div>' : '')]))
+          + (_ds.length ? '<div class="doc-sub" style="margin-top:6px;">철거대장 ' + _ds.length + '건 — 부분철거를 \'건물 없음\'으로 읽지 마세요</div>'
+            
+            + docList(['철거 기간', '면적', '동수', '구분·용도·구조'], _ds.map((x) => {
+              const s1 = ymd(x.demolStrtDay), en = ymd(x.demolEndDay) || ymd(x.demolExtngDay);
+              return [s1 && en ? esc(s1) + '<br>~ ' + esc(en) : esc(en || s1 || '-'), Number(x.totArea) ? fmtArea(Number(x.totArea)) : '',
+                Number(x.bldCnt) ? Number(x.bldCnt) + '동' : '',
+                '<b style="color:#e03131;">' + esc(tr(x.demolExtngGbCdNm) || '철거') + '</b>'
+                  + ([tr(x.mainPurpsCdNm), tr(x.strctCdNm)].filter(Boolean).length ? '<div class="doc-sub">' + esc([tr(x.mainPurpsCdNm), tr(x.strctCdNm)].filter(Boolean).join(' · ')) + '</div>' : '')];
+            })) : '')
+          + docKv([
+            ['철거 전 주택가격', _ps.length ? '<b>' + esc(fmtAmtExact(Number(_ps[0].hsprc) / 1e4)) + '</b>'
+              + (ymd(_ps[0].crtnDay) ? ' <span class="doc-sub">' + esc(ymd(_ps[0].crtnDay)) + ' 기준' + (_ps.length > 1 ? ' · 이력 ' + _ps.length + '건' : '') + '</span>' : '') : ''],
+            
+            ['철거 당시 용도지역', _js.length ? '<b>' + esc([...new Set(_js.map((x) => String(x.jijiguCdNm).trim()))].join(' · ')) + '</b>'
+              + (ymd(_js[0].crtnDay) ? ' <span class="doc-sub">' + esc(ymd(_js[0].crtnDay)) + ' 기준</span>' : '') : ''],
+            ['철거 건물 규모', _rcBits.length ? '<b>' + esc(_rcBits.join(' · ')) + '</b>'
+              + (String(_rc.mainPurpsCdNm || '').trim() ? ' <span class="doc-sub">' + esc(String(_rc.mainPurpsCdNm).trim()) + '</span>' : '') : ''],
+          ])
+          + docNote('등기상 건물이 남아 있어도 현황은 다를 수 있습니다. 입찰 전 현장과 등기부로 직접 확인하세요.')
+          + '</div>';
         shtHtml = '<div class="sec-sht" style="margin-top:6px;border:1px solid #e03131;border-radius:8px;padding:6px 8px;background:rgba(224,49,49,.06);">'
+          + '<div class="ls-fn">'
           + `<b style="color:#e03131;">철거·말소 이력</b>`
           + (list.length ? ` <span style="font-size:12px;color:var(--c-muted);">이 필지 ${list.length}건</span>${more}` : '')
           + '<br>'
@@ -22980,7 +23114,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
               + '</div>';
           })()
           + '<div style="font-size:12px;color:var(--c-muted);margin-top:4px;">등기상 건물이 남아 있어도 <b>현황은 다를 수 있음.</b> 입찰 전 현장과 등기부로 직접 확인 요함.</div>'
-          + '</div>';
+          + '</div>' + shtDoc + '</div>';
       }
 
       
@@ -22998,10 +23132,16 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             + (co ? `<br><span style="font-size:12px;color:var(--c-muted);">${esc(co)}</span>` : '');
         });
         const more = list.length > 3 ? ` <span style="font-size:12px;color:var(--c-muted);">외 ${list.length - 3}건</span>` : '';
-        mtnHtml = '<div class="ls-sec sec-mtn">'
+        
+        const mtnDoc = '<div class="ls-fo">'
+          + docHead('유지점검 이력', list.length + '건 · 일정 규모 이상만 대상')
+          + docKv(list.map((x) => [esc(ymd(x.chkStrtDay) || '-'), '정기점검'
+            + (tr(x.dongNm) ? ' · ' + esc(tr(x.dongNm)) : '') + (tr(x.chkCoNm) ? '<div class="doc-sub">' + esc(tr(x.chkCoNm)) + '</div>' : '')]), DOC_KEEP)
+          + '</div>';
+        mtnHtml = '<div class="ls-sec sec-mtn"><div class="ls-fn">'
           + `<b>유지점검 이력</b> <span style="font-size:12px;color:var(--c-muted);">${list.length}건</span>${more}<br>`
           + rows2.join('<br>')
-          + '</div>';
+          + '</div>' + mtnDoc + '</div>';
       }
 
       
@@ -23016,13 +23156,18 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         if (e.elcty != null) parts.push(`전기 <b>${num(e.elcty)}</b>`);
         if (e.gas != null) parts.push(`가스 <b>${num(e.gas)}</b>`);
         if (parts.length) {
-          engyHtml = '<div class="ls-sec sec-engy">'
+          
+          engyHtml = '<div class="ls-sec sec-engy"><div class="ls-fn">'
             + '<b>에너지 사용량</b>'
             + (ymTxt ? ` <span style="font-size:12px;color:var(--c-muted);">${esc(ymTxt)} 기준</span>` : '')
             + '<br>' + parts.join(' · ')
             + '<div style="font-size:12px;color:var(--c-muted);margin-top:3px;">제공기관이 단위를 표기하지 않음 —'
             + ' 같은 건물의 월별 추이나 비슷한 규모끼리 비교하는 용도로만 확인.</div>'
-            + '</div>';
+            + '</div><div class="ls-fo">'
+            + docHead('에너지 사용량', ymTxt ? esc(ymTxt) + ' 기준' : '')
+            + docKv([['전기', e.elcty != null ? '<b>' + num(e.elcty) + '</b>' : ''], ['가스', e.gas != null ? '<b>' + num(e.gas) + '</b>' : '']])
+            + docNote('제공기관이 단위를 표기하지 않습니다 — 같은 건물의 월별 추이나 비슷한 규모끼리 비교하는 용도로만 보세요.')
+            + '</div></div>';
         }
       }
 
@@ -23121,14 +23266,19 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       if (st.reserve && st.reserve.length && st.reserve[0].sTot != null) {
         const r0 = st.reserve[0];
         const ymTxt = /^\d{6}$/.test(String(r0.ym || '')) ? `${r0.ym.slice(0, 4)}.${r0.ym.slice(4, 6)}` : '';
-        reserveHtml = '<div class="ls-sec sec-rsv">'
+        
+        reserveHtml = '<div class="ls-sec sec-rsv"><div class="ls-fn">'
           + '<b>장기수선충당금</b>' + srcTier('gov')
           + (ymTxt ? ` <span style="font-size:12px;color:var(--c-muted);">${esc(ymTxt)} 기준</span>` : '')
           + `<br>적립 잔액 <b>${wonEok(r0.sTot / 100000000)}</b>`
           + (r0.name ? ` <span style="font-size:12px;color:var(--c-muted);">${esc(r0.name)}</span>` : '')
           + '<div style="font-size:12px;color:var(--c-muted);margin-top:3px;">300세대 이상 의무관리대상만 공개됨 —'
           + ' 잔액이 적으면 향후 수선 시 추가 부담이 생길 수 있음.</div>'
-          + '</div>';
+          + '</div><div class="ls-fo">'
+          + docHead('장기수선충당금', tierTxt('gov') + (ymTxt ? ' · ' + esc(ymTxt) + ' 기준' : ''))
+          + docKv([['적립 잔액', `<b>${wonEok(r0.sTot / 100000000)}</b>`], ['단지', r0.name ? esc(r0.name) : '']])
+          + docNote('300세대 이상 의무관리대상만 공개됩니다 — 잔액이 적으면 향후 수선 때 추가 부담이 생길 수 있습니다.')
+          + '</div></div>';
       }
       
       
@@ -23153,7 +23303,24 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           const full = st.mgmtFull && st.mgmtFull.items ? st.mgmtFull : null;
           const isFull = !!(full && !full.partial);
           const totWon = cm + iv + (full ? full.items.reduce((a, x) => a + x.won, 0) : 0);
-          mgmtHtml = '<div class="ls-sec sec-mgmt">'
+          
+          
+          const itemRows = (g) => m.items.filter((x) => x.grp === g).sort((a, b) => b.won - a.won).map((x) => [g + ' · ' + esc(x.label), per(x.won)]);
+          const fullRows = full ? full.items.slice().sort((a, b) => b.won - a.won).map((x) => ['나머지 · ' + esc(x.label), per(x.won)]) : [];
+          const mgmtDoc = '<div class="ls-fo">'
+            + docHead('관리비', tierTxt('gov') + (ymTxt ? ' · ' + esc(ymTxt) + ' 기준' : '')
+              + (hh ? ' · 세대당 월액 · ' + hh.toLocaleString() + '세대' : ' · 단지 전체 월액(세대수 미확인)'))
+            + docKv([
+              [isFull ? '총 관리비' : '주요 항목 합', '<b>' + per(totWon) + '</b>'],
+              ['공용', per(cm)], ['개별', per(iv)], ['나머지', full ? per(totWon - cm - iv) : ''],
+            ])
+            + docList(['항목', hh ? '세대당' : '단지 전체'], itemRows('공용').concat(itemRows('개별'), fullRows))
+            + docNote(st.mgmtFull === 'loading' ? '나머지 16개 항목 불러오는 중…'
+              : isFull ? '공용 17 + 개별 10 = 27개 항목 전부를 합한 값입니다. 300세대 이상 의무관리대상만 공개됩니다.'
+                : full ? full.failed + '개 항목을 못 받아 총액이 아닙니다. 300세대 이상 의무관리대상만 공개됩니다.'
+                  : '주요 11개 항목만 합한 값이라 관리비 총액이 아닙니다. 나머지 16개 항목은 지도 팝업의 버튼으로 불러옵니다.')
+            + '</div>';
+          mgmtHtml = '<div class="ls-sec sec-mgmt"><div class="ls-fn">'
             + '<b>관리비</b>' + srcTier('gov')
             + (ymTxt ? ` <span style="font-size:12px;color:var(--c-muted);">${esc(ymTxt)} 기준</span>` : '')
             + (hh ? ` <span style="font-size:12px;color:var(--c-muted);">세대당 월액 · ${hh.toLocaleString()}세대</span>`
@@ -23181,7 +23348,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
                     + ' 관리비 총액이 아닙니다. 300세대 이상 의무관리대상만 공개됨.'
                     + '<br><button type="button" class="ld-mgmt-all btn-mini" style="margin-top:4px;">나머지 16개 항목 (총액 보기)</button>'
                     + ' <span style="margin-left:4px;">호출 16회 — 누를 때만 조회</span></div>')
-            + '</div>';
+            + '</div>' + mgmtDoc + '</div>';
         } else if (st.mgmt && st.mgmt.items && !st.mgmt.items.length) {
           mgmtHtml = '<div class="ls-sec sec-mgmt" style="font-size:12px;color:var(--c-muted);">관리비 공개 대상이 아닙니다 (300세대 미만 등)</div>';
         } else if (wantInfo.fund) {
@@ -23245,7 +23412,35 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           })).flat().join('');
           
           const whole = st.bid.ann.concat(st.bid.prv).some((g) => g.year === '전체');
-          bidHtml = '<div class="ls-sec sec-bid">'
+          
+          
+          
+          
+          
+          const _ymN = (v) => { const t = String(v || '').replace(/[^\d]/g, ''); return t.length === 8 ? Date.UTC(+t.slice(0, 4), +t.slice(4, 6) - 1, +t.slice(6)) : NaN; };
+          const _dur = (a, b) => {
+            const dd = Math.round((_ymN(b) - _ymN(a)) / 864e5) + 1;
+            if (!(dd > 0)) return '';
+            const mo = Math.round(dd / 30.44);
+            return mo >= 12 ? Math.floor(mo / 12) + '년' + (mo % 12 ? ' ' + (mo % 12) + '개월' : '') : mo >= 1 ? mo + '개월' : dd + '일';
+          };
+          const prvList = st.bid.prv.map((g) => g.items.map((x) => [
+            d(ymd(x.pcDate || x.pcStDate).slice(0, 7) || yrTag(g, x)),
+            Number(x.pcAmount) > 0 ? fmtAmtExact(Number(x.pcAmount) / 1e4) : '',
+            _dur(x.pcStDate, x.pcEdDate),
+            
+            d(x.pcTitle || '수의계약') + (x.companyName ? '<div class="doc-sub">' + d(x.companyName) + '</div>' : '')
+              + ((x.pcStDate && x.pcEdDate) ? '<div class="doc-sub">' + d(ymd(x.pcStDate) + ' ~ ' + ymd(x.pcEdDate)) + '</div>' : ''),
+          ])).flat();
+          const bidDoc = '<div class="ls-fo">'
+            + docHead('입찰 · 수의계약', (st.bid.name ? esc(st.bid.name) + ' · ' : '') + 'K-apt 사업자 선정 · '
+              + (whole ? '단지코드로 전 기간' : '단지명으로 최근 4년'))
+            + (annRows ? '<div class="doc-sub" style="margin-top:4px;">입찰공고</div>' + annRows : '')
+            + (prvList.length ? '<div class="doc-sub" style="margin-top:6px;">수의계약 ' + prvList.length + '건</div>'
+              + docList(['계약', '금액', '기간', '내용·업체'], prvList) : '')
+            + docNote('아파트 관리 상태의 간접 지표입니다.')
+            + '</div>';
+          bidHtml = '<div class="ls-sec sec-bid"><div class="ls-fn">'
             + '<b>입찰 · 수의계약</b>'
             + (st.bid.name ? ` <span style="font-size:12px;color:var(--c-muted);">${esc(st.bid.name)}</span>` : '')
             + (annRows ? '<div style="margin-top:3px;"><span style="font-size:12px;color:var(--c-muted);">입찰공고</span>' + annRows + '</div>' : '')
@@ -23253,7 +23448,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
               + st.bid.prv.reduce((n, g) => n + g.items.length, 0) + '건</b></span>' + prvRows + '</div>' : '')
             + '<div style="font-size:12px;color:var(--c-muted);margin-top:4px;">K-apt 사업자 선정 — '
             + (whole ? '단지코드로 전 기간 조회' : '단지명으로 최근 4년만 조회') + '. 관리 상태의 간접 지표.</div>'
-            + '</div>';
+            + '</div>' + bidDoc + '</div>';
         } else if (st.bid && !st.bid.ann.length && !st.bid.prv.length) {
           
           
@@ -23282,14 +23477,20 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             + ' style="display:inline-block;font-size:12px;line-height:1.6;padding:0 7px;border-radius:999px;margin:2px 3px 0 0;'
             + (good ? 'background:#e6f4ea;color:#166534;border:1px solid #a7d8b4;' : 'background:#fdeaea;color:#9b1c1c;border:1px solid #f0b4b4;')
             + '">' + esc(x.node || x.ask) + '</span>';
-          luHtml = box('<b>행위제한</b> <span style="font-size:12px;color:var(--c-muted);">'
+          
+          luHtml = box('<div class="ls-fn"><b>행위제한</b> <span style="font-size:12px;color:var(--c-muted);">'
             + esc(st.zone || '') + '</span>'
             + (ok.length ? '<div style="margin-top:3px;">가능 ' + ok.map((x) => chip(x, true)).join('') + '</div>' : '')
             + (no.length ? '<div style="margin-top:3px;">금지 ' + no.map((x) => chip(x, false)).join('') + '</div>' : '')
             
             + '<div style="font-size:12px;color:var(--c-muted);margin-top:3px;">'
             + '대표 ' + LANDUSE_ACTS.length + '개 행위만 조회한 결과 — 전체 행위제한이 아닙니다.'
-            + ' 근거는 각 항목에 마우스를 올리면 보임(국토교통부 토지이용규제).</div>');
+            + ' 근거는 각 항목에 마우스를 올리면 보임(국토교통부 토지이용규제).</div></div>'
+            + '<div class="ls-fo">' + docHead('행위제한', esc(st.zone || ''))
+            + docKv([['가능', ok.map((x) => chip(x, true)).join('')], ['금지', no.map((x) => chip(x, false)).join('')]])
+            + docNote('대표 ' + LANDUSE_ACTS.length + '개 행위만 조회한 결과라 전체 행위제한이 아닙니다.'
+              + ' 근거는 각 항목에 마우스를 올리면 보입니다(국토교통부 토지이용규제).')
+            + '</div>');
         } else if (Array.isArray(st.landuse)) {
           luHtml = box('<span style="font-size:12px;color:var(--c-muted);">이 지역지구에 등재된 행위제한이 없음.</span>');
         } else {
