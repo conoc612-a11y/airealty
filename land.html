@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=8d218c3" />
+  <link rel="stylesheet" href="css/tokens.css?v=d2f509d" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=8d218c3"></script>
+  <script src="js/auth-guard.js?v=d2f509d"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=8d218c3" />
+  <link rel="stylesheet" href="css/buttons.css?v=d2f509d" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=8d218c3" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=d2f509d" />
   <style>
     :root {
       
@@ -1548,6 +1548,14 @@
     .leaflet-popup-content .ls-base > .sec-store { display:none; }
     .leaflet-popup-content .ls-base > .sec-hood { order:-11; }
     
+
+
+
+    .leaflet-popup-content .pc-full > .pc-body > :not(.bld-info):not(.pc-bldnm):not(.pric-box) { display:none; }
+    .leaflet-popup-content .pc-full .ls-base > :not(.sec-psum):not(.pric-box) { display:none; }
+    .leaflet-popup-content .pc-full .ls-base > .sec-psum { order:-30; }
+    .leaflet-popup-content .pc-full .ls-base > .pric-box { order:-29; margin-top:6px; }
+    
     #dp-panel-body .pop-only { display:none; }
     
 
@@ -1712,7 +1720,6 @@
     
 
 
-    #dp-panel-body .cta-only { display:none; }
     
 
 
@@ -1810,8 +1817,6 @@
 
 
     
-
-
 
 
 
@@ -1975,13 +1980,6 @@
     .rt-mode { font:inherit; font-size:13px; font-weight:600; padding:8px 2px; border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--text); cursor:pointer; white-space:nowrap; }
     .rt-mode.on { background:#D92A14; color:#fff; border-color:#D92A14; }
     .pc-price { font-size:16px; font-weight:700; color:var(--c-price); margin-top:2px; }
-    .unit-row { display:flex; align-items:center; justify-content:space-between; gap:8px; width:100%; padding:6px 12px; margin-top:4px; background:var(--card); border:1px solid var(--line); border-radius:8px; cursor:pointer; font:inherit; font-size:13px; color:var(--text); text-align:left; box-sizing:border-box; transition:all .15s; }
-    .unit-row:hover { border-color:var(--c-primary); background:color-mix(in srgb, var(--c-primary) 20%, transparent); }
-    .unit-row b { color:var(--text); }
-    .unit-row .ur-chev { color:var(--muted); font-size:11px; transition:transform .15s; flex-shrink:0; }
-    .unit-row.open .ur-chev { transform:rotate(90deg); }
-    .unit-detail { display:none; margin:2px 0 2px; padding:7px 9px; border-left:2px solid var(--c-primary); border-radius:0 8px 8px 0; background:var(--c-primary-soft); font-size:12px; color:var(--muted); line-height:1.75; }
-    .unit-detail b { color:var(--text); }
     
     .leaflet-popup-content-wrapper { position:relative; background:var(--card); color:var(--text); border-radius:8px; border:1px solid var(--line); box-shadow:var(--c-shadow-lg); }
     
@@ -2186,7 +2184,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=8d218c3"></script>
+  <script src="js/ie-guard.js?v=d2f509d"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2522,25 +2520,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-10-01 15:52 · 8d218c3</span></span>
+          · <span class="build-tag">build 2026-10-01 16:05 · d2f509d</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=8d218c3"></script>
+  <script src="js/joinkey.js?v=d2f509d"></script>
   
-  <script src="js/identity.js?v=8d218c3"></script>
-  <script src="js/common.js?v=8d218c3"></script>
-  <script src="js/ui-resize.js?v=8d218c3"></script>
-  <script src="js/footer-resize.js?v=8d218c3"></script>
-  <script src="js/route-line.js?v=8d218c3"></script>
-  <script src="js/route-api.js?v=8d218c3"></script>
-  <script src="js/footer-stats.js?v=8d218c3"></script>
+  <script src="js/identity.js?v=d2f509d"></script>
+  <script src="js/common.js?v=d2f509d"></script>
+  <script src="js/ui-resize.js?v=d2f509d"></script>
+  <script src="js/footer-resize.js?v=d2f509d"></script>
+  <script src="js/route-line.js?v=d2f509d"></script>
+  <script src="js/route-api.js?v=d2f509d"></script>
+  <script src="js/footer-stats.js?v=d2f509d"></script>
   
 
-  <script src="js/ad-consent.js?v=8d218c3"></script>
+  <script src="js/ad-consent.js?v=d2f509d"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -12550,19 +12548,38 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       
       
       
+      
+      
+      
+      
+      
       {
         const panel = $('dp-panel'), body = $('dp-panel-body'), title = $('dp-title');
         let obs = null;
         const stop = () => { if (obs) { obs.disconnect(); obs = null; } };
+        const FWD = ['ld-more', 'ld-retry', 'ld-mgmt', 'ld-mgmt-all', 'ld-bid', 'ld-landuse', 'ld-corp', 'sp-open'];
+        const FWD_SEL = FWD.map((c) => 'button.' + c).join(', ');
+        let fwdSrc = null;   
         const paint = (pc) => {
           const src = pc.querySelector('.pc-body');
           body.innerHTML = '';
+          fwdSrc = src;
           if (!src) { body.textContent = '표시할 내용이 없음.'; return; }
           const copy = src.cloneNode(true);
           
-          copy.querySelectorAll('button, input, select, textarea').forEach((n) => n.remove());
+          copy.querySelectorAll('button, input, select, textarea').forEach((n) => { if (!n.matches(FWD_SEL)) n.remove(); });
           body.appendChild(copy);
         };
+        body.addEventListener('click', (ev) => {
+          const b = ev.target.closest && ev.target.closest(FWD_SEL);
+          if (!b || !body.contains(b) || !fwdSrc || !fwdSrc.isConnected) return;
+          const cls = FWD.find((c) => b.classList.contains(c));
+          const from = b.dataset.from;
+          const orig = [...fwdSrc.querySelectorAll('button.' + cls)].find((o) => !from || o.dataset.from === from);
+          if (!orig) return;
+          ev.preventDefault();
+          orig.click();
+        });
         
         
         
@@ -15348,36 +15365,50 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       
       
       
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      const _bcCache = new Map();   
+      const _bcPaint = (el, nm, v) => {
+        el.querySelectorAll('.mj-bcomp').forEach((x) => {
+          if (x.dataset.nm !== nm) return;
+          x.dataset.done = '1';
+          
+          if (v.html && x.innerHTML !== v.html) { x.innerHTML = v.html; if (v.title) x.title = v.title; }
+        });
+      };
+      window.__fillBcomp = (el, pop) => {
+        if (!el || !window.mjIdentity) return;
+        const names = [...new Set([...el.querySelectorAll('.mj-bcomp:not([data-done])')].map((x) => x.dataset.nm || ''))].filter(Boolean);
+        names.forEach((nm) => {
+          const hit = _bcCache.get(nm);
+          if (hit && hit !== 'loading') { _bcPaint(el, nm, hit); return; }
+          if (hit === 'loading') return;
+          _bcCache.set(nm, 'loading');
+          window.mjIdentity.risk(nm, '', (res) => {
+            const badge = window.mjIdentity.riskBadge(res);
+            const v = { html: badge ? badge + (res && res.confidence === 'name-ambiguous'
+              ? ' <span style="font-size:10px;color:var(--c-muted);">동명 ' + res.dup + '곳 합산</span>' : '') : '',
+              title: res && res.confidence === 'name-ambiguous' ? `같은 상호가 ${res.dup}곳 — 합산한 값.` : '' };
+            
+            
+            if (res) _bcCache.set(nm, v); else { _bcCache.delete(nm); return; }
+            if (!el.isConnected) return;
+            _bcPaint(el, nm, v);
+            if (v.html && pop && pop._adjustPan) pop._adjustPan();
+          });
+        });
+      };
       map.on('popupopen', (e) => {
         const pop = e.popup;
         const el = pop && pop.getElement();
-
-        
-        
-        
-        
-        
-        
-        const bcs = el ? [...el.querySelectorAll('.mj-bcomp:not([data-done])')] : [];
-        const bc = bcs[0];
-        if (bc && window.mjIdentity) {
-          bcs.forEach((x) => { x.dataset.done = '1'; });
-          const nm = bc.dataset.nm || '';
-          window.mjIdentity.risk(nm, '', (res) => {
-            const badge = window.mjIdentity.riskBadge(res);
-            if (!badge) return;
-            bcs.forEach((x) => {
-              
-              x.innerHTML = badge;
-              if (res && res.confidence === 'name-ambiguous') {
-                x.title = `같은 상호가 ${res.dup}곳 — 합산한 값.`;
-                x.innerHTML += ' <span style="font-size:10px;color:var(--c-muted);">동명 '
-                  + res.dup + '곳 합산</span>';
-              }
-            });
-            if (pop._adjustPan) pop._adjustPan();
-          });
-        }
+        window.__fillBcomp(el, pop);
 
         const box = el && el.querySelector('.kis-risk');
         const row = pop && pop._source && pop._source._row;
@@ -22442,7 +22473,9 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         
         const yv = [];
         for (let i = lpData.years.length - 1; i >= 0 && yv.length < 5; i--) {
-          if (A.r.y[i] !== null) yv.unshift([lpData.years[i], A.r.y[i]]);
+          
+          
+          if (A.r.y[i] != null) yv.unshift([lpData.years[i], A.r.y[i]]);
         }
         
         
@@ -22568,6 +22601,9 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
               : st.corp === 'loading' ? ' 기업 정보 조회 중…'
                 : Array.isArray(st.corp) ? ' 이 법인들은 금융위 기업기본정보에 없습니다(소규모 법인은 빠짐).'
                   : ''))
+          + (st.corp === 'loading' || Array.isArray(st.corp) ? ''
+            : '<div style="margin-top:4px;"><button type="button" class="ld-corp btn-mini">기업 정보 보기</button>'
+              + ' <span class="doc-sub">설립·대표·업종·본사 · 누를 때만 조회</span></div>')
           + '</div>';
         npsHtml = '<div class="ls-sec sec-nps"><div class="ls-fn">'
           + `<b>법인 사업장</b> <span style="font-size:12px;">이 법정동 <b>${st.nps.total.toLocaleString('ko-KR')}곳</b></span>`
@@ -22992,13 +23028,12 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             + `<b>${esc(from)}</b>에서 지하철로`
             + `<div style="margin-top:4px;"><button type="button" class="pc-btn pc-btn-outline sp-open" data-from="${esc(from)}">좌패널에서 경로 보기</button></div>`
             + '</div>');
+          
+          docRows.push(['지하철 경로', `<b>${esc(from)}</b>에서 `
+            + `<button type="button" class="btn-mini sp-open" data-from="${esc(from)}">경로 보기</button>`]);
         }
         
-        
-        
         if (docRows.length) {
-          
-          
           
           const dgkDoc = '<div class="ls-fo">'
             + docHead('공공데이터 더보기', '이 필지·동·구에 걸리는 연결 데이터')
@@ -23501,7 +23536,10 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             + docNote(st.mgmtFull === 'loading' ? '나머지 16개 항목 불러오는 중…'
               : isFull ? '공용 17 + 개별 10 = 27개 항목 전부를 합한 값입니다. 300세대 이상 의무관리대상만 공개됩니다.'
                 : full ? full.failed + '개 항목을 못 받아 총액이 아닙니다. 300세대 이상 의무관리대상만 공개됩니다.'
-                  : '주요 11개 항목만 합한 값이라 관리비 총액이 아닙니다. 나머지 16개 항목은 지도 팝업의 버튼으로 불러옵니다.')
+                  : '주요 11개 항목만 합한 값이라 관리비 총액이 아닙니다. 300세대 이상 의무관리대상만 공개됩니다.')
+            + (!full && st.mgmtFull !== 'loading'
+              ? '<div style="margin-top:4px;"><button type="button" class="ld-mgmt-all btn-mini">나머지 16개 항목 (총액 보기)</button>'
+                + ' <span class="doc-sub">호출 16회 — 누를 때만 조회</span></div>' : '')
             + '</div>';
           mgmtHtml = '<div class="ls-sec sec-mgmt"><div class="ls-fn">'
             + '<b>관리비</b>' + srcTier('gov')
@@ -23691,7 +23729,54 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       const body = shtHtml + pmsHtml + hpmsHtml + subHtml + schHtml + trdarHtml + lvpHtml + trdHtml
         + lpHtml + jnseHtml + npsHtml + rstHtml + grnHtml + kcrHtml + dgkHtml + rgHtml + mtnHtml
         + engyHtml + reserveHtml + mgmtHtml + bidHtml + luHtml + storeHtml + nrHtml + houseHtml + detailHtml;
-      if (!rows.length && !body) return '';
+      
+      
+      
+      
+      let psumHtml = '';
+      {
+        const _jg = Number(st.parcel && st.parcel.jiga) || 0;
+        const _zone = st.zone || zoneB[0] || '';
+        const _br = st.br, _bd = st.bld;
+        const _yr = _br ? (/^\d{8}$/.test(_br.useAprDay || '') ? String(_br.useAprDay).slice(0, 4) : '')
+          : _bd ? (/^\d{8}$/.test(_bd.useapr_day || '') ? String(_bd.useapr_day).slice(0, 4) : '') : '';
+        const _fl = _br ? Number(_br.grndFlrCnt) || 0 : _bd ? Number(_bd.grnd_flr) || 0 : 0;
+        const _use = _br ? (_br.mainPurpsCdNm || _br.etcPurps || '') : _bd ? (BLD_USE[_bd.usability] || '') : '';
+        const _fam = _br ? (Number(_br.fmlyCnt) || Number(_br.hhldCnt) || 0) : 0;
+        const _m12 = (() => {
+          const v = st.lp && st.lp.r ? st.lp.r.m.slice(-12).filter((x) => x !== null && x !== undefined) : [];
+          return v.length ? (v.reduce((a, x) => a * (1 + x / 100), 1) - 1) * 100 : null;
+        })();
+        const _mu = (t) => `<span style="color:var(--c-muted);">${t}</span>`;
+        const D = st.deal;
+        const dealTxt = D ? (D.kind === 'this'
+          ? `최근 매매 <b>${esc(D.price)}</b> ${_mu(esc(D.ym))}`
+          : `근처 ${esc(D.name)} <b>${esc(D.price)}</b> ${_mu(esc(D.dist + 'm · ' + D.ym))}`) : '';
+        const lpTxt = _m12 != null ? `지가 1년 <span style="color:${_m12 > 0 ? '#e03131' : _m12 < 0 ? '#2260C3' : 'var(--c-muted)'};">`
+          + (_m12 > 0 ? '+' : '') + _m12.toFixed(2) + '%</span>' : '';
+        const rowsP = [
+          
+          ['토지', _zone || _jg ? (_zone ? `<b style="color:var(--c-primary);">${esc(_zone)}</b>` : '')
+            + (_jg ? (_zone ? ' · ' : '') + `공시지가 <b>${_jg < 1e5 ? _jg.toLocaleString('ko-KR') + NB + '원' : fmtUnit(_jg / 1e4)}/㎡</b>` : '') : ''],
+          ['건물', [_use ? esc(_use) : '', _fl ? `지상 ${_fl}층` : '', _yr ? _yr + '년' : '', _fam ? _fam.toLocaleString('ko-KR') + '세대' : ''].filter(Boolean).join(' · ')],
+          ['시세', [dealTxt, lpTxt].filter(Boolean).join(' · ')],
+        ];
+        
+        const _chip = (t, red) => '<span style="display:inline-block;font-size:12px;line-height:1.7;padding:0 8px;border-radius:999px;margin:2px 4px 0 0;'
+          + (red ? 'background:#fdeaea;color:#9b1c1c;border:1px solid #f0b4b4;' : 'background:#f1eee9;color:#5C5348;border:1px solid #ddd5c9;') + '">' + t + '</span>';
+        const _shtN = (st.sht ? st.sht.length : 0) + (st.demol ? st.demol.length : 0);
+        const _thisY = new Date().getFullYear();
+        const _live = (st.pms || []).filter((x) => {
+          const py = parseInt(tr(x.archPmsDay).slice(0, 4), 10) || 0;
+          return !/^\d{8}$/.test(tr(x.useAprDay)) && py && (_thisY - py) <= 5;
+        }).length;
+        const chips = [_shtN ? _chip('철거·말소 ' + _shtN + '건', true) : '', _live ? _chip('인허가 진행 ' + _live + '건', true) : '',
+          _yr && parseInt(_yr, 10) <= 1994 ? _chip('30년↑', true) : ''].join('');
+        const tbl = docKv(rowsP);
+        if (tbl || chips) psumHtml = '<div class="ls-sec sec-psum pop-only">' + tbl + (chips ? '<div style="margin-top:2px;">' + chips + '</div>' : '') + '</div>';
+      }
+      
+      if (!rows.length && !body && !psumHtml) return '';
       
       
       
@@ -23824,7 +23909,9 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         return `<div class="blk-h">${title}</div>`
           + (anchor ? `<div class="blk-anchor blk-anchor-${anchor}"></div>` : '') + inner;
       }).join('');
-      return `<div class="ls-sec ls-base" style="font-size:13px;">` + blocks + '</div>';
+      
+      
+      return `<div class="ls-sec ls-base" style="font-size:13px;">` + blocks + psumHtml + '</div>';
     }
 
     
@@ -23971,22 +24058,14 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           const MAX = 24;
           
           
-          const list = arr.slice(0, MAX).map((u, i) => {
+          
+          const list = docList(['호실', '층', '전용', '공급·용도'], arr.slice(0, MAX).map((u) => {
             const total = u.jeon + u.gong;
-            const detail = [
-              `층 <b>${u.flr || '?'}</b>`,
-              `전용 <b>${u.jeon.toFixed(1)}㎡</b>`,
-              u.gong ? `공용 <b>${u.gong.toFixed(1)}㎡</b>` : '',
-              total ? `공급 <b>${total.toFixed(1)}㎡</b>` : '',
-              u.purps ? `주용도 <b>${esc(u.purps)}</b>` : '',
-              u.strct ? `구조 <b>${esc(u.strct)}</b>` : '',
-            ].filter(Boolean).join(' · ');
-            return `<button type="button" class="unit-row" data-i="${i}">`
-              + `<span>${esc(u.ho)} <b>전용 ${u.jeon.toFixed(1)}㎡</b>${u.gong ? ` · 공급 <b>${total.toFixed(1)}㎡</b>` : ''}</span>`
-              + `<span class="ur-chev">▸</span></button>`
-              + `<div class="unit-detail" id="ud-${i}">${detail}</div>`;
-          }).join('');
-          rows.push(`<b>호실별 면적</b> <span style="color:var(--c-muted);font-size:12px;">${arr.length}세대${dongSet.size ? ` · ${dongSet.size}개동` : ''} · 전용+공용=공급 · 호실 클릭</span>${list}${arr.length > MAX ? `<br><span style="color:var(--c-muted);font-size:12px;">외 ${arr.length - MAX}세대</span>` : ''}`);
+            return [esc(u.ho), u.flr ? u.flr + '층' : '-', fmtArea(u.jeon) || '-',
+              [total ? '공급 ' + fmtArea(total) : '', u.gong ? '공용 ' + fmtArea(u.gong) : '',
+                esc([u.purps, u.strct].filter(Boolean).join(' · '))].filter(Boolean).join(' · ')];
+          }));
+          rows.push(`<b>호실별 면적</b> <span style="color:var(--c-muted);font-size:12px;">${arr.length}세대${dongSet.size ? ` · ${dongSet.size}개동` : ''} · 전용+공용=공급</span>${list}${arr.length > MAX ? `<span style="color:var(--c-muted);font-size:12px;">외 ${arr.length - MAX}세대</span>` : ''}`);
         }
       }
       if (!expAll.length) {
@@ -24026,10 +24105,11 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
     
     
     
-    function fillLandInfo(popupEl, getPopup, lat, lng, onInfo, noDetail, jibun) {
+    
+    function fillLandInfo(popupEl, getPopup, lat, lng, onInfo, noDetail, jibun, deal) {
       const slot = popupEl && popupEl.querySelector('.bld-info');
       if (!slot) return;
-      const st = { zone: '', parcel: null, br: null, bld: null, house: null, detail: null, addrPnu: null, trdar: null, sch: null, trd: null, sub: null, lvp: null, lvpWas: null, rg: null, rgSeoul: null };
+      const st = { zone: '', parcel: null, br: null, bld: null, house: null, detail: null, addrPnu: null, trdar: null, sch: null, trd: null, sub: null, lvp: null, lvpWas: null, rg: null, rgSeoul: null, deal: deal || null };
       const render = () => {
         
         
@@ -24244,21 +24324,10 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           st._ldBusy = false;
           loadLedgerDetail(st, render);
         };
-        slot.querySelectorAll('.unit-row').forEach((row) => {
-          row.onclick = (ev) => {
-            stop(ev);   
-            const d = slot.querySelector('#ud-' + row.dataset.i);
-            if (!d) return;
-            
-            
-            
-            const opening = !row.classList.contains('open');
-            slot.querySelectorAll('.unit-detail').forEach((x) => { x.style.display = 'none'; });
-            slot.querySelectorAll('.unit-row').forEach((r) => r.classList.remove('open'));
-            if (opening) { d.style.display = 'block'; row.classList.add('open'); }
-          };
-        });
+        
         if (onInfo) onInfo(st);
+        
+        if (window.__fillBcomp) window.__fillBcomp(popupEl, getPopup());
         
         
         
@@ -24839,7 +24908,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         if (myGen !== _clickGen) return;   
         const pel = clickMarker && clickMarker.getPopup() && clickMarker.getPopup().getElement();
         if (!pel || !/불러오는 중/.test(pel.textContent)) return;
-        clickMarker.setPopupContent(`<div class="pc pc-full"><div class="pc-head">위치 정보</div><div class="pc-body"><div>주소를 가져오지 못했어요</div></div><div class="pc-actions">${rtBtns}</div></div>`);
+        clickMarker.setPopupContent(`<div class="pc pc-full"><div class="pc-head">위치 정보</div><div class="pc-body"><div class="pc-bldnm">주소를 가져오지 못했어요</div></div><div class="pc-actions">${rtBtns}</div></div>`);
         bindRtBtns();
       }, 6000);
       let best = null, bd = 1e9, cnt = 0;
@@ -24898,12 +24967,14 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           
           
           if (!clickMarker || clickMarker._dismissed || myGen !== _clickGen) return;
-          const bldHtml = bldName ? `<div style="font-weight:700;font-size:15px;margin-bottom:2px;">${esc(bldName)}</div>` : '';
+          
+          const bldHtml = bldName ? `<div class="pc-bldnm" style="font-weight:700;font-size:15px;margin-bottom:2px;">${esc(bldName)}</div>` : '';
           
           
           
           
           let mApHtml = '';
+          let mApR = null;   
           if (bldName && bldName.length >= 2 && rpRows && rpRows.length) {
             for (const g of rpGroupMap().values()) {
               if (mApHtml) break;
@@ -24916,6 +24987,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
               const ok = (bldName.length >= 3 && n.includes(bldName)) || (n.length >= 3 && bldName.includes(n));
               if (!ok) continue;
               if (kmDist(lat, lng, r.lat, r.lng) > 0.25) continue;
+              mApR = r;
               const nOld = parseInt(r.build, 10) <= 1994 ? ' <span style="background:#e03131;color:#fff;font-size:11px;padding:1px 5px;border-radius:8px;">30년↑</span>' : '';
               const npy = r.area && r.priceEok && uUnit.price === 'total' ? ' <span style="color:var(--c-muted);">' + uPriceSub(r).replace('평단가 ', '') + '</span>' : '';
               
@@ -25027,7 +25099,10 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             saveBtn.onclick = () => { togglePropSave(clickPropRec()); refreshSaveBtn(); if (landMode === 'favorites') render(); };
           }
           
-          fillLandInfo(_pel, () => (myGen === _clickGen && clickMarker ? clickMarker.getPopup() : null), lat, lng, (s) => { if (myGen !== _clickGen) return; clickPropInfo = s; refreshSaveBtn(); }, false, jibun);
+          
+          const sumDeal = mApR ? { kind: 'this', name: mApR.name, price: uPriceMain(mApR), ym: fmtYm(mApR.ymd) }
+            : (best && bd < 1.5 ? { kind: 'near', name: best.name, price: uPriceMain(best), ym: fmtYm(best.ymd), dist: Math.round(bd * 1000) } : null);
+          fillLandInfo(_pel, () => (myGen === _clickGen && clickMarker ? clickMarker.getPopup() : null), lat, lng, (s) => { if (myGen !== _clickGen) return; clickPropInfo = s; refreshSaveBtn(); }, false, jibun, sumDeal);
           
           
           
