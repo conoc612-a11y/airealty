@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=d2f509d" />
+  <link rel="stylesheet" href="css/tokens.css?v=6aa7991" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=d2f509d"></script>
+  <script src="js/auth-guard.js?v=6aa7991"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=d2f509d" />
+  <link rel="stylesheet" href="css/buttons.css?v=6aa7991" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=d2f509d" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=6aa7991" />
   <style>
     :root {
       
@@ -2184,7 +2184,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=d2f509d"></script>
+  <script src="js/ie-guard.js?v=6aa7991"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2520,25 +2520,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-10-01 16:05 · d2f509d</span></span>
+          · <span class="build-tag">build 2026-10-01 17:10 · 6aa7991</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=d2f509d"></script>
+  <script src="js/joinkey.js?v=6aa7991"></script>
   
-  <script src="js/identity.js?v=d2f509d"></script>
-  <script src="js/common.js?v=d2f509d"></script>
-  <script src="js/ui-resize.js?v=d2f509d"></script>
-  <script src="js/footer-resize.js?v=d2f509d"></script>
-  <script src="js/route-line.js?v=d2f509d"></script>
-  <script src="js/route-api.js?v=d2f509d"></script>
-  <script src="js/footer-stats.js?v=d2f509d"></script>
+  <script src="js/identity.js?v=6aa7991"></script>
+  <script src="js/common.js?v=6aa7991"></script>
+  <script src="js/ui-resize.js?v=6aa7991"></script>
+  <script src="js/footer-resize.js?v=6aa7991"></script>
+  <script src="js/route-line.js?v=6aa7991"></script>
+  <script src="js/route-api.js?v=6aa7991"></script>
+  <script src="js/footer-stats.js?v=6aa7991"></script>
   
 
-  <script src="js/ad-consent.js?v=d2f509d"></script>
+  <script src="js/ad-consent.js?v=6aa7991"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -9845,6 +9845,11 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         const docUrl = aucGoDocUrl(d, label);
         if (docUrl) { window.open(docUrl, '_blank', 'noopener'); return; }
         if (aucLocalData(d, label)) {
+          
+          
+          
+          const ap = $('auction-panel');
+          if (ap) { ap.hidden = false; if (ap.classList.contains('collapsed') && window.__apTab) window.__apTab.toggle(); }
           auctionOpenDetail(d);
           requestAnimationFrame(() => apdGoClick(label));
           return;
@@ -22807,19 +22812,20 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             A.kaptDongCnt ? A.kaptDongCnt + '개동' : '',
             A.kaptdaCnt ? Number(A.kaptdaCnt).toLocaleString() + '세대' : '',
             A.kaptUsedate ? String(A.kaptUsedate).slice(0, 4) + '년 준공' : ''].filter(Boolean);
+          
+          
+          
+          
+          
+          
+          const bcNames = [...new Set(String(A.kaptBcompany || '').split(/\s*[,，·/]\s*|\s+및\s+/).map((s) => s.trim()).filter(Boolean))].slice(0, 4);
+          const bcHtml = bcNames.map((n) => esc(n) + ` <span class="mj-bcomp" data-nm="${esc(n)}"></span>`).join(' · ');
           rows2.push(`<div style="font-size:12px;margin-top:2px;"><b>${esc(A.kaptName || '')}</b></div>`
             + (bits.length ? `<div style="font-size:11px;color:var(--c-muted);">${esc(bits.join(' · '))}</div>` : '')
-            
-            
-            
-            + (A.kaptBcompany
-              ? `<div style="font-size:11px;color:var(--c-muted);">시공 ${esc(String(A.kaptBcompany).slice(0, 40))}`
-                + ` <span class="mj-bcomp" data-nm="${esc(String(A.kaptBcompany))}"></span></div>`
-              : ''));
+            + (bcHtml ? `<div style="font-size:11px;color:var(--c-muted);">시공 ${bcHtml}</div>` : ''));
           docRows.push(['단지', '<b>' + esc(A.kaptName || '') + '</b>' + (bits.length ? ' <span class="doc-sub">' + esc(bits.join(' · ')) + '</span>' : '')]);
           
-          if (A.kaptBcompany) docRows.push(['시공', esc(String(A.kaptBcompany).slice(0, 40))
-            + ` <span class="mj-bcomp" data-nm="${esc(String(A.kaptBcompany))}"></span>`]);
+          if (bcHtml) docRows.push(['시공', bcHtml]);
         }
         if (st.wrantPd && st.wrantPd.length) {
           const w = st.wrantPd[0];
@@ -24110,6 +24116,9 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       const slot = popupEl && popupEl.querySelector('.bld-info');
       if (!slot) return;
       const st = { zone: '', parcel: null, br: null, bld: null, house: null, detail: null, addrPnu: null, trdar: null, sch: null, trd: null, sub: null, lvp: null, lvpWas: null, rg: null, rgSeoul: null, deal: deal || null };
+      
+      
+      popupEl._setDeal = (d) => { if (st.deal || !d) return; st.deal = d; render(); };
       const render = () => {
         
         
@@ -24911,10 +24920,34 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         clickMarker.setPopupContent(`<div class="pc pc-full"><div class="pc-head">위치 정보</div><div class="pc-body"><div class="pc-bldnm">주소를 가져오지 못했어요</div></div><div class="pc-actions">${rtBtns}</div></div>`);
         bindRtBtns();
       }, 6000);
-      let best = null, bd = 1e9, cnt = 0;
-      if (rpRows && rpRows.length) {
-        rpRows.forEach((r) => { if (r.lat == null) return; const dist = kmDist(lat, lng, r.lat, r.lng); if (dist < 0.7) cnt++; if (dist < bd) { bd = dist; best = r; } });
-      }
+      
+      
+      
+      const nearestApt = () => {
+        let b = null, d = 1e9, n = 0;
+        (rpRows || []).forEach((r) => { if (r.lat == null) return; const x = kmDist(lat, lng, r.lat, r.lng); if (x < 0.7) n++; if (x < d) { d = x; b = r; } });
+        return { best: b, bd: d, cnt: n };
+      };
+      const thisApt = (bldName) => {
+        if (!bldName || bldName.length < 2 || !rpRows || !rpRows.length) return null;
+        for (const g of rpGroupMap().values()) {
+          const r = g[g.length - 1];
+          const n = String(r.name || '');
+          if (!n || r.lat == null) continue;
+          
+          
+          
+          const ok = (bldName.length >= 3 && n.includes(bldName)) || (n.length >= 3 && bldName.includes(n));
+          if (!ok) continue;
+          if (kmDist(lat, lng, r.lat, r.lng) > 0.25) continue;
+          return r;
+        }
+        return null;
+      };
+      
+      const dealOf = (r, near) => (r ? { kind: 'this', name: r.name, price: uPriceMain(r), ym: fmtYm(r.ymd) }
+        : (near.best && near.bd < 1.5 ? { kind: 'near', name: near.best.name, price: uPriceMain(near.best), ym: fmtYm(near.best.ymd), dist: Math.round(near.bd * 1000) } : null));
+      const { best, bd, cnt } = nearestApt();
       const rtBtns = `<div class="pc-btn-row"><button class="rt-start pc-btn pc-btn-outline"><i class="fi fi-rr-flag"></i>출발</button><button class="rt-end pc-btn pc-btn-outline"><i class="fi fi-rr-marker"></i>도착</button></div><button class="sv-btn pc-btn pc-btn-outline"><i class="fi fi-rr-video-camera"></i>거리뷰</button>`;
       const bindRtBtns = () => {
         clearTimeout(_stuckGuard);  
@@ -24974,20 +25007,10 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           
           
           let mApHtml = '';
-          let mApR = null;   
-          if (bldName && bldName.length >= 2 && rpRows && rpRows.length) {
-            for (const g of rpGroupMap().values()) {
-              if (mApHtml) break;
-              const r = g[g.length - 1];
-              const n = String(r.name || '');
-              if (!n || r.lat == null) continue;
-              
-              
-              
-              const ok = (bldName.length >= 3 && n.includes(bldName)) || (n.length >= 3 && bldName.includes(n));
-              if (!ok) continue;
-              if (kmDist(lat, lng, r.lat, r.lng) > 0.25) continue;
-              mApR = r;
+          const mApR = thisApt(bldName);   
+          {
+            const r = mApR;
+            if (r) {
               const nOld = parseInt(r.build, 10) <= 1994 ? ' <span style="background:#e03131;color:#fff;font-size:11px;padding:1px 5px;border-radius:8px;">30년↑</span>' : '';
               const npy = r.area && r.priceEok && uUnit.price === 'total' ? ' <span style="color:var(--c-muted);">' + uPriceSub(r).replace('평단가 ', '') + '</span>' : '';
               
@@ -25100,9 +25123,17 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           }
           
           
-          const sumDeal = mApR ? { kind: 'this', name: mApR.name, price: uPriceMain(mApR), ym: fmtYm(mApR.ymd) }
-            : (best && bd < 1.5 ? { kind: 'near', name: best.name, price: uPriceMain(best), ym: fmtYm(best.ymd), dist: Math.round(bd * 1000) } : null);
+          const sumDeal = dealOf(mApR, best ? { best, bd } : nearestApt());
           fillLandInfo(_pel, () => (myGen === _clickGen && clickMarker ? clickMarker.getPopup() : null), lat, lng, (s) => { if (myGen !== _clickGen) return; clickPropInfo = s; refreshSaveBtn(); }, false, jibun, sumDeal);
+          
+          
+          if (!sumDeal && !(rpRows && rpRows.length) && typeof loadRp === 'function') {
+            loadRp().then(() => {
+              if (myGen !== _clickGen || !_pel || !_pel._setDeal) return;
+              const d2 = dealOf(thisApt(bldName), nearestApt());
+              if (d2) _pel._setDeal(d2);
+            }).catch(() => {});
+          }
           
           
           
