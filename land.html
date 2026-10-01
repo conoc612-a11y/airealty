@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=144a5d4" />
+  <link rel="stylesheet" href="css/tokens.css?v=60d8b6b" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=144a5d4"></script>
+  <script src="js/auth-guard.js?v=60d8b6b"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=144a5d4" />
+  <link rel="stylesheet" href="css/buttons.css?v=60d8b6b" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=144a5d4" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=60d8b6b" />
   <style>
     :root {
       
@@ -1725,6 +1725,8 @@
     #dp-panel-body .ls-fo table.rp-deals { margin-top:4px; }
     
     #dp-panel-body .ls-fo table.rp-deals td:last-child { white-space:normal; word-break:keep-all; overflow-wrap:anywhere; }
+    
+    #dp-panel-body .ls-fo table.rp-deals th:last-child, #dp-panel-body .ls-fo table.rp-deals td:last-child { padding-left:10px; }
     #dp-panel-body details.doc-more > summary { cursor:pointer; color:var(--c-primary); margin-top:4px; list-style:none; }
     #dp-panel-body details.doc-more > summary::-webkit-details-marker { display:none; }
     #dp-panel-body details.doc-more > summary::after { content:' ▾'; }
@@ -2187,7 +2189,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=144a5d4"></script>
+  <script src="js/ie-guard.js?v=60d8b6b"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2523,25 +2525,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-09-30 21:25 · 144a5d4</span></span>
+          · <span class="build-tag">build 2026-10-01 09:53 · 60d8b6b</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=144a5d4"></script>
+  <script src="js/joinkey.js?v=60d8b6b"></script>
   
-  <script src="js/identity.js?v=144a5d4"></script>
-  <script src="js/common.js?v=144a5d4"></script>
-  <script src="js/ui-resize.js?v=144a5d4"></script>
-  <script src="js/footer-resize.js?v=144a5d4"></script>
-  <script src="js/route-line.js?v=144a5d4"></script>
-  <script src="js/route-api.js?v=144a5d4"></script>
-  <script src="js/footer-stats.js?v=144a5d4"></script>
+  <script src="js/identity.js?v=60d8b6b"></script>
+  <script src="js/common.js?v=60d8b6b"></script>
+  <script src="js/ui-resize.js?v=60d8b6b"></script>
+  <script src="js/footer-resize.js?v=60d8b6b"></script>
+  <script src="js/route-line.js?v=60d8b6b"></script>
+  <script src="js/route-api.js?v=60d8b6b"></script>
+  <script src="js/footer-stats.js?v=60d8b6b"></script>
   
 
-  <script src="js/ad-consent.js?v=144a5d4"></script>
+  <script src="js/ad-consent.js?v=60d8b6b"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -6684,12 +6686,77 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
   + '<br>개업률·폐업률은 제공된 점포 수로 계산(개업점포수 ÷ 전체점포수)</div>');
         return rows.join('');
       }
+      
+      
+      
+      function trdarDoc(d, dist) {
+        const nf = (v) => Number(v || 0).toLocaleString('ko-KR');
+        let h = docKv([
+          ['상권', '<b>' + esc(d.nm) + '</b>' + (d.se ? ' <span class="doc-sub">' + esc(d.se) + '</span>' : '')],
+          ['위치', esc([d.gu, d.dong].filter(Boolean).join(' ')) + (dist != null ? ' <span class="doc-sub">직선 ' + dist + 'm</span>' : '')],
+          ['분기 매출', d.amt != null ? '<b>' + fmtAmt(d.amt) + '</b>' : ''],
+          ['유동인구', d.flp != null ? fmtCnt(d.flp, '명') : ''],
+          ['직장인구', d.wrcp != null ? fmtCnt(d.wrcp, '명') : ''],
+          ['업종별 매출', d.ind && d.ind.length ? d.ind.map((x) => esc(x[0]) + ' ' + fmtAmt(x[1])).join(' · ') : ''],
+        ]);
+        if (d.tz && d.tz.some((v) => v > 0)) {
+          const LB = ['0-6', '6-11', '11-14', '14-17', '17-21', '21-24'];
+          const mx = Math.max.apply(null, d.tz), peak = d.tz.indexOf(mx);
+          const wk = d.wk && (d.wk[0] + d.wk[1]) > 0 ? d.wk : null;
+          h += trdarBars(d.tz, mx, peak, 3, 22, 15.5, '#e8590c', (v, i) => LB[i] + '시 ' + fmtAmt(v))
+            + '<div class="doc-sub">시간대 매출 · 최다 ' + LB[peak] + '시'
+            + (wk ? ' · 주중 ' + Math.round(wk[0] / (wk[0] + wk[1]) * 100) + '% / 주말 ' + Math.round(wk[1] / (wk[0] + wk[1]) * 100) + '%' : '')
+            + '</div>';
+        }
+        const R = d.rep && d.rep.tot ? d.rep : null, S = d.stor && d.stor.tot ? d.stor : null;
+        const F = d.fclt && d.fclt.tot ? d.fclt : null, A = d.apt && (d.apt.cx || d.apt.hh) ? d.apt : null;
+        const FL = { gov: '관공서', bank: '은행', ghsp: '종합병원', hsp: '병원', phar: '약국',
+          kg: '유치원', el: '초', ms: '중', hs: '고', uni: '대학', dept: '백화점', smk: '슈퍼',
+          thea: '극장', stay: '숙박', arpt: '공항', rail: '철도역', bterm: '버스터미널',
+          subw: '지하철역', bus: '버스정거장' };
+        const cl = S && Number(S.opr) > 0 && Number(S.clr) > 0 ? Number(S.clr) / Number(S.opr) : 0;
+        const gi = trdarGuIx && d.gu ? trdarGuIx[d.gu] : null;
+        h += docKv([
+          ['상주인구', R ? '<b>' + nf(R.tot) + '명</b> <span class="doc-sub">여 ' + Math.round(R.f / R.tot * 100) + '%'
+            + (R.hh ? ' · ' + fmtCnt(R.hh, '가구') : '') + '</span>' : ''],
+          ['점포', S ? '<b>' + nf(S.tot) + '곳</b>' + (S.frc ? ' <span class="doc-sub">프랜차이즈 ' + fmtCnt(S.frc, '곳') + '</span>' : '') : ''],
+          
+          ['개업·폐업률', S ? '개업 ' + S.opr + '% · 폐업 <b' + (S.clr >= S.opr ? ' style="color:var(--c-danger);"' : '') + '>' + S.clr + '%</b>'
+            + (cl >= 1.5 ? ' <span style="color:var(--c-danger);">폐업이 개업의 ' + cl.toFixed(1) + '배</span>' : '') : ''],
+          ['폐업 많은 업종', S && S.clTop && S.clTop.length ? S.clTop.map((x) => esc(x[0]) + ' ' + fmtCnt(x[1], '곳')).join(' · ') : ''],
+          ['집객시설', F ? '<b>' + nf(F.tot) + '곳</b> <span class="doc-sub">' + esc(Object.keys(FL).filter((k) => F[k])
+            .sort((a, b) => F[b] - F[a]).slice(0, 6).map((k) => FL[k] + ' ' + fmtCnt(F[k], '곳')).join(' · ')) + '</span>' : ''],
+          ['아파트', A ? '<b>' + nf(A.cx) + '단지</b> · 총 ' + fmtCnt(A.hh, '세대') + (A.ar ? ' <span class="doc-sub">평균 ' + fmtArea(A.ar) + '</span>' : '') : ''],
+          ['평균시가', A && A.mkt ? fmtAmt(A.mkt) + ' <span class="doc-sub">상권분석 집계값 · 실거래가 아님</span>' : ''],
+          [gi ? esc(d.gu) + ' 상권변화' : '', gi ? '<b>' + esc(gi.ix || '-') + '</b>' + (gi.opr ? ' <span class="doc-sub">평균 영업 '
+            + gi.opr + '개월' + (gi.suOpr ? ' (서울 ' + gi.suOpr + ')' : '') + '</span>' : '') : ''],
+        ]);
+        if (R && R.age && R.age.some((v) => v > 0)) {
+          const AGE = ['10대', '20대', '30대', '40대', '50대', '60대+'];
+          const amx = Math.max.apply(null, R.age.concat([1])), apk = R.age.indexOf(amx);
+          h += trdarBars(R.age, amx, apk, 2, 18, 15.5, '#2260C3', (v, i) => AGE[i] + ' ' + nf(v) + '명')
+            + '<div class="doc-sub">상주인구 연령 · 최다 ' + AGE[apk] + '</div>';
+        }
+        if (A && A.pc && A.pc.some((v) => v > 0)) {
+          const PL = ['1억↓', '1억', '2억', '3억', '4억', '5억', '6억↑'];
+          const pmx = Math.max.apply(null, A.pc), ppk = A.pc.indexOf(pmx);
+          h += trdarBars(A.pc, pmx, ppk, 2, 16, 13.2, '#7048e8', (v, i) => PL[i] + ' ' + nf(v) + '세대')
+            + '<div class="doc-sub">아파트 가격대 · 최다 ' + PL[ppk] + '</div>';
+        }
+        const q = trdarQ || {};
+        const qParts = [q.sel ? '매출 ' + qLabel(q.sel) : '',
+          (q.wrc && q.wrc !== q.sel) ? '직장인구 ' + qLabel(q.wrc) : '',
+          (q.stor && q.stor !== q.sel) ? '점포 ' + qLabel(q.stor) : ''].filter(Boolean);
+        return h + docNote('서울 상권분석서비스' + qParts.map((p) => ' · ' + p).join('')
+          + ' · 개업률·폐업률은 제공된 점포 수로 계산(개업점포수 ÷ 전체점포수)');
+      }
       function trdarPopupHtml(d) {
         return '<div class="pc"><div class="pc-head">'
           + '<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:'
           + (TRDAR_SE_COLOR[d.se] || '#868e96') + ';flex-shrink:0;"></span>'
           + '<span class="rp-name">' + esc(d.se || '상권') + '</span></div><div class="pc-body">'
-          + trdarBody(d, null) + '</div></div>';
+          
+          + '<div class="ls-fn">' + trdarBody(d, null) + '</div><div class="ls-fo">' + trdarDoc(d, null) + '</div></div></div>';
       }
       
       viewSearchAdd(() => map.hasLayer(trdarCluster) && !!trdarRows, () => trdarBuild());
@@ -12259,11 +12326,16 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         
         if (me && !p.hidden && p.classList.contains('collapsed')) me.setGlyph();
         if (p.hidden || p.classList.contains('collapsed')) return;
-        if (me) _exclusivePanels.forEach((o) => {
-          if (o.group === me.group && o.panel !== p && !o.panel.hidden && !o.panel.classList.contains('collapsed')) o.toggle();
+        
+        
+        
+        const grp = p.id === 'dp-panel' ? 'L' : (me && me.group);
+        if (grp) _exclusivePanels.forEach((o) => {
+          if (o.group === grp && o.panel !== p && !o.panel.hidden && !o.panel.classList.contains('collapsed')) o.toggle();
         });
       }));
       if (_excObs) _exclusivePanels.forEach((o) => _excObs.observe(o.panel, { attributes: true, attributeFilter: ['hidden'] }));
+      if (_excObs && $('dp-panel')) _excObs.observe($('dp-panel'), { attributes: true, attributeFilter: ['hidden'] });
       
       
       
@@ -21826,11 +21898,12 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       let subHtml = '';
       if (st.sub && st.sub.length) {
         const near = st.sub.slice(0, 2);
+        const subBadge = (d) => (d.ln || []).slice(0, 3).map((x) =>
+          '<span style="display:inline-block;padding:0 4px;border-radius:8px;color:#fff;font-size:11px;'
+          + 'background:' + (SUB_LINE_COLOR[x] || '#495057') + ';">' + esc(x.replace('호선', '')) + '</span>').join(' ');
         const lines = near.map((d) => {
           const tot = (d.on || 0) + (d.off || 0);
-          const badge = (d.ln || []).slice(0, 3).map((x) =>
-            '<span style="display:inline-block;padding:0 4px;border-radius:8px;color:#fff;font-size:11px;'
-            + 'background:' + (SUB_LINE_COLOR[x] || '#495057') + ';">' + esc(x.replace('호선', '')) + '</span>').join(' ');
+          const badge = subBadge(d);
           return '<div style="margin-top:2px;font-size:12px;">' + badge
             + ' <b>' + esc(d.nm) + '</b> <span style="color:var(--c-muted);">' + d._d + 'm</span>'
             + (tot ? ' · 일평균 ' + tot.toLocaleString('ko-KR') + '명' : '') + '</div>';
@@ -21838,14 +21911,22 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         
         
         
+        
+        const subYm = subMeta && subMeta.ym ? subMeta.ym.slice(0, 4) + '.' + subMeta.ym.slice(4) : '';
+        const subDoc = '<div class="ls-fo">'
+          + docList(['역', '거리', '일평균', '노선'], st.sub.map((d) => {
+            const tot = (d.on || 0) + (d.off || 0);
+            return ['<b>' + esc(d.nm) + '</b>', d._d + 'm', tot ? tot.toLocaleString('ko-KR') + '명' : '', subBadge(d)];
+          }))
+          + docNote('직선거리 · 일평균 승하차 · 서울 열린데이터광장 지하철 승하차' + (subYm ? ' · ' + subYm : ''))
+          + '</div>';
         subHtml = '<details class="ls-sec sec-sub"><summary>'
           + '<b>역세권</b> <span style="font-size:12px;color:var(--c-muted);">직선 ' + SUB_NEAR + 'm 안 '
           + st.sub.length + '곳</span></summary>'
-          + lines.join('')
+          + '<div class="ls-fn">' + lines.join('')
           + ((subMeta && subMeta.ym) ? '<div class="ls-fn" style="font-size:11px;color:var(--c-muted);margin-top:3px;">기준 '
             + subMeta.ym.slice(0, 4) + '.' + subMeta.ym.slice(4) + '</div>' : '')
-          + '<div class="ls-fo" style="font-size:11px;color:var(--c-muted);margin-top:3px;">서울 열린데이터광장 지하철 승하차'
-          + (subMeta && subMeta.ym ? ' · ' + subMeta.ym.slice(0, 4) + '.' + subMeta.ym.slice(4) : '') + '</div>'
+          + '</div>' + subDoc
           + '</details>';
       }
       
@@ -21895,14 +21976,24 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         if (lines.length) {
           const yr = st.sch.find((x) => x.yr) || {};
           
+          
+          const LV_NAME = { 초: '초등학교', 중: '중학교', 고: '고등학교' };
+          const lvOf = (x) => LV_NAME[x.lv] || ((schCatOf(x) || [])[1] || x.knd || '기타');
+          const ord = (x) => (lvOrder[x.lv] != null ? lvOrder[x.lv] : 9);
+          const schDoc = '<div class="ls-fo">'
+            + docList(['학교', '거리', '학급당', '구분'], st.sch.slice().sort((a, b) => (ord(a) - ord(b)) || (a.d - b.d)).map((x) => [
+              '<b>' + esc(x.nm) + '</b>', x.d + 'm',
+              x.per != null ? x.per + '명' : (x.stu != null ? '<span class="doc-sub">학생 ' + x.stu.toLocaleString('ko-KR') + '</span>' : ''),
+              esc(lvOf(x))]))
+            + docNote('직선거리 · 서울 열린데이터광장 학교 기본정보' + (yr.yr ? ' · 학급·학생수 ' + yr.yr + '년 공시' : '')
+              + ' · 통학구역(배정) 정보는 아직 없습니다.')
+            + '</div>';
           schHtml = '<details class="ls-sec sec-sch"><summary>'
             + '<b>학군</b> <span style="font-size:12px;color:var(--c-muted);">직선 ' + SCH_RADIUS + 'm 안</span></summary>'
-            + lines.join('')
+            + '<div class="ls-fn">' + lines.join('')
             + '<div class="ls-fn" style="font-size:11px;color:var(--c-muted);margin-top:3px;">'
             + (yr.yr ? '학급·학생수 ' + yr.yr + '년 공시 · ' : '') + '배정구역 미제공</div>'
-            + '<div class="ls-fo" style="font-size:11px;color:var(--c-muted);margin-top:3px;">서울 열린데이터광장 학교 기본정보'
-            + (yr.yr ? ' · 학급·학생수 ' + yr.yr + '년 공시' : '')
-            + ' · 통학구역(배정) 정보는 아직 없음</div>'
+            + '</div>' + schDoc
             + '</details>';
         }
       }
@@ -21912,9 +22003,12 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       
       let trdHtml = '';
       if (st.trd) {
-        trdHtml = '<div class="ls-sec sec-trd">'
+        trdHtml = '<div class="ls-sec sec-trd"><div class="ls-fn">'
           + '<b>상권 매출</b>' + srcTier('est') + ' <span style="font-size:12px;color:var(--c-muted);">가장 가까운 상권</span>'
           + '<div style="margin-top:2px;">' + trdarBody(st.trd, st.trd._d) + '</div>'
+          
+          + '</div><div class="ls-fo">' + docHead('상권 매출', tierTxt('est') + ' · 가장 가까운 상권')
+          + trdarDoc(st.trd, st.trd._d) + '</div>'
           + '</div>';
       }
       
@@ -21943,7 +22037,25 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           : V.ratio >= 1.5 ? '낮에 사람이 모이는 곳 (업무·상업)'
           : V.ratio <= 0.85 ? '낮에 비는 주거지'
           : '낮과 밤이 비슷한 동네';
-        lvpHtml = '<div class="ls-sec sec-lvp">'
+        
+        const lvpDate = lvpMeta && lvpMeta.date ? lvpMeta.date.slice(0, 4) + '.' + lvpMeta.date.slice(4, 6) + '.' + lvpMeta.date.slice(6) : '';
+        const lvpDoc = '<div class="ls-fo">'
+          + docHead('생활인구', tierTxt('est') + ' · ' + esc(V.nm || V.cd) + ' 행정동 전체')
+          + docKv([
+            ['낮', V.day ? '<b>' + V.day.toLocaleString('ko-KR') + '명</b>' : ''],
+            ['밤', V.night ? '<b>' + V.night.toLocaleString('ko-KR') + '명</b>' : ''],
+            ['낮 ÷ 밤', V.ratio ? V.ratio + '배' : ''],
+            ['성격', say],
+            
+            ['기준 지역', st.lvpWas ? '<span style="color:var(--c-price);">분동 전 ' + esc(st.lvpWas) + ' 기준</span>' : ''],
+          ])
+          + (bars ? '<div style="margin-top:4px;height:26px;line-height:0;">' + bars + '</div>'
+            + '<div class="doc-sub">시간대 인구 · 0시 → 23시 · <span style="color:#ffa94d;">■</span> 낮(10~17시)</div>' : '')
+          + (st.trdar && st.trdar.adong && st.trdar.adong.share < 60
+            ? '<div class="doc-note" style="color:var(--c-price);">행정동 판정 근거가 약합니다(' + st.trdar.adong.share + '% · 동 경계)</div>' : '')
+          + docNote('서울 열린데이터광장 생활인구 추정' + (lvpDate ? ' · ' + lvpDate + ' 기준' : ''))
+          + '</div>';
+        lvpHtml = '<div class="ls-sec sec-lvp"><div class="ls-fn">'
           + '<b>생활인구</b>' + srcTier('est') + ' <span style="font-size:12px;">' + esc(V.nm || V.cd)
           + ' <span style="color:var(--c-muted);">행정동 전체</span></span>'
           
@@ -21963,10 +22075,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
                 + st.trdar.adong.share + '% · 동 경계)</div>' : '')
           + ((lvpMeta && lvpMeta.date) ? '<div class="ls-fn" style="font-size:11px;color:var(--c-muted);margin-top:3px;">기준 '
             + lvpMeta.date.slice(0, 4) + '.' + lvpMeta.date.slice(4, 6) + '</div>' : '')
-          + '<div class="ls-fo" style="font-size:11px;color:var(--c-muted);margin-top:3px;">서울 열린데이터광장 생활인구 추정'
-          + (lvpMeta && lvpMeta.date ? ' · ' + lvpMeta.date.slice(0, 4) + '.' + lvpMeta.date.slice(4, 6)
-              + '.' + lvpMeta.date.slice(6) + ' 기준' : '') + '</div>'
-          + '</div>';
+          + '</div>' + lvpDoc + '</div>';
       }
       
       
@@ -21974,6 +22083,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       if (st.rg) {
         const G = st.rg, seoul = st.rgSeoul;
         const rows = [];
+        let rgMig = null, rgIdx = null;   
         if (G.mig && G.mig.net && G.mig.net.length) {
           const net = G.mig.net, times = G.mig.times;
           const last = net.slice(-12), lastT = times.slice(-12);
@@ -21989,6 +22099,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
               + '<span style="position:absolute;left:1px;right:1px;' + (up ? 'bottom:13px;' : 'top:13px;')
               + 'height:' + pct + '%;background:' + (up ? '#2260C3' : '#e8590c') + ';"></span></span>';
           }).join('');
+          rgMig = { sum, bars };
           rows.push('<div style="font-size:12px;">12개월 순이동 <b style="color:'
             + (sum >= 0 ? '#2260C3' : 'var(--c-warn)') + ';">' + (sum > 0 ? '+' : '')
             + sum.toLocaleString('ko-KR') + '명</b>'
@@ -22006,19 +22117,36 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           const v = G.idx.vals[G.idx.vals.length - 1];
           const t = String(G.idx.times[G.idx.times.length - 1] || '');
           const yoy = G.idxYoY;
+          rgIdx = { v, t, yoy };
           rows.push('<div style="margin-top:3px;font-size:12px;">아파트 매매지수 <b>' + v + '</b>'
             + (yoy != null ? ' <span style="color:' + (yoy >= 0 ? '#c2255c' : '#2260C3') + ';">'
                 + (yoy > 0 ? '+' : '') + yoy + '%</span> <span style="color:var(--c-muted);">전년 동기</span>' : '')
             + ' <span style="color:var(--c-muted);">(' + t.slice(0, 4) + '년 ' + t.slice(4) + '분기)</span></div>');
         }
         if (rows.length) {
-          rgHtml = '<div class="ls-sec sec-rg">'
+          
+          const sg = (n) => (n > 0 ? '+' : '') + n.toLocaleString('ko-KR');
+          const rgDoc = '<div class="ls-fo">'
+            + docHead('자치구 동향', esc(G.nm) + ' 단위 · 필지 값이 아님')
+            + docKv([
+              ['12개월 순이동', rgMig ? '<b>' + sg(rgMig.sum) + '명</b>'
+                + (seoul && seoul.net12 != null ? ' <span class="doc-sub">서울 전체 ' + sg(seoul.net12) + '</span>' : '') : ''],
+              ['아파트 매매지수', rgIdx ? '<b>' + rgIdx.v + '</b>'
+                + (rgIdx.yoy != null ? ' · 전년 동기 ' + (rgIdx.yoy > 0 ? '+' : '') + rgIdx.yoy + '%' : '')
+                + ' <span class="doc-sub">' + rgIdx.t.slice(0, 4) + '년 ' + rgIdx.t.slice(4) + '분기</span>' : ''],
+            ])
+            + (rgMig ? '<div style="margin-top:4px;line-height:0;border-top:1px dashed var(--c-border);border-bottom:1px dashed var(--c-border);">'
+              + rgMig.bars + '</div><div class="doc-sub">월별 순이동 12개월 · <span style="color:#2260C3;">■</span> 유입 '
+              + '<span style="color:#e8590c;">■</span> 유출</div>' : '')
+            + docNote('한국부동산원 R-ONE — 시군구별 이동자수(월) · 시군구별 매매지수_아파트(분기)')
+            + '</div>';
+          rgHtml = '<div class="ls-sec sec-rg"><div class="ls-fn">'
             + '<b>자치구 동향</b> <span style="font-size:12px;color:var(--c-muted);">'
             + esc(G.nm) + ' 단위 (필지 값이 아님)</span>'
             + rows.join('')
             + '<div style="font-size:11px;color:var(--c-muted);margin-top:3px;">한국부동산원 R-ONE — '
             + '시군구별 이동자수(월) · 시군구별 매매지수_아파트(분기)</div>'
-            + '</div>';
+            + '</div>' + rgDoc + '</div>';
         }
       }
       let trdarHtml = '';
@@ -22033,7 +22161,21 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           return '<span title="' + esc(k) + ' ' + v + '곳" style="display:inline-block;height:7px;width:'
             + pct + '%;background:' + TRDAR_COLOR(k) + ';"></span>';
         }).join('');
-        trdarHtml = '<div class="ls-sec sec-trdar">'
+        
+        const trdarAreaDoc = '<div class="ls-fo">'
+          + docHead('주변 상권', tierTxt('est') + ' · 반경 ' + T.radius + 'm · 상가업소 ' + T.total.toLocaleString('ko-KR') + '곳')
+          + docKv([['중심 업종', top ? '<b>' + esc(top[0]) + '</b> <span class="doc-sub">' + share + '%</span>' : '']])
+          + (bar ? '<div style="margin-top:4px;line-height:0;border-radius:4px;overflow:hidden;">' + bar + '</div>' : '')
+          + docList(['업종', '곳', '비중'], lcls.map(([k, v]) => [
+            '<span style="color:' + TRDAR_COLOR(k) + ';">■</span> ' + esc(k), v.toLocaleString('ko-KR'),
+            Math.round(v / T.counted * 100) + '%']))
+          + (mcls.length ? docKv([['세부 업종', esc(mcls.slice(0, 6).map(([k, v]) => k + ' ' + v).join(' · '))]]) : '')
+          
+          + (T.partial ? '<div class="doc-note" style="color:var(--c-price);">업종 구성은 '
+            + T.counted.toLocaleString('ko-KR') + '곳 기준입니다(전체 ' + T.total.toLocaleString('ko-KR') + ')</div>' : '')
+          + docNote('소상공인시장진흥공단 상가(상권)정보 · 분기 갱신')
+          + '</div>';
+        trdarHtml = '<div class="ls-sec sec-trdar"><div class="ls-fn">'
           + '<b>주변 상권</b>' + srcTier('est') + ' <span style="font-size:12px;">반경 ' + T.radius + 'm · 상가업소 '
           + T.total.toLocaleString('ko-KR') + '곳</span>'
           + (top ? '<div style="font-size:12px;margin-top:2px;"><b>' + esc(top[0]) + '</b> 중심 '
@@ -22046,8 +22188,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           
           + (T.partial ? '<div style="font-size:11px;color:var(--c-price);margin-top:2px;">업종 구성은 '
               + T.counted.toLocaleString('ko-KR') + '곳 기준(전체 ' + T.total.toLocaleString('ko-KR') + ')</div>' : '')
-          + '<div class="ls-fo" style="font-size:11px;color:var(--c-muted);margin-top:3px;">소상공인시장진흥공단 상가(상권)정보 · 분기 갱신</div>'
-          + '</div>';
+          + '</div>' + trdarAreaDoc + '</div>';
       }
       
       
@@ -22190,7 +22331,38 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       let npsHtml = '';
       if (st.nps && st.nps.total > 0) {
         const names = (st.nps.items || []).slice(0, 3).map((x) => esc(x.nm)).join(' · ');
-        npsHtml = '<div class="ls-sec sec-nps">'
+        
+        
+        const ymd8n = (v) => (/^\d{8}$/.test(String(v || '')) ? String(v).slice(0, 4) + '.' + String(v).slice(4, 6) + '.' + String(v).slice(6) : '');
+        const corpDoc = Array.isArray(st.corp) ? st.corp.filter((c) => c.top).map((c) => {
+          const x = c.top;
+          return docKv([
+            ['법인', '<b>' + esc(x.corpNm || '') + '</b>' + (c.total > 1 ? ' <span class="doc-sub">이름이 겹치는 법인 ' + c.total + '곳 중 첫 건</span>' : '')],
+            ['설립', esc(ymd8n(x.enpEstbDt))],
+            ['대표', esc(x.enpRprFnm || '')],
+            ['본사·업종', esc([x.enpBsadr, x.sicNm].filter(Boolean).join(' · '))],
+            ['상장', x.corpRegMrktDcdNm ? esc(x.corpRegMrktDcdNm) + (x.enpXchgLstgDt ? ' ' + ymd8n(x.enpXchgLstgDt) : '') : ''],
+            ['매출', c.fin && window.obEok ? '<b>' + window.obEok(c.fin.enpSaleAmt) + '</b>'
+              + (c.fin.enpBzopPft != null ? ' · 영업이익 ' + window.obEok(c.fin.enpBzopPft) : '')
+              + ' <span class="doc-sub">' + esc(c.fin.bizYear || '') + '년' + (c.fin.fnclDcdNm ? ' · ' + esc(c.fin.fnclDcdNm) : '') + '</span>' : ''],
+            ['최대주주', c.gov && c.gov.top && c.gov.top.length ? '<b>' + esc(c.gov.top[0].sthdFnm || '') + '</b>'
+              + (c.gov.top[0].sthdEoteShrRatCtt ? ' 지분 ' + esc(c.gov.top[0].sthdEoteShrRatCtt) + '%' : '')
+              + (c.gov.top.length > 1 ? ' <span class="doc-sub">외 ' + (c.gov.top.length - 1) + '인</span>' : '') : ''],
+            ['대기업집단', c.grp && c.grp.grp ? '<b>' + esc(c.grp.grp) + '</b> 계열'
+              + (c.grp.top && c.grp.top.nm ? ' <span class="doc-sub">' + esc(c.grp.top.nm) + ' ' + esc(String(c.grp.top.rate)) + '%</span>' : '') : ''],
+          ]);
+        }).join('') : '';
+        const npsDoc = '<div class="ls-fo">'
+          + docHead('법인 사업장', '국민연금 가입 사업장 · 이 법정동')
+          + docKv([['사업장', '<b>' + st.nps.total.toLocaleString('ko-KR') + '곳</b>'], ['예', names]])
+          + corpDoc
+          + docNote('3인 이상 법인만 집계됩니다(개인사업자·소규모는 빠짐).'
+            + (corpDoc ? ' 기업 정보는 금융위 기업기본정보 — 등록된 법인만 나옵니다.'
+              : st.corp === 'loading' ? ' 기업 정보 조회 중…'
+                : Array.isArray(st.corp) ? ' 이 법인들은 금융위 기업기본정보에 없습니다(소규모 법인은 빠짐).'
+                  : ' 설립·대표·업종·본사는 지도 팝업의 \'기업 정보 보기\'로 불러옵니다.'))
+          + '</div>';
+        npsHtml = '<div class="ls-sec sec-nps"><div class="ls-fn">'
           + `<b>법인 사업장</b> <span style="font-size:12px;">이 법정동 <b>${st.nps.total.toLocaleString('ko-KR')}곳</b></span>`
           + (names ? `<div style="font-size:11px;margin-top:3px;">${names}</div>` : '')
           
@@ -22265,7 +22437,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
                 + '<span style="font-size:11px;color:var(--c-muted);margin-left:6px;">설립·대표·업종·본사</span></div>'))
           + '<div style="font-size:11px;color:var(--c-muted);margin-top:3px;">'
           + '국민연금 가입 사업장 · <b>3인 이상 법인만</b> 집계됨(개인사업자·소규모는 빠짐).</div>'
-          + '</div>';
+          + '</div>' + npsDoc + '</div>';
       }
       
       
@@ -22275,12 +22447,19 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         const bell = st.rst.filter((x) => x.bell).length;
         const diaper = st.rst.filter((x) => x.diaper).length;
         const near = st.rst.slice(0, 3).map((x) => esc(x.nm)).filter(Boolean).join(' · ');
-        rstHtml = '<div class="ls-sec sec-rst">'
+        
+        const rstDoc = '<div class="ls-fo">'
+          + docHead('공중화장실', '이 동 ' + n + '곳 · 동 단위 집계')
+          + docKv([['비상벨', bell + '곳'], ['기저귀교환대', diaper + '곳']])
+          + docList(['이름', '비상벨', '교환대'], st.rst.map((x) => [esc(x.nm || ''), x.bell ? '있음' : '', x.diaper ? '있음' : '']))
+          + docNote('행안부 표준데이터 · 제공기관이 좌표를 주지 않아 지도 마커가 아니라 동 단위로 셉니다.')
+          + '</div>';
+        rstHtml = '<div class="ls-sec sec-rst"><div class="ls-fn">'
           + `<b>공중화장실</b> <span style="font-size:12px;">이 동 <b>${n}곳</b></span>`
           + (near ? `<div style="font-size:11px;margin-top:3px;">${near}</div>` : '')
           + '<div style="font-size:11px;color:var(--c-muted);margin-top:3px;">'
           + `비상벨 ${bell}곳 · 기저귀교환대 ${diaper}곳 · 행안부 표준데이터(좌표 미제공이라 동 단위 집계)</div>`
-          + '</div>';
+          + '</div>' + rstDoc + '</div>';
       }
       
       
@@ -22863,7 +23042,29 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         
         const bldSet = new Set(ss.map((x) => String(x.bld || '')).filter(Boolean));
         const multi = bldSet.size > 1;
-        storeHtml = `<div class="ls-sec sec-store">`
+        
+        
+        const bldOrder = [...bldSet].sort();
+        const storeDoc = '<div class="ls-fo">'
+          + docHead('이 건물 업소', ss.length.toLocaleString('ko-KR') + '곳' + (multi ? ' · 이 필지에 건물 ' + bldSet.size + '동' : ''))
+          + docList(['상호', '층', '가맹', '업종'], ss.map((x) => {
+            const fr = st.franchise ? frMatch(x.name) : null;
+            const it = st.interior ? itMatch(x.name) : null;
+            const subs = [];
+            if (fr && Math.round(fr.sls / 1000) >= 1) subs.push('가맹 평균 매출 ' + fmtAmt(fr.sls / 10));
+            if (it && it.unit) subs.push('인테리어 3.3㎡당 ' + String(it.unit).replace(/(\d+)~(\d+)/, (m, a, b) => `${fmtUnit(Number(a) / 10)}~${fmtUnit(Number(b) / 10)}`));
+            return [
+              (multi && x.bld ? '<span class="doc-sub">[' + String.fromCharCode(65 + bldOrder.indexOf(String(x.bld))) + ']</span> ' : '')
+                + '<b>' + esc(x.name) + '</b>' + (x.branch ? ' ' + esc(x.branch) : ''),
+              x.flr == null ? '' : esc(String(x.flr)) + '층',
+              fr ? fr.cnt.toLocaleString('ko-KR') + '점' : '',
+              esc(x.inds || '') + (subs.length ? '<div class="doc-sub">' + esc(subs.join(' · ')) + '</div>' : ''),
+            ];
+          }))
+          + docNote('소상공인시장진흥공단 상가정보(분기 갱신) · 폐업이 늦게 반영될 수 있습니다'
+            + (st.franchise ? ' · 가맹 점포 수·평균 매출은 공정위 가맹정보(2024)' : '') + '.')
+          + '</div>';
+        storeHtml = `<div class="ls-sec sec-store"><div class="ls-fn">`
           + `<b>이 건물 업소</b> <span style="color:var(--c-muted);font-size:12px;">${ss.length}곳`
           + (multi ? ` · 이 필지에 건물 ${bldSet.size}동` : '') + `</span><br>`
           + (() => {
@@ -22898,8 +23099,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           
           
           + `<div class="ls-fn" style="font-size:11px;color:var(--c-muted);margin-top:3px;">폐업이 늦게 반영될 수 있음${st.franchise ? ' · 가맹 표시는 공정위 가맹정보(2024) — <b>금액 0 은 미공시</b>' : ''}</div>`
-          + `<div class="ls-fo" style="font-size:11px;color:var(--c-muted);margin-top:3px;">소상공인시장진흥공단 상가정보(분기 갱신) · 폐업이 늦게 반영될 수 있다${st.franchise ? ' · 가맹 표시는 공정위 가맹정보(2024) — <b>금액 0 은 미공시</b>' : ''}</div>`
-          + '</div>';
+          + '</div>' + storeDoc + '</div>';
       }
 
       const nrHtml = nonresHtml(st.nonres, st);
