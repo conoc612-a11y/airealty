@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=1820d24" />
+  <link rel="stylesheet" href="css/tokens.css?v=99e634a" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=1820d24"></script>
+  <script src="js/auth-guard.js?v=99e634a"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=1820d24" />
+  <link rel="stylesheet" href="css/buttons.css?v=99e634a" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=1820d24" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=99e634a" />
   <style>
     :root {
       
@@ -2186,7 +2186,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=1820d24"></script>
+  <script src="js/ie-guard.js?v=99e634a"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2522,25 +2522,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-10-01 12:38 · 1820d24</span></span>
+          · <span class="build-tag">build 2026-10-01 15:00 · 99e634a</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=1820d24"></script>
+  <script src="js/joinkey.js?v=99e634a"></script>
   
-  <script src="js/identity.js?v=1820d24"></script>
-  <script src="js/common.js?v=1820d24"></script>
-  <script src="js/ui-resize.js?v=1820d24"></script>
-  <script src="js/footer-resize.js?v=1820d24"></script>
-  <script src="js/route-line.js?v=1820d24"></script>
-  <script src="js/route-api.js?v=1820d24"></script>
-  <script src="js/footer-stats.js?v=1820d24"></script>
+  <script src="js/identity.js?v=99e634a"></script>
+  <script src="js/common.js?v=99e634a"></script>
+  <script src="js/ui-resize.js?v=99e634a"></script>
+  <script src="js/footer-resize.js?v=99e634a"></script>
+  <script src="js/route-line.js?v=99e634a"></script>
+  <script src="js/route-api.js?v=99e634a"></script>
+  <script src="js/footer-stats.js?v=99e634a"></script>
   
 
-  <script src="js/ad-consent.js?v=1820d24"></script>
+  <script src="js/ad-consent.js?v=99e634a"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -2869,7 +2869,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       if (!m) {
         m = document.createElement('div'); m.id = 'bizno-modal';
         m.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:3000;display:flex;align-items:center;justify-content:center;padding:16px;';
-        m.innerHTML = `<div style="background:var(--card);color:var(--text);border-radius:8px;max-width:440px;width:100%;max-height:82vh;overflow:auto;padding:20px;box-shadow:var(--c-shadow-lg);">
+        m.innerHTML = `<div style="background:var(--card);color:var(--text);border-radius:8px;max-width:680px;width:100%;max-height:86vh;overflow:auto;padding:20px;box-shadow:var(--c-shadow-lg);">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
             <b style="font-size:16px;">사업자등록증 조회</b>
             <button id="bizno-close" type="button" class="btn-mini">닫기</button>
@@ -3016,13 +3016,195 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
     }
     
     let _bizSeq = 0;
+    
+    
+    
+    
+    const _bizIdx = new Map();
+    function loadBizIdx(digits) {
+      const k = String(digits).slice(0, 3);
+      if (!/^\d{3}$/.test(k)) return Promise.resolve(null);
+      if (!_bizIdx.has(k)) {
+        _bizIdx.set(k, fetch('corp_idx/' + k + '.json')
+          .then((r) => (r.ok ? r.json() : null))
+          .catch(() => { _bizIdx.delete(k); return null; }));   
+      }
+      return _bizIdx.get(k).then((sh) => (sh && sh[digits]) || null);
+    }
+
+    
+    
+    
+    
+    const _dartFin = new Map();
+    function loadDartFin(corp) {
+      const k = String(corp).slice(-2);
+      if (!_dartFin.has(k)) {
+        _dartFin.set(k, fetch('dart_fin/' + k + '.json').then((r) => (r.ok ? r.json() : null))
+          .catch(() => { _dartFin.delete(k); return null; }));
+      }
+      return _dartFin.get(k).then((sh) => (sh && sh[corp]) || null);
+    }
+
+    
+    
+    
+    
+    
+    function bizCorpCard(c) {
+      const cap = (pr) => Promise.race([pr, new Promise((r) => setTimeout(() => r(null), 8000))]);
+      const cbP = (fn, ...a) => cap(new Promise((r) => fn(...a, r)));
+      const wonA = (v) => { const n = Number(v); return Number.isFinite(n) && n ? fmtAmt(n / 1e4) : '—'; };
+      const ymd = (v) => { const d = String(v || '').replace(/[^0-9]/g, ''); return d.length === 8 ? d.slice(0, 4) + '.' + d.slice(4, 6) + '.' + d.slice(6) : ''; };
+      const pct = (a, b) => (Number(b) ? (Number(a) / Number(b)) * 100 : NaN);
+      const pf = (x) => (Number.isFinite(x) ? (x >= 0 ? '+' : '') + x.toFixed(1) + '%' : '');
+      const mk = String(c.corpRegMrktDcdNm || '');
+      const listed = /^(유가|코스닥|코넥스)/.test(mk);
+      const stockNm = String(c.enpPbanCmpyNm || c.corpNm || '').trim();
+      const row = (k, v) => (v ? '<tr><td style="padding:3px 8px 3px 0;color:var(--muted);white-space:nowrap;vertical-align:top;">' + esc(k) + '</td><td style="padding:3px 0;">' + v + '</td></tr>' : '');
+      const hp = String(c.enpHmpgUrl || '').trim();
+      const hpOk = /^[A-Za-z0-9.\-/:_~%?=&#]+$/.test(hp);
+      const lstg = c.enpXchgLstgDt || c.enpKosdaqLstgDt || c.enpKrxLstgDt || '';
+
+      const fin = cap(fetch(MOLIT_PROXY + '?svc=GetFinaStatInfoService_V2&op=getSummFinaStat_V2&crno=' + encodeURIComponent(c.crno) + '&pageNo=1&numOfRows=40&resultType=json')
+        .then((r) => (r.ok ? r.json() : null)).then((j) => bodyItems(dgkBody(j))).catch(() => null));
+      
+      const seq = (async () => {
+        const gov = await cbP(loadCorpGovern, c.crno);
+        const unreg = await cbP(loadCorpUnreg, c.crno);
+        const risk = await cbP(loadCorpRisk, c.crno);
+        const stk = listed ? await cbP(loadStockPrice, stockNm) : null;
+        const ksd = listed ? await cbP(loadShareDistribution, stockNm) : null;
+        
+        const yr = new Date(Date.now() - 365 * 864e5).toISOString().slice(0, 10).replace(/-/g, '');
+        const rng = listed && stk ? await cap(new Promise((r) => dgkFetch('GetStockSecuritiesInfoService', 'getStockPriceInfo',
+          { itmsNm: stockNm, beginBasDt: yr, pageNo: 1, numOfRows: 300, resultType: 'json' }, (j) => {
+            const a = flexArr(j && (j.response || j).body && (j.response || j).body.items);
+            const hi = Math.max(...a.map((x) => Number(x.hipr) || 0)), lo = Math.min(...a.filter((x) => Number(x.lopr) > 0).map((x) => Number(x.lopr)));
+            r(a.length > 20 && hi > 0 && Number.isFinite(lo) ? { hi, lo, n: a.length } : null);
+          }))) : null;
+        return { gov, unreg, risk, stk, ksd, rng };
+      })();
+      const corp = /^\d{8}$/.test(String(c.fssCorpUnqNo || '')) ? String(c.fssCorpUnqNo) : '';
+      const dart = corp ? cap(loadDartFin(corp)) : Promise.resolve(null);
+
+      return Promise.all([fin, seq, dart]).then(([items, x, dj]) => {
+        const da = (dj && dj.a) || null;   
+        let html = '<table style="border-collapse:collapse;font-size:13px;width:100%;">'
+          + row('법인명', '<b>' + esc(c.corpNm || '') + '</b>' + (c.corpEnsnNm ? ' <span style="color:var(--muted);">' + esc(c.corpEnsnNm) + '</span>' : ''))
+          + row('법인등록번호', esc(c.crno || ''))
+          + row('대표자', esc(c.enpRprFnm || ''))
+          + row('시장', mk ? esc(mk) + (listed ? ' 상장' + (lstg ? ' (' + esc(lstg) + ')' : '') : '') : '')
+          + row('설립일', esc(ymd(c.enpEstbDt)))
+          + row('결산월', c.enpStacMm ? esc(c.enpStacMm) + '월' : '')
+          + row('업종·주요사업', esc([c.sicNm, c.enpMainBizNm].filter(Boolean).join(' · ')))
+          + row('본점', esc([c.enpBsadr, c.enpDtadr].filter(Boolean).join(' ')))
+          + row('전화', esc(c.enpTlno || ''))
+          + row('홈페이지', hp && hpOk ? '<a href="' + esc(/^https?:/i.test(hp) ? hp : 'http://' + hp) + '" target="_blank" rel="noopener">' + esc(hp) + '</a>' : '')
+          + row('종업원', Number(c.enpEmpeCnt) ? Number(c.enpEmpeCnt).toLocaleString('ko-KR') + '명'
+            + (c.empeAvgCnwkTermCtt ? ' · 평균근속 ' + esc(c.empeAvgCnwkTermCtt) + '년' : '')
+            + (Number(c.enpPn1AvgSlryAmt) ? ' · 1인 평균급여 ' + wonA(c.enpPn1AvgSlryAmt) : '') : '')
+          + row('감사인', esc([c.actnAudpnNm, c.audtRptOpnnCtt].filter(Boolean).join(' · ')))
+          + row('주거래은행', esc(c.enpMntrBnkNm || ''))
+          + row('중소기업', c.smenpYn === 'Y' ? '해당' : '')
+          + '</table>';
+
+        
+        const byYear = new Map();
+        for (const f of items || []) {
+          const y = String(f.bizYear || ''); if (!y) continue;
+          const cur = byYear.get(y), isCon = /연결/.test(String(f.fnclDcdNm || ''));
+          if (!cur || (isCon && !/연결/.test(String(cur.fnclDcdNm || '')))) byYear.set(y, f);
+        }
+        const ys = [...byYear.keys()].sort().slice(-3);
+        let latest = null;
+        if (ys.length) {
+          const F = ys.map((y) => byYear.get(y));
+          latest = F[F.length - 1];
+          const prev = F.length > 1 ? F[F.length - 2] : null;
+          const lines = [['매출액', 'enpSaleAmt'], ['영업이익', 'enpBzopPft'], ['당기순이익', 'enpCrtmNpf'], ['자산총계', 'enpTastAmt'], ['부채총계', 'enpTdbtAmt'], ['자본총계', 'enpTcptAmt']];
+          const th = 'padding:4px 6px;text-align:right;color:var(--muted);font-weight:600;white-space:nowrap;';
+          const td = 'padding:4px 6px;text-align:right;white-space:nowrap;';
+          html += '<div style="margin-top:10px;font-weight:700;">재무 <span style="font-weight:400;color:var(--muted);font-size:12px;">(' + esc(String(latest.fnclDcdNm || '').replace('요약재무제표', '')) + ' 기준 · 억원 단위 반올림)</span></div>'
+            + '<div style="overflow-x:auto;"><table style="border-collapse:collapse;font-size:13px;width:100%;">'
+            + '<tr><td></td>' + ys.map((y) => '<td style="' + th + '">' + esc(y) + '</td>').join('') + (prev ? '<td style="' + th + '">전년 대비</td>' : '') + '</tr>'
+            + lines.map(([k, f]) => '<tr><td style="padding:4px 6px 4px 0;color:var(--muted);white-space:nowrap;">' + k + '</td>'
+              + F.map((r) => '<td style="' + td + '">' + wonA(r[f]) + '</td>').join('')
+              + (prev ? '<td style="' + td + 'color:var(--muted);">' + pf(Number(prev[f]) ? ((Number(latest[f]) - Number(prev[f])) / Math.abs(Number(prev[f]))) * 100 : NaN) + '</td>' : '')
+              + '</tr>').join('')
+            + '</table></div>';
+          const ratio = [
+            ['영업이익률', pct(latest.enpBzopPft, latest.enpSaleAmt)],
+            ['순이익률', pct(latest.enpCrtmNpf, latest.enpSaleAmt)],
+            ['ROE', pct(latest.enpCrtmNpf, latest.enpTcptAmt)],
+            ['부채비율', Number(latest.fnclDebtRto) || pct(latest.enpTdbtAmt, latest.enpTcptAmt)],
+          ].filter(([, v]) => Number.isFinite(v));
+          if (ratio.length) html += '<div style="margin-top:4px;font-size:12px;">' + ratio.map(([k, v]) => k + ' <b>' + v.toFixed(1) + '%</b>').join(' · ') + '</div>';
+        } else {
+          html += '<div style="margin-top:8px;font-size:12px;color:var(--muted);">재무: 금융위 재무정보에 없음(외부감사 대상 법인만 등재 — 없다는 뜻이 아님).</div>';
+        }
+
+        
+        if (x.stk && Number(x.stk.clpr)) {
+          const px = Number(x.stk.clpr), sh = Number(x.stk.lstgStCnt) || 0;
+          let ind = '';
+          const epsDart = (da && Number(da.eps)) || 0;
+          if (latest && sh) {
+            const eps = epsDart || Number(latest.enpCrtmNpf) / sh, bps = Number(latest.enpTcptAmt) / sh;
+            ind = [eps > 0 ? 'PER ' + (px / eps).toFixed(1) + '배' : '', bps > 0 ? 'PBR ' + (px / bps).toFixed(2) + '배' : '',
+              'EPS ' + Math.round(eps).toLocaleString('ko-KR') + '원', 'BPS ' + Math.round(bps).toLocaleString('ko-KR') + '원'].filter(Boolean).join(' · ');
+          }
+          html += '<div style="margin-top:10px;font-weight:700;">주가</div><div style="font-size:13px;">'
+            + '<b>' + px.toLocaleString('ko-KR') + '원</b>'
+            + (x.stk.fltRt != null ? ' <span style="color:' + (Number(x.stk.fltRt) >= 0 ? '#e03131' : '#2260C3') + ';">' + (Number(x.stk.fltRt) >= 0 ? '+' : '') + esc(String(x.stk.fltRt)) + '%</span>' : '')
+            + ' <span style="color:var(--muted);">(' + esc(ymd(x.stk.basDt)) + ' 종가)</span>'
+            + (Number(x.stk.mrktTotAmt) ? ' · 시가총액 <b>' + wonA(x.stk.mrktTotAmt) + '</b>' : '')
+            + (sh ? ' · 상장주식 ' + sh.toLocaleString('ko-KR') + '주' : '') + '</div>'
+            + (x.rng ? '<div style="font-size:12px;margin-top:2px;">52주 최고 <b>' + x.rng.hi.toLocaleString('ko-KR') + '원</b> · 최저 <b>' + x.rng.lo.toLocaleString('ko-KR') + '원</b>'
+              + ' · 최고가 대비 ' + (((px - x.rng.hi) / x.rng.hi) * 100).toFixed(1) + '%</div>' : '')
+            + (ind ? '<div style="font-size:12px;margin-top:2px;">' + ind + ' <span style="color:var(--muted);">('
+              + (epsDart ? 'EPS 는 DART 사업보고서 공식값(지배주주), BPS 는 추정' : '추정 — ' + esc(latest.bizYear) + '년 연결 순이익·자본 ÷ 상장주식수, 지배주주·우선주 미반영')
+              + ')</span></div>' : '');
+        }
+
+        
+        if (dj && dj.cf && dj.cf.some((v) => v != null)) {
+          const cfl = ['영업활동', '투자활동', '재무활동'].map((k, i) => (dj.cf[i] != null ? k + ' <b>' + wonA(dj.cf[i]) + '</b>' : '')).filter(Boolean);
+          html += '<div style="margin-top:10px;font-weight:700;">현금흐름 <span style="font-weight:400;color:var(--muted);font-size:12px;">(' + esc(String(dj.y || '')) + '년 ' + esc(dj.fs || '') + ' · DART)</span></div><div style="font-size:13px;">' + cfl.join(' · ') + '</div>';
+        }
+        if (da) {
+          const al = [da.dps ? '주당 <b>' + Number(da.dps).toLocaleString('ko-KR') + '원</b>' : '', da.yld ? '배당수익률 ' + esc(String(da.yld)) + '%' : '', da.pay ? '배당성향 ' + esc(String(da.pay)) + '%' : ''].filter(Boolean);
+          if (al.length) html += '<div style="margin-top:6px;font-size:13px;">배당 <span style="color:var(--muted);font-size:12px;">(' + esc(String(da.y || '')) + ' 사업연도 · DART)</span> ' + al.join(' · ') + '</div>';
+        }
+
+        
+        const g = x.gov && x.gov.top && x.gov.top.length ? x.gov.top : [];
+        const extra = [];
+        if (g.length) {
+          const sum = g.reduce((t, s2) => t + (Number(s2.sthdEoteShrRatCtt) || 0), 0);
+          extra.push('주요주주 <span style="color:var(--muted);">(' + esc(ymd(x.gov.basDt)) + ' 기준 · 상위 ' + g.length + '명 합계 ' + sum.toFixed(2) + '%)</span><br>'
+            + g.map((s2) => '<b>' + esc(s2.sthdFnm || '') + '</b> ' + esc(String(s2.sthdEoteShrRatCtt)) + '%'
+              + (s2.maxSthdRltNm ? ' <span style="color:var(--muted);">' + esc(s2.maxSthdRltNm) + '</span>' : '')).join(' · '));
+        }
+        if (x.ksd) extra.push('소액주주 <b>' + x.ksd.shrs.toLocaleString('ko-KR') + '명</b> (보유 ' + esc(String(x.ksd.ratio)) + '%)');
+        if (x.unreg && x.unreg.unrgstExutCnt) extra.push('미등기임원 <b>' + esc(String(x.unreg.unrgstExutCnt)) + '명</b>' + (Number(x.unreg.anulSlryTamt) ? ' · 연간급여 ' + wonA(x.unreg.anulSlryTamt) : ''));
+        if (x.risk && x.risk.length) extra.push('<span style="color:var(--c-danger);font-weight:700;">⚠ 공시 위험신호: ' + x.risk.map((r) => esc(r.label) + ' ' + r.n + '건').join(' · ') + '</span>');
+        if (extra.length) html += '<div style="margin-top:10px;font-weight:700;">주주·임원</div>' + extra.map((t) => '<div style="font-size:13px;margin-top:2px;">' + t + '</div>').join('');
+
+        html += '<div style="color:var(--muted);font-size:12px;margin-top:8px;">출처 금융위원회(기업기본정보·재무·지배구조·주식시세·공시) · 한국예탁결제원' + (dj ? ' · 금융감독원 DART' : '') + '</div>';
+        return html;
+      });
+    }
+
     function lookupBizno() {
       if ($('bizno-go').disabled) return;   
       const seq = ++_bizSeq, stale = () => seq !== _bizSeq;
       const box = $('bizno-result');
       const digits = ($('bizno-input').value || '').replace(/[^0-9]/g, '');
       const name = ($('bizno-name').value || '').trim();
-      const bname = ($('bizno-bname').value || '').trim();
+      let bname = ($('bizno-bname').value || '').trim();
+      let idxCrno = '';   
+      let idxN = 0;       
       const startDt = ($('bizno-date').value || '').replace(/-/g, '');
       const crno = ($('bizno-crno') ? $('bizno-crno').value : '').replace(/[^0-9]/g, '');
       box.style.display = 'block';
@@ -3117,7 +3299,12 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       $('bizno-go').disabled = true;
       const url = BIZNO_ENDPOINT + '?op=' + (validate ? 'validate' : 'status');
       const payload = validate ? { businesses: [{ b_no: digits, start_dt: startDt, p_nm: name, b_nm: bname }] } : { b_no: [digits] };
-      fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) })
+      
+      (bname ? Promise.resolve(null) : loadBizIdx(digits))
+        .then((hits) => {
+          if (hits && hits.length && !bname) { bname = hits[0][1]; idxCrno = hits[0][0]; idxN = hits.length; }
+          return fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
+        })
         .then((r) => (r.ok ? r.json() : Promise.reject(new Error('조회 API HTTP ' + r.status))))
         .then((j) => {
           if (stale()) return;
@@ -3155,6 +3342,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             const color = stt === '계속사업자' ? '#0ca678' : stt === '휴업자' ? '#f59f00' : stt === '폐업자' ? '#e03131' : '#868e96';
             const rows = [
               ['사업자등록번호', fmtBno],
+              ...(idxCrno ? [['상호', bname + (idxN > 1 ? ` 외 ${idxN - 1}곳` : '') + ' (금융위 등록부)']] : []),
               ['사업 상태', stt || '정보 없음'],
               ['과세유형', row.tax_type || '정보 없음'],
               ...(endDt ? [['폐업일자', endDt]] : []),
@@ -3205,7 +3393,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
               if (!Number.isFinite(n) || !n) return '';
               return fmtAmt(n / 1e4);
             };
-            let left = 5;   
+            let left = 6;   
             
             const done = () => { left -= 1; if (left <= 0 || painted) paint(); };
 
@@ -3294,6 +3482,38 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             
             
             
+            {
+              const g2b = (op, div) => new Promise((res) => dgkFetch('UsrInfoService02', op,
+                { inqryDiv: div, bizno: digits, pageNo: 1, numOfRows: 50, type: 'json' }, (j) => {
+                  const b = j && (j.response || j).body;
+                  res(b ? flexArr(b.items && b.items.item !== undefined ? b.items.item : b.items) : null);
+                }));
+              g2b('getPrcrmntCorpBasicInfo02', 3)
+                .then(async (basic) => {
+                  const bi = basic && basic[0];
+                  if (!bi) return;
+                  const ind = (await g2b('getPrcrmntCorpIndstrytyInfo02', 1)) || [];
+                  const unpt = (await g2b('getUnptRsttCorpInfo02', 1)) || [];
+                  const live = ind.filter((x) => x.indstrytyNm && !/경과|말소|취소/.test(String(x.indstrytyStatsNm || '')))
+                    .sort((a, b2) => (b2.rprsntIndstrytyYn === 'Y') - (a.rprsntIndstrytyYn === 'Y'));
+                  let h = '<b>' + esc(bi.corpNm || '') + '</b>'
+                    + (bi.hdoffceDivNm ? ' <span style="color:var(--muted);">' + esc(bi.hdoffceDivNm) + '</span>' : '')
+                    + '<div style="margin-top:2px;">' + [bi.corpBsnsDivNm && '업무 ' + esc(bi.corpBsnsDivNm), bi.mnfctDivNm && esc(bi.mnfctDivNm),
+                      Number(bi.emplyeNum) ? '종업원 ' + Number(bi.emplyeNum).toLocaleString('ko-KR') + '명' : '',
+                      bi.opbizDt ? '개업 ' + esc(String(bi.opbizDt).slice(0, 10)) : '', bi.rgstDt ? '나라장터 등록 ' + esc(String(bi.rgstDt).slice(0, 10)) : ''].filter(Boolean).join(' · ') + '</div>';
+                  if (live.length) h += '<div style="margin-top:2px;">등록업종 ' + live.slice(0, 8).map((x) => (x.rprsntIndstrytyYn === 'Y' ? '<b>' + esc(x.indstrytyNm) + '</b>(대표)' : esc(x.indstrytyNm))).join(' · ') + (live.length > 8 ? ' 외 ' + (live.length - 8) + '개' : '') + '</div>';
+                  h += unpt.length
+                    ? '<div style="margin-top:2px;color:var(--c-danger);font-weight:700;">⚠ 부정당제재 ' + unpt.length + '건 — ' + unpt.slice(0, 2).map((u) => esc(String(u.rsttBgnDate || '')) + '~' + esc(String(u.rsttEndDate || '')) + ' ' + esc(u.insttNm || '')).join(' · ') + '</div>'
+                    : '<div style="margin-top:2px;color:var(--muted);">현재 부정당제재 없음</div>';
+                  parts.push(sec('나라장터 조달업체 (조달청)', h + '<div style="color:var(--muted);font-size:12px;margin-top:3px;">출처 조달청 나라장터 사용자정보</div>'));
+                })
+                .catch(() => {})
+                .finally(done);
+            }
+
+            
+            
+            
             
             
             
@@ -3337,59 +3557,18 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
               if (left <= 0) paint();
             } else {
               
+              
+              
               dgkFetch('GetCorpBasicInfoService_V2', 'getCorpOutline_V2',
-                { corpNm: bname, numOfRows: 5, pageNo: 1, resultType: 'json' }, (j) => {
+                Object.assign({ numOfRows: 10, pageNo: 1, resultType: 'json' }, idxCrno ? { crno: idxCrno } : { corpNm: bname }), (j) => {
                   const b = dgkBody(j);
                   const a = bodyItems(b);
-                  const c = a[0];
+                  const c = a.find((x) => x && x.bzno === digits)
+                    || a.find((x) => x && (nokey(x.corpNm) === nokey(bname) || nokey(x.enpPbanCmpyNm) === nokey(bname)))
+                    || a[0];
                   if (!c || !c.crno) { done(); return; }
-                  const mk = String(c.corpRegMrktDcdNm || '');
-                  const listed = /^(유가|코스닥|코넥스)/.test(mk);
-                  
-                  let html = '법인등록번호 <b>' + esc(c.crno) + '</b>'
-                    + (mk ? ' · ' + esc(mk) + (listed ? ' 상장' : '') : '');
-                  if (c.enpBsadr) {
-                    html += '<div style="color:var(--muted);font-size:12px;">' + esc(c.enpBsadr) + '</div>';
-                  }
-                  
-                  
-                  
-                  fetch(MOLIT_PROXY + '?svc=GetFinaStatInfoService_V2&op=getSummFinaStat_V2'
-                    + '&crno=' + encodeURIComponent(c.crno) + '&pageNo=1&numOfRows=20&resultType=json')
-                    .then((r) => (r.ok ? r.json() : null))
-                    .then((j2) => {
-                      const b2 = j2 && j2.response && j2.response.body;
-                      const arr = bodyItems(b2);
-                      
-                      const f = arr.slice().sort((x, y) =>
-                        String(y.bizYear || '').localeCompare(String(x.bizYear || '')))[0];
-                      if (f) {
-                        html += '<div style="margin-top:3px;">'
-                          + (f.bizYear ? esc(f.bizYear) + '년 ' : '')
-                          + '매출 <b>' + (won(f.enpSaleAmt) || '—') + '</b>'
-                          + ' · 자산 <b>' + (won(f.enpTastAmt) || '—') + '</b>'
-                          + ' · 부채 <b>' + (won(f.enpTdbtAmt) || '—') + '</b>'
-                          + '</div>';
-                      }
-                      
-                      dgkFetch('GetCorpGoveInfoService', 'getReprDireInfo',
-                        { crno: c.crno, numOfRows: 3, pageNo: 1, resultType: 'json' }, (j3) => {
-                          const b3 = j3 && j3.response && j3.response.body;
-                          const g = bodyItems(b3)[0];
-                          if (g && (g.reprDireNm || g.reprNm)) {
-                            html += '<div style="margin-top:3px;">대표이사 <b>'
-                              + esc(String(g.reprDireNm || g.reprNm)) + '</b></div>';
-                          }
-                          html += '<div style="color:var(--muted);font-size:12px;margin-top:3px;">출처 금융위원회</div>';
-                          parts.push(sec('법인 정보 (금융위)', html));
-                          done();
-                        });
-                    })
-                    .catch(() => {
-                      html += '<div style="color:var(--muted);font-size:12px;margin-top:3px;">출처 금융위원회</div>';
-                      parts.push(sec('법인 정보 (금융위)', html));
-                      done();
-                    });
+                  bizCorpCard(c).then((card) => { parts.push(sec('기업 정보 (금융위)', card)); done(); })
+                    .catch(() => done());
                 });
 
               
@@ -16207,6 +16386,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
               '15126474': 'dgk',   
               '15126475': 'dgk',   
               '15129462': 'dgk',   
+              '15129466': 'dgk',   
               '15134735': 'pms',   
               '15135963': 'engy',   
               '15135987': 'mtn',   
@@ -16897,6 +17077,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           {"t": "인천국제공항공사_출국장 혼잡도 조회", "pk": "15148225", "u": 1, "n": 1, "o": ["getDepartureCongestion"], "w": ""},
           {"t": "전국초중등학교위치표준데이터", "pk": "15021148", "u": 1, "n": 1, "o": ["tn_pubr_public_elesch_mskul_lc_api"], "w": "따릉이 대여소 · 병원·의원 (심평원) · 상권 (매출·유동인구) · 응급의료기관 · 지하철역 (역세권 강도) · 학교 (초·중·고) · 학군 (직선 800m)"},
           {"t": "조달청_나라장터 발주계획현황서비스", "pk": "15129462", "u": 8, "n": 8, "o": ["getOrderPlanSttusListThng", "getOrderPlanSttusListCnstwk", "getOrderPlanSttusListServc", "getOrderPlanSttusListFrgcpt"], "w": ""},
+          {"t": "조달청_나라장터 사용자정보 서비스", "pk": "15129466", "u": 4, "n": 5, "o": ["getUnptRsttCorpInfo02", "getPrcrmntCorpBasicInfo02", "getPrcrmntCorpIndstrytyInfo02", "getPrcrmntCorpSplyPrdctInfo02"], "w": ""},
           {"t": "한국소비자원_생필품 가격 정보_GW", "pk": "15158701", "u": 4, "n": 4, "o": ["getProductPriceInfoSvc", "getStandardInfoSvc.do", "getStoreInfoSvc.do", "getProductInfoSvc.do"], "w": "건축 인허가 이력 · 공공데이터 더보기 · 공중화장실 (동 단위) · 공중화장실 (비상벨·CCTV) · 국민연금 가입현황 (자치구) · 녹색건축 인증 (G-SEE"},
           {"t": "한국지역정보개발원_경영정보 조회 서비스", "pk": "15056798", "u": 1, "n": 1, "o": ["openXmlMngInfo2"], "w": ""},
           {"t": "해양수산부 국립해양조사원_바다갈라짐 체험지수 조회", "pk": "15142485", "u": 1, "n": 1, "o": ["GetFcstSeaSplitApiServicev2"], "w": ""},
@@ -16909,6 +17090,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           {"t": "국가교통정보센터 (ITS)", "pk": "", "u": 0, "n": 0, "o": [], "d": "고속도로·국도 실시간 CCTV 정보", "cat": "제공기관 자체 서비스"},
           {"t": "국토교통부 (토지이음)", "pk": "", "u": 0, "n": 0, "o": [], "d": "토지이용규제·지구단위계획 조회 링크 (본문을 우리가 저장하지 않는다)", "cat": "제공기관 자체 서비스"},
           {"t": "국토지리정보원 (V-World)", "pk": "", "u": 0, "n": 0, "o": [], "d": "지적도·용도지역·건물·행정경계·배경지도, 주소→좌표 변환", "cat": "제공기관 자체 서비스"},
+          {"t": "금융감독원 (전자공시 OpenDART)", "pk": "", "u": 0, "n": 0, "o": [], "d": "상장사 사업보고서 — 현금흐름표·배당·주당순이익(사업자등록증 조회 기업 카드)", "cat": "제공기관 자체 서비스"},
           {"t": "네이버 (뉴스 검색 API)", "pk": "", "u": 0, "n": 0, "o": [], "d": "뉴스 검색 결과 제목·링크·발행일 (본문 미저장)", "cat": "제공기관 자체 서비스"},
           {"t": "동아일보", "pk": "", "u": 0, "n": 0, "o": [], "d": "경제 기사 제목·링크·발행일 (RSS)", "cat": "제공기관 자체 서비스"},
           {"t": "매일경제", "pk": "", "u": 0, "n": 0, "o": [], "d": "부동산 기사 제목·링크·발행일 (RSS)", "cat": "제공기관 자체 서비스"},
@@ -16939,7 +17121,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           {"t": "한국토지주택공사 (LH청약플러스)", "pk": "", "u": 0, "n": 0, "o": [], "d": "입주자모집공고 첨부 「공급대상주택목록」 — 매입임대·든든전세 **물건별 주소**(광역 공고는 공고 본문에 주소가 없어 이 첨부가 유일한 위치 자료다)", "cat": "공개 웹 수집"},
         ]],
       ];
-      const UA_SERVICES_N = 133;   
+      const UA_SERVICES_N = 135;   
       
       
       
@@ -16949,7 +17131,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         ['공공주택·임대', ['LH 분양임대공고 상세', 'LH 분양임대공고문', 'LH 임대주택단지', 'LH 분양임대공고별 공급정보', '마이홈 예비입주자 대기현황']],
         ['생활 인프라', ['서울교통공사 최단경로', '공공도서관 소장도서', '착한가격업소 현황', 'CCTV 도로날씨', '공항 출국장 혼잡도', '기상특보 조회', '데이터 제공표준(행안부)', '마을변호사 현황(법무부)', '명산 등산로', '생필품 가격 정보', '공중화장실(행안부)', '녹색건축 인증(한국부동산원)', '주차정보(교통안전공단)']],
         ['사업자·기업·금융', ['브랜드 가맹점·직영점(공정위)', '브랜드별 가맹점 현황(공정위)', '브랜드 가맹점 단위면적당 평균매출(공정위)', '가맹본부 일반정보(공정위)', '가맹본부 재무정보(공정위)', '국민연금 가입현황', '국민연금 탈퇴사업장', '국민연금 가입 사업장 내역', '전세자금보증(주금공)', '기업기본정보(금융위)', '금융회사 공시(금융위)', '기업 재무정보(금융위)', '기업정보 서비스(예탁결제원)', '기업지배구조 공시(금융위)', '기업집단 내부지분(공정위)', '대기업집단 주주현황(공정위)', '주식시세정보(금융위)', '주식정보 서비스(예탁결제원)', '지배구조정보(금융위)', '크라우드펀딩 중개업자(금융위)', '가맹점 인테리어 비용(공정위)']],
-        ['그 외', ['나라장터 발주계획(조달청)', '바다갈라짐 체험지수', '바다여행지수', '분실물 정보(경찰청)', '습득물 정보(경찰청)', '포락지 관리정보(해수부)', '포털기관 습득물(경찰청)', '핸드폰 찾기(경찰청)', '의료서비스 이용률(복지부)']],
+        ['그 외', ['나라장터 발주계획(조달청)', '나라장터 사용자정보(조달청)', '바다갈라짐 체험지수', '바다여행지수', '분실물 정보(경찰청)', '습득물 정보(경찰청)', '포락지 관리정보(해수부)', '포털기관 습득물(경찰청)', '핸드폰 찾기(경찰청)', '의료서비스 이용률(복지부)']],
       ];
 
       
@@ -17249,6 +17431,11 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           d: '팝업 · 법인 사업장(최대주주 지분율). 정식명 <b>금융위원회_지배구조정보</b>.',
           o: ['getStockholderInfo', 'getReprDireInfo', 'getExecRemuStat', 'getExecutivesInfo'],
           p: '프록시 <code>svc=GetCorpGoveInfoService</code> · 포털 pk <a href="https://www.data.go.kr/data/15059597/openapi.do" target="_blank" rel="noopener">15059597</a>',
+        },
+        '나라장터 사용자정보(조달청)': {
+          d: '사업자등록증 조회 · 나라장터 조달업체 절(종업원수·업무구분·등록업종·부정당제재). 정식명 <b>조달청_나라장터 사용자정보 서비스</b>.',
+          o: ['getPrcrmntCorpBasicInfo02', 'getPrcrmntCorpIndstrytyInfo02', 'getUnptRsttCorpInfo02'],
+          p: '프록시 <code>svc=UsrInfoService02</code> · 포털 pk <a href="https://www.data.go.kr/data/15129466/openapi.do" target="_blank" rel="noopener">15129466</a>',
         },
         '나라장터 발주계획(조달청)': {
           d: '팝업 · 공공데이터 더보기. 정식명 <b>조달청_나라장터 발주계획현황서비스</b>.',
@@ -18515,14 +18702,19 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
     function loadCorpGovern(crno, cb) {
       if (!crno) { cb(null); return; }
       if (_corpGovCache.has(crno)) { cb(_corpGovCache.get(crno)); return; }
+      
+      
+      
+      
       dgkFetch('GetCorpGoveInfoService', 'getStockholderInfo',
-        { crno, pageNo: 1, numOfRows: 5, resultType: 'json' }, (j) => {
+        { crno, pageNo: 1, numOfRows: 1000, resultType: 'json' }, (j) => {
           const b = j && (j.response || j).body;
           if (!b) { cb(null); return; }
           const arr = flexArr(b.items);
-          
-          arr.sort((a, b2) => Number(b2.sthdEoteShrRatCtt || 0) - Number(a.sthdEoteShrRatCtt || 0));
-          const out = { total: Number(b.totalCount) || arr.length, top: arr.slice(0, 3) };
+          const rt = (x) => Number(x.sthdEoteShrRatCtt) || 0;
+          const last = arr.filter((x) => rt(x) > 0).map((x) => String(x.basDt || '')).sort().pop() || '';
+          const cur = arr.filter((x) => String(x.basDt || '') === last && rt(x) > 0).sort((a, b2) => rt(b2) - rt(a));
+          const out = { total: cur.length, top: cur.slice(0, 10), basDt: last };
           _corpGovCache.set(crno, out);
           cb(out);
         });
