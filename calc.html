@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>airealty 세금 계산기</title>
-<meta name="calc-rules" content="js/calc/rules/rules.v4bb96fe544.json">
-<link rel="stylesheet" href="css/tokens.css?v=0cf292c">
+<meta name="calc-rules" content="js/calc/rules/rules.v777367a579.json">
+<link rel="stylesheet" href="css/tokens.css?v=7fccc1e">
 <style>
   :root { --brand:#D92A14; --brand-deep:#B32210; --ok:#287F38; --warn:#AD5A1F;
     --bg:#FFFFFF; --card:#FFFFFF; --line:#E4E4E7; --text:#000000; --muted:#52525B; --soft:#F4F4F5; }
@@ -192,6 +192,7 @@
       <div class="row"><label>특례</label><div class="field"><label><input type="checkbox" id="chk-temp2h"> 일시적 2주택</label><label><input type="checkbox" id="chk-redev"> 정비구역</label><label><input type="checkbox" id="chk-downpay"> 계약금 금융증빙</label></div></div>
       <div class="row"><label>상태</label><div class="field"><label><input type="checkbox" id="chk-unreg"> 미등기</label><label><input type="checkbox" id="chk-nbl"> 비사업용 토지</label><label><input type="checkbox" id="chk-capital" checked> 수도권</label></div></div>
       <div class="row"><label for="pub">공시가격(연도별)</label><div class="field"><input id="pub" class="money" data-money placeholder="보유세·1억 이하 판정에 씁니다"><span>원</span></div></div>
+      <div class="row"><label for="prev-tax">전년 재산세·종부세 합계</label><div class="field"><input id="prev-tax" class="money" data-money placeholder="보유세 세부담상한(150%)에 씁니다"><span>원</span></div></div>
       <div class="row"><label>부가가치세</label><div class="field"><label><input type="checkbox" id="chk-vatinc" checked> 매도가에 부가세 포함</label></div></div>
       <div class="row"><label for="bld">건물 가액</label><div class="field"><input id="bld" class="money" placeholder="85㎡ 초과 주택·상가 부가세에 씁니다" data-money><span>원</span></div></div>
       
@@ -261,6 +262,6 @@
 </div>
 
 
-<script src="js/calc/calc.v67f0dccdd3.js?v=0cf292c"></script>
+<script src="js/calc/calc.v3e89bc64bf.js?v=7fccc1e"></script>
 </body>
 </html>
