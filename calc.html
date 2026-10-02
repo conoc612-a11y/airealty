@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>airealty 세금 계산기</title>
+<meta name="calc-rules" content="js/calc/rules/rules.v8c1b7ec073.json">
+<link rel="stylesheet" href="css/tokens.css?v=d862d56">
+<style>
+  :root { --brand:#D92A14; --brand-deep:#B32210; --ok:#287F38; --warn:#AD5A1F;
+    --bg:#FFFFFF; --card:#FFFFFF; --line:#E4E4E7; --text:#000000; --muted:#52525B; --soft:#F4F4F5; }
+  * { box-sizing:border-box; }
+  [hidden] { display:none !important; }
+  body { margin:0; background:var(--bg); color:var(--text); font:13px/1.5 "Pretendard",system-ui,sans-serif; }
+  button, input, select { font:inherit; color:inherit; }
+  button { cursor:pointer; }
+  .btn { height:34px; padding:0 12px; border:1px solid var(--line); border-radius:8px; background:var(--card); white-space:nowrap; }
+  .btn:hover { border-color:var(--brand); }
+  .btn.on { background:var(--brand); border-color:var(--brand); color:#fff; }
+  .btn:focus-visible, input:focus-visible, select:focus-visible { outline:2px solid var(--brand); outline-offset:1px; }
+
+  header { position:sticky; top:0; z-index:20; display:flex; gap:8px; align-items:center; padding:8px 16px;
+    background:var(--card); border-bottom:1px solid var(--line); }
+  header h1 { margin:0 8px 0 0; font-size:16px; white-space:nowrap; }
+  #tabs { display:flex; gap:4px; overflow-x:auto; flex:1; }
+  #tab-select { display:none; }
+
+  main { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:16px; padding:16px; max-width:1280px; margin:0 auto; }
+  body.layout-tb main { grid-template-columns:minmax(0,1fr); max-width:760px; }
+  section.box { border:1px solid var(--line); border-radius:8px; padding:12px; margin-bottom:12px; background:var(--card); }
+  section.box > h2 { margin:0 0 8px; font-size:14px; display:flex; align-items:center; gap:8px; }
+  .row { display:grid; grid-template-columns:120px minmax(0,1fr); gap:8px; align-items:center; margin:6px 0; }
+  .row label { color:var(--muted); }
+  .field { display:flex; gap:6px; align-items:center; }
+  .field input, .field select { flex:1; min-width:0; height:34px; padding:0 8px; border:1px solid var(--line); border-radius:8px; background:var(--card); }
+  .field input.money { text-align:right; }
+  .hint { color:var(--muted); font-size:12px; }
+  .auto input { background:var(--soft); }
+  .badge { display:inline-block; padding:0 6px; border-radius:4px; font-size:11px; border:1px solid var(--line); color:var(--muted); }
+  .badge.manual { border-color:var(--brand); color:var(--brand); }
+  .seg { display:inline-flex; gap:4px; }
+  .fold > h2 button { border:0; background:none; padding:0; font-weight:700; }
+  .fold.closed > :not(h2) { display:none; }
+
+  #progress { height:2px; background:var(--brand); width:0; transition:width .3s; }
+  .banner { border:1px solid var(--warn); color:var(--warn); border-radius:8px; padding:8px 12px; margin-bottom:12px; }
+  .best { border:2px solid var(--brand); border-radius:8px; padding:12px; margin-bottom:12px; }
+  .best b { font-size:16px; }
+  .cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; margin-bottom:12px; }
+  .card { border:1px solid var(--line); border-radius:8px; padding:10px; text-align:left; background:var(--card); }
+  .card.on { border-color:var(--brand); box-shadow:inset 0 0 0 1px var(--brand); }
+  .card .net { font-size:16px; font-weight:700; display:block; margin:4px 0; }
+  .card .star { color:var(--brand); font-weight:700; }
+  table { width:100%; border-collapse:collapse; }
+  td { padding:6px 4px; border-bottom:1px solid var(--line); }
+  td.amt { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  tr.group td { font-weight:700; padding-top:12px; border-bottom:1px solid var(--text); }
+  tr.sum td { font-weight:700; }
+  .link { border:0; background:none; color:var(--brand); padding:0 4px; text-decoration:underline; }
+  .lists details { margin:8px 0; }
+  .actions { display:flex; flex-wrap:wrap; gap:6px; margin:12px 0; }
+  .disclaimer { color:var(--muted); font-size:12px; border-top:1px solid var(--line); padding-top:8px; }
+  .dot { display:inline-block; width:6px; height:6px; border-radius:999px; background:var(--brand); margin-left:4px; }
+  #calc-now { display:block; width:100%; margin-top:4px; }
+
+  .drawer { position:fixed; top:0; right:0; bottom:0; width:min(420px,100%); background:var(--card); border-left:1px solid var(--line);
+    padding:16px; z-index:40; overflow-y:auto; transform:translateX(100%); visibility:hidden; transition:transform .2s, visibility .2s; }
+  .drawer.open { transform:none; visibility:visible; box-shadow:-8px 0 24px rgba(0,0,0,.12); }
+  .drawer h2 { margin:0 0 12px; font-size:16px; display:flex; justify-content:space-between; align-items:center; }
+  .hold { border:1px solid var(--line); border-radius:8px; padding:8px; margin-bottom:8px; }
+  .hold.target { border-color:var(--brand); box-shadow:inset 0 0 0 1px var(--brand); }
+  .hold .act { display:flex; gap:4px; margin-top:6px; }
+  dl.basis dt { color:var(--muted); margin-top:8px; }
+  dl.basis dd { margin:0; }
+  blockquote { margin:4px 0; padding:6px 8px; border-left:2px solid var(--line); background:var(--soft); }
+
+    border-radius:8px; padding:10px 12px; box-shadow:0 8px 24px rgba(0,0,0,.15); }
+
+  #mobile-bar { display:none; }
+  #steps { display:none; }
+  .other-only { display:none; }
+  body.calc-other .other-only { display:block; }
+  body.calc-other .sell-only { display:none; }
+  body.home main, body.home #mobile-bar { display:none !important; }
+  #home { display:none; padding:16px; max-width:1100px; margin:0 auto; }
+  body.home #home { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; }
+  #home .card { cursor:pointer; }
+
+  @media (max-width:767px) {
+    header h1 { font-size:14px; }
+    #tabs { display:none; }
+    #tab-select { display:block; height:34px; border:1px solid var(--line); border-radius:8px; flex:1; min-width:0; }
+    main { grid-template-columns:minmax(0,1fr); padding:12px 16px 72px; }
+    .row { grid-template-columns:minmax(0,1fr); gap:2px; }
+    .cards { grid-template-columns:minmax(0,1fr); }
+    body.mobile-steps #steps { display:flex; gap:4px; margin-bottom:8px; }
+    body.mobile-steps #inputs section.box:not(.step-on) { display:none; }
+    #result { display:none; }
+    body.sheet-open #result { display:block; position:fixed; inset:20% 0 56px 0; overflow-y:auto; background:var(--card);
+      border-top:1px solid var(--text); border-radius:8px 8px 0 0; padding:12px 16px; z-index:25; }
+    #mobile-bar { display:flex; position:fixed; left:0; right:0; bottom:0; height:56px; z-index:26; background:var(--card);
+      border-top:1px solid var(--line); align-items:center; justify-content:space-between; padding:0 16px; }
+    }
+  @media print {
+    header, #inputs, #decide, .actions, #mobile-bar, .drawer, .link { display:none !important; }
+    main { grid-template-columns:minmax(0,1fr); }
+    #result { display:block !important; }
+  }
+</style>
+</head>
+<body class="home">
+<header>
+  <h1>airealty 세금 계산기</h1>
+  <nav id="tabs" aria-label="계산기"></nav>
+  <label for="tab-select" class="sr" hidden>계산기</label>
+  <select id="tab-select" aria-label="계산기"></select>
+  <button class="btn" id="calc-holdings" aria-haspopup="dialog" aria-controls="p1">보유 물건 2건 ▾</button>
+  <button class="btn" id="calc-history" aria-haspopup="dialog" aria-controls="p3">계산 내역 ▾</button>
+</header>
+<div id="progress" aria-hidden="true"></div>
+
+<div id="home" aria-label="계산기 목록"></div>
+
+<main>
+  <div id="inputs">
+    <div id="steps" role="tablist" aria-label="입력 단계">
+      <button class="btn on" data-step="0">① 물건</button>
+      <button class="btn" data-step="1">② 사람</button>
+      <button class="btn" data-step="2">③ 거래</button>
+      <button class="btn" data-step="3">④⑤ 더 보기</button>
+    </div>
+
+    <section class="box step-on" data-step="0">
+      <h2>① 물건</h2>
+      <div class="row"><label for="addr">주소</label>
+        <div class="field"><input id="addr" value="서울특별시 ○○구 ○○동 123 (예시)"><button class="btn" id="addr-search">검색</button></div></div>
+      <div class="row"><label for="sel-type">종류</label>
+        <div class="field"><select id="sel-type">
+          <option>아파트</option><option>단독</option><option>오피스텔</option><option>분양권</option>
+          <option>토지</option><option>상가</option><option>공장</option><option>일반건물</option></select></div></div>
+      <div class="row" id="row-officetel" hidden><label>오피스텔 용도</label>
+        <div class="seg" id="seg-officetel-use"><button class="btn on">주거용</button><button class="btn">업무용</button></div></div>
+      <div class="row"><label for="area">전용면적</label>
+        <div class="field"><input id="area" class="money" value="84"><span>㎡</span></div></div>
+      <div class="row"><label for="region">지역</label>
+        <div class="field"><select id="region" aria-describedby="region-h"><option value="N">비조정대상지역</option><option value="Y">조정대상지역</option></select><span class="badge manual">직접</span></div></div>
+      <div class="row"><span></span><span class="hint" id="region-h">양도일 기준 조정대상지역 여부를 골라 주세요(자동 판정은 다음 단계).</span></div>
+    </section>
+
+    <section class="box" data-step="1">
+      <h2>② 사람</h2>
+      <div class="row"><label for="houses">세대 주택 수</label>
+        <div class="field"><input id="houses" class="money" value="1" inputmode="numeric"><span>채</span></div></div>
+      <div class="row"><span></span><span class="hint">양도일 현재 세대가 가진 주택 수(파는 물건 포함). 입주권·분양권도 셉니다.</span></div>
+      <div class="row"><label for="age">나이</label><div class="field"><input id="age" class="money" placeholder="보유세 고령자 공제에 씁니다"></div></div>
+      <div class="row"><label for="other-income">다른 종합소득</label><div class="field"><input id="other-income" class="money" value="0" data-money><span>원</span></div></div>
+      <div class="row"><label for="corp-other">법인 다른 소득</label><div class="field"><input id="corp-other" class="money" value="0" data-money><span>원</span></div></div>
+    </section>
+
+    <section class="box" data-step="2">
+      <h2>③ 거래</h2>
+      <div class="row"><label for="sel-cause">취득 원인</label>
+        <div class="field"><select id="sel-cause"><option>매매</option><option>상속</option><option>증여</option><option>신축</option><option>경매</option></select></div></div>
+      <div class="row" id="gift-warn" hidden><span></span><span class="hint" style="color:var(--brand)">⚠ 증여받은 물건을 10년(2022년 이전 증여분 5년) 안에 팔면 이월과세를 확인해야 합니다</span></div>
+      <div class="row"><label for="buy">매입가</label><div class="field"><input id="buy" class="money" value="380,000,000" data-money><span>원</span></div></div>
+      <div class="row"><span></span><span class="hint" data-kor="buy"></span></div>
+      <div class="row"><label for="d-acq">취득일</label><div class="field"><input id="d-acq" type="date" value="2026-01-10"></div></div>
+      <div class="row"><label for="d-contract">계약일</label><div class="field"><input id="d-contract" type="date" value="2026-06-20"></div></div>
+      <div class="row"><label for="sell">매도가</label><div class="field"><input id="sell" class="money" value="600,000,000" data-money><span>원</span></div></div>
+      <div class="row"><span></span><span class="hint" data-kor="sell"></span></div>
+      <div class="row"><label for="d-sell">양도일</label><div class="field"><input id="d-sell" type="date" value="2026-07-10"><span class="hint" id="hold-period"></span></div></div>
+      <div class="row"><label for="cost-buy">매수 경비</label><div class="field"><input id="cost-buy" class="money" value="1,000,000" data-money><span>원</span></div></div>
+      <div class="row"><label for="cost-sell">매도 경비</label><div class="field"><input id="cost-sell" class="money" value="1,000,000" data-money><span>원</span></div></div>
+      <div class="row"><label for="capex">자본적지출</label><div class="field"><input id="capex" class="money" value="0" data-money><span>원</span></div></div>
+      <div class="row"><span></span><label><input type="checkbox" id="chk-landpermit"> 토지거래허가를 받았습니다 <span class="hint">(허가구역일 때만 보입니다)</span></label></div>
+    </section>
+
+    <section class="box fold closed" data-step="3" id="sec-loan">
+      <h2><button id="sect-toggle-4" aria-expanded="false">▸ ④ 대출·임대</button><span class="badge" id="loan-filled">입력됨</span></h2>
+      <div class="row"><label for="loan">대출 원금</label><div class="field"><input id="loan" class="money" value="266,000,000" data-money><span>원</span></div></div>
+      <div class="row"><label for="rate">금리</label><div class="field"><input id="rate" class="money" value="5"><span>%</span></div></div>
+      <div class="row"><label for="loan-months">대출 기간</label><div class="field"><input id="loan-months" class="money" placeholder="비우면 보유 기간" inputmode="numeric"><span>개월</span></div></div>
+      <div class="row"><label for="rent">월세</label><div class="field"><input id="rent" class="money" value="500,000" data-money><span>원 × </span><input id="rent-months" class="money" value="3" style="max-width:60px"><span>개월</span></div></div>
+      <div class="row"><label for="deposit">보증금</label><div class="field"><input id="deposit" class="money" value="0" data-money><span>원</span></div></div>
+    </section>
+
+    <section class="box fold closed" data-step="3" id="sec-adv">
+      <h2><button id="sect-toggle-5" aria-expanded="false">▸ ⑤ 고급</button></h2>
+      <div class="row"><label for="share">지분</label><div class="field"><input id="share" class="money" value="100"><span>%</span></div></div>
+      <div class="row"><label for="biz-start">법인 사업연도 개시일</label><div class="field"><input id="biz-start" type="date" value="2026-01-01"></div></div>
+      <div class="row"><label for="reside">거주 기간</label><div class="field"><input id="reside" class="money" inputmode="numeric" placeholder="0"><span>개월</span></div></div>
+      <div class="row"><label>특례</label><div class="field"><label><input type="checkbox" id="chk-temp2h"> 일시적 2주택</label><label><input type="checkbox" id="chk-redev"> 정비구역</label><label><input type="checkbox" id="chk-downpay"> 계약금 금융증빙</label></div></div>
+      <div class="row"><label>상태</label><div class="field"><label><input type="checkbox" id="chk-unreg"> 미등기</label><label><input type="checkbox" id="chk-nbl"> 비사업용 토지</label><label><input type="checkbox" id="chk-capital" checked> 수도권</label></div></div>
+      <div class="row"><label for="pub">공시가격(연도별)</label><div class="field"><input id="pub" class="money" data-money placeholder="보유세·1억 이하 판정에 씁니다"><span>원</span></div></div>
+      <div class="row"><label>부가가치세</label><div class="field"><label><input type="checkbox" id="chk-vatinc" checked> 매도가에 부가세 포함</label></div></div>
+      <div class="row"><label for="bld">건물 가액</label><div class="field"><input id="bld" class="money" placeholder="85㎡ 초과 주택·상가 부가세에 씁니다" data-money><span>원</span></div></div>
+      
+    </section>
+  </div>
+
+  <div id="result" aria-label="결과">
+    <div class="banner" role="note" id="flag-banner" hidden>⚠ 확인 중인 세율이 포함돼 있습니다. 결과가 실제와 다를 수 있습니다.</div>
+    <div class="banner" role="note" id="load-banner">세율 표를 불러오는 중입니다…</div>
+    <div class="best sell-only" aria-live="polite" id="best">
+      <div>BEST</div>
+      <b>매매사업자가 가장 유리합니다</b>
+      <div>순수익 차이 최대 <b id="best-diff"></b></div>
+    </div>
+    <div class="cards sell-only" id="cards"></div>
+    <div class="other-only best" id="other-msg"></div>
+    <table id="detail" aria-label="상세표"></table>
+    <button class="btn on" id="calc-now">계산하기</button>
+    <div class="lists">
+      <details id="assume-toggle"><summary>가정 <span id="assume-n">0</span>건</summary><ul id="assume-list"></ul></details>
+      <details id="warn-toggle"><summary>경고 <span id="warn-n">0</span>건</summary><ul id="warn-list"></ul></details>
+    </div>
+    <div class="actions">
+      <button class="btn" id="calc-save">이 계산 저장</button>
+      <button class="btn" id="calc-reset">초기화</button>
+      <button class="btn" id="calc-example">예시 불러오기</button>
+      <span class="hint" id="asof"></span>
+      <button class="btn" id="calc-print">인쇄</button>
+      <a class="btn" id="calc-hometax" href="https://hometax.go.kr" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;text-decoration:none;color:inherit">홈택스에서 확인 ↗</a>
+    </div>
+    <p class="disclaimer">모의계산 결과이며 신고·납부의 근거로 쓸 수 없습니다. 정확한 세액은 세무 전문가나 홈택스에서 확인해 주세요.</p>
+  </div>
+</main>
+
+<div id="mobile-bar">
+  <div><div class="hint">BEST 매매사업자</div><b id="bar-net"></b></div>
+  <button class="btn" id="mobile-sheet" aria-expanded="false">▲ 결과</button>
+</div>
+
+<aside class="drawer" id="p1" role="dialog" aria-modal="true" aria-label="보유 물건" tabindex="-1">
+  <h2>보유 물건 <button class="btn" data-close>닫기</button></h2>
+  <p class="hint">세대가 가진 주택을 모두 넣어 주세요. 주택 수 판정(취득세·양도세 중과, 비과세)에 씁니다.</p>
+  <div id="holds"></div>
+  <button class="btn" id="hold-add">물건 추가</button>
+</aside>
+
+<aside class="drawer" id="p2" role="dialog" aria-modal="true" aria-label="근거" tabindex="-1">
+  <h2>근거 <button class="btn" data-close>닫기</button></h2>
+  <dl class="basis" id="basis"></dl>
+</aside>
+
+<aside class="drawer" id="p3" role="dialog" aria-modal="true" aria-label="계산 내역" tabindex="-1">
+  <h2>계산 내역 <button class="btn" data-close>닫기</button></h2>
+  <p class="hint">이 브라우저에만 저장됩니다(서버로 보내지 않습니다). 두 개를 고르면 결과를 나란히 비교합니다.</p>
+  <div id="hist"></div>
+  <div class="act" style="display:flex;gap:4px;flex-wrap:wrap;margin-top:8px">
+    <button class="btn" id="hist-compare" disabled>선택 2개 비교</button>
+    <button class="btn" id="hist-export">파일로 내보내기</button>
+    <button class="btn" id="hist-import">파일 가져오기</button>
+    <input type="file" id="hist-file" accept="application/json" hidden>
+  </div>
+</aside>
+
+<div class="drawer" id="cmp" role="dialog" aria-modal="true" aria-label="비교" tabindex="-1" style="width:min(720px,100%)">
+  <h2>비교 <button class="btn" data-close>닫기</button></h2>
+  <table id="cmp-table" aria-label="두 계산 비교"></table>
+</div>
+
+
+<script src="js/calc/calc.vbd08649eaa.js?v=d862d56"></script>
+</body>
+</html>
