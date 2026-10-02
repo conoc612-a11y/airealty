@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>airealty 세금 계산기</title>
-<meta name="calc-rules" content="js/calc/rules/rules.v8c1b7ec073.json">
-<link rel="stylesheet" href="css/tokens.css?v=d862d56">
+<meta name="calc-rules" content="js/calc/rules/rules.v4bb96fe544.json">
+<link rel="stylesheet" href="css/tokens.css?v=0cf292c">
 <style>
   :root { --brand:#D92A14; --brand-deep:#B32210; --ok:#287F38; --warn:#AD5A1F;
     --bg:#FFFFFF; --card:#FFFFFF; --line:#E4E4E7; --text:#000000; --muted:#52525B; --soft:#F4F4F5; }
@@ -133,7 +133,7 @@
     <section class="box step-on" data-step="0">
       <h2>① 물건</h2>
       <div class="row"><label for="addr">주소</label>
-        <div class="field"><input id="addr" value="서울특별시 ○○구 ○○동 123 (예시)"><button class="btn" id="addr-search">검색</button></div></div>
+        <div class="field"><input id="addr" placeholder="시·도 시·군·구 동 (예: 서울특별시 송파구 잠실동)"><button class="btn" id="addr-search">검색</button></div></div>
       <div class="row"><label for="sel-type">종류</label>
         <div class="field"><select id="sel-type">
           <option>아파트</option><option>단독</option><option>오피스텔</option><option>분양권</option>
@@ -143,8 +143,8 @@
       <div class="row"><label for="area">전용면적</label>
         <div class="field"><input id="area" class="money" value="84"><span>㎡</span></div></div>
       <div class="row"><label for="region">지역</label>
-        <div class="field"><select id="region" aria-describedby="region-h"><option value="N">비조정대상지역</option><option value="Y">조정대상지역</option></select><span class="badge manual">직접</span></div></div>
-      <div class="row"><span></span><span class="hint" id="region-h">양도일 기준 조정대상지역 여부를 골라 주세요(자동 판정은 다음 단계).</span></div>
+        <div class="field"><select id="region" aria-describedby="region-h"><option value="N">비조정대상지역</option><option value="Y">조정대상지역</option></select><span class="badge">자동</span></div></div>
+      <div class="row"><span></span><span class="hint" id="region-h">주소의 시·군·구와 양도일로 자동 판정합니다(국토교통부 공고). 직접 바꾸면 그 값을 씁니다.</span></div>
     </section>
 
     <section class="box" data-step="1">
@@ -261,6 +261,6 @@
 </div>
 
 
-<script src="js/calc/calc.vbd08649eaa.js?v=d862d56"></script>
+<script src="js/calc/calc.v67f0dccdd3.js?v=0cf292c"></script>
 </body>
 </html>
