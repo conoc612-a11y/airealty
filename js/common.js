@@ -19,6 +19,11 @@ const VWORLD_KEY = '60353720-B2BE-43A1-B6F7-A77361FCFC76'; // V-World 지도
 const $ = (id) => document.getElementById(id);
 // null/undefined 는 빈 문자열 — "undefined층" 사고 방지. 숫자 강제변환은 그대로.
 const esc = (s) => (s == null ? '' : String(s)).replace(/[&<>"']/g, (c) => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+// Enter 로 보내는 글자 칸은 전부 이것으로 — 한글 조합 중에 입력기가 먼저 받는 Enter(keyCode 229)는 건너뛴다.
+//   조합이 끝난 뒤 진짜 Enter 가 한 번 더 온다 — 그대로 받으면 두 번 보내거나 마지막 글자가 칸에 남을 수 있다
+//   (macOS 크롬 사례 · 리뷰 조사 2026-10-01 — 우리 화면에서 재현은 못 했다).
+//   isComposing 만 보지 않는 까닭: 조합 확정과 Enter 가 keyCode 13 한 번으로 오는 입력기라면 Enter 가 한 번 죽는다(2026-10-01 리뷰).
+const isEnterKey = (e) => e.key === 'Enter' && !(e.isComposing && e.keyCode === 229);
 
 // 지연 supabase 클라이언트 — 첫 사용 시 SDK 를 로드하고 1회 재사용.
 // land.html 은 초기 지도 렌더와 무관하므로(푸터 통계·로그아웃 전용) 이 패턴을 쓴다.
