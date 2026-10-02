@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=ea471a4" />
+  <link rel="stylesheet" href="css/tokens.css?v=4a9a189" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=ea471a4"></script>
+  <script src="js/auth-guard.js?v=4a9a189"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=ea471a4" />
+  <link rel="stylesheet" href="css/buttons.css?v=4a9a189" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=ea471a4" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=4a9a189" />
   <style>
     :root {
       
@@ -2186,7 +2186,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=ea471a4"></script>
+  <script src="js/ie-guard.js?v=4a9a189"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2522,25 +2522,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-10-02 21:25 · ea471a4</span></span>
+          · <span class="build-tag">build 2026-10-02 22:01 · 4a9a189</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=ea471a4"></script>
+  <script src="js/joinkey.js?v=4a9a189"></script>
   
-  <script src="js/identity.js?v=ea471a4"></script>
-  <script src="js/common.js?v=ea471a4"></script>
-  <script src="js/ui-resize.js?v=ea471a4"></script>
-  <script src="js/footer-resize.js?v=ea471a4"></script>
-  <script src="js/route-line.js?v=ea471a4"></script>
-  <script src="js/route-api.js?v=ea471a4"></script>
-  <script src="js/footer-stats.js?v=ea471a4"></script>
+  <script src="js/identity.js?v=4a9a189"></script>
+  <script src="js/common.js?v=4a9a189"></script>
+  <script src="js/ui-resize.js?v=4a9a189"></script>
+  <script src="js/footer-resize.js?v=4a9a189"></script>
+  <script src="js/route-line.js?v=4a9a189"></script>
+  <script src="js/route-api.js?v=4a9a189"></script>
+  <script src="js/footer-stats.js?v=4a9a189"></script>
   
 
-  <script src="js/ad-consent.js?v=ea471a4"></script>
+  <script src="js/ad-consent.js?v=4a9a189"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -3156,7 +3156,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           }
           html += '<div style="margin-top:10px;font-weight:700;">주가</div><div style="font-size:13px;">'
             + '<b>' + px.toLocaleString('ko-KR') + '원</b>'
-            + (x.stk.fltRt != null ? ' <span style="color:' + (Number(x.stk.fltRt) >= 0 ? '#e03131' : '#2260C3') + ';">' + (Number(x.stk.fltRt) >= 0 ? '+' : '') + esc(String(x.stk.fltRt)) + '%</span>' : '')
+            + (x.stk.fltRt != null ? ' <span style="color:' + (Number(x.stk.fltRt) >= 0 ? '#e03131' : '#2260C3') + ';">' + (Number(x.stk.fltRt) >= 0 ? '+' : '') + esc(Number(x.stk.fltRt).toFixed(2)) + '%</span>' : '')
             + ' <span style="color:var(--muted);">(' + esc(ymd(x.stk.basDt)) + ' 종가)</span>'
             + (Number(x.stk.mrktTotAmt) ? ' · 시가총액 <b>' + wonA(x.stk.mrktTotAmt) + '</b>' : '')
             + (sh ? ' · 상장주식 ' + sh.toLocaleString('ko-KR') + '주' : '') + '</div>'
@@ -3175,6 +3175,21 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         if (da) {
           const al = [da.dps ? '주당 <b>' + Number(da.dps).toLocaleString('ko-KR') + '원</b>' : '', da.yld ? '배당수익률 ' + esc(String(da.yld)) + '%' : '', da.pay ? '배당성향 ' + esc(String(da.pay)) + '%' : ''].filter(Boolean);
           if (al.length) html += '<div style="margin-top:6px;font-size:13px;">배당 <span style="color:var(--muted);font-size:12px;">(' + esc(String(da.y || '')) + ' 사업연도 · DART)</span> ' + al.join(' · ') + '</div>';
+        }
+
+        
+        
+        
+        if (/건설|건축|토목|공사|주택|개발|시행/.test([c.corpNm, c.sicNm, c.enpMainBizNm].map((v) => String(v || '')).join(' '))) {
+          const aq = 'https://accountingwiki.co.kr/audit/qnas/';
+          const lk = (u, t) => '<a href="' + u + '" target="_blank" rel="noopener">' + t + '</a>';
+          html += '<div style="margin-top:10px;font-weight:700;">건설사 재무에서 확인할 신호</div>'
+            + '<div style="color:var(--muted);font-size:12px;">금감원·한공회 감리지적사례에서 반복된 쟁점입니다. 이 회사에 대한 지적이 아닙니다.</div>'
+            + [['PF 지급보증·책임준공확약', '시행사 PF차입금 보증·책임준공 확약을 감사보고서 주석에 적었는지 확인하세요.', [lk(aq + 'kicpa-2025-c947e595', '사례 1'), lk(aq + 'kicpa-2024-2da379f3', '사례 2')]],
+              ['미청구공사·공사진행률', '매출 대비 미청구공사(계약자산)가 급증하는지, 공사손실충당부채를 쌓았는지 확인하세요.', [lk(aq + 'kicpa-2019-dbeeb5be', '사례'), lk('https://accountingwiki.co.kr/articles/presentation-contract-assets', '해설')]],
+              ['분양수익(시행사)', '분양률·공사진행률 산정 근거가 맞는지 확인하세요.', [lk(aq + 'kicpa-2025-02012a98', '사례')]]]
+              .map(([t, d, ls]) => '<div style="font-size:13px;margin-top:3px;"><b>' + t + '</b> — ' + d + ' <span style="font-size:12px;">' + ls.join(' · ') + '</span></div>').join('')
+            + '<div style="color:var(--muted);font-size:12px;margin-top:3px;">출처 회계위키(실무 참고용, 공식 해석 아님)</div>';
         }
 
         
@@ -17151,6 +17166,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           {"t": "한국자산관리공사 (온비드)", "pk": "", "u": 0, "n": 0, "o": [], "d": "공매 물건 썸네일 이미지 · 물건 상세 링크", "cat": "제공기관 자체 서비스"},
           {"t": "행정안전부 (공공데이터 제공표준)", "pk": "", "u": 0, "n": 0, "o": [], "d": "전국 CCTV정보(37만) · 무료와이파이정보(9.4만) · 모범음식점정보 — 지자체 취합 CSV", "cat": "제공기관 자체 서비스"},
           {"t": "행정안전부·경찰청 (생활안전지도)", "pk": "", "u": 0, "n": 0, "o": [], "d": "범죄주의구간·여성밤길치안안전·치안사고통계·CPTED, 침수흔적도·하천범람·산사태 등 WMS 지도", "cat": "제공기관 자체 서비스"},
+          {"t": "회계위키 (AccountingWiki)", "pk": "", "u": 0, "n": 0, "o": [], "d": "K-IFRS·일반기업회계기준 문단·질의회신·감리지적사례 조회(AI 상담 회계 근거) · 건설사 재무 확인 신호 근거 링크 — 본문 미저장", "cat": "제공기관 자체 서비스"},
         ]],
         ['민간 API', [
           {"t": "ODsay", "pk": "", "u": 0, "n": 0, "o": [], "d": "대중교통 경로 탐색", "cat": "민간 API"},
@@ -17163,7 +17179,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           {"t": "한국토지주택공사 (LH청약플러스)", "pk": "", "u": 0, "n": 0, "o": [], "d": "입주자모집공고 첨부 「공급대상주택목록」 — 매입임대·든든전세 **물건별 주소**(광역 공고는 공고 본문에 주소가 없어 이 첨부가 유일한 위치 자료다)", "cat": "공개 웹 수집"},
         ]],
       ];
-      const UA_SERVICES_N = 137;   
+      const UA_SERVICES_N = 138;   
       
       
       
@@ -22672,7 +22688,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
                       
                       + (c.stk
                         ? `<div style="font-size:12px;margin-top:2px;">주가 <b>${Number(c.stk.clpr).toLocaleString('ko-KR')}원</b>`
-                          + (c.stk.fltRt != null ? ` <span style="color:${Number(c.stk.fltRt) >= 0 ? '#e03131' : '#2260C3'};">${c.stk.fltRt >= 0 ? '+' : ''}${esc(c.stk.fltRt)}%</span>` : '')
+                          + (c.stk.fltRt != null ? ` <span style="color:${Number(c.stk.fltRt) >= 0 ? '#e03131' : '#2260C3'};">${c.stk.fltRt >= 0 ? '+' : ''}${esc(Number(c.stk.fltRt).toFixed(2))}%</span>` : '')
                           + ` <span style="color:var(--c-muted);">(${esc(c.stk.basDt || '')})</span></div>`
                         : '')
                       
