@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=65acf5c" />
+  <link rel="stylesheet" href="css/tokens.css?v=6671ab4" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=65acf5c"></script>
+  <script src="js/auth-guard.js?v=6671ab4"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=65acf5c" />
+  <link rel="stylesheet" href="css/buttons.css?v=6671ab4" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=65acf5c" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=6671ab4" />
   <style>
     :root {
       
@@ -2186,7 +2186,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=65acf5c"></script>
+  <script src="js/ie-guard.js?v=6671ab4"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2522,25 +2522,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-10-04 23:58 · 65acf5c</span></span>
+          · <span class="build-tag">build 2026-10-05 00:24 · 6671ab4</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=65acf5c"></script>
+  <script src="js/joinkey.js?v=6671ab4"></script>
   
-  <script src="js/identity.js?v=65acf5c"></script>
-  <script src="js/common.js?v=65acf5c"></script>
-  <script src="js/ui-resize.js?v=65acf5c"></script>
-  <script src="js/footer-resize.js?v=65acf5c"></script>
-  <script src="js/route-line.js?v=65acf5c"></script>
-  <script src="js/route-api.js?v=65acf5c"></script>
-  <script src="js/footer-stats.js?v=65acf5c"></script>
+  <script src="js/identity.js?v=6671ab4"></script>
+  <script src="js/common.js?v=6671ab4"></script>
+  <script src="js/ui-resize.js?v=6671ab4"></script>
+  <script src="js/footer-resize.js?v=6671ab4"></script>
+  <script src="js/route-line.js?v=6671ab4"></script>
+  <script src="js/route-api.js?v=6671ab4"></script>
+  <script src="js/footer-stats.js?v=6671ab4"></script>
   
 
-  <script src="js/ad-consent.js?v=65acf5c"></script>
+  <script src="js/ad-consent.js?v=6671ab4"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -23788,6 +23788,8 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             + (_jg ? (_zone ? ' · ' : '') + `공시지가 <b>${_jg < 1e5 ? _jg.toLocaleString('ko-KR') + NB + '원' : fmtUnit(_jg / 1e4)}/㎡</b>` : '') : ''],
           ['건물', [_use ? esc(_use) : '', _fl ? `지상 ${_fl}층` : '', _yr ? _yr + '년' : '', _fam ? _fam.toLocaleString('ko-KR') + '세대' : ''].filter(Boolean).join(' · ')],
           ['시세', [dealTxt, lpTxt].filter(Boolean).join(' · ')],
+          
+          ['세금', taxRowHtml(st)],
         ];
         
         const _chip = (t, red) => '<span style="display:inline-block;font-size:12px;line-height:1.7;padding:0 8px;border-radius:999px;margin:2px 4px 0 0;'
@@ -24134,6 +24136,72 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
     
     
     
+    
+    
+    
+    
+    function taxPublicPrice(st) {   
+      const d = st && st.detail;
+      if (!d || d.loading) return null;
+      const hp = (d.housePrice || []).map((x) => Number(x.hsprc)).filter((v) => v > 0);
+      if (!hp.length) return null;
+      if (hp.length === 1) return { one: hp[0] };
+      return { min: Math.min(...hp), max: Math.max(...hp), n: hp.length };
+    }
+    function taxKindOf(st) {        
+      const p = String((st.br && (st.br.mainPurpsCdNm || st.br.etcPurps)) || (st.bld && BLD_USE[st.bld.usability]) || '');
+      if (/아파트/.test(p)) return '아파트';
+      if (/오피스텔/.test(p)) return '오피스텔';
+      if (/단독|다가구|다세대|연립|주택/.test(p)) return '단독';
+      if (/근린|판매|상가|업무/.test(p)) return '상가';
+      if (/공장/.test(p)) return '공장';
+      return '';
+    }
+    function taxRowHtml(st) {
+      const pp = taxPublicPrice(st);
+      if (!pp) return '';
+      if (pp.one) return `<span class="ps-tax" data-pub="${pp.one}">보유세 계산 중…</span>`;
+      return `공시 <b>${fmtAmt(pp.min / 1e4)}~${fmtAmt(pp.max / 1e4)}</b> <span style="color:var(--c-muted);">세대별 ${pp.n}건 — 호를 골라 세금 계산</span>`;
+    }
+    let _calcEng = null;   
+    function loadCalcEngine() {
+      if (_calcEng) return _calcEng;
+      _calcEng = (async () => {
+        const mf = await (await fetch('js/calc/manifest.json', { cache: 'no-cache' })).json();
+        await new Promise((ok, bad) => { const s = document.createElement('script'); s.src = 'js/calc/' + mf.engine; s.onload = ok; s.onerror = () => bad(new Error('engine')); document.head.appendChild(s); });
+        const doc = await (await fetch('js/calc/' + mf.rules, { cache: 'no-cache' })).json();
+        const E = window.AirealtyCalcEngine;
+        return { E, rules: E.createRules(doc.rules) };
+      })().catch((e) => { _calcEng = null; throw e; });
+      return _calcEng;
+    }
+    async function taxLineFill(popupEl, st) {
+      if (!popupEl || !popupEl.isConnected) return;
+      const pp = taxPublicPrice(st);
+      
+      const a = popupEl.closest('.leaflet-popup') ? popupEl.closest('.leaflet-popup').querySelector('a[href^="calc.html?addr="]') : null;
+      if (a) {
+        const u = new URL(a.getAttribute('href'), location.href);
+        const kind = taxKindOf(st); const pnu = pnuOf(st) || '';
+        if (pp && pp.one) u.searchParams.set('pub', String(pp.one)); else u.searchParams.delete('pub');
+        if (kind) u.searchParams.set('type', kind); else u.searchParams.delete('type');
+        if (pnu) u.searchParams.set('pnu', pnu); else u.searchParams.delete('pnu');
+        a.setAttribute('href', u.pathname.replace(/^.*\//, '') + u.search + u.hash);
+      }
+      const el = popupEl.querySelector('.ps-tax[data-pub]');
+      if (!el || !pp || !pp.one) return;
+      try {
+        const { E, rules } = await loadCalcEngine();
+        if (!el.isConnected) return;
+        const y = new Date().getFullYear();
+        const r = E.crtHouse({ taxYear: y, taxpayer: '개인', oneHouse: true, houses: [{ publicPrice: pp.one }] }, rules);
+        const prop = Number(r.propTaxTotal) || 0, crt = Number(r.total) || 0;
+        el.innerHTML = `보유세 연 약 <b>${fmtAmt((prop + crt) / 1e4)}</b> <span style="color:var(--c-muted);">재산세 ${fmtAmt(prop / 1e4)}${crt ? ' · 종부세 ' + fmtAmt(crt / 1e4) : ''} · 공시 ${fmtAmt(pp.one / 1e4)} · 1주택 가정</span>` + srcTier('est');
+      } catch (e) {
+        el.textContent = '보유세는 세금 계산에서 확인해 주세요';
+      }
+    }
+
     function fillLandInfo(popupEl, getPopup, lat, lng, onInfo, noDetail, jibun, deal) {
       const slot = popupEl && popupEl.querySelector('.bld-info');
       if (!slot) return;
@@ -24155,6 +24223,8 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         if (_fb) _fb.remove();
         if (_ap) _ap.remove();
         slot.innerHTML = landInfoHtml(st, noDetail, lat, lng);
+        
+        queueMicrotask(() => { try { taxLineFill(popupEl, st); } catch (e) {  } });
         
         try {
           
