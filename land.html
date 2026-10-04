@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=6671ab4" />
+  <link rel="stylesheet" href="css/tokens.css?v=62e332a" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=6671ab4"></script>
+  <script src="js/auth-guard.js?v=62e332a"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=6671ab4" />
+  <link rel="stylesheet" href="css/buttons.css?v=62e332a" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=6671ab4" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=62e332a" />
   <style>
     :root {
       
@@ -2186,7 +2186,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=6671ab4"></script>
+  <script src="js/ie-guard.js?v=62e332a"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2522,25 +2522,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-10-05 00:24 · 6671ab4</span></span>
+          · <span class="build-tag">build 2026-10-05 00:35 · 62e332a</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=6671ab4"></script>
+  <script src="js/joinkey.js?v=62e332a"></script>
   
-  <script src="js/identity.js?v=6671ab4"></script>
-  <script src="js/common.js?v=6671ab4"></script>
-  <script src="js/ui-resize.js?v=6671ab4"></script>
-  <script src="js/footer-resize.js?v=6671ab4"></script>
-  <script src="js/route-line.js?v=6671ab4"></script>
-  <script src="js/route-api.js?v=6671ab4"></script>
-  <script src="js/footer-stats.js?v=6671ab4"></script>
+  <script src="js/identity.js?v=62e332a"></script>
+  <script src="js/common.js?v=62e332a"></script>
+  <script src="js/ui-resize.js?v=62e332a"></script>
+  <script src="js/footer-resize.js?v=62e332a"></script>
+  <script src="js/route-line.js?v=62e332a"></script>
+  <script src="js/route-api.js?v=62e332a"></script>
+  <script src="js/footer-stats.js?v=62e332a"></script>
   
 
-  <script src="js/ad-consent.js?v=6671ab4"></script>
+  <script src="js/ad-consent.js?v=62e332a"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -24159,9 +24159,12 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
     }
     function taxRowHtml(st) {
       const pp = taxPublicPrice(st);
-      if (!pp) return '';
-      if (pp.one) return `<span class="ps-tax" data-pub="${pp.one}">보유세 계산 중…</span>`;
-      return `공시 <b>${fmtAmt(pp.min / 1e4)}~${fmtAmt(pp.max / 1e4)}</b> <span style="color:var(--c-muted);">세대별 ${pp.n}건 — 호를 골라 세금 계산</span>`;
+      if (pp && pp.one) return `<span class="ps-tax" data-pub="${pp.one}">보유세 계산 중…</span>`;
+      const D = st.deal;
+      const rangeTxt = pp ? ` <span style="color:var(--c-muted);">· 공시 ${fmtAmt(pp.min / 1e4)}~${fmtAmt(pp.max / 1e4)} 세대별 ${pp.n}건</span>` : '';
+      
+      if (D && D.amt) return `<span class="ps-tax" data-amt="${D.amt}"${D.area ? ` data-area="${D.area}"` : ''}>취득세 계산 중…</span>${rangeTxt}`;
+      return pp ? `공시 <b>${fmtAmt(pp.min / 1e4)}~${fmtAmt(pp.max / 1e4)}</b> <span style="color:var(--c-muted);">세대별 ${pp.n}건 — 호를 골라 세금 계산</span>` : '';
     }
     let _calcEng = null;   
     function loadCalcEngine() {
@@ -24188,17 +24191,24 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         if (pnu) u.searchParams.set('pnu', pnu); else u.searchParams.delete('pnu');
         a.setAttribute('href', u.pathname.replace(/^.*\//, '') + u.search + u.hash);
       }
-      const el = popupEl.querySelector('.ps-tax[data-pub]');
-      if (!el || !pp || !pp.one) return;
+      const el = popupEl.querySelector('.ps-tax');
+      if (!el) return;
       try {
         const { E, rules } = await loadCalcEngine();
         if (!el.isConnected) return;
-        const y = new Date().getFullYear();
-        const r = E.crtHouse({ taxYear: y, taxpayer: '개인', oneHouse: true, houses: [{ publicPrice: pp.one }] }, rules);
-        const prop = Number(r.propTaxTotal) || 0, crt = Number(r.total) || 0;
-        el.innerHTML = `보유세 연 약 <b>${fmtAmt((prop + crt) / 1e4)}</b> <span style="color:var(--c-muted);">재산세 ${fmtAmt(prop / 1e4)}${crt ? ' · 종부세 ' + fmtAmt(crt / 1e4) : ''} · 공시 ${fmtAmt(pp.one / 1e4)} · 1주택 가정</span>` + srcTier('est');
+        const today = new Date().toISOString().slice(0, 10), y = Number(today.slice(0, 4));
+        if (pp && pp.one && el.dataset.pub) {   
+          const r = E.crtHouse({ taxYear: y, taxpayer: '개인', oneHouse: true, houses: [{ publicPrice: pp.one }] }, rules);
+          const prop = Number(r.propTaxTotal) || 0, crt = Number(r.total) || 0;
+          el.innerHTML = `보유세 연 약 <b>${fmtAmt((prop + crt) / 1e4)}</b> <span style="color:var(--c-muted);">재산세 ${fmtAmt(prop / 1e4)}${crt ? ' · 종부세 ' + fmtAmt(crt / 1e4) : ''} · 공시 ${fmtAmt(pp.one / 1e4)} · 1주택 가정</span>` + srcTier('est');
+        } else if (el.dataset.amt) {           
+          const amt = Number(el.dataset.amt), area = Number(el.dataset.area) || null;
+          const r = E.acquire({ acquireDate: today, price: amt, kind: '주택', houseType: taxKindOf(st) || '아파트', areaExclusive: area || 86, buyer: '개인', cause: '매매', housesAfter: 1 }, rules);
+          const D = st.deal || {};
+          el.innerHTML = `취득세 약 <b>${fmtAmt(Number(r.total) / 1e4)}</b> <span style="color:var(--c-muted);">교육세·농특세 포함 · 1주택 · ${D.kind === 'this' ? '최근 매매' : '근처 ' + esc(D.name || '')} ${fmtAmt(amt / 1e4)} 기준${area ? '' : ' · 면적 모름(85㎡ 초과로 봄)'}</span>` + srcTier('est');
+        }
       } catch (e) {
-        el.textContent = '보유세는 세금 계산에서 확인해 주세요';
+        el.textContent = '세금은 세금 계산에서 확인해 주세요';
       }
     }
 
@@ -25037,8 +25047,9 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         return null;
       };
       
-      const dealOf = (r, near) => (r ? { kind: 'this', name: r.name, price: uPriceMain(r), ym: fmtYm(r.ymd) }
-        : (near.best && near.bd < 1.5 ? { kind: 'near', name: near.best.name, price: uPriceMain(near.best), ym: fmtYm(near.best.ymd), dist: Math.round(near.bd * 1000) } : null));
+      
+      const dealOf = (r, near) => (r ? { kind: 'this', name: r.name, price: uPriceMain(r), ym: fmtYm(r.ymd), amt: r.priceEok != null ? Math.round(r.priceEok * 1e8) : null, area: Number(r.area) || null }
+        : (near.best && near.bd < 1.5 ? { kind: 'near', name: near.best.name, price: uPriceMain(near.best), ym: fmtYm(near.best.ymd), dist: Math.round(near.bd * 1000), amt: near.best.priceEok != null ? Math.round(near.best.priceEok * 1e8) : null, area: Number(near.best.area) || null } : null));
       const { best, bd, cnt } = nearestApt();
       const rtBtns = `<div class="pc-btn-row"><button class="rt-start pc-btn pc-btn-outline"><i class="fi fi-rr-flag"></i>출발</button><button class="rt-end pc-btn pc-btn-outline"><i class="fi fi-rr-marker"></i>도착</button></div><button class="sv-btn pc-btn pc-btn-outline"><i class="fi fi-rr-video-camera"></i>거리뷰</button>`;
       const bindRtBtns = () => {
