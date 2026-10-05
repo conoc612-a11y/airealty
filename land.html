@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=a7aa8b3" />
+  <link rel="stylesheet" href="css/tokens.css?v=7bbb97b" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=a7aa8b3"></script>
+  <script src="js/auth-guard.js?v=7bbb97b"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=a7aa8b3" />
+  <link rel="stylesheet" href="css/buttons.css?v=7bbb97b" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=a7aa8b3" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=7bbb97b" />
   <style>
     :root {
       
@@ -2186,7 +2186,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=a7aa8b3"></script>
+  <script src="js/ie-guard.js?v=7bbb97b"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2522,25 +2522,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-10-05 00:28 · a7aa8b3</span></span>
+          · <span class="build-tag">build 2026-10-05 13:03 · 7bbb97b</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=a7aa8b3"></script>
+  <script src="js/joinkey.js?v=7bbb97b"></script>
   
-  <script src="js/identity.js?v=a7aa8b3"></script>
-  <script src="js/common.js?v=a7aa8b3"></script>
-  <script src="js/ui-resize.js?v=a7aa8b3"></script>
-  <script src="js/footer-resize.js?v=a7aa8b3"></script>
-  <script src="js/route-line.js?v=a7aa8b3"></script>
-  <script src="js/route-api.js?v=a7aa8b3"></script>
-  <script src="js/footer-stats.js?v=a7aa8b3"></script>
+  <script src="js/identity.js?v=7bbb97b"></script>
+  <script src="js/common.js?v=7bbb97b"></script>
+  <script src="js/ui-resize.js?v=7bbb97b"></script>
+  <script src="js/footer-resize.js?v=7bbb97b"></script>
+  <script src="js/route-line.js?v=7bbb97b"></script>
+  <script src="js/route-api.js?v=7bbb97b"></script>
+  <script src="js/footer-stats.js?v=7bbb97b"></script>
   
 
-  <script src="js/ad-consent.js?v=a7aa8b3"></script>
+  <script src="js/ad-consent.js?v=7bbb97b"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -24166,6 +24166,22 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       if (D && D.amt) return `<span class="ps-tax" data-amt="${D.amt}"${D.area ? ` data-area="${D.area}"` : ''}>취득세 계산 중…</span>${rangeTxt}`;
       return pp ? `공시 <b>${fmtAmt(pp.min / 1e4)}~${fmtAmt(pp.max / 1e4)}</b> <span style="color:var(--c-muted);">세대별 ${pp.n}건 — 호를 골라 세금 계산</span>` : '';
     }
+    async function indvHousePriceOf(pnu, year) {   
+      for (const yy of [year, year - 1]) {
+        const d = await new Promise((res) => {
+          const name = '__vwhp_' + Date.now() + '_' + (++_vwRevSeq);
+          const timer = setTimeout(() => { try { delete window[name]; } catch (e) {} res(null); }, 7000);
+          window[name] = (x) => { clearTimeout(timer); try { delete window[name]; } catch (e) {} res(x); };
+          const el = document.createElement('script');
+          el.src = `https://api.vworld.kr/ned/data/getIndvdHousingPriceAttr?pnu=${pnu}&stdrYear=${yy}&format=json&numOfRows=5&pageNo=1&key=${VWORLD_KEY}&domain=${location.hostname}&callback=${name}`;
+          el.onerror = () => { clearTimeout(timer); res(null); };
+          document.head.appendChild(el);
+        });
+        const row = d && d.indvdHousingPrices && d.indvdHousingPrices.field && d.indvdHousingPrices.field[0];
+        if (row && Number(row.housePc) > 0) return { price: Number(row.housePc), year: Number(row.stdrYear) };
+      }
+      return null;
+    }
     let _calcEng = null;   
     function loadCalcEngine() {
       if (_calcEng) return _calcEng;
@@ -24197,6 +24213,19 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         const { E, rules } = await loadCalcEngine();
         if (!el.isConnected) return;
         const today = new Date().toISOString().slice(0, 10), y = Number(today.slice(0, 4));
+        
+        if (!(pp && pp.one) && taxKindOf(st) === '단독' && pnuOf(st)) {
+          const ip = await indvHousePriceOf(pnuOf(st), y);
+          if (ip && el.isConnected) {
+            el.dataset.pub = String(ip.price); el.dataset.pubYear = String(ip.year);
+            const r = E.crtHouse({ taxYear: y, taxpayer: '개인', oneHouse: true, houses: [{ publicPrice: ip.price }] }, rules);
+            const prop = Number(r.propTaxTotal) || 0, crt = Number(r.total) || 0;
+            el.innerHTML = `보유세 연 약 <b>${fmtAmt((prop + crt) / 1e4)}</b> <span style="color:var(--c-muted);">재산세 ${fmtAmt(prop / 1e4)}${crt ? ' · 종부세 ' + fmtAmt(crt / 1e4) : ''} · 개별주택가격 ${ip.year}년 ${fmtAmt(ip.price / 1e4)} · 1주택 가정</span>` + srcTier('gov');
+            const a2 = popupEl.closest('.leaflet-popup') ? popupEl.closest('.leaflet-popup').querySelector('a[href^="calc.html?addr="]') : null;
+            if (a2) { const u2 = new URL(a2.getAttribute('href'), location.href); u2.searchParams.set('pub', String(ip.price)); a2.setAttribute('href', u2.pathname.replace(/^.*\//, '') + u2.search + u2.hash); }
+            return;
+          }
+        }
         if (pp && pp.one && el.dataset.pub) {   
           const r = E.crtHouse({ taxYear: y, taxpayer: '개인', oneHouse: true, houses: [{ publicPrice: pp.one }] }, rules);
           const prop = Number(r.propTaxTotal) || 0, crt = Number(r.total) || 0;
