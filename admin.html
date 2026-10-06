@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>관리자 모드</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<link rel="stylesheet" href="css/buttons.css?v=ccb9b0e" />
-<link rel="stylesheet" href="css/tokens.css?v=ccb9b0e" />
+<link rel="stylesheet" href="css/buttons.css?v=0a0dca1" />
+<link rel="stylesheet" href="css/tokens.css?v=0a0dca1" />
 <style>
   :root { --bg:#0f1520; --card:#1a2332; --line:#2a3564; --text:#e8eef7; --muted:#8b9bb4; --accent:var(--brand-lt); }
   * { margin:0; }
@@ -380,7 +380,7 @@
     </div>
   </div>
 
-<script src="js/common.js?v=ccb9b0e"></script>
+<script src="js/common.js?v=0a0dca1"></script>
 <script>
 const FN = SUPABASE_URL + '/functions/v1';
 let token = sessionStorage.getItem('admin_token');
@@ -648,7 +648,8 @@ async function loadApiServices(force) {
       const r = await fetch(FN + '/admin-data?catalog=1', { headers: { 'Authorization': 'Bearer ' + token } });
       if (r.status === 401) { sessionStorage.removeItem('admin_token'); token = null; location.reload(); return; }
       const j = await r.json().catch(() => ({}));
-      if (!r.ok || !Array.isArray(j.services)) throw new Error(j.error || ('HTTP ' + r.status));
+      if (!r.ok) throw new Error(j.error || ('HTTP ' + r.status));
+      if (!Array.isArray(j.services)) throw new Error('응답에 services 가 없습니다 — admin-data 함수가 ?catalog 를 아는 판인지(재배포) 확인');
       catalog = j;
     } catch (e) {
       box.innerHTML = '<div style="padding:12px;color:#ff7a7a;">목록을 불러오지 못했습니다: ' + esc(e.message || e) + '</div>';
