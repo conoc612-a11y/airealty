@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=e43b64d" />
+  <link rel="stylesheet" href="css/tokens.css?v=3df1438" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=e43b64d"></script>
+  <script src="js/auth-guard.js?v=3df1438"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=e43b64d" />
+  <link rel="stylesheet" href="css/buttons.css?v=3df1438" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=e43b64d" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=3df1438" />
   <style>
     :root {
       
@@ -2177,7 +2177,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=e43b64d"></script>
+  <script src="js/ie-guard.js?v=3df1438"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2513,25 +2513,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-10-06 14:01 · e43b64d</span></span>
+          · <span class="build-tag">build 2026-10-06 14:26 · 3df1438</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=e43b64d"></script>
+  <script src="js/joinkey.js?v=3df1438"></script>
   
-  <script src="js/identity.js?v=e43b64d"></script>
-  <script src="js/common.js?v=e43b64d"></script>
-  <script src="js/ui-resize.js?v=e43b64d"></script>
-  <script src="js/footer-resize.js?v=e43b64d"></script>
-  <script src="js/route-line.js?v=e43b64d"></script>
-  <script src="js/route-api.js?v=e43b64d"></script>
-  <script src="js/footer-stats.js?v=e43b64d"></script>
+  <script src="js/identity.js?v=3df1438"></script>
+  <script src="js/common.js?v=3df1438"></script>
+  <script src="js/ui-resize.js?v=3df1438"></script>
+  <script src="js/footer-resize.js?v=3df1438"></script>
+  <script src="js/route-line.js?v=3df1438"></script>
+  <script src="js/route-api.js?v=3df1438"></script>
+  <script src="js/footer-stats.js?v=3df1438"></script>
   
 
-  <script src="js/ad-consent.js?v=e43b64d"></script>
+  <script src="js/ad-consent.js?v=3df1438"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -14332,7 +14332,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         if (g.us[0].group) rows.push(`<div style="margin-top:3px;">모집단위 ${esc(g.us[0].group)}</div>`);
         
         rows.push('<div style="margin-top:6px;font-size:12px;color:var(--c-muted);">'
-          + `출처: ${esc(g.ntc || '')} 첨부 「공급대상주택목록」</div>`);
+          + `${esc(g.ntc || '')} 첨부 「공급대상주택목록」 기준</div>`);
         return `<div class="pc"><div class="pc-head"><span style="display:inline-block;background:${PUBRENT_COLOR[g.ty] || '#0b7285'};color:#fff;font-size:12px;padding:2px 8px;border-radius:999px;">${esc(g.ty || '매입임대')}</span><span class="rp-name">${esc(g.addr || '(주소 없음)')}</span></div>`
           + `<div class="pc-body"><div style="margin-bottom:4px;">${esc(g.inst || 'LH')} 공급물건</div>${rows.join('')}</div></div>`;
       }
@@ -21759,12 +21759,12 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       est: ['집계·추정', '#f1eee9', '#7A6A58', '#ddd5c9',
         '표본·카드매출 등으로 추정한 집계값. 실거래가가 아닙니다.'],
     };
+    
+    
     function srcTier(k) {
       const t = SRC_TIER[k];
-      if (!t) return '';
-      return '<span class="src-tier" title="' + t[4] + '" style="display:inline-block;margin-left:5px;'
-        + 'font-size:11px;line-height:1.7;padding:0 6px;border-radius:999px;vertical-align:1px;'
-        + 'background:' + t[1] + ';color:' + t[2] + ';border:1px solid ' + t[3] + ';">' + t[0] + '</span>';
+      if (!t || k !== 'est') return '';
+      return ' <span class="src-tier" title="' + t[4] + '" style="font-size:12px;color:var(--c-muted);font-weight:400;">추정</span>';
     }
 
     
@@ -21774,9 +21774,11 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
     
     
     const DOC_KEEP = 5;   
-    const tierTxt = (k) => (SRC_TIER[k] ? '<span title="' + SRC_TIER[k][4] + '">' + SRC_TIER[k][0] + '</span>' : '');
+    const tierTxt = (k) => (k === 'est' && SRC_TIER[k] ? '<span title="' + SRC_TIER[k][4] + '">추정</span>' : '');
     function docHead(title, src) {
-      return '<div class="doc-h"><b>' + title + '</b>' + (src ? '<span class="doc-sub">' + src + '</span>' : '') + '</div>';
+      
+      const sub = String(src || '').replace(/^(\s*·\s*)+/, '').trim();
+      return '<div class="doc-h"><b>' + title + '</b>' + (sub ? '<span class="doc-sub">' + sub + '</span>' : '') + '</div>';
     }
     function docKv(rows, keep) {     
       const r = rows.filter((x) => x && x[1] != null && x[1] !== '');
