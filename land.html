@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=e35596f" />
+  <link rel="stylesheet" href="css/tokens.css?v=1edebec" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=e35596f"></script>
+  <script src="js/auth-guard.js?v=1edebec"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=e35596f" />
+  <link rel="stylesheet" href="css/buttons.css?v=1edebec" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=e35596f" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=1edebec" />
   <style>
     :root {
       
@@ -2177,7 +2177,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=e35596f"></script>
+  <script src="js/ie-guard.js?v=1edebec"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2513,25 +2513,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-10-06 20:06 · e35596f</span></span>
+          · <span class="build-tag">build 2026-10-06 20:36 · 1edebec</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=e35596f"></script>
+  <script src="js/joinkey.js?v=1edebec"></script>
   
-  <script src="js/identity.js?v=e35596f"></script>
-  <script src="js/common.js?v=e35596f"></script>
-  <script src="js/ui-resize.js?v=e35596f"></script>
-  <script src="js/footer-resize.js?v=e35596f"></script>
-  <script src="js/route-line.js?v=e35596f"></script>
-  <script src="js/route-api.js?v=e35596f"></script>
-  <script src="js/footer-stats.js?v=e35596f"></script>
+  <script src="js/identity.js?v=1edebec"></script>
+  <script src="js/common.js?v=1edebec"></script>
+  <script src="js/ui-resize.js?v=1edebec"></script>
+  <script src="js/footer-resize.js?v=1edebec"></script>
+  <script src="js/route-line.js?v=1edebec"></script>
+  <script src="js/route-api.js?v=1edebec"></script>
+  <script src="js/footer-stats.js?v=1edebec"></script>
   
 
-  <script src="js/ad-consent.js?v=e35596f"></script>
+  <script src="js/ad-consent.js?v=1edebec"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -25484,7 +25484,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       if (s) { try { const r = await s.auth.getSession(); session = r.data.session; } catch (e) {} }
       user = session ? session.user : null;
       if (user) {
-        $('who').textContent = user.email;
+        $('who').textContent = user.email || user.user_metadata?.name || '회원'; 
         $('logout').style.display = '';
         $('delete-account').style.display = '';
         $('login-link').style.display = 'none';
@@ -25526,18 +25526,20 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
     (function initSheet() { const h = $('sheet-handle'), p = document.querySelector('.panel'); if (h && p) h.addEventListener('click', () => p.classList.toggle('sheet-open')); })();
     $('logout').addEventListener('click', async () => { const s = await ensureSb(); if (s) { try { await s.auth.signOut(); } catch (e) {} } location.href = 'index.html'; });
     $('delete-account').addEventListener('click', async () => {
-      if (!confirm('정말 탈퇴하시겠습니까?\n회원 정보와 저장한 모든 데이터가 삭제되며 복구할 수 없음.')) return;
+      if (!confirm('정말 탈퇴하시겠습니까?\n회원 정보와 저장한 모든 데이터가 삭제되며 복구할 수 없습니다.\n카카오·네이버로 가입하셨다면 해당 계정 연결도 함께 해제됩니다.')) return;
       const s = await ensureSb();
       const btn = $('delete-account');
       btn.disabled = true; btn.textContent = '탈퇴 처리 중…';
       try {
         const { data: { session } } = await s.auth.getSession();
-        if (!session) { alert('로그인 정보가 없음.'); return; }
+        if (!session) { alert('로그인 정보가 없습니다.'); return; }
         const r = await fetch(SUPABASE_URL + '/functions/v1/delete-account', {
           method: 'POST', headers: { 'Authorization': 'Bearer ' + session.access_token, 'Content-Type': 'application/json' },
         });
         const j = await r.json().catch(() => ({}));
         if (!r.ok) throw new Error(j.error || ('HTTP ' + r.status));
+        if (j.unlinked && (j.unlinked.kakao === false || j.unlinked.naver === false))
+          alert('탈퇴가 완료되었습니다. 소셜 계정 연결 해제는 실패하여, 카카오는 카카오톡 > 설정 > 카카오계정 > 연결된 서비스 관리에서, 네이버는 네이버 > 내정보 > 보안설정 > 외부사이트 연결에서 직접 끊어 주세요.');
         localStorage.clear();
         location.href = 'index.html?deleted=1';
       } catch (e) {

@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>관리자 모드</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<link rel="stylesheet" href="css/buttons.css?v=e35596f" />
-<link rel="stylesheet" href="css/tokens.css?v=e35596f" />
+<link rel="stylesheet" href="css/buttons.css?v=1edebec" />
+<link rel="stylesheet" href="css/tokens.css?v=1edebec" />
 <style>
   :root { --bg:#0f1520; --card:#1a2332; --line:#2a3564; --text:#e8eef7; --muted:#8b9bb4; --accent:var(--brand-lt); }
   * { margin:0; }
@@ -143,7 +143,7 @@
         </div>
         <div class="tablebox">
           <table>
-            <thead><tr><th>가입일</th><th>이름</th><th>최종 접속</th><th>이메일</th><th></th></tr></thead>
+            <thead><tr><th>가입일</th><th>이름</th><th>가입 수단</th><th>최종 접속</th><th>이메일</th><th></th></tr></thead>
             <tbody id="member-rows"></tbody>
           </table>
         </div>
@@ -380,7 +380,7 @@
     </div>
   </div>
 
-<script src="js/common.js?v=e35596f"></script>
+<script src="js/common.js?v=1edebec"></script>
 <script>
 const FN = SUPABASE_URL + '/functions/v1';
 let token = sessionStorage.getItem('admin_token');
@@ -529,22 +529,27 @@ function renderLocations() {
 }
 
 
+const PROV = { email: '이메일', kakao: '카카오', naver: '네이버' };
+const provLabel = (m) => (PROV[m.provider] || esc(m.provider || '-')) +
+  (m.providers || []).filter((p) => p !== 'email' && p !== m.provider).map((p) => ' +' + (PROV[p] || esc(p))).join('');
+
 function renderMembers() {
   const rows = data.members;
   $('member-rows').innerHTML = rows.map((m) => `
     <tr>
       <td>${(m.joined_at || '').slice(0, 10)}</td>
-      <td>${m.name || '—'}</td>
+      <td>${esc(m.name || '—')}</td>
+      <td>${provLabel(m)}</td>
       <td>${(m.last_login_at || '').slice(0, 10) || '—'}</td>
-      <td>${m.email || '—'}</td>
-      <td><button class="btn del" onclick="deleteMember('${m.id}', '${(m.name || m.email || '').replace(/'/g, "\\'")}')">탈퇴</button></td>
-    </tr>`).join('') || '<tr><td colspan="5" style="color:var(--muted);text-align:center;">회원 없음.</td></tr>';
+      <td>${esc(m.email || '—')}</td>
+      <td><button class="btn del" data-id="${esc(m.id)}" data-label="${esc(m.name || m.email || '')}" onclick="deleteMember(this.dataset.id, this.dataset.label)">탈퇴</button></td>
+    </tr>`).join('') || '<tr><td colspan="6" style="color:var(--muted);text-align:center;">회원 없음.</td></tr>';
 }
 
 
 async function deleteMember(id, label) {
-  if (!confirm(`회원 [${label}]을(를) 탈퇴시킬까요?\n저장된 취향·즐겨찾기·방문기록이 모두 삭제되며 복구 불가.`)) return;
-  if (!confirm('최종 확인 — 다시 한 번 누르면 탈퇴 처리됨.')) return;
+  if (!confirm(`회원 [${label}]을(를) 탈퇴시킬까요?\n즐겨찾기·알림·방문기록이 모두 삭제되며 복구할 수 없습니다.\n카카오·네이버 가입자는 해당 계정 연결도 함께 해제됩니다.`)) return;
+  if (!confirm('최종 확인 — 다시 한 번 누르면 탈퇴 처리됩니다.')) return;
   try {
     const r = await fetch(FN + '/admin-delete-user', {
       method: 'POST', headers: { 'content-type': 'application/json', 'Authorization': 'Bearer ' + token },
@@ -553,7 +558,8 @@ async function deleteMember(id, label) {
     const j = await r.json().catch(() => ({}));
     if (!r.ok) throw new Error(j.error || '탈퇴 실패');
     await loadData();
-    alert('탈퇴 처리됨.');
+    const u = j.unlinked || {};
+    alert(u.kakao === false || u.naver === false ? '탈퇴 처리되었습니다. 소셜 연결 해제는 실패했습니다 — 함수 로그를 확인하세요.' : '탈퇴 처리되었습니다.');
   } catch (e) {
     alert('탈퇴 실패: ' + e.message);
   }
@@ -594,10 +600,11 @@ function download(name, text) {
   a.href = URL.createObjectURL(new Blob(['\uFEFF' + text], { type: 'text/csv;charset=utf-8' }));
   a.download = name; a.click(); URL.revokeObjectURL(a.href);
 }
-const csv = (rows) => rows.map((r) => r.map((c) => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\n');
+
+const csv = (rows) => rows.map((r) => r.map((c) => { const v = c == null ? '' : String(c); return '"' + (/^[=+\-@\t\r]/.test(v) ? "'" + v : v).replace(/"/g, '""') + '"'; }).join(',')).join('\n');
 function exportMembers() {
-  const rows = [['가입일', '이름', '최종 접속일', '이메일']]
-    .concat(data.members.map((m) => [m.joined_at.slice(0, 10), m.name ?? '', (m.last_login_at || '').slice(0, 10), m.email]));
+  const rows = [['가입일', '이름', '가입 수단', '최종 접속일', '이메일', '약관 동의일']]
+    .concat(data.members.map((m) => [m.joined_at.slice(0, 10), m.name ?? '', PROV[m.provider] || m.provider || '', (m.last_login_at || '').slice(0, 10), m.email ?? '', (m.terms_agreed_at || '').slice(0, 10)]));
   download('회원목록_' + new Date().toISOString().slice(0, 10) + '.csv', csv(rows));
 }
 function exportStats() {

@@ -24,6 +24,11 @@
   const { data: { session } } = await sb.auth.getSession();
   if (!session) return; // 비로그인: 내보내지 않는다. 게이트는 각 기능이 맡는다.
   // 실제 접속 시각 기록 — last_sign_in_at은 비밀번호 재로그인 시에만 갱신되므로 별도로 저장.
-  sb.from('profiles').update({ last_seen_at: new Date().toISOString() })
-    .eq('id', session.user.id).then(() => {}).catch(() => {});
+  // 미동의 세션은 onboarding 으로 — last_seen_at 기록과 같은 왕복(RETURNING). onboarding.html 은 이 파일을 싣지 않으므로 순환 없음.
+  try {
+    const { data } = await sb.from('profiles').update({ last_seen_at: new Date().toISOString() })
+      .eq('id', session.user.id).select('terms_version');
+    if (data && data[0] && !data[0].terms_version)
+      location.replace('onboarding.html?next=' + encodeURIComponent(location.pathname.split('/').pop() + location.search));
+  } catch (e) {}
 })();
