@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=7eff979" />
+  <link rel="stylesheet" href="css/tokens.css?v=e35596f" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=7eff979"></script>
+  <script src="js/auth-guard.js?v=e35596f"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=7eff979" />
+  <link rel="stylesheet" href="css/buttons.css?v=e35596f" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=7eff979" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=e35596f" />
   <style>
     :root {
       
@@ -2177,7 +2177,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=7eff979"></script>
+  <script src="js/ie-guard.js?v=e35596f"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2513,25 +2513,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-10-06 16:03 · 7eff979</span></span>
+          · <span class="build-tag">build 2026-10-06 20:06 · e35596f</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=7eff979"></script>
+  <script src="js/joinkey.js?v=e35596f"></script>
   
-  <script src="js/identity.js?v=7eff979"></script>
-  <script src="js/common.js?v=7eff979"></script>
-  <script src="js/ui-resize.js?v=7eff979"></script>
-  <script src="js/footer-resize.js?v=7eff979"></script>
-  <script src="js/route-line.js?v=7eff979"></script>
-  <script src="js/route-api.js?v=7eff979"></script>
-  <script src="js/footer-stats.js?v=7eff979"></script>
+  <script src="js/identity.js?v=e35596f"></script>
+  <script src="js/common.js?v=e35596f"></script>
+  <script src="js/ui-resize.js?v=e35596f"></script>
+  <script src="js/footer-resize.js?v=e35596f"></script>
+  <script src="js/route-line.js?v=e35596f"></script>
+  <script src="js/route-api.js?v=e35596f"></script>
+  <script src="js/footer-stats.js?v=e35596f"></script>
   
 
-  <script src="js/ad-consent.js?v=7eff979"></script>
+  <script src="js/ad-consent.js?v=e35596f"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -23578,7 +23578,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         
         
         reload() {
-          try { afterBase(); } catch (_e) {  }
+          try { afterBase(); loadDongScoped(); } catch (_e) {  }
         },
       };
       let left = jibun ? 4 : 3;
@@ -23808,8 +23808,12 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         st.zoneCode = hit.ucode || '';     
         afterBase();
       });
-      vworldFeature('LP_PA_CBND_BUBUN', lat, lng, (ps) => {
-        st.parcel = (ps || [])[0] || null;
+      
+      
+      
+      
+      
+      function loadDongScoped() {
         
         
         
@@ -23881,6 +23885,10 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             }
           }
         }
+      }
+      vworldFeature('LP_PA_CBND_BUBUN', lat, lng, (ps) => {
+        st.parcel = (ps || [])[0] || null;
+        loadDongScoped();
         afterBase();
       });
       
