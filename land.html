@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=7b8ccda" />
+  <link rel="stylesheet" href="css/tokens.css?v=e43b64d" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=7b8ccda"></script>
+  <script src="js/auth-guard.js?v=e43b64d"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=7b8ccda" />
+  <link rel="stylesheet" href="css/buttons.css?v=e43b64d" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=7b8ccda" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=e43b64d" />
   <style>
     :root {
       
@@ -284,7 +284,6 @@
 
 
 
-
     
 
 
@@ -305,11 +304,6 @@
     :root.soil .stat-bar { font-size:13px; }
 
     
-
-
-
-
-
 
 
 
@@ -476,8 +470,6 @@
 
     
     
-
-
     .nav-tab { color:var(--muted); font-size:14px; padding:7px 12px; border-radius:8px; text-decoration:none; font-weight:500; border:1px solid var(--line); background:var(--card); transition:background .15s,color .15s,border-color .15s; height:34px; box-sizing:border-box; display:inline-flex; align-items:center; justify-content:center; white-space:nowrap; flex:none; }
     .nav-tab:hover { background:var(--c-hover); color:var(--text); }
     
@@ -1282,7 +1274,6 @@
     
 
     
-
 
     .list-tab { min-width:0; font:inherit; font-size:13px; font-weight:600; padding:8px 12px; border:1px solid var(--line); background:var(--card); color:var(--muted); border-radius:8px; cursor:pointer; transition:all .15s; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .list-tab.active { background:#D92A14; color:#fff; border-color:#D92A14; }
@@ -2186,7 +2177,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=7b8ccda"></script>
+  <script src="js/ie-guard.js?v=e43b64d"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2522,25 +2513,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-10-05 23:37 · 7b8ccda</span></span>
+          · <span class="build-tag">build 2026-10-06 14:01 · e43b64d</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=7b8ccda"></script>
+  <script src="js/joinkey.js?v=e43b64d"></script>
   
-  <script src="js/identity.js?v=7b8ccda"></script>
-  <script src="js/common.js?v=7b8ccda"></script>
-  <script src="js/ui-resize.js?v=7b8ccda"></script>
-  <script src="js/footer-resize.js?v=7b8ccda"></script>
-  <script src="js/route-line.js?v=7b8ccda"></script>
-  <script src="js/route-api.js?v=7b8ccda"></script>
-  <script src="js/footer-stats.js?v=7b8ccda"></script>
+  <script src="js/identity.js?v=e43b64d"></script>
+  <script src="js/common.js?v=e43b64d"></script>
+  <script src="js/ui-resize.js?v=e43b64d"></script>
+  <script src="js/footer-resize.js?v=e43b64d"></script>
+  <script src="js/route-line.js?v=e43b64d"></script>
+  <script src="js/route-api.js?v=e43b64d"></script>
+  <script src="js/footer-stats.js?v=e43b64d"></script>
   
 
-  <script src="js/ad-consent.js?v=7b8ccda"></script>
+  <script src="js/ad-consent.js?v=e43b64d"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -7984,7 +7975,6 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           
           
           
-          
           const cnt = {};
           arr.forEach((x) => {
             if (String(x.exposPubuseGbCd) !== '1') return;      
@@ -11154,9 +11144,17 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           + '<div class="ap-alert-btns">'
           + '<button type="button" id="ap-alert-go">관심물건만 보기</button>'
           + '<button type="button" id="ap-alert-ok">확인</button></div>'
-          + '<div class="ap-alert-note">이 알림은 이 브라우저에만 저장됨 \u2014'
-          + ' 기기를 바꾸면 이어지지 않음.</div>';
+          + '<div class="ap-alert-note" id="ap-alert-note">이 알림은 이 브라우저에만 저장됩니다 \u2014 기기를 바꾸면 이어지지 않습니다.</div>';
         el.hidden = false;
+        
+        (async () => {
+          try {
+            const sb = typeof ensureSb === 'function' ? await ensureSb() : null;
+            const r = sb ? await sb.auth.getSession() : null;
+            const note = $('ap-alert-note');
+            if (r && r.data && r.data.session && note) note.textContent = '관심 목록은 계정에 저장됩니다 \u2014 변동 알림의 기준은 이 브라우저에 저장됩니다.';
+          } catch (e) {  }
+        })();
         $('ap-alert-ok').onclick = aucWatchAck;
         
         
@@ -17467,7 +17465,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         },
         '기업집단 내부지분(공정위)': {
           d: '자료 연동 완료 · 화면 표시는 준비 중. 기업집단 코드 연결에 필요한 자료가 더 있어야 함. 정식명 <b>공정거래위원회_기업집단포털_특수관계인 내부지분 현황 정보 조회</b>.',
-          o: ['innerQotaEqltrmCmprList', 'innerQotaEqltrmCmprUnityListApi', 'innerQotaEqltrmCmprAssetsListApi', 'appnGroupSttusList', 'innerQotaEqltrmCmprUnityList', 'publicYmList'],
+          o: ['innerQotaEqltrmCmprList', 'innerQotaEqltrmCmprUnityListApi', 'innerQotaEqltrmCmprAssetsListApi'],
           p: '프록시 <code>svc=innerQotaEqltrmCmprList</code> · 포털 pk <a href="https://www.data.go.kr/data/15093663/openapi.do" target="_blank" rel="noopener">15093663</a>',
         },
         '대기업집단 주주현황(공정위)': {
