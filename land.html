@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=0a0dca1" />
+  <link rel="stylesheet" href="css/tokens.css?v=2e64e1e" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=0a0dca1"></script>
+  <script src="js/auth-guard.js?v=2e64e1e"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=0a0dca1" />
+  <link rel="stylesheet" href="css/buttons.css?v=2e64e1e" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=0a0dca1" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=2e64e1e" />
   <style>
     :root {
       
@@ -1502,7 +1502,6 @@
     
 
     .leaflet-popup-content .ls-base > .sec-detail { order:-19; }
-    .leaflet-popup-content .ls-base > .sec-hist { order:-18; }
     
 
 
@@ -1539,7 +1538,6 @@
     .leaflet-popup-content .ls-base > .sec-pms,
     .leaflet-popup-content .ls-base > .sec-kcr,
     .leaflet-popup-content .ls-base > .sec-store { display:none; }
-    .leaflet-popup-content .ls-base > .sec-hood { order:-11; }
     
 
 
@@ -1692,7 +1690,6 @@
 
     .ls-plain { display:none; }
     
-    .leaflet-popup-content .ls-tbl tr.row-fo { display:none; }
     
     #dp-panel-body .ls-tbl th { width:96px; }
     
@@ -2177,7 +2174,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=0a0dca1"></script>
+  <script src="js/ie-guard.js?v=2e64e1e"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2513,25 +2510,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-10-06 21:36 · 0a0dca1</span></span>
+          · <span class="build-tag">build 2026-10-06 21:59 · 2e64e1e</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=0a0dca1"></script>
+  <script src="js/joinkey.js?v=2e64e1e"></script>
   
-  <script src="js/identity.js?v=0a0dca1"></script>
-  <script src="js/common.js?v=0a0dca1"></script>
-  <script src="js/ui-resize.js?v=0a0dca1"></script>
-  <script src="js/footer-resize.js?v=0a0dca1"></script>
-  <script src="js/route-line.js?v=0a0dca1"></script>
-  <script src="js/route-api.js?v=0a0dca1"></script>
-  <script src="js/footer-stats.js?v=0a0dca1"></script>
+  <script src="js/identity.js?v=2e64e1e"></script>
+  <script src="js/common.js?v=2e64e1e"></script>
+  <script src="js/ui-resize.js?v=2e64e1e"></script>
+  <script src="js/footer-resize.js?v=2e64e1e"></script>
+  <script src="js/route-line.js?v=2e64e1e"></script>
+  <script src="js/route-api.js?v=2e64e1e"></script>
+  <script src="js/footer-stats.js?v=2e64e1e"></script>
   
 
-  <script src="js/ad-consent.js?v=0a0dca1"></script>
+  <script src="js/ad-consent.js?v=2e64e1e"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -22891,42 +22888,6 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       
       
       
-      let hoodHtml = '';
-      {
-        const b2 = [];
-        const V = st.lvp;
-        if (V && V.day && V.night) {
-          b2.push('생활인구 낮 ' + fmtCnt(V.day, '명')
-            + (V.ratio ? ' <span style="color:var(--c-muted);">낮/밤 ' + V.ratio + '배</span>' : ''));
-        }
-        if (st.trd && st.trd.amt != null) b2.push('상권 분기매출 ' + fmtAmt(st.trd.amt));
-        else if (st.trdar && st.trdar.cnt) b2.push('상가업소 ' + fmtCnt(st.trdar.cnt, '곳'));
-        if (b2.length) {
-          hoodHtml = '<div class="ls-sec sec-hood pop-only"><b>동네</b>'
-            + srcTier('est') + '<div style="margin-top:2px;">' + b2.join(' · ') + '</div></div>';
-        }
-      }
-      let histHtml = '';
-      {
-        const chip = (t, c) => '<span style="display:inline-block;font-size:12px;line-height:1.7;'
-          + 'padding:0 8px;border-radius:999px;margin:2px 4px 0 0;background:' + c[0] + ';color:' + c[1]
-          + ';border:1px solid ' + c[2] + ';">' + t + '</span>';
-        const RED = ['#fdeaea', '#9b1c1c', '#f0b4b4'], NEU = ['#f1eee9', '#5C5348', '#ddd5c9'];
-        const cs = [];
-        const shtN = (st.sht && st.sht.length ? st.sht.length : 0) + (st.demol && st.demol.length ? st.demol.length : 0);
-        if (shtN) cs.push(chip('철거·말소 ' + shtN + '건', RED));
-        if (st.pms && st.pms.length) cs.push(chip('건축 인허가 ' + st.pms.length + '건', NEU));
-        if (st.stores && st.stores.length) cs.push(chip('이 건물 업소 ' + st.stores.length + '곳', NEU));
-        if (cs.length) {
-          histHtml = '<div class="ls-sec sec-hist pop-only"><b>이력</b>'
-            + '<div style="margin-top:1px;">' + cs.join('') + '</div>'
-            + '</div>';   
-        }
-      }
-      
-      
-      
-      
       
       
       
@@ -22948,7 +22909,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         ['부동산 정보', '',
           
           
-          [detailHtml, luHtml, histHtml, shtHtml, pmsHtml, hpmsHtml, kcrHtml, mtnHtml, bidHtml, engyHtml, grnHtml, vuHtml]],
+          [detailHtml, luHtml, shtHtml, pmsHtml, hpmsHtml, kcrHtml, mtnHtml, bidHtml, engyHtml, grnHtml, vuHtml]],
         ['투자정보', '',
           
           
@@ -22961,7 +22922,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         ['상권투자 정보', '',
           
           
-          [hoodHtml, rgHtml, lvpHtml, trdHtml, trdarHtml, storeHtml, npsHtml]],
+          [rgHtml, lvpHtml, trdHtml, trdarHtml, storeHtml, npsHtml]],
         ['더 파고들기', '',
           [dgkHtml]],
       ];
@@ -22993,19 +22954,10 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       
       
       
-      
-      
-      
-      
-      
-      
-      
-      const POP_CORE = ['용도지역', '주용도', '용도', '공시지가', '용적률·건폐율', '규모', '면적'];
-      rows.forEach((r) => { if (POP_CORE.indexOf(r[0]) < 0) r[3] = true; });
       const sumTbl = rows.length
         ? '<table class="ls-tbl"><tbody>'
           + rows.filter(([, v]) => v != null)
-              .map(([k, v, , hidePop]) => `<tr${hidePop ? ' class="row-fo"' : ''}><th>${esc(k)}</th><td>${v}</td></tr>`)
+              .map(([k, v]) => `<tr><th>${esc(k)}</th><td>${v}</td></tr>`)
               .join('')
           + '</tbody></table>'
         : '';
