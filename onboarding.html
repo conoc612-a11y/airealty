@@ -5,8 +5,8 @@
   <link rel="icon" type="image/png" href="favicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>로그인 — 부동산 all in one</title>
-  <link rel="stylesheet" href="css/buttons.css?v=350afa5" />
-  <link rel="stylesheet" href="css/tokens.css?v=350afa5" />
+  <link rel="stylesheet" href="css/buttons.css?v=92e8d0e" />
+  <link rel="stylesheet" href="css/tokens.css?v=92e8d0e" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
     :root {
@@ -34,12 +34,13 @@
       display:flex; justify-content:center; align-items:center; font:inherit; font-size:16px; font-weight:600; letter-spacing:-.2px; }
     .soc:not(.hidden) ~ .soc:not(.hidden) { margin-top:10px; }   
     #soc-fld { margin-top:6px; }
-    .soc .soc-ic { position:absolute; left:16px; top:50%; transform:translateY(-50%); width:30px; height:30px;
-      display:flex; align-items:center; justify-content:center; border-radius:999px; }
+    .soc .soc-ic { position:absolute; left:20px; top:50%; transform:translateY(-50%); display:flex; }
     .soc .soc-ic svg { width:22px; height:22px; display:block; }
     .soc.kakao { background:#FEE500; color:rgba(0,0,0,.85); }   
-    .soc.naver { background:#03C75A; color:#fff; }   
-    .soc.naver .soc-ic { background:rgba(255,255,255,.18); }
+    
+
+    .soc.naver { background:#03A94D; color:#fff; }
+    .soc.naver .soc-ic svg { width:18px; height:18px; }
     .soc:hover:not(:disabled) { filter:brightness(.97); }
     .soc:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
     .soc:disabled { opacity:.5; cursor:default; }
@@ -68,7 +69,7 @@
   </style>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=350afa5"></script>
+  <script src="js/ie-guard.js?v=92e8d0e"></script>
   <div class="app">
     <div style="display:flex;gap:6px;margin-bottom:18px;">
       <a href="land.html" class="nav-tab">🏙️ 부동산 지도</a>
@@ -86,7 +87,7 @@
         <div id="soc-fld">
           
           <button type="button" class="soc kakao hidden" id="kakao-btn" aria-label="카카오로 시작하기"><span class="soc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#000" d="M12 3C6.5 3 2 6.4 2 10.6c0 2.7 1.8 5 4.5 6.4l-1 3.7c-.1.3.3.6.6.4l4.3-2.9c.5.1 1 .1 1.6.1 5.5 0 10-3.4 10-7.7S17.5 3 12 3z"/></svg></span>카카오로 시작하기</button>
-          <button type="button" class="soc naver hidden" id="naver-btn" aria-label="네이버로 시작하기"><span class="soc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M6 5h4.1l4 5.9V5H18v14h-4.1l-4-5.9V19H6z"/></svg></span>네이버로 시작하기</button>
+          <button type="button" class="soc naver hidden" id="naver-btn" aria-label="네이버로 시작하기"><span class="soc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M16.273 12.845 7.376 0H0v24h7.726V11.156L16.624 24H24V0h-7.727v12.845Z"/></svg></span>네이버로 시작하기</button>
           <div class="or"><span>또는 이메일로</span></div>
         </div>
         <div id="name-fld" class="hidden">
@@ -159,7 +160,7 @@
 
   </div>
 
-  <script src="js/common.js?v=350afa5"></script>
+  <script src="js/common.js?v=92e8d0e"></script>
   <script>
     
     const q0 = new URLSearchParams(location.search);
