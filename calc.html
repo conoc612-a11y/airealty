@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>airealty 세금 계산기</title>
 <meta name="calc-rules" content="js/calc/rules/rules.v24e2843c87.json">
-<link rel="stylesheet" href="css/tokens.css?v=b5daab9">
+<link rel="stylesheet" href="css/tokens.css?v=17ea26b">
 <style>
   :root { --brand:#D92A14; --brand-deep:#B32210; --ok:#287F38; --warn:#AD5A1F;
     --bg:#FFFFFF; --card:#FFFFFF; --line:#E4E4E7; --text:#000000; --muted:#52525B; --soft:#F4F4F5; }
@@ -116,6 +116,14 @@
   .tip-box dd { margin:0; font-weight:700; text-align:right; }
   .tip-box small { display:block; margin-top:4px; color:var(--muted); font-size:11px; }
   @media print { .tip, .tip-box { display:none !important; } }
+  
+  .lab { display:inline-flex; align-items:center; gap:0; }
+  .ex-row .field { display:flex; flex-wrap:wrap; gap:6px; }
+  .ex-row .btn { padding:4px 10px; font-size:12px; }
+  input.need, select.need { border-color:var(--warn) !important; box-shadow:0 0 0 2px rgba(220,80,40,.15); }
+  #other-msg.show { display:block !important; }
+  .miss { display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:6px; }
+  .sum1 { margin-top:4px; font-size:13px; color:var(--text); }
 </style>
 </head>
 <body class="home">
@@ -142,27 +150,28 @@
 
     <section class="box step-on" data-step="0">
       <h2>① 물건</h2>
+      <div class="row ex-row"><span class="lab">예시로 보기</span><div class="field"><button type="button" class="btn" data-example="0">1주택 실거주</button><button type="button" class="btn" data-example="1">조정 2주택</button><button type="button" class="btn" data-example="2">단타·대출</button></div></div>
       <div class="row"><label for="addr">주소</label>
         <div class="field"><input id="addr" placeholder="시·도 시·군·구 동 (예: 서울특별시 송파구 잠실동)"><button class="btn" id="addr-search">검색</button></div></div>
       <div class="row"><label></label><div class="field"><span class="hint" id="addr-info" aria-live="polite"></span></div></div>
       <div class="row"><label></label><div class="field"><span class="hint" id="pub-info" aria-live="polite"></span></div></div>
-      <div class="row"><label for="pub">공시가격(올해)</label><div class="field"><input id="pub" class="money" data-money placeholder="보유세·매도 비교에 씁니다 — 주소 검색으로 자동"><span>원</span></div></div>
+      <div class="row"><span class="lab"><label for="pub">공시가격(올해)</label><button type="button" class="tip" data-tip="공시가격" aria-label="공시가격 설명 보기">i</button></span><div class="field"><input id="pub" class="money" data-money placeholder="보유세·매도 비교에 씁니다 — 주소 검색으로 자동"><span>원</span></div></div>
       <div class="row"><label for="sel-type">종류</label>
         <div class="field"><select id="sel-type">
           <option>아파트</option><option>단독</option><option>오피스텔</option><option>분양권</option>
           <option>토지</option><option>상가</option><option>공장</option><option>일반건물</option></select></div></div>
       <div class="row" id="row-officetel" hidden><label>오피스텔 용도</label>
         <div class="seg" id="seg-officetel-use"><button class="btn on">주거용</button><button class="btn">업무용</button></div></div>
-      <div class="row"><label for="area">전용면적</label>
+      <div class="row"><span class="lab"><label for="area">전용면적</label><button type="button" class="tip" data-tip="전용면적" aria-label="전용면적 설명 보기">i</button></span>
         <div class="field"><input id="area" class="money"><span>㎡</span></div></div>
-      <div class="row"><label for="region">지역</label>
+      <div class="row"><span class="lab"><label for="region">지역</label><button type="button" class="tip" data-tip="조정대상지역" aria-label="조정대상지역 설명 보기">i</button></span>
         <div class="field"><select id="region" aria-describedby="region-h"><option value="N">비조정대상지역</option><option value="Y">조정대상지역</option></select><span class="badge">자동</span></div></div>
       <div class="row"><span></span><span class="hint" id="region-h">주소의 시·군·구와 양도일로 자동 판정합니다(국토교통부 공고). 직접 바꾸면 그 값을 씁니다.</span></div>
     </section>
 
     <section class="box" data-step="1">
       <h2>② 사람</h2>
-      <div class="row"><label for="houses">세대 주택 수</label>
+      <div class="row"><span class="lab"><label for="houses">세대 주택 수</label><button type="button" class="tip" data-tip="세대 주택 수" aria-label="세대 주택 수 설명 보기">i</button></span>
         <div class="field"><input id="houses" class="money" value="1" inputmode="numeric"><span>채</span></div></div>
       <div class="row"><span></span><span class="hint">양도일 현재 세대가 가진 주택 수(파는 물건 포함). 입주권·분양권도 셉니다.</span></div>
       <div class="row"><label for="age">나이</label><div class="field"><input id="age" class="money" placeholder="보유세 고령자 공제에 씁니다"></div></div>
@@ -177,13 +186,13 @@
       <div class="row" id="gift-warn" hidden><span></span><span class="hint" style="color:var(--brand)">⚠ 증여받은 물건을 10년(2022년 이전 증여분 5년) 안에 팔면 이월과세를 확인해야 합니다</span></div>
       <div class="row"><label for="buy">매입가</label><div class="field"><input id="buy" class="money" data-money><span>원</span></div></div>
       <div class="row"><span></span><span class="hint" data-kor="buy"></span></div>
-      <div class="row"><label for="d-acq">취득일</label><div class="field"><input id="d-acq" type="date"></div></div>
-      <div class="row"><label for="d-contract">계약일</label><div class="field"><input id="d-contract" type="date"></div></div>
+      <div class="row"><span class="lab"><label for="d-acq">취득일</label><button type="button" class="tip" data-tip="취득일" aria-label="취득일 설명 보기">i</button></span><div class="field"><input id="d-acq" type="date"></div></div>
+      <div class="row"><span class="lab"><label for="d-contract">계약일</label><button type="button" class="tip" data-tip="계약일" aria-label="계약일 설명 보기">i</button></span><div class="field"><input id="d-contract" type="date"></div></div>
       <div class="row"><label for="sell">매도가</label><div class="field"><input id="sell" class="money" data-money><span>원</span></div></div>
       <div class="row"><span></span><span class="hint" data-kor="sell"></span></div>
-      <div class="row"><label for="d-sell">양도일</label><div class="field"><input id="d-sell" type="date"><span class="hint" id="hold-period"></span></div></div>
-      <div class="row"><label for="cost-buy">매수 경비</label><div class="field"><input id="cost-buy" class="money" data-money><span>원</span></div></div>
-      <div class="row"><label for="cost-sell">매도 경비</label><div class="field"><input id="cost-sell" class="money" data-money><span>원</span></div></div>
+      <div class="row"><span class="lab"><label for="d-sell">양도일</label><button type="button" class="tip" data-tip="양도일" aria-label="양도일 설명 보기">i</button></span><div class="field"><input id="d-sell" type="date"><span class="hint" id="hold-period"></span></div></div>
+      <div class="row"><span class="lab"><label for="cost-buy">매수 경비</label><button type="button" class="tip" data-tip="매수·매도 경비" aria-label="매수·매도 경비 설명 보기">i</button></span><div class="field"><input id="cost-buy" class="money" data-money><span>원</span></div></div>
+      <div class="row"><span class="lab"><label for="cost-sell">매도 경비</label><button type="button" class="tip" data-tip="매수·매도 경비" aria-label="매수·매도 경비 설명 보기">i</button></span><div class="field"><input id="cost-sell" class="money" data-money><span>원</span></div></div>
       <div class="row"><label for="capex">자본적지출</label><div class="field"><input id="capex" class="money" value="0" data-money><span>원</span></div></div>
       <div class="row"><span></span><label><input type="checkbox" id="chk-landpermit"> 토지거래허가를 받았습니다 <span class="hint">(허가구역일 때만 보입니다)</span></label></div>
     </section>
@@ -199,9 +208,9 @@
 
     <section class="box fold closed" data-step="3" id="sec-adv">
       <h2><button id="sect-toggle-5" aria-expanded="false">▸ ⑤ 고급</button></h2>
-      <div class="row"><label for="share">지분</label><div class="field"><input id="share" class="money" value="100"><span>%</span></div></div>
+      <div class="row"><span class="lab"><label for="share">지분</label><button type="button" class="tip" data-tip="지분" aria-label="지분 설명 보기">i</button></span><div class="field"><input id="share" class="money" value="100"><span>%</span></div></div>
       <div class="row"><label for="biz-start">법인 사업연도 개시일</label><div class="field"><input id="biz-start" type="date" value="2026-01-01"></div></div>
-      <div class="row"><label for="reside">거주 기간</label><div class="field"><input id="reside" class="money" inputmode="numeric" placeholder="0"><span>개월</span></div></div>
+      <div class="row"><span class="lab"><label for="reside">거주 기간</label><button type="button" class="tip" data-tip="거주 기간" aria-label="거주 기간 설명 보기">i</button></span><div class="field"><input id="reside" class="money" inputmode="numeric" placeholder="0"><span>개월</span></div></div>
       <div class="row"><label>특례</label><div class="field"><label><input type="checkbox" id="chk-temp2h"> 일시적 2주택</label><label><input type="checkbox" id="chk-redev"> 정비구역</label><label><input type="checkbox" id="chk-downpay"> 계약금 금융증빙</label><label><input type="checkbox" id="chk-firsthome"> 생애최초 주택</label></div></div>
       <div class="row"><label>상태</label><div class="field"><label><input type="checkbox" id="chk-unreg"> 미등기</label><label><input type="checkbox" id="chk-nbl"> 비사업용 토지</label><label><input type="checkbox" id="chk-capital" checked> 수도권</label></div></div>
       <div class="row"><label for="prev-pub">전년 공시가격</label><div class="field"><input id="prev-pub" class="money" data-money placeholder="재산세 과세표준상한(5%)에 씁니다"><span>원</span></div></div>
@@ -276,7 +285,7 @@
 </div>
 
 
-<script src="js/common.js?v=b5daab9"></script>
-<script src="js/calc/calc.v1640d14a22.js?v=b5daab9"></script>
+<script src="js/common.js?v=17ea26b"></script>
+<script src="js/calc/calc.v6f07d4dce1.js?v=17ea26b"></script>
 </body>
 </html>
