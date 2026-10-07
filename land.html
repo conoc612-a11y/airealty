@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=cfc1dac" />
+  <link rel="stylesheet" href="css/tokens.css?v=06a4ffa" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=cfc1dac"></script>
+  <script src="js/auth-guard.js?v=06a4ffa"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=cfc1dac" />
+  <link rel="stylesheet" href="css/buttons.css?v=06a4ffa" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=cfc1dac" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=06a4ffa" />
   <style>
     :root {
       
@@ -379,7 +379,14 @@
     .sh-role.on { background:var(--mx-accent, var(--c-primary));
       border-color:var(--mx-accent, var(--c-primary)); color:#fff; }
     
-    :root.dark :is(.sh-role.on, .sh-q button.on, .ap-update:hover) { color:#000; }
+    
+    :root.dark :is(.sh-role.on, .sh-q button.on, .ap-update:hover, .news-chip.on) { color:#000; }
+    
+
+    :root.dark :is(.pc-btn-primary, a.pc-btn-primary):not(:hover):not(#nearby-go) { color:#000; }
+    :root.dark #chat-panel .sp-foot button { color:#000; }
+    
+    :root.dark .marker-cluster div { color:#111; }
     .sh-roles { display:flex; gap:6px; flex:0 0 auto; }
 
     
@@ -456,8 +463,6 @@
       height:34px; box-sizing:border-box; }
     .info-chip b { color:var(--text); font-weight:700; }
     .info-chip svg { width:16px; height:16px; flex-shrink:0; }
-    .info-chip.fx-up b { color:var(--c-danger); }
-    .info-chip.fx-down b { color:var(--c-primary); }
     @media (max-width:640px) { .info-chip.fx-chip { display:none; } }
     
     @media (max-width:640px) { #weather-area { display:none; } header .right { flex-wrap:nowrap; } }
@@ -572,42 +577,8 @@
 
 
 
-      .leaflet-popup-content-wrapper, .leaflet-popup-tip, .lp-body, .lc, .stat-bar) {
-      --c-card:#FFFFFF; --c-hover:#FFFFFF; --c-bg:#FFFFFF;
-      --c-border:#E5E7EB; --c-line:#E5E7EB;
-      --c-primary:#D92A14; --c-primary-soft:#FFFFFF;
-      
-
-
-
-
-
-
-
-      
-
-
-      --c-price:#D92A14; --c-text:#000000;
-      
-
-      
-
-
-
-
-      
-
-
-      --card:#FFFFFF; --bg:#FFFFFF; --line:#E5E7EB;
-      --text:#000000; --accent:#D92A14;
-    }
     
 
-    
-    
-
-
-      a.pc-btn-primary:hover) { background:#B32210; border-color:#B32210; color:#fff; }
     
 
 
@@ -981,7 +952,6 @@
 
 
     .ap-tag-cut  { background:var(--card); color:var(--c-muted); border-color:var(--c-line); }
-    .ap-tag-fail { background:var(--card); color:var(--c-muted); border-color:var(--c-line); }
     .ap-tag-d    { background:var(--card); color:var(--c-muted); border-color:var(--c-line); }
     
     .ap-tag-d.urgent { background:var(--card); color:var(--c-primary); border-color:var(--c-primary); font-weight:700; }
@@ -1171,8 +1141,6 @@
     #ap-detail, .leaflet-popup-content { font-variant-numeric:tabular-nums; }
     .apd-note { font-size:12px; line-height:1.65; color:var(--text); white-space:pre-wrap;
       word-break:keep-all; overflow-wrap:anywhere; }
-    .apd-muted { font-size:12px; color:var(--muted); line-height:1.65; white-space:pre-wrap;
-      word-break:keep-all; overflow-wrap:anywhere; }
     #apd-lightbox { position:fixed; inset:0; z-index:4000; background:rgba(0,0,0,.72); }
     #apd-lightbox[hidden] { display:none; }
     
@@ -1321,7 +1289,7 @@
 
 
     header, .stat-bar, .engine-bar, .list-tabs, .fav-cats, .banner,
-    .leaflet-control, .leaflet-control-layers-list, .lc, .bm-picker,
+    .leaflet-control, .leaflet-control-layers-list, .lc,
     .pc-actions, .rec .actions, .jb-chip, .jb-stage, .sheet-handle {
       -webkit-user-select:none; user-select:none;
     }
@@ -1352,7 +1320,7 @@
       -webkit-user-select:text; user-select:text;
     }
     .leaflet-popup-content, .leaflet-popup-content *,
-    .rec, .rec *, .side, .side *, .ap-panel, .ap-panel * {
+    .rec, .rec *, .side, .side * {
       -webkit-user-select:text; user-select:text;
     }
     
@@ -1377,10 +1345,8 @@
 
     .leaflet-top.leaflet-left { max-height:100%; display:flex; flex-direction:column; }
     .lc { background:var(--card); border:1px solid var(--line); border-radius:8px; box-shadow:var(--c-shadow); font-size:14px; color:var(--text); padding:11px 13px; line-height:1.7; max-width:232px; min-height:0; max-height:calc(100vh - 240px); overflow-y:auto; overscroll-behavior:contain; }
-    .lc-rp { position:relative; width:190px; min-width:150px; max-width:380px; min-height:120px; overflow:auto; padding-bottom:28px; }
     
 
-    .lc-jb { position:relative; width:212px; min-width:170px; max-width:min(440px, calc(100vw - 40px)); height:min(62vh, 560px); min-height:120px; overflow:auto; padding-bottom:28px; }
     .lc-title { font-weight:700; font-size:14px; margin-bottom:7px; color:var(--text); letter-spacing:-.1px; }
     .lc-check { display:block; cursor:pointer; font-size:14px; font-weight:400; }
     .lc-check input { vertical-align:middle; margin-right:5px; accent-color:var(--c-primary); }
@@ -1424,7 +1390,6 @@
     #jb-rp-bar-close { border:none; background:var(--c-hover); color:var(--muted); border-radius:8px; width:22px; height:22px; cursor:pointer; font-size:12px; line-height:1; }
     
 
-    .bm-picker { display:flex; background:none; border:none; padding:0; box-shadow:none; }
     
 
 
@@ -1612,21 +1577,6 @@
     .lp-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     
 
-
-    .ua .lp-body { width:300px; }
-    .ua-sec { padding:6px 8px 2px; }
-    .ua-sec b { display:block; font-size:12px; color:var(--muted); margin-bottom:3px; }
-    .ua-wrap.open .ua-detail { display:block; }
-    .ua-item { display:flex; align-items:center; gap:5px; padding:3px 4px; cursor:pointer; border-radius:4px; }
-    .ua-item:hover { background:var(--c-hover); }
-    .ua-nm { font-size:13px; line-height:1.45; }
-    .ua-detail { display:none; margin:2px 4px 5px 26px; padding:4px 9px; font-size:12px;
-      color:var(--muted); line-height:1.55; border-left:2px solid var(--c-primary); }
-    .ua-detail code { font-size:11px; background:var(--c-hover); padding:0 4px; border-radius:4px; }
-    .ua-note { padding:7px 9px; font-size:12px; color:var(--muted); line-height:1.5; }
-    .ua-note b { color:var(--text); }
-    
-
     .leaflet-top.leaflet-right { display:flex; gap:6px; align-items:flex-start; padding:10px 10px 0 0; }
     .leaflet-top.leaflet-right .leaflet-control { margin:0 !important; float:none; }
     .rp-stat { font-size:12px; color:var(--muted); margin-top:5px; }
@@ -1768,6 +1718,9 @@
     @keyframes cctv-blink { 50%{opacity:.25;} }
     @media (prefers-reduced-motion: reduce) { .cctv-pc-live span { animation:none; } }
     .cctv-pc-meta { padding:9px 13px 12px; font-size:12px; color:var(--muted); flex:none; }
+    
+    .pc.cctv-pc > .pc-head.cctv-pc-head { margin-bottom:0; }
+    .pc.cctv-pc > .pc-body.cctv-pc-body { margin:0; display:flex; flex-direction:column; flex:1 1 auto; min-height:0; color:inherit; line-height:normal; }
     .cctv-pc-info { padding:11px 13px; display:flex; flex-direction:column; gap:6px; flex:1 1 auto; overflow-y:auto; }
     .cctv-info-row { display:flex; gap:8px; font-size:12px; line-height:1.5; }
     .cctv-info-k { color:var(--muted); white-space:nowrap; min-width:60px; flex:none; }
@@ -2174,7 +2127,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=cfc1dac"></script>
+  <script src="js/ie-guard.js?v=06a4ffa"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2201,6 +2154,7 @@
           <a href="#" id="who" style="color:var(--muted);font-size:12px;pointer-events:none;">로그인 안 됨</a>
           <a href="onboarding.html" id="login-link">로그인</a>
           <button id="naver-link" style="display:none;"></button>
+          <button id="kakao-link" style="display:none;"></button>
           <button id="logout" style="display:none;">로그아웃</button>
           <button id="delete-account" style="display:none;color:var(--c-danger);">회원 탈퇴</button>
         </div>
@@ -2511,25 +2465,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-10-07 13:44 · cfc1dac</span></span>
+          · <span class="build-tag">build 2026-10-07 14:19 · 06a4ffa</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=cfc1dac"></script>
+  <script src="js/joinkey.js?v=06a4ffa"></script>
   
-  <script src="js/identity.js?v=cfc1dac"></script>
-  <script src="js/common.js?v=cfc1dac"></script>
-  <script src="js/ui-resize.js?v=cfc1dac"></script>
-  <script src="js/footer-resize.js?v=cfc1dac"></script>
-  <script src="js/route-line.js?v=cfc1dac"></script>
-  <script src="js/route-api.js?v=cfc1dac"></script>
-  <script src="js/footer-stats.js?v=cfc1dac"></script>
+  <script src="js/identity.js?v=06a4ffa"></script>
+  <script src="js/common.js?v=06a4ffa"></script>
+  <script src="js/ui-resize.js?v=06a4ffa"></script>
+  <script src="js/footer-resize.js?v=06a4ffa"></script>
+  <script src="js/route-line.js?v=06a4ffa"></script>
+  <script src="js/route-api.js?v=06a4ffa"></script>
+  <script src="js/footer-stats.js?v=06a4ffa"></script>
   
 
-  <script src="js/ad-consent.js?v=cfc1dac"></script>
+  <script src="js/ad-consent.js?v=06a4ffa"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -5473,11 +5427,12 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           }));
       }
       function openTopisPopup(it) {
-        const html = '<div class="cctv-pc">'
-          + `<div class="cctv-pc-head"><span>${esc(it.nm || '시내 CCTV')}</span></div>`
-          + '<div class="cctv-pc-video" id="topis-video-slot">불러오는 중…</div>'
-          + `<div class="cctv-pc-meta">${[it.gvr, it.road].filter(Boolean).map(esc).join(' · ')}</div></div>`;
-        const popup = L.popup({ closeButton: false, maxWidth: 760 })
+        
+        const html = '<div class="pc cctv-pc" data-kind="cctv">'
+          + `<div class="pc-head cctv-pc-head"><span class="rp-name">${esc(it.nm || '시내 CCTV')}</span></div>`
+          + '<div class="pc-body cctv-pc-body"><div class="cctv-pc-video" id="topis-video-slot">불러오는 중…</div>'
+          + `<div class="cctv-pc-meta">${[it.gvr, it.road].filter(Boolean).map(esc).join(' · ')}</div></div></div>`;
+        const popup = L.popup({ closeButton: false })
           .setLatLng([it.lat, it.lng]).setContent(html).openOn(map);
         setTimeout(() => {
           const node = popup.getElement();
@@ -6199,10 +6154,17 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         const ultra = tagoPosSrc === ULTRA_SRC;
         tagoPosLayer.clearLayers();
         const cnt = { fresh: 0, stale: 0, minStale: Infinity };
+        
+        
+        
+        const med = (a) => { const v = a.slice().sort((x, y) => x - y); return v.length ? v[v.length >> 1] : 0; };
+        const live = buses.filter((b) => b.lat && b.lng && !(ultra && Number.isFinite(b.ageSec) && b.ageSec > ULTRA_DROP_SEC));
+        const center = ultra && live.length >= 3 ? L.latLng(med(live.map((b) => b.lat)), med(live.map((b) => b.lng))) : null;
         for (const b of buses) {
           if (!b.lat || !b.lng) continue;
           const age = ultra && Number.isFinite(b.ageSec) ? b.ageSec : null;
           if (age != null && age > ULTRA_DROP_SEC) continue;
+          if (center && center.distanceTo([b.lat, b.lng]) > 50000) continue;
           const stale = age != null && age > ULTRA_STALE_SEC;
           if (stale) { cnt.stale++; cnt.minStale = Math.min(cnt.minStale, age); } else cnt.fresh++;
           const m = L.marker([b.lat, b.lng], { icon: busIcon(stale ? '#adb5bd' : C.color), zIndexOffset: stale ? 400 : 800, opacity: stale ? 0.6 : 1 });
@@ -12628,6 +12590,8 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             const pc = el.querySelector('.pc');
             if (!pc) return;                     
             
+            if (pc.dataset.kind === 'cctv') return;
+            
             
             
             
@@ -14102,11 +14066,11 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       function openCctvPopup(it) {
         
         if (it.url) {
-          const html = '<div class="cctv-pc">'
-            + `<div class="cctv-pc-head"><span>${esc(it.name || 'CCTV')}</span></div>`
-            + '<div class="cctv-pc-video" id="cctv-video-slot">불러오는 중…</div>'
-            + '<div class="cctv-pc-meta">실시간 도로 영상</div></div>';
-          const popup = L.popup({ closeButton: false, maxWidth: 760 }).setLatLng([it.lat, it.lng]).setContent(html).openOn(map);
+          const html = '<div class="pc cctv-pc" data-kind="cctv">'
+            + `<div class="pc-head cctv-pc-head"><span class="rp-name">${esc(it.name || 'CCTV')}</span></div>`
+            + '<div class="pc-body cctv-pc-body"><div class="cctv-pc-video" id="cctv-video-slot">불러오는 중…</div>'
+            + '<div class="cctv-pc-meta">실시간 도로 영상</div></div></div>';
+          const popup = L.popup({ closeButton: false }).setLatLng([it.lat, it.lng]).setContent(html).openOn(map);
           setTimeout(() => {
             const node = popup.getElement();
             if (!node) return;
@@ -14154,14 +14118,14 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           if (it.address) rows.push(['주소', it.address]);
           if (it.name) rows.push(['관리번호', it.name]);
           const metaHtml = rows.map(([k, v]) => `<div class="cctv-info-row"><span class="cctv-info-k">${esc(k)}</span><span class="cctv-info-v">${esc(v)}</span></div>`).join('');
-          const html = '<div class="cctv-pc">'
-            + `<div class="cctv-pc-head"><span>${esc(title)}</span></div>`
-            + '<div class="cctv-pc-info">'
+          const html = '<div class="pc cctv-pc" data-kind="cctv">'
+            + `<div class="pc-head cctv-pc-head"><span class="rp-name">${esc(title)}</span></div>`
+            + '<div class="pc-body cctv-pc-body"><div class="cctv-pc-info">'
             + '<div class="cctv-info-row"><span class="cctv-info-v" style="color:var(--c-muted);">'
             + '📹 영상 미제공 — 위치·설치 정보만 공개됨(생활방범 CCTV 는 지자체가 영상을 공개하지 않음)'
             + '</span></div>'
             + `${metaHtml}</div>`
-            + `<div class="cctv-pc-meta">좌표 ${it.lat.toFixed(5)}, ${it.lng.toFixed(5)}</div></div>`;
+            + `<div class="cctv-pc-meta">좌표 ${it.lat.toFixed(5)}, ${it.lng.toFixed(5)}</div></div></div>`;
           const popup = L.popup({ closeButton: false, maxWidth: 400 }).setLatLng([it.lat, it.lng]).setContent(html).openOn(map);
           
           
@@ -14672,19 +14636,24 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       let _subRows = null, _subInit = false, _lhP = null;
       function loadLhNotice() {
         if (_lhP) return _lhP;
+        
+        let failed = false;
         const one = (tp) => new Promise((res) => {
           let done = false;
-          const to = setTimeout(() => { if (!done) { done = true; res([]); } }, 20000);
+          const to = setTimeout(() => { if (!done) { done = true; failed = true; res([]); } }, 20000);
           dgkFetch('lhLeaseNoticeInfo1', 'lhLeaseNoticeInfo1', { UPP_AIS_TP_CD: tp, PG_SZ: 200, PAGE: 1 }, (j) => {
             if (done) return; done = true; clearTimeout(to);
+            if (j == null) failed = true;
             const arr = Array.isArray(j) ? j : [];
             const box = arr.find((x) => x && Array.isArray(x.dsList));
             res(box ? box.dsList : []);
           });
         });
-        _lhP = Promise.all([one('05'), one('06')])
-          .then(([a, b]) => [...a, ...b]).catch(() => []);
-        return _lhP;
+        const p = Promise.all([one('05'), one('06')])
+          .then(([a, b]) => [...a, ...b]).catch(() => { failed = true; return []; })
+          .then((rows) => { if (failed && _lhP === p) _lhP = null; return rows; });
+        _lhP = p;
+        return p;
       }
       function subRowsBuild(subs, pr, lh) {
         const rows = [];
@@ -14787,6 +14756,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         ]).then(([subs, pr, lh]) => {
           _subRows = subRowsBuild(subs, pr, lh);
           subRowsRender(subSearch.value || '');
+          if (_lhP === null) _subInit = false;   
         });
       }
       map.on('overlayadd', (e) => {
@@ -24761,8 +24731,9 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       _xlsxPromise = new Promise((res, rej) => {
         const sc = document.createElement('script');
         sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
-        sc.onload = () => (window.XLSX ? res(window.XLSX) : rej(new Error('XLSX 없음')));
-        sc.onerror = () => rej(new Error('불러오기 실패'));
+        
+        sc.onload = () => { if (window.XLSX) res(window.XLSX); else { _xlsxPromise = null; rej(new Error('XLSX 없음')); } };
+        sc.onerror = () => { _xlsxPromise = null; rej(new Error('불러오기 실패')); };
         document.head.appendChild(sc);
       });
       return _xlsxPromise;
@@ -25510,6 +25481,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         $('delete-account').style.display = '';
         $('login-link').style.display = 'none';
         paintNaverLink();
+        paintKakaoLink();
         
         if (window.__aucFavPull) {
           window.__aucFavPull().then((changed) => { if (changed) { try { refreshStatBar(); } catch (e) {} } })
@@ -25610,6 +25582,62 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       b.disabled = false;
       paintNaverLink();
     });
+    
+    
+    
+    
+    const KAKAO_LINK_LIVE = false;
+    function paintKakaoLink() {
+      const b = $('kakao-link');
+      if (!user || !(KAKAO_LINK_LIVE || new URLSearchParams(location.search).get('kakao') === '1')) { b.style.display = 'none'; return; }
+      const ids = user.identities || [];
+      const k = ids.find((x) => x.provider === 'kakao');
+      
+      if (k && ids.length < 2) { b.style.display = 'none'; return; }
+      b.dataset.mode = k ? 'unlink' : 'link';
+      b.textContent = k ? '카카오 연결 해제' : '카카오 계정 연결';
+      b.style.display = '';
+    }
+    $('kakao-link').addEventListener('click', async () => {
+      const b = $('kakao-link');
+      const s = await ensureSb();
+      const { data: { session } } = await s.auth.getSession();
+      if (!session) { alert('로그인 정보가 없습니다. 다시 로그인해 주세요.'); return; }
+      if (b.dataset.mode === 'link') {
+        sessionStorage.setItem('mj_kakao_link', '1');   
+        const { error } = await s.auth.linkIdentity({ provider: 'kakao', options: { redirectTo: location.origin + location.pathname } });
+        if (error) { sessionStorage.removeItem('mj_kakao_link'); alert('카카오 연결을 시작하지 못했습니다. 잠시 후 다시 시도해 주세요.'); }
+        return;
+      }
+      const k = (session.user.identities || []).find((x) => x.provider === 'kakao');
+      if (!k) { paintKakaoLink(); return; }
+      if (!confirm('카카오 연결을 해제하시겠습니까?\n해제하면 이 계정으로 카카오 로그인을 하실 수 없습니다. 다른 로그인 방법은 그대로 쓰실 수 있습니다.')) return;
+      b.disabled = true;
+      const { error } = await s.auth.unlinkIdentity(k);
+      b.disabled = false;
+      if (error) { alert('연결을 해제하지 못했습니다. 잠시 후 다시 시도해 주세요.'); return; }
+      
+      alert('카카오 연결을 해제했습니다. 카카오 쪽 연결까지 끊으시려면 카카오톡 > 설정 > 카카오계정 > 연결된 서비스 관리에서 해 주세요.');
+      try { const r = await s.auth.refreshSession(); user = (r.data && r.data.user) || user; } catch (e) {}
+      paintKakaoLink();
+    });
+    
+    try {
+      if (sessionStorage.getItem('mj_kakao_link') === '1') {
+        sessionStorage.removeItem('mj_kakao_link');
+        const h = new URLSearchParams(location.hash.slice(1));
+        if (h.get('error')) {
+          const d = h.get('error_description') || '';
+          sessionStorage.setItem('mj_flash', /already.*(linked|exists)|identity_already_exists/i.test(d + h.get('error_code'))
+            ? '이 카카오 계정은 이미 다른 회원에 연결되어 있습니다. 다른 카카오 계정으로 시도해 주세요.'
+            : /manual linking/i.test(d) ? '지금은 카카오 연결을 쓸 수 없습니다. 관리자에게 알려 주세요.'
+            : '카카오 연결에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+          history.replaceState(null, '', location.pathname + location.search);
+        } else if (location.hash.includes('access_token')) {
+          sessionStorage.setItem('mj_flash', '카카오 계정이 연결되었습니다. 이제 카카오 로그인으로도 들어오실 수 있습니다.');
+        }
+      }
+    } catch (e) {}
     
     try { const f = sessionStorage.getItem('mj_flash'); if (f) { sessionStorage.removeItem('mj_flash'); setTimeout(() => alert(f), 300); } } catch (e) {}
     $('profile-btn').addEventListener('click', (e) => { e.stopPropagation(); $('profile-menu').classList.toggle('on'); });
