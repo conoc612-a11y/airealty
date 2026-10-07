@@ -170,6 +170,61 @@
       + `border-radius:9px;background:${color};color:#fff;">${label}</span>`;
   }
 
-  g.mjIdentity = { risk, scoreOf, riskBadge, uncertainHtml, fmtDate };
+  // ── 건설업 등록 공시 색인(사업자번호 → 등록 업종·등록일·지역) ─────
+  // `tools/build_kiscon_reg_index.js` 가 만든 앞 3자리 조각. 2003년 이후 **등록 공시** 사건이지 현재 등록부가 아니다.
+  // ⛔ 상호로 찾지 마라 — 동명 업체가 붙는다(현대건설 26행 · 사업자번호 11개, 실측 2026-10-07). 사업자번호만 받는다.
+  const REG_DIR = 'kiscon_reg_idx/';
+  const _regCache = new Map();         // 앞 3자리 → 조각(또는 null)
+  let _regMeta;                         // 기준일(meta.json) — 한 번만 받는다
+
+  /**
+   * @param {string} bizno 사업자등록번호(10자리)
+   * @param {Function} cb  { rows:[[업종, 등록일, 시도, 시군구, 상호]…], latest } — 색인을 못 받으면 null
+   */
+  function reg(bizno, cb) {
+    const b = String(bizno || '').replace(/\D/g, '').slice(0, 10);
+    if (b.length !== 10) { cb(null); return; }
+    const p = b.slice(0, 3);
+    const use = (shard) => {
+      if (shard === undefined) { cb(null); return; }
+      const meta = _regMeta ? Promise.resolve(_regMeta)
+        : fetch(REG_DIR + 'meta.json').then((r) => (r.ok ? r.json() : {})).catch(() => ({}));
+      meta.then((m) => { if (m && m.latest) _regMeta = m; cb({ rows: (shard && shard[b]) || [], latest: (m && m.latest) || '' }); });
+    };
+    if (_regCache.has(p)) { use(_regCache.get(p)); return; }
+    // 🔴 risk() 와 같은 규칙 — 404 만 정상 '없음' 으로 캐시, 통신 실패는 캐시하지 않는다.
+    fetch(REG_DIR + p + '.json')
+      .then((r) => {
+        if (r.ok) return r.json();
+        if (r.status === 404) return null;
+        throw new Error('HTTP ' + r.status);
+      })
+      .then((j) => { _regCache.set(p, j); use(j); })
+      .catch(() => { use(undefined); });
+  }
+
+  const escH = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const dotDate = (d) => String(d || '').replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3');
+
+  /** reg() 결과 → 화면 조각. 사업자조회 모달·건설업체 마커 팝업이 같이 쓴다. null 이면 '' (색인을 못 받음 — 절을 만들지 않는다). */
+  function regHtml(res, max) {
+    if (!res) return '';
+    const foot = '<div class="doc-sub" style="font-size:12px;margin-top:4px;">2003년 이후 건설업 등록 공시'
+      + (res.latest ? ' · ' + dotDate(res.latest) + ' 기준' : '') + ' · 현재 등록 상태가 아닙니다.</div>';
+    if (!res.rows.length) {
+      return '<span class="doc-sub">이 사업자번호로 낸 건설업 등록 공시가 없습니다.'
+        + ' <span style="font-size:12px;">(건설업 등록 업체가 아니면 원래 나오지 않습니다)</span></span>' + foot;
+    }
+    const n = max || 8;
+    const name0 = res.rows[0][4];
+    const li = res.rows.slice(0, n).map((r) => '<div style="font-size:12px;margin-top:2px;">'
+      + escH(dotDate(r[1])) + ' · ' + escH(String(r[0]).replace(/ㆍ/g, '·'))   // 업종 구분자 U+318D → 가운뎃점
+      + ' <span class="doc-sub">· ' + escH((r[2] + ' ' + r[3]).trim())
+      + (r[4] && r[4] !== name0 ? ' · 당시 상호 ' + escH(r[4]) : '') + '</span></div>').join('');
+    const more = res.rows.length > n ? '<div class="doc-sub" style="font-size:12px;margin-top:2px;">외 ' + (res.rows.length - n) + '건</div>' : '';
+    return li + more + foot;
+  }
+
+  g.mjIdentity = { risk, reg, regHtml, scoreOf, riskBadge, uncertainHtml, fmtDate };
   if (typeof module !== 'undefined' && module.exports) module.exports = g.mjIdentity;
 }(typeof globalThis !== 'undefined' ? globalThis : this));

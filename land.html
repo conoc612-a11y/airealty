@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=c474d03" />
+  <link rel="stylesheet" href="css/tokens.css?v=cfc1dac" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=c474d03"></script>
+  <script src="js/auth-guard.js?v=cfc1dac"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=c474d03" />
+  <link rel="stylesheet" href="css/buttons.css?v=cfc1dac" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=c474d03" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=cfc1dac" />
   <style>
     :root {
       
@@ -2174,7 +2174,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=c474d03"></script>
+  <script src="js/ie-guard.js?v=cfc1dac"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2200,6 +2200,7 @@
         <div id="profile-menu" class="profile-menu">
           <a href="#" id="who" style="color:var(--muted);font-size:12px;pointer-events:none;">로그인 안 됨</a>
           <a href="onboarding.html" id="login-link">로그인</a>
+          <button id="naver-link" style="display:none;"></button>
           <button id="logout" style="display:none;">로그아웃</button>
           <button id="delete-account" style="display:none;color:var(--c-danger);">회원 탈퇴</button>
         </div>
@@ -2510,25 +2511,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-10-07 10:30 · c474d03</span></span>
+          · <span class="build-tag">build 2026-10-07 13:44 · cfc1dac</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=c474d03"></script>
+  <script src="js/joinkey.js?v=cfc1dac"></script>
   
-  <script src="js/identity.js?v=c474d03"></script>
-  <script src="js/common.js?v=c474d03"></script>
-  <script src="js/ui-resize.js?v=c474d03"></script>
-  <script src="js/footer-resize.js?v=c474d03"></script>
-  <script src="js/route-line.js?v=c474d03"></script>
-  <script src="js/route-api.js?v=c474d03"></script>
-  <script src="js/footer-stats.js?v=c474d03"></script>
+  <script src="js/identity.js?v=cfc1dac"></script>
+  <script src="js/common.js?v=cfc1dac"></script>
+  <script src="js/ui-resize.js?v=cfc1dac"></script>
+  <script src="js/footer-resize.js?v=cfc1dac"></script>
+  <script src="js/route-line.js?v=cfc1dac"></script>
+  <script src="js/route-api.js?v=cfc1dac"></script>
+  <script src="js/footer-stats.js?v=cfc1dac"></script>
   
 
-  <script src="js/ad-consent.js?v=c474d03"></script>
+  <script src="js/ad-consent.js?v=cfc1dac"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -3395,7 +3396,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
               if (!Number.isFinite(n) || !n) return '';
               return fmtAmt(n / 1e4);
             };
-            let left = 6;   
+            let left = 7;   
             
             const done = () => { left -= 1; if (left <= 0 || painted) paint(); };
 
@@ -3416,6 +3417,16 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
                     + ' <span style="font-size:12px;">(건설업 등록 업체가 아니면 원래 나오지 않음)</span></span>'));
                 }
                 
+                done();
+              });
+            } else { done(); }
+
+            
+            
+            
+            if (window.mjIdentity && mjIdentity.reg) {
+              mjIdentity.reg(digits, (res) => {
+                if (res && res.rows.length) parts.push(sec('건설업 등록 이력', mjIdentity.regHtml(res, 8)));
                 done();
               });
             } else { done(); }
@@ -6128,7 +6139,8 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         if (quiet) return;
         if (!n) { toast(label + ' — ' + (j && j.msg ? j.msg : '지금 운행 중인 차량이 없음.')); return; }
         toast(label + ' 실시간 ' + n + '대 — ' + sec + '초마다 갱신됨(레이어를 끄면 멈춤)');
-        const g = L.featureGroup(layer.getLayers());
+        
+        const g = L.featureGroup(layer.getLayers().filter((m) => m._fresh !== false));
         try { map.fitBounds(g.getBounds().pad(0.15)); } catch (e) {  }
       }
       function busPosTick() {
@@ -6176,21 +6188,31 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         tagoPosLayer.clearLayers();
         if (map.hasLayer(tagoPosLayer)) map.removeLayer(tagoPosLayer);
       }
+      
+      
+      const ULTRA_STALE_SEC = 600, ULTRA_DROP_SEC = 6 * 3600;
+      const ageTxt = (s) => (s < 3600 ? Math.max(1, Math.round(s / 60)) + '분 전' : s < 86400 ? Math.round(s / 3600) + '시간 전' : Math.round(s / 86400) + '일 전');
       function tagoPosDraw(buses, label) {
         const C = tagoPosSrc;
         const kp = (tagoPosKey || '').split('/');
         const cc = kp[0], rid = kp.slice(1).join('/');
         const ultra = tagoPosSrc === ULTRA_SRC;
         tagoPosLayer.clearLayers();
+        const cnt = { fresh: 0, stale: 0, minStale: Infinity };
         for (const b of buses) {
           if (!b.lat || !b.lng) continue;
-          const m = L.marker([b.lat, b.lng], { icon: busIcon(C.color), zIndexOffset: 800 });
+          const age = ultra && Number.isFinite(b.ageSec) ? b.ageSec : null;
+          if (age != null && age > ULTRA_DROP_SEC) continue;
+          const stale = age != null && age > ULTRA_STALE_SEC;
+          if (stale) { cnt.stale++; cnt.minStale = Math.min(cnt.minStale, age); } else cnt.fresh++;
+          const m = L.marker([b.lat, b.lng], { icon: busIcon(stale ? '#adb5bd' : C.color), zIndexOffset: stale ? 400 : 800, opacity: stale ? 0.6 : 1 });
+          m._fresh = !stale;
           m.bindTooltip(esc(label) + ' ' + esc(b.no), { direction: 'top' });
           m.on('click', () => busRouteLine(ultra ? 'ultra' : 'tago', rid, label, cc, label));
           m.bindPopup('<div class="pc"><div class="pc-head"><span class="rp-name">'
             + esc(label) + ' <span style="font-weight:400;">' + esc(b.no) + '</span></span></div>'
             + '<div class="pc-body">'
-            + '<div style="font-size:12px;">' + '운행 중</div>'
+            + '<div style="font-size:12px;">' + (stale ? '마지막 신호 ' + ageTxt(age) + ' — 지금 운행 중인지 알 수 없습니다' : '운행 중') + '</div>'
             + (b.ord ? '<div style="font-size:12px;margin-top:2px;">' + b.ord + '번째 정류소 구간</div>' : '')
             + (b.stop ? '<div style="font-size:12px;margin-top:2px;">현 위치 ' + esc(b.stop) + '</div>' : '')
             + (b.at ? '<div style="font-size:11px;color:var(--c-muted);margin-top:2px;">' + esc(String(b.at).slice(0, 16)) + ' 기준</div>' : '')
@@ -6198,6 +6220,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             + '</div></div>');
           tagoPosLayer.addLayer(m);
         }
+        return cnt;
       }
       function tagoPosLoad(cc, rid, label, quiet, src) {
         const key = cc + '/' + rid;
@@ -6216,14 +6239,17 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           .then((j) => {
             if (tagoPosKey !== key) return;          
             const buses = (j && j.buses) || [];
-            tagoPosDraw(buses, label);
+            const cnt = tagoPosDraw(buses, label);
+            const fresh = tagoPosLayer.getLayers().filter((m) => m._fresh !== false);
             
             
             
-            if (!quiet && tagoPosLayer.getLayers().length) {
-              try { map.fitBounds(tagoPosLayer.getBounds().pad(0.25), { maxZoom: 15 }); } catch (e) {}
+            if (!quiet && fresh.length) {
+              try { map.fitBounds(L.featureGroup(fresh).getBounds().pad(0.25), { maxZoom: 15 }); } catch (e) {}
             }
-            livePosNotify(j, buses.length, tagoPosLayer, label, 30, quiet);
+            
+            if (!quiet && !cnt.fresh && cnt.stale) { toast(label + ' — 지금 운행 신호가 없습니다(마지막 신호 ' + ageTxt(cnt.minStale) + ').'); return; }
+            livePosNotify(j, cnt.fresh, tagoPosLayer, label, 30, quiet);
           })
           .catch(() => { if (!quiet) toast('실시간 위치를 불러오지 못함.'); });
       }
@@ -13142,7 +13168,8 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         
         const tlHtml = jbCuHtml(d) + jbTlHtml(d);
         const biHtml = jbBiHtml(d);
-        return `<div class="pc"><div class="pc-head">${badgeLink(`<span style="display:inline-block;background:${c};color:#fff;font-size:12px;padding:2px 8px;border-radius:999px;">${g}</span>`)}${badgeLink(stageBadge)}<span class="rp-name">${esc(d.name)}</span></div><div class="pc-body"><div>${esc(d.gu)} ${esc(d.jibun || ((d.bi && d.bi.addr) || ''))}${areaTxt}${d.approx ? ' <span style="color:var(--c-price);">(동 근사위치)</span>' : ''}</div><div style="font-size:12px;color:var(--c-muted);margin-top:3px;">사업구분: ${esc(d.gubun)}</div>${meta.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:8px;border-top:1px solid var(--line);padding-top:8px;">${meta.join('')}</div>` : ''}${biHtml}<div style="margin:8px 0 4px;"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--c-muted);margin-bottom:3px;"><span>진행단계</span><span>${jbPct(es)}%</span></div><div style="height:5px;background:var(--line);border-radius:4px;overflow:hidden;"><div style="height:100%;width:${jbPct(es)}%;background:${stageColor(es)};border-radius:4px;transition:width .3s;"></div></div></div>${tlHtml}${cmpHtml}<div class="jb-rp-stat rp-stat" style="display:none;padding:5px 0;border-top:1px solid var(--c-border);"></div><div class="jb-community" style="display:none;margin-top:6px;"></div></div><div class="pc-actions">${linkBtns}<button class="jb-rp-filter pc-btn pc-btn-outline" style="border-color:var(--line) !important;color:var(--c-price);"><i class="fi fi-rr-search"></i>이 구역 실거래 보기</button><button class="jb-community-btn pc-btn pc-btn-outline" style="border-color:var(--line) !important;color:var(--c-success);"><i class="fi fi-rr-comments"></i>커뮤니티</button><button class="jb-cmp pc-btn pc-btn-outline" style="border-color:var(--line) !important;color:var(--c-primary);"><i class="fi fi-rr-plus"></i>비교</button><div class="pc-btn-row"><button class="rt-start pc-btn pc-btn-outline" style="border-color:var(--line) !important;color:var(--c-success);"><i class="fi fi-rr-flag"></i>출발</button><button class="rt-end pc-btn pc-btn-outline" style="border-color:var(--line) !important;color:var(--c-danger);"><i class="fi fi-rr-marker"></i>도착</button></div><button class="sv-btn pc-btn pc-btn-outline"><i class="fi fi-rr-video-camera"></i>거리뷰</button></div></div>`;
+        
+        return `<div class="pc" data-ptitle="${esc(d.name + ' (' + g + (es ? ' · ' + es : '') + ')')}"><div class="pc-head">${badgeLink(`<span style="display:inline-block;background:${c};color:#fff;font-size:12px;padding:2px 8px;border-radius:999px;">${g}</span>`)}${badgeLink(stageBadge)}<span class="rp-name">${esc(d.name)}</span></div><div class="pc-body"><div>${esc(d.gu)} ${esc(d.jibun || ((d.bi && d.bi.addr) || ''))}${areaTxt}${d.approx ? ' <span style="color:var(--c-price);">(동 근사위치)</span>' : ''}</div><div style="font-size:12px;color:var(--c-muted);margin-top:3px;">사업구분: ${esc(d.gubun)}</div>${meta.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:8px;border-top:1px solid var(--line);padding-top:8px;">${meta.join('')}</div>` : ''}${biHtml}<div style="margin:8px 0 4px;"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--c-muted);margin-bottom:3px;"><span>진행단계</span><span>${jbPct(es)}%</span></div><div style="height:5px;background:var(--line);border-radius:4px;overflow:hidden;"><div style="height:100%;width:${jbPct(es)}%;background:${stageColor(es)};border-radius:4px;transition:width .3s;"></div></div></div>${tlHtml}${cmpHtml}<div class="jb-rp-stat rp-stat" style="display:none;padding:5px 0;border-top:1px solid var(--c-border);"></div><div class="jb-community" style="display:none;margin-top:6px;"></div></div><div class="pc-actions">${linkBtns}<button class="jb-rp-filter pc-btn pc-btn-outline" style="border-color:var(--line) !important;color:var(--c-price);"><i class="fi fi-rr-search"></i>이 구역 실거래 보기</button><button class="jb-community-btn pc-btn pc-btn-outline" style="border-color:var(--line) !important;color:var(--c-success);"><i class="fi fi-rr-comments"></i>커뮤니티</button><button class="jb-cmp pc-btn pc-btn-outline" style="border-color:var(--line) !important;color:var(--c-primary);"><i class="fi fi-rr-plus"></i>비교</button><div class="pc-btn-row"><button class="rt-start pc-btn pc-btn-outline" style="border-color:var(--line) !important;color:var(--c-success);"><i class="fi fi-rr-flag"></i>출발</button><button class="rt-end pc-btn pc-btn-outline" style="border-color:var(--line) !important;color:var(--c-danger);"><i class="fi fi-rr-marker"></i>도착</button></div><button class="sv-btn pc-btn pc-btn-outline"><i class="fi fi-rr-video-camera"></i>거리뷰</button></div></div>`;
       }
       window.jbPopupHtml = jbPopupHtml;   
       
@@ -14306,10 +14333,20 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         });
         return [...by.values()];
       }
+      
+      
+      function pubrentUnitTitle(g) {
+        const a = String(g.addr || '').trim();
+        const m = a.match(/\)\s+([^()]+?)\s*(?:\([^)]*\))?\s*$/) || a.match(/\([^,()]+,\s*([^()]+)\)/);
+        const nm = m && m[1].trim().replace(/^[\d-]+\s*,\s*/, '');   
+        return nm && !/^[\d\s\-동호층,]+$/.test(nm) ? nm : '';
+      }
       function pubrentUnitPopupHtml(g) {
         const areas = g.us.map((u) => u.area).filter((x) => x > 0);
-        
+        const nm = pubrentUnitTitle(g);
         const rows = [];
+        
+        if (nm && g.addr) rows.push(`<div style="font-size:12px;color:var(--c-muted);margin-bottom:3px;">${esc(g.addr)}</div>`);
         rows.push(`<div class="pc-price">${fmtCnt(g.us.length, '세대')}</div>`);
         if (areas.length) {
           const lo = Math.min(...areas), hi = Math.max(...areas);
@@ -14321,7 +14358,8 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         
         rows.push('<div style="margin-top:6px;font-size:12px;color:var(--c-muted);">'
           + `${esc(g.ntc || '')} 첨부 「공급대상주택목록」 기준</div>`);
-        return `<div class="pc"><div class="pc-head"><span style="display:inline-block;background:${PUBRENT_COLOR[g.ty] || '#0b7285'};color:#fff;font-size:12px;padding:2px 8px;border-radius:999px;">${esc(g.ty || '매입임대')}</span><span class="rp-name">${esc(g.addr || '(주소 없음)')}</span></div>`
+        const title = nm || g.addr || '(주소 없음)';
+        return `<div class="pc" data-ptitle="${esc(title + ' (' + (g.ty || '매입임대') + ')')}"><div class="pc-head"><span style="display:inline-block;background:${PUBRENT_COLOR[g.ty] || '#0b7285'};color:#fff;font-size:12px;padding:2px 8px;border-radius:999px;">${esc(g.ty || '매입임대')}</span><span class="rp-name">${esc(title)}</span></div>`
           + `<div class="pc-body"><div style="margin-bottom:4px;">${g.inst ? esc(g.inst) + ' ' : ''}공급물건</div>${rows.join('')}</div></div>`;
       }
 
@@ -15226,6 +15264,9 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           + '<div class="kis-risk" style="margin-top:6px;border-top:1px solid var(--line);padding-top:6px;'
           + 'font-size:12px;color:var(--muted);">행정처분·폐업 이력 확인 중…</div>'
           
+          + (r.bizno ? '<div class="kis-reg" style="margin-top:6px;border-top:1px solid var(--line);padding-top:6px;font-size:12px;">'
+            + '<b>건설업 등록 이력</b><div class="kis-reg-body doc-sub">확인 중…</div></div>' : '')
+          
           + '<div style="font-size:11px;color:var(--muted);margin-top:6px;">'
           + '공시(등록·변경)를 낸 업체. '
           + '주소는 <b>본사 소재지</b>이고 좌표는 주소를 지오코딩한 값이라 실제 위치와 다를 수 있음.'
@@ -15426,6 +15467,18 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         const pop = e.popup;
         const el = pop && pop.getElement();
         window.__fillBcomp(el, pop);
+
+        const regBox = el && el.querySelector('.kis-reg-body');
+        const regRow = pop && pop._source && pop._source._row;
+        if (regBox && regRow && !regBox.dataset.done && window.mjIdentity && mjIdentity.reg) {
+          regBox.dataset.done = '1';
+          mjIdentity.reg(regRow.bizno, (res) => {
+            const h = mjIdentity.regHtml(res, 6);
+            if (h) { regBox.innerHTML = h; regBox.classList.remove('doc-sub'); }
+            else regBox.textContent = '등록 이력을 지금 불러올 수 없습니다.';
+            if (pop._adjustPan) pop._adjustPan();     
+          });
+        }
 
         const box = el && el.querySelector('.kis-risk');
         const row = pop && pop._source && pop._source._row;
@@ -19100,6 +19153,8 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
               put('<div style="font-size:13px;">지하철 경로를 찾지 못함.</div>');
               return;
             }
+            
+            if (!live()) return;
             const r = await RouteAPI.transit(o, d);
             if (!r || !r.segments.length) { if (live()) { box.innerHTML = ''; toast('대중교통 경로를 찾지 못했어요.'); } return; }
             draw(r.segments);
@@ -25454,6 +25509,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         $('logout').style.display = '';
         $('delete-account').style.display = '';
         $('login-link').style.display = 'none';
+        paintNaverLink();
         
         if (window.__aucFavPull) {
           window.__aucFavPull().then((changed) => { if (changed) { try { refreshStatBar(); } catch (e) {} } })
@@ -25513,6 +25569,49 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         btn.disabled = false; btn.textContent = '회원 탈퇴';
       }
     });
+    
+    
+    
+    const NAVER_LINK_LIVE = false;
+    async function paintNaverLink() {
+      const b = $('naver-link');
+      if (!user || !(NAVER_LINK_LIVE || new URLSearchParams(location.search).get('naver') === '1')) { b.style.display = 'none'; return; }
+      let via;
+      try { const s = await ensureSb(); const r = await s.rpc('my_naver_link'); via = r.error ? undefined : r.data; } catch (e) { via = undefined; }
+      
+      if (via === undefined || via === 'login') { b.style.display = 'none'; return; }
+      b.dataset.via = via || '';
+      b.textContent = via === 'link' ? '네이버 연결 해제' : '네이버 계정 연결';
+      b.style.display = '';
+    }
+    $('naver-link').addEventListener('click', async () => {
+      const b = $('naver-link');
+      const s = await ensureSb();
+      const { data: { session } } = await s.auth.getSession();
+      if (!session) { alert('로그인 정보가 없습니다. 다시 로그인해 주세요.'); return; }
+      if (b.dataset.via !== 'link') {
+        
+        const state = crypto.randomUUID();
+        sessionStorage.setItem('mj_naver_state', state);
+        sessionStorage.setItem('mj_naver_link', session.user.id);
+        location.href = SUPABASE_URL + '/functions/v1/naver-login?state=' + state;
+        return;
+      }
+      if (!confirm('네이버 연결을 해제하시겠습니까?\n해제하면 이 계정으로 네이버 로그인을 하실 수 없습니다. 이메일·카카오 로그인은 그대로 쓰실 수 있습니다.')) return;
+      b.disabled = true;
+      try {
+        const r = await fetch(SUPABASE_URL + '/functions/v1/naver-login', { method: 'POST',
+          headers: { 'content-type': 'application/json', authorization: 'Bearer ' + session.access_token },
+          body: JSON.stringify({ action: 'unlink' }) });
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(j.error === 'only_method' ? '네이버로 가입하신 계정이라 연결을 해제할 수 없습니다.' : '잠시 후 다시 시도해 주세요.');
+        alert(j.revoked === false ? '연결을 해제했습니다. 네이버 쪽 연결은 네이버 > 내정보 > 보안설정 > 외부사이트 연결에서 직접 끊어 주세요.' : '네이버 연결을 해제했습니다.');
+      } catch (e) { alert('연결을 해제하지 못했습니다. ' + (e.message || '')); }
+      b.disabled = false;
+      paintNaverLink();
+    });
+    
+    try { const f = sessionStorage.getItem('mj_flash'); if (f) { sessionStorage.removeItem('mj_flash'); setTimeout(() => alert(f), 300); } } catch (e) {}
     $('profile-btn').addEventListener('click', (e) => { e.stopPropagation(); $('profile-menu').classList.toggle('on'); });
     document.addEventListener('click', () => $('profile-menu').classList.remove('on'));
     

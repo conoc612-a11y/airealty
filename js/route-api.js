@@ -103,6 +103,13 @@
   var TTL_LANE = 7 * 24 * 3600e3;
   var TTL_PATH = 30 * 60e3;
   var stats = { net: 0, hit: 0 };   // 검증용 — 캐시가 실제로 먹는지 눈으로 센다
+  // 🔑 같은 출발·도착을 응답 오기 전에 또 부르면(엔터+길찾기 · 버스↔최단경로 빠른 전환) 같은 약속을 나눠 쓴다.
+  //    캐시는 응답이 와야 채워져서, 이게 없으면 ODsay(일 30회)를 두 번 태웠다(2026-10-07).
+  var inflight = {};
+  function once(k, make) {
+    if (!inflight[k]) inflight[k] = make().then(function (v) { delete inflight[k]; return v; }, function (e) { delete inflight[k]; throw e; });
+    return inflight[k];
+  }
 
   // 옛 판 찌꺼기를 지운다(파일이 로드될 때 한 번).
   (function sweepOld() {
@@ -203,13 +210,16 @@
     //    우리가 쓰는 건 path[0] 뿐이다(실측 77KB). info·subPath 만 남겨 담는다.
     var pKey = odKey(o, d);
     var cachedPath = cacheGet(pKey, function (v) { return v && v.info && v.subPath; });
-    var pathP = cachedPath ? Promise.resolve(cachedPath) : (stats.net++, jget(url).then(function (j) {
-      var p0 = j && j.result && j.result.path && j.result.path[0];
-      if (!p0) return null;
-      var slim = { info: p0.info, subPath: p0.subPath };
-      cacheSet(pKey, slim, TTL_PATH);
-      return slim;
-    }));
+    var pathP = cachedPath ? Promise.resolve(cachedPath) : once('p' + pKey, function () {
+      stats.net++;
+      return jget(url).then(function (j) {
+        var p0 = j && j.result && j.result.path && j.result.path[0];
+        if (!p0) return null;
+        var slim = { info: p0.info, subPath: p0.subPath };
+        cacheSet(pKey, slim, TTL_PATH);
+        return slim;
+      });
+    });
 
     return pathP.then(function (p) {
       if (!p) return null;
@@ -219,13 +229,16 @@
       // mapObj 를 키로 캐시한다 — 같은 경로를 다시 그릴 땐 호출이 0 이다.
       var lKey = 'l_' + mapObj, cachedLane = cacheGet(lKey, function (v) { return v && v.length; });
       if (cachedLane) return { info: p.info, subPath: p.subPath, lanes: cachedLane };
-      stats.net++;
-      return jget(base + 'loadLane?mapObject=' + encodeURIComponent('0:0@' + mapObj) + '&apiKey=' + key)
-        .then(function (lj) {
-          var lanes = (lj && lj.result && lj.result.lane) || [];
-          if (lanes.length) cacheSet(lKey, lanes, TTL_LANE);   // 오류는 캐시하지 않는다
-          return { info: p.info, subPath: p.subPath, lanes: lanes };
-        })
+      return once(lKey, function () {
+        stats.net++;
+        return jget(base + 'loadLane?mapObject=' + encodeURIComponent('0:0@' + mapObj) + '&apiKey=' + key)
+          .then(function (lj) {
+            var lanes = (lj && lj.result && lj.result.lane) || [];
+            if (lanes.length) cacheSet(lKey, lanes, TTL_LANE);   // 오류는 캐시하지 않는다
+            return lanes;
+          });
+      })
+        .then(function (lanes) { return { info: p.info, subPath: p.subPath, lanes: lanes }; })
         .catch(function () { return { info: p.info, subPath: p.subPath, lanes: [] }; });
     }).then(function (r) {
       if (!r) return null;

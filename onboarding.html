@@ -5,8 +5,8 @@
   <link rel="icon" type="image/png" href="favicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>로그인 — 부동산 all in one</title>
-  <link rel="stylesheet" href="css/buttons.css?v=c474d03" />
-  <link rel="stylesheet" href="css/tokens.css?v=c474d03" />
+  <link rel="stylesheet" href="css/buttons.css?v=cfc1dac" />
+  <link rel="stylesheet" href="css/tokens.css?v=cfc1dac" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
     :root {
@@ -61,7 +61,7 @@
   </style>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=c474d03"></script>
+  <script src="js/ie-guard.js?v=cfc1dac"></script>
   <div class="app">
     <div style="display:flex;gap:6px;margin-bottom:18px;">
       <a href="land.html" class="nav-tab">🏙️ 부동산 지도</a>
@@ -152,7 +152,7 @@
 
   </div>
 
-  <script src="js/common.js?v=c474d03"></script>
+  <script src="js/common.js?v=cfc1dac"></script>
   <script>
     
     const q0 = new URLSearchParams(location.search);
@@ -183,7 +183,7 @@
     const NAVER_MSG = {
       bad_request:   '네이버 로그인 요청이 올바르지 않습니다. 처음부터 다시 시도해 주세요.',
       no_email:      '네이버 계정의 이메일 제공에 동의해 주셔야 가입하실 수 있습니다.',
-      email_exists:  '같은 이메일로 이미 가입된 계정이 있습니다. 이메일 또는 카카오 로그인으로 들어와 주세요.',
+      email_exists:  '같은 이메일로 이미 가입된 계정이 있습니다. 이메일(또는 카카오)로 로그인하신 뒤 “내 정보 > 네이버 계정 연결”에서 연결해 주세요.',
       rate_limited:  '요청이 너무 많습니다. 잠시 후 다시 시도해 주세요.',
       naver_token:   '네이버 인증에 실패했습니다. 다시 시도해 주세요.',
       naver_profile: '네이버 서비스 응답이 없습니다. 잠시 후 다시 시도해 주세요.',
@@ -199,16 +199,47 @@
     
     $('kakao-btn').addEventListener('click', async () => {
       setBusy(true);
+      sessionStorage.removeItem('mj_naver_link');
       sessionStorage.setItem('mj_kakao', '1');   
       const { error } = await sb.auth.signInWithOAuth({ provider: 'kakao', options: { redirectTo: location.origin + location.pathname } });
       if (error) { setBusy(false); fail('카카오 로그인을 시작하지 못했습니다. 잠시 후 다시 시도해 주세요.'); }
     });
     function startNaver(reprompt) {
+      sessionStorage.removeItem('mj_naver_link');   
       const state = crypto.randomUUID();
       sessionStorage.setItem('mj_naver_state', state);
       location.href = SUPABASE_URL + '/functions/v1/naver-login?state=' + state + (reprompt ? '&reprompt=1' : '');
     }
     $('naver-btn').addEventListener('click', () => startNaver(false));
+
+    
+    
+    const LINK_MSG = {
+      ok:             '네이버 계정이 연결되었습니다. 이제 네이버 로그인으로도 들어오실 수 있습니다.',
+      already:        '이미 이 계정에 연결된 네이버 계정입니다.',
+      unauthorized:   '로그인 정보를 확인할 수 없습니다. 다시 로그인하신 뒤 시도해 주세요.',
+      naver_taken:    '이 네이버 계정은 이미 다른 회원에 연결되어 있습니다. 다른 네이버 계정으로 시도해 주세요.',
+      already_linked: '이미 다른 네이버 계정이 연결되어 있습니다. 바꾸시려면 먼저 연결을 해제해 주세요.',
+      naver_account:  '네이버로 가입하신 계정이라 따로 연결하지 않으셔도 됩니다.',
+      cancelled:      '네이버 연결을 취소하셨습니다.',
+      mismatch:       '연결 요청을 확인할 수 없습니다. 보안을 위해 내 정보 메뉴에서 다시 시작해 주세요.',
+    };
+    async function linkNaver(nv, saved, lk) {
+      const back = (m) => { sessionStorage.setItem('mj_flash', m); location.replace('land.html'); };
+      if (nv.error) return back(nv.error === 'access_denied' ? LINK_MSG.cancelled : NAVER_MSG.default);
+      const { data: { session } } = await sb.auth.getSession();
+      if (!saved || saved !== nv.state || !nv.code || !session || session.user.id !== lk) return back(LINK_MSG.mismatch);
+      setBusy(true, '네이버 계정을 연결하고 있습니다…');
+      let r, j = {};
+      try {
+        r = await fetch(SUPABASE_URL + '/functions/v1/naver-login', { method: 'POST',
+          headers: { 'content-type': 'application/json', authorization: 'Bearer ' + session.access_token },
+          body: JSON.stringify({ code: nv.code, state: nv.state, mode: 'link' }) });
+        j = await r.json().catch(() => ({}));
+      } catch (e) { return back(NAVER_MSG.default); }
+      if (r.ok) return back(j.already ? LINK_MSG.already : LINK_MSG.ok);
+      back(LINK_MSG[j.error] || NAVER_MSG[j.error] || NAVER_MSG.default);
+    }
 
     
     async function afterLogin(user) {
@@ -388,6 +419,9 @@
       sessionStorage.removeItem('mj_kakao');
       if (nv) {
         const saved = sessionStorage.getItem('mj_naver_state'); sessionStorage.removeItem('mj_naver_state');
+        
+        const lk = sessionStorage.getItem('mj_naver_link'); sessionStorage.removeItem('mj_naver_link');
+        if (lk) return linkNaver(nv, saved, lk);
         if (nv.error) return fail(nv.error === 'access_denied' ? '네이버 로그인을 취소하셨습니다. 다시 하시려면 네이버 로그인 버튼을 눌러 주세요.' : NAVER_MSG.default);
         if (!saved || saved !== nv.state || !nv.code) return fail('로그인 요청을 확인할 수 없습니다. 보안을 위해 처음부터 다시 시도해 주세요.');
         setBusy(true, '네이버 로그인을 확인하고 있습니다…');
