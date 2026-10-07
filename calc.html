@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>airealty 세금 계산기</title>
-<meta name="calc-rules" content="js/calc/rules/rules.v24e2843c87.json">
-<link rel="stylesheet" href="css/tokens.css?v=90e033e">
+<meta name="calc-rules" content="js/calc/rules/rules.v4e3fc01178.json">
+<link rel="stylesheet" href="css/tokens.css?v=26f1ece">
 <style>
   :root { --brand:#D92A14; --brand-deep:#B32210; --ok:#287F38; --warn:#AD5A1F;
     --bg:#FFFFFF; --card:#FFFFFF; --line:#E4E4E7; --text:#000000; --muted:#52525B; --soft:#F4F4F5; }
@@ -81,6 +81,10 @@
   .other-only { display:none; }
   body.calc-other .other-only { display:block; }
   body.calc-other .sell-only { display:none; }
+  .tabform { display:none; }
+  body.own-form #inputs > section.box:not(.tabform), body.own-form #steps { display:none !important; }
+  body.tab-gift #f-gift, body.tab-inherit #f-inherit, body.tab-rent #f-rent { display:block !important; }
+  .rent-house input { min-width:0; }
   body.home main, body.home #mobile-bar { display:none !important; }
   #home { display:none; padding:16px; max-width:1100px; margin:0 auto; }
   body.home #home { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; }
@@ -219,6 +223,48 @@
       <div class="row"><label for="bld">건물 가액</label><div class="field"><input id="bld" class="money" placeholder="85㎡ 초과 주택·상가 부가세에 씁니다" data-money><span>원</span></div></div>
       
     </section>
+    <section class="box tabform" id="f-gift" data-tab="gift">
+      <h2>증여</h2>
+      <div class="row"><label for="g-date">증여일</label><div class="field"><input id="g-date" type="date"></div></div>
+      <div class="row"><span class="lab"><label for="g-value">증여재산가액</label><button type="button" class="tip" data-tip="증여재산가액" aria-label="증여재산가액 설명 보기">i</button></span><div class="field"><input id="g-value" class="money" data-money placeholder="시가(없으면 공시가격 등)"><span>원</span></div></div>
+      <div class="row"><label for="g-rel">주는 사람</label><div class="field"><select id="g-rel"><option value="lineal_adult">부모·조부모 → 성년</option><option value="lineal_minor">부모·조부모 → 미성년</option><option value="spouse">배우자</option><option value="descendant_to_ascendant">자녀 → 부모</option><option value="other_relative">그 밖의 친족</option><option value="other">친족 아님</option></select></div></div>
+      <div class="row"><span class="lab"><label for="g-debt">넘겨받는 채무</label></span><div class="field"><input id="g-debt" class="money" data-money placeholder="부담부증여 — 전세보증금·대출"><span>원</span></div></div>
+      <div class="row"><span class="lab"><label for="g-prior">10년 안 같은 사람 증여</label></span><div class="field"><input id="g-prior" class="money" data-money placeholder="앞 증여 과세가액 합"><span>원</span></div></div>
+      <div class="row"><span class="lab"><label for="g-prior-tax">그때 증여세 산출세액</label></span><div class="field"><input id="g-prior-tax" class="money" data-money><span>원</span></div></div>
+      <div class="row"><span class="lab"><label for="g-used">10년 안 받은 증여공제</label></span><div class="field"><input id="g-used" class="money" data-money><span>원</span></div></div>
+      <div class="row"><span class="lab"><label for="g-marriage">혼인·출산 공제</label></span><div class="field"><input id="g-marriage" class="money" data-money placeholder="혼인·출산 전후 2년 · 평생 1억"><span>원</span></div></div>
+      <div class="row"><label>그 밖</label><div class="field"><label><input type="checkbox" id="g-genskip"> 세대생략(조부모 → 손자녀)</label><label><input type="checkbox" id="g-filing" checked> 기한 안 신고</label></div></div>
+    </section>
+    <section class="box tabform" id="f-inherit" data-tab="inherit">
+      <h2>상속</h2>
+      <div class="row"><label for="i-date">사망일</label><div class="field"><input id="i-date" type="date"></div></div>
+      <div class="row"><span class="lab"><label for="i-estate">상속재산가액</label><button type="button" class="tip" data-tip="상속재산가액" aria-label="상속재산가액 설명 보기">i</button></span><div class="field"><input id="i-estate" class="money" data-money placeholder="부동산·예금 등 합계(시가)"><span>원</span></div></div>
+      <div class="row"><span class="lab"><label for="i-debts">채무·공과금</label></span><div class="field"><input id="i-debts" class="money" data-money><span>원</span></div></div>
+      <div class="row"><span class="lab"><label for="i-funeral">장례비</label></span><div class="field"><input id="i-funeral" class="money" data-money placeholder="500만 미만이면 500만 · 한도 1천만"><span>원</span></div></div>
+      <div class="row"><label>배우자</label><div class="field"><label><input type="checkbox" id="i-spouse"> 배우자 있음</label></div></div>
+      <div class="row"><span class="lab"><label for="i-spouse-amt">배우자 실제 상속액</label></span><div class="field"><input id="i-spouse-amt" class="money" data-money placeholder="분할 등기한 금액"><span>원</span></div></div>
+      <div class="row"><label for="i-children">자녀 수</label><div class="field"><input id="i-children" class="money" inputmode="numeric"><span>명</span></div></div>
+      <div class="row"><label for="i-minors">미성년 자녀 나이</label><div class="field"><input id="i-minors" placeholder="예: 10, 15"></div></div>
+      <div class="row"><label for="i-elderly">65세 이상 상속인</label><div class="field"><input id="i-elderly" class="money" inputmode="numeric"><span>명</span></div></div>
+      <div class="row"><span class="lab"><label for="i-fin">순금융재산</label></span><div class="field"><input id="i-fin" class="money" data-money placeholder="예금 − 금융채무"><span>원</span></div></div>
+      <div class="row"><span class="lab"><label for="i-cohabit">동거주택</label></span><div class="field"><input id="i-cohabit" class="money" data-money placeholder="10년 동거한 1주택 · 담보채무 뺀 값"><span>원</span></div></div>
+      <div class="row"><span class="lab"><label for="i-prior">10년 안 상속인 사전증여</label></span><div class="field"><input id="i-prior" class="money" data-money><span>원</span></div></div>
+      <div class="row"><span class="lab"><label for="i-prior-tax">그때 증여세 산출세액</label></span><div class="field"><input id="i-prior-tax" class="money" data-money><span>원</span></div></div>
+      <div class="row"><label>신고</label><div class="field"><label><input type="checkbox" id="i-filing" checked> 기한 안 신고</label></div></div>
+    </section>
+    <section class="box tabform" id="f-rent" data-tab="rent">
+      <h2>주택 임대소득</h2>
+      <div class="row"><label for="r-year">과세연도</label><div class="field"><input id="r-year" class="money" inputmode="numeric"><span>년</span></div></div>
+      <div class="row"><label for="r-owns">보유 주택 수</label><div class="field"><input id="r-owns" class="money" inputmode="numeric" placeholder="부부 합산"><span>채</span></div></div>
+      <div class="row"><span class="lab"><label for="r-other">다른 종합소득금액</label></span><div class="field"><input id="r-other" class="money" data-money placeholder="근로·사업 등"><span>원</span></div></div>
+      <div class="row"><span></span><span class="hint">세놓은 주택만 · 월세는 한 달 값 · 보증금은 총액</span></div>
+      <div class="row"><label>1번 주택</label><div class="field rent-house"><input id="r1-std" class="money" data-money placeholder="기준시가"><input id="r1-rent" class="money" data-money placeholder="월세"><input id="r1-dep" class="money" data-money placeholder="보증금"><input id="r1-mon" class="money" inputmode="numeric" placeholder="개월(12)" style="max-width:72px"></div></div>
+      <div class="row"><span></span><div class="field"><label><input type="checkbox" id="r1-small"> 소형(40㎡·2억 이하)</label><label><input type="checkbox" id="r1-reg"> 등록임대</label></div></div>
+      <div class="row"><label>2번 주택</label><div class="field rent-house"><input id="r2-std" class="money" data-money placeholder="기준시가"><input id="r2-rent" class="money" data-money placeholder="월세"><input id="r2-dep" class="money" data-money placeholder="보증금"><input id="r2-mon" class="money" inputmode="numeric" placeholder="개월(12)" style="max-width:72px"></div></div>
+      <div class="row"><span></span><div class="field"><label><input type="checkbox" id="r2-small"> 소형(40㎡·2억 이하)</label><label><input type="checkbox" id="r2-reg"> 등록임대</label></div></div>
+      <div class="row"><label>3번 주택</label><div class="field rent-house"><input id="r3-std" class="money" data-money placeholder="기준시가"><input id="r3-rent" class="money" data-money placeholder="월세"><input id="r3-dep" class="money" data-money placeholder="보증금"><input id="r3-mon" class="money" inputmode="numeric" placeholder="개월(12)" style="max-width:72px"></div></div>
+      <div class="row"><span></span><div class="field"><label><input type="checkbox" id="r3-small"> 소형(40㎡·2억 이하)</label><label><input type="checkbox" id="r3-reg"> 등록임대</label></div></div>
+    </section>
   </div>
 
   <div id="result" aria-label="결과">
@@ -257,9 +303,18 @@
 
 <aside class="drawer" id="p1" role="dialog" aria-modal="true" aria-label="보유 물건" tabindex="-1">
   <h2>보유 물건 <button class="btn" data-close>닫기</button></h2>
-  <p class="hint">세대가 가진 주택을 모두 넣어 주세요. 주택 수 판정(취득세·양도세 중과, 비과세)에 씁니다.</p>
+  <p class="hint">세대 주택 전부(이번 물건 포함) · 주택 수 판정 · 종부세 합산(공시가격) · 일시적 2주택(다른 주택 주소·취득일)에 사용</p>
   <div id="holds"></div>
   <button class="btn" id="hold-add">물건 추가</button>
+  <form id="hold-form" hidden>
+    <div class="row"><label for="h-name">이름</label><div class="field"><input id="h-name" placeholder="예: 잠실 아파트 84㎡"></div></div>
+    <div class="row"><label for="h-kind">종류</label><div class="field"><select id="h-kind"><option>주택</option><option>분양권·입주권</option><option>주거용 오피스텔</option><option>주택 아님</option></select></div></div>
+    <div class="row"><label for="h-addr">주소</label><div class="field"><input id="h-addr" placeholder="시·도 시·군·구 동 — 조정대상지역 판정"></div></div>
+    <div class="row"><label for="h-acq">취득일</label><div class="field"><input id="h-acq" type="date"></div></div>
+    <div class="row"><label for="h-pub">공시가격</label><div class="field"><input id="h-pub" class="money" data-money placeholder="종부세 합산"><span>원</span></div></div>
+    <div class="row"><span></span><label><input type="checkbox" id="h-excl"> 주택 수 제외 대상(지방 저가·소형 신축 등)</label></div>
+    <button class="btn" type="submit">저장</button>
+  </form>
 </aside>
 
 <aside class="drawer" id="p2" role="dialog" aria-modal="true" aria-label="근거" tabindex="-1">
@@ -285,7 +340,7 @@
 </div>
 
 
-<script src="js/common.js?v=90e033e"></script>
-<script src="js/calc/calc.v6f07d4dce1.js?v=90e033e"></script>
+<script src="js/common.js?v=26f1ece"></script>
+<script src="js/calc/calc.v15940ef2d5.js?v=26f1ece"></script>
 </body>
 </html>
