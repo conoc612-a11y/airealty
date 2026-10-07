@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>airealty 세금 계산기</title>
 <meta name="calc-rules" content="js/calc/rules/rules.v24e2843c87.json">
-<link rel="stylesheet" href="css/tokens.css?v=ba79289">
+<link rel="stylesheet" href="css/tokens.css?v=b5daab9">
 <style>
   :root { --brand:#D92A14; --brand-deep:#B32210; --ok:#287F38; --warn:#AD5A1F;
     --bg:#FFFFFF; --card:#FFFFFF; --line:#E4E4E7; --text:#000000; --muted:#52525B; --soft:#F4F4F5; }
@@ -106,6 +106,16 @@
     main { grid-template-columns:minmax(0,1fr); }
     #result { display:block !important; }
   }
+  
+  .tip { display:inline-flex; align-items:center; justify-content:center; width:14px; height:14px; margin-left:4px; padding:0; border:1px solid var(--muted); border-radius:999px; background:var(--card); color:var(--muted); font:italic 700 10px/1 serif; cursor:help; vertical-align:1px; }
+  .tip:hover, .tip:focus-visible { border-color:var(--brand); color:var(--brand); outline:none; }
+  .tip-box { position:fixed; z-index:60; width:max-content; max-width:240px; padding:7px 9px; border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--text); box-shadow:0 4px 12px rgba(0,0,0,.12); font-size:12px; line-height:1.45; pointer-events:none; }
+  .tip-box p { margin:2px 0 4px; color:var(--muted); }
+  .tip-box dl { display:grid; grid-template-columns:auto auto; gap:1px 10px; margin:0; }
+  .tip-box dt { color:var(--muted); }
+  .tip-box dd { margin:0; font-weight:700; text-align:right; }
+  .tip-box small { display:block; margin-top:4px; color:var(--muted); font-size:11px; }
+  @media print { .tip, .tip-box { display:none !important; } }
 </style>
 </head>
 <body class="home">
@@ -232,7 +242,7 @@
 </main>
 
 <div id="mobile-bar">
-  <div><div class="hint">BEST 매매사업자</div><b id="bar-net"></b></div>
+  <div><div class="hint" id="bar-label">결과</div><b id="bar-net"></b></div>
   <button class="btn" id="mobile-sheet" aria-expanded="false">▲ 결과</button>
 </div>
 
@@ -266,7 +276,7 @@
 </div>
 
 
-<script src="js/common.js?v=ba79289"></script>
-<script src="js/calc/calc.vd1eb7f22fc.js?v=ba79289"></script>
+<script src="js/common.js?v=b5daab9"></script>
+<script src="js/calc/calc.v1640d14a22.js?v=b5daab9"></script>
 </body>
 </html>
