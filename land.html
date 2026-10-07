@@ -6,9 +6,9 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#D92A14" />
-  <link rel="stylesheet" href="css/tokens.css?v=17ea26b" />
+  <link rel="stylesheet" href="css/tokens.css?v=90e033e" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="js/auth-guard.js?v=17ea26b"></script>
+  <script src="js/auth-guard.js?v=90e033e"></script>
   <title>부동산 All in One</title>
   <meta name="description" content="서울 부동산 통합 지도. 정비사업 진행단계, 아파트·연립다세대 실거래가, 건축년도(노후도), 청약·토지거래허가구역을 지도 위에서 한 번에 확인하세요." />
   <meta property="og:type" content="website" />
@@ -45,12 +45,12 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-  <link rel="stylesheet" href="css/buttons.css?v=17ea26b" />
+  <link rel="stylesheet" href="css/buttons.css?v=90e033e" />
   
 
 
 
-  <link rel="stylesheet" href="css/flaticon-subset.css?v=17ea26b" />
+  <link rel="stylesheet" href="css/flaticon-subset.css?v=90e033e" />
   <style>
     :root {
       
@@ -195,7 +195,7 @@
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .apd-go.has-local, :is(:root.mock,:root.lux,:root.teal,:root.soil) .auc-pop-go.has-local { border-color:var(--mx-accent); color:var(--mx-accent); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .auc-pop-go:hover { border-color:var(--mx-accent); color:var(--mx-accent); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .auc-pop-go:active { background:var(--mx-accent); color:#fff; }
-    :is(:root.mock,:root.lux,:root.teal,:root.soil) .apd-back:hover, :is(:root.mock,:root.lux,:root.teal,:root.soil) .apd-close:hover { border-color:var(--mx-accent); color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal,:root.soil) .apd-back:hover { border-color:var(--mx-accent); color:var(--mx-accent); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .jb-stage.active { background:var(--mx-accent); border-color:var(--mx-accent); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .lp-role:hover { border-color:var(--mx-accent); color:var(--mx-accent); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .lp-role.on { background:var(--mx-accent); border-color:var(--mx-accent); }
@@ -218,8 +218,8 @@
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .kakao-back:hover { border-color:var(--mx-accent); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .panel-slide-tab:hover { color:var(--mx-accent); border-color:var(--mx-accent); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .panel-slide-tab.dragging { color:var(--mx-accent); border-color:var(--mx-accent); }
-    :is(:root.mock,:root.lux,:root.teal,:root.soil) body .ui-pop-btn { color:var(--mx-accent); }
-    :is(:root.mock,:root.lux,:root.teal,:root.soil) body .ui-pop-btn:hover { background:var(--mx-accent); border-color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal,:root.soil) body :is(.ui-pop-btn, .ap-close, .apd-close, #jb-rp-bar-close) { color:var(--mx-accent); }
+    :is(:root.mock,:root.lux,:root.teal,:root.soil) body :is(.ui-pop-btn, .ap-close, .apd-close, #jb-rp-bar-close):hover { background:var(--mx-accent); border-color:var(--mx-accent); color:#fff; }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .fi { color:var(--mx-accent); }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) .list-tab.active .fi, :is(:root.mock,:root.lux,:root.teal,:root.soil) #sp-go .fi { color:#fff; }
     :is(:root.mock,:root.lux,:root.teal,:root.soil) :focus-visible { outline-color:var(--mx-accent); }
@@ -499,7 +499,9 @@
     .profile-menu a:hover, .profile-menu button:hover { background:var(--c-hover); }
     
 
-    .profile-menu a:not(#who), .profile-menu button { border:1px solid var(--line); border-radius:8px; margin:4px 8px; width:auto; }
+    .profile-menu a:not(#who), .profile-menu button { border:1px solid var(--line); border-radius:8px; margin:4px 8px; width:calc(100% - 16px); box-sizing:border-box; }
+    
+    .profile-menu #who { padding:10px 22px 6px; }
     .profile-menu a:not(#who):hover, .profile-menu button:hover { border-color:#D92A14; }
     
     .ac-wrap { position:relative; flex:1; }
@@ -654,6 +656,11 @@
 
     body .ui-pop-btn { border:1px solid var(--line); background:var(--card); color:#D92A14; }
     body .ui-pop-btn:hover { background:#D92A14; border-color:#D92A14; color:#fff; }
+    
+
+    body :is(.ap-close, .apd-close, #jb-rp-bar-close) { width:24px; height:24px; padding:0; flex:none; display:inline-flex; align-items:center; justify-content:center;
+      border:1px solid var(--line); border-radius:8px; background:var(--card); color:#D92A14; font-size:16px; line-height:1; cursor:pointer; transition:all .15s; }
+    body :is(.ap-close, .apd-close, #jb-rp-bar-close):hover { background:#D92A14; border-color:#D92A14; color:#fff; }
     body .ui-grip::before, body .ui-grip::after { border-color:var(--line); }
     
     * { scrollbar-width:thin; scrollbar-color:#D92A14 transparent; }
@@ -740,6 +747,7 @@
     
     @media (max-width:900px) { .panel { min-width:340px; } }
     .panel.collapsed { flex:0 0 0; min-width:0; width:0; padding:0; overflow:hidden; border:none; }
+    .panel.collapsed > :not(.panel-resizer):not(.panel-slide-tab) { visibility:hidden; }
     
 
 
@@ -826,9 +834,9 @@
     .ap-links { display:flex; gap:4px; margin-left:auto; }
     .ap-links a { font-size:12px; color:var(--c-primary); text-decoration:none; padding:3px 12px; border:1px solid var(--line); border-radius:8px; white-space:nowrap; }
     .ap-links a:hover { background:var(--c-hover); }
-    .ap-fav, .ap-close { border:1px solid var(--line); background:var(--card); color:var(--muted); border-radius:8px; padding:3px 12px; font-size:12px; cursor:pointer; white-space:nowrap; transition:all .15s; }
+    .ap-fav { border:1px solid var(--line); background:var(--card); color:var(--muted); border-radius:8px; padding:3px 12px; font-size:12px; cursor:pointer; white-space:nowrap; transition:all .15s; }
     .ap-fav.on { color:#f08c00; border-color:#f08c00; background:rgba(240,140,0,.12); font-weight:600; }
-    .ap-fav:hover, .ap-close:hover { color:var(--text); background:var(--c-hover); }
+    .ap-fav:hover { color:var(--text); background:var(--c-hover); }
     
 
     .ap-update { font-size:12px; color:var(--c-primary); text-decoration:none; padding:3px 12px;
@@ -979,6 +987,7 @@
     .sp-head { display:flex; align-items:center; gap:6px; padding:9px 12px; border-bottom:1px solid var(--line); }
     .sp-title { font-size:14px; flex:1; }
     .sp-body { flex:1; overflow-y:auto; padding:10px 12px; min-height:0; }
+    .sp-head > .ap-close { align-self:flex-start; }
     
     .side-resizer { position:absolute; right:-4px; top:0; bottom:0; width:8px; z-index:2001; background:transparent; pointer-events:none; }
     
@@ -1038,8 +1047,8 @@
     .auc-photo-more { position:absolute; right:0; bottom:0; background:rgba(0,0,0,.55); color:#fff; font-size:11px; padding:1px 6px; border-radius:8px 0 0 0; }
     
     .apd-head { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
-    .apd-back, .apd-close { border:1px solid var(--line); background:var(--card); color:var(--text); border-radius:8px; cursor:pointer; font:inherit; font-size:13px; padding:5px 12px; transition:all .15s; }
-    .apd-back:hover, .apd-close:hover { border-color:#D92A14; color:#D92A14; }
+    .apd-back { border:1px solid var(--line); background:var(--card); color:var(--text); border-radius:8px; cursor:pointer; font:inherit; font-size:13px; padding:5px 12px; transition:all .15s; }
+    .apd-back:hover { border-color:#D92A14; color:#D92A14; }
     .apd-title { flex:1; font-size:14px; }
     .apd-photo { position:relative; border-radius:8px; overflow:hidden; background:var(--c-hover); aspect-ratio:4/3; }
     .apd-photo img { width:100%; height:100%; object-fit:cover; display:block; cursor:zoom-in; }
@@ -1176,8 +1185,8 @@
       padding:11px 13px; padding-right:48px; border-bottom:1px solid rgba(255,255,255,.14);
       font-weight:700; font-size:14px; color:#fff; }
     .apd-lb-head span { min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-    .apd-lb-close { position:absolute; top:8px; right:8px; z-index:2; width:32px; height:32px; border:none; border-radius:50%; background:rgba(255,255,255,.15); color:#fff; font-size:16px; cursor:pointer; }
-    .apd-lb-close:hover { background:rgba(255,255,255,.3); }
+    
+    .apd-lb-close { position:absolute; top:3px; right:3px; z-index:2; }
     
 
 
@@ -1387,7 +1396,6 @@
     .jb-mini { display:inline-block; font-size:10px; color:#fff; padding:1px 5px; border-radius:8px; }
     
     #jb-rp-bar { position:absolute; bottom:64px; left:50%; transform:translateX(-50%); display:none; align-items:center; gap:8px; padding:8px 12px; background:var(--card); border:1px solid var(--line); border-radius:999px; box-shadow:var(--c-shadow-lg); z-index:901; font-size:13px; color:var(--text); max-width:90vw; white-space:nowrap; }
-    #jb-rp-bar-close { border:none; background:var(--c-hover); color:var(--muted); border-radius:8px; width:22px; height:22px; cursor:pointer; font-size:12px; line-height:1; }
     
 
     
@@ -1607,6 +1615,10 @@
     .pc[data-kind="auc"] > .pc-head > .rp-name { font-size:13px; }
     .pc-body { font-size:13px; color:var(--muted); margin-bottom:12px; line-height:1.6; }
     .pc-body b { color:var(--text); }
+    
+    .pc-row { display:flex; gap:8px; line-height:1.6; }
+    .pc-row .pc-k { flex:0 0 72px; color:var(--muted); }
+    .pc-row .pc-v { flex:1 1 auto; min-width:0; color:var(--text); }
     
 
 
@@ -2036,11 +2048,32 @@
 
 
     .lp-min-btn { position:absolute; top:3px; right:30px; z-index:1100; }
-    .lp-restore-chip { position:absolute; right:12px; bottom:12px; z-index:1500; display:flex; align-items:center; gap:6px; max-width:300px; padding:8px 12px; background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:8px; box-shadow:var(--c-shadow-lg); font-size:13px; cursor:pointer; transition:all .15s; }
+    
+
+
+
+    .ui-win-back { position:fixed; inset:0; z-index:3000; background:rgba(0,0,0,.5); display:flex; align-items:center; justify-content:center; padding:16px; }
+    .ui-win { position:relative; display:flex; flex-direction:column; min-width:280px; min-height:160px; max-height:86vh; box-sizing:border-box;
+      padding:8px 1px 12px; background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:8px; box-shadow:var(--c-shadow-lg); }
+    .ui-win-body { flex:1 1 auto; min-height:0; overflow-y:scroll; overflow-x:hidden; overflow-wrap:anywhere; margin:20px 7.5px 16px 20px; padding:9px 40px 13px 16px; }
+    .ui-win-title { font-weight:700; line-height:1.35; margin-bottom:12px; padding-right:16px; }
+    .ui-win .ui-lbl { color:var(--muted); margin-bottom:4px; }
+    
+    .ui-win .ui-grip-corner { right:2px; bottom:2px; }
+    .ui-win .ui-inp[type=date] { padding-top:9px; padding-bottom:9px; }
+    .ui-win .ui-inp { width:100%; box-sizing:border-box; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--text); font:inherit; margin-bottom:10px; }
+    .lp-restore-chip { position:absolute; right:12px; bottom:12px; z-index:1500; display:flex; align-items:center; gap:6px; max-width:300px; padding:8px 12px; background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:8px; box-shadow:var(--c-shadow-lg); font-size:13px; cursor:pointer; transition:border-color .15s; }
     .lp-restore-chip:hover { border-color:#D92A14; }
     .lp-restore-chip b { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     
     
+    
+
+    .leaflet-tooltip { background:var(--card); color:var(--text); border:1px solid var(--line); border-radius:8px; box-shadow:var(--c-shadow); padding:5px 9px; }
+    .leaflet-tooltip-top:before { border-top-color:var(--line); }
+    .leaflet-tooltip-bottom:before { border-bottom-color:var(--line); }
+    .leaflet-tooltip-left:before { border-left-color:var(--line); }
+    .leaflet-tooltip-right:before { border-right-color:var(--line); }
     .vw-zone-label { background:none; border:none; box-shadow:none; font-weight:800; font-size:13px; color:#0C0A09; text-shadow:0 0 4px #fff, 0 0 4px #fff, 0 0 8px #fff; }
     .vw-zone-label::before { display:none; }
     
@@ -2132,7 +2165,7 @@
   </script>
 </head>
 <body>
-  <script src="js/ie-guard.js?v=17ea26b"></script>
+  <script src="js/ie-guard.js?v=90e033e"></script>
   <header>
     <div class="brand-group">
       <a href="land.html" class="brand">
@@ -2222,7 +2255,7 @@
 
           <a id="ap-update" class="ap-update" href="http://localhost:8787/" target="_blank" rel="noopener"
              title="경매 데이터 갱신 — 이 PC의 실행기(update.bat)가 켜져 있어야 함.">⟳ 데이터 갱신</a>
-          <button id="ap-close" class="ap-close" title="패널 닫기 (레이어는 유지)" aria-label="패널 닫기">✕</button>
+          <button id="ap-close" class="ap-close" title="패널 닫기 (레이어는 유지)" aria-label="패널 닫기">&times;</button>
         </div>
         <div class="ap-search-row"><input type="search" id="ap-search" placeholder="사건번호·주소·법원 검색" autocomplete="off" aria-label="경매 물건 검색"></div>
         <div class="ap-filt-row">
@@ -2309,7 +2342,7 @@
           <div class="apd-head">
             <button type="button" id="apd-back" class="apd-back" title="목록으로 돌아가기">← 목록</button>
             <b class="apd-title">물건 상세</b>
-            <button type="button" id="apd-close" class="apd-close" title="패널 닫기 (레이어는 유지)">✕</button>
+            <button type="button" id="apd-close" class="apd-close" title="패널 닫기 (레이어는 유지)" aria-label="패널 닫기">&times;</button>
           </div>
           <div class="apd-photo" id="apd-photo"></div>
           <div class="apd-body" id="apd-body"></div>
@@ -2319,7 +2352,7 @@
     </aside>
       <aside id="sub-panel" class="side-panel collapsed" aria-label="분양·청약 공고 목록">
         <div class="sp-inner">
-          <div class="sp-head"><b class="sp-title">분양·청약 공고</b><span id="sub-count" style="color:var(--c-muted);font-size:12px;"></span><button type="button" id="sub-panel-toggle" class="ap-close" title="접기/펼치기" aria-label="접기/펼치기" style="margin-right:4px;">▼</button><button type="button" id="sub-panel-close" class="ap-close" title="패널 닫기 (레이어는 유지)" aria-label="패널 닫기">✕</button></div>
+          <div class="sp-head"><b class="sp-title">분양·청약 공고</b><span id="sub-count" style="color:var(--c-muted);font-size:12px;"></span><button type="button" id="sub-panel-toggle" class="ap-close" title="접기/펼치기" aria-label="접기/펼치기" style="margin-right:4px;">▼</button><button type="button" id="sub-panel-close" class="ap-close" title="패널 닫기 (레이어는 유지)" aria-label="패널 닫기">&times;</button></div>
           <div style="padding:6px 12px;border-bottom:1px solid var(--line);"><input type="search" id="sub-search" placeholder="공고명·지역 검색" autocomplete="off" aria-label="분양 공고 검색" style="width:100%;box-sizing:border-box;font:inherit;font-size:13px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--text);outline:none;"></div>
           <div class="sp-body ui-scroll" id="sub-panel-body"></div>
         </div>
@@ -2327,14 +2360,14 @@
       </aside>
       <aside id="rp-panel" class="side-panel" hidden aria-label="실거래가 필터">
       <div class="sp-inner">
-        <div class="sp-head"><b class="sp-title">실거래가</b><button type="button" id="rp-panel-close" class="ap-close" title="패널 닫기 (레이어는 유지)" aria-label="패널 닫기">✕</button></div>
+        <div class="sp-head"><b class="sp-title">실거래가</b><button type="button" id="rp-panel-close" class="ap-close" title="패널 닫기 (레이어는 유지)" aria-label="패널 닫기">&times;</button></div>
         <div class="sp-body ui-scroll" id="rp-panel-body"></div>
       </div>
       <div class="side-resizer" id="rp-panel-resizer" title="드래그해서 너비 조절"></div>
     </aside>
     <aside id="jb-panel" class="side-panel" hidden aria-label="도시계획사업 필터">
       <div class="sp-inner">
-        <div class="sp-head"><b class="sp-title">도시계획사업</b><button type="button" id="jb-panel-close" class="ap-close" title="패널 닫기 (레이어는 유지)" aria-label="패널 닫기">✕</button></div>
+        <div class="sp-head"><b class="sp-title">도시계획사업</b><button type="button" id="jb-panel-close" class="ap-close" title="패널 닫기 (레이어는 유지)" aria-label="패널 닫기">&times;</button></div>
         <div class="sp-body ui-scroll" id="jb-panel-body"></div>
       </div>
       <div class="side-resizer" id="jb-panel-resizer" title="드래그해서 너비 조절"></div>
@@ -2347,7 +2380,7 @@
 
     <aside id="dp-panel" class="side-panel" hidden aria-label="상세 정보">
       <div class="sp-inner">
-        <div class="sp-head"><b class="sp-title" id="dp-title">상세 정보</b><button type="button" id="dp-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">✕</button></div>
+        <div class="sp-head"><b class="sp-title" id="dp-title">상세 정보</b><button type="button" id="dp-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">&times;</button></div>
         <div class="sp-body ui-scroll" id="dp-panel-body"></div>
       </div>
       <div class="side-resizer" id="dp-panel-resizer" title="드래그해서 너비 조절"></div>
@@ -2357,7 +2390,7 @@
     <div id="apd-lightbox" hidden>
       <div id="apd-lb-frame">
         <div class="apd-lb-head"><span id="apd-lb-title"></span></div>
-        <button type="button" class="apd-lb-close" id="apd-lb-close" aria-label="닫기">✕</button>
+        <button type="button" class="ui-pop-btn apd-lb-close" id="apd-lb-close" aria-label="닫기">&times;</button>
         <div class="apd-lb-zoom">
           <button type="button" id="apd-lb-zoom-out" aria-label="축소" title="축소">−</button>
           <button type="button" id="apd-lb-zoom-in" aria-label="확대" title="확대">+</button>
@@ -2418,14 +2451,14 @@
     
     <aside id="sp-panel" class="side-panel collapsed" hidden aria-label="길찾기">
       <div class="sp-inner">
-        <div class="sp-head"><b class="sp-title">길찾기</b><button type="button" id="sp-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">✕</button></div>
+        <div class="sp-head"><b class="sp-title">길찾기</b><button type="button" id="sp-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">&times;</button></div>
         <div class="sp-body ui-scroll" id="sp-panel-body"></div>
       </div>
       <div class="side-resizer" id="sp-panel-resizer" title="드래그해서 너비 조절"></div>
     </aside>
     <aside id="chat-panel" class="side-panel collapsed" hidden aria-label="AI 상담">
       <div class="sp-inner">
-        <div class="sp-head"><b class="sp-title">AI 상담</b><button type="button" id="chat-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">✕</button></div>
+        <div class="sp-head"><b class="sp-title">AI 상담</b><button type="button" id="chat-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">&times;</button></div>
         <div class="sp-body ui-scroll" id="chat-panel-body"></div>
         <div class="sp-foot" id="chat-panel-foot">
           <input type="text" id="chat-input" placeholder="예: 2024타경2532 감정가" autocomplete="off" aria-label="상담 질문 입력">
@@ -2436,14 +2469,14 @@
     </aside>
     <aside id="news-panel" class="side-panel collapsed" hidden aria-label="부동산 뉴스">
       <div class="sp-inner">
-        <div class="sp-head"><b class="sp-title">부동산 뉴스</b><button type="button" id="news-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">✕</button></div>
+        <div class="sp-head"><b class="sp-title">부동산 뉴스</b><button type="button" id="news-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">&times;</button></div>
         <div class="sp-body ui-scroll" id="news-panel-body"></div>
       </div>
       <div class="side-resizer" id="news-panel-resizer" title="드래그해서 너비 조절"></div>
     </aside>
     <aside id="lp-panel" class="side-panel collapsed" hidden aria-label="레이어">
       <div class="sp-inner">
-        <div class="sp-head"><b class="sp-title">레이어</b><button type="button" id="lp-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">✕</button></div>
+        <div class="sp-head"><b class="sp-title">레이어</b><button type="button" id="lp-panel-close" class="ap-close" title="패널 닫기" aria-label="패널 닫기">&times;</button></div>
         <div class="sp-body ui-scroll" id="lp-panel-body"></div>
       </div>
       <div class="side-resizer" id="lp-panel-resizer" title="드래그해서 너비 조절"></div>
@@ -2470,25 +2503,25 @@
       <div class="footer-right">
         <span class="footer-contact">호룡리싱앤리얼리티 | 사업자등록번호 : 369-37-00360 | 통신판매업신고번호 : 제2026-진접오남-0527호 | 오재호 010.4353.6501 · conoc@naver.com
           
-          · <span class="build-tag">build 2026-10-07 21:00 · 17ea26b</span></span>
+          · <span class="build-tag">build 2026-10-07 21:59 · 90e033e</span></span>
         <a href="admin.html" class="footer-admin">관리자</a>
       </div>
     </div>
   </footer>
   
 
-  <script src="js/joinkey.js?v=17ea26b"></script>
+  <script src="js/joinkey.js?v=90e033e"></script>
   
-  <script src="js/identity.js?v=17ea26b"></script>
-  <script src="js/common.js?v=17ea26b"></script>
-  <script src="js/ui-resize.js?v=17ea26b"></script>
-  <script src="js/footer-resize.js?v=17ea26b"></script>
-  <script src="js/route-line.js?v=17ea26b"></script>
-  <script src="js/route-api.js?v=17ea26b"></script>
-  <script src="js/footer-stats.js?v=17ea26b"></script>
+  <script src="js/identity.js?v=90e033e"></script>
+  <script src="js/common.js?v=90e033e"></script>
+  <script src="js/ui-resize.js?v=90e033e"></script>
+  <script src="js/footer-resize.js?v=90e033e"></script>
+  <script src="js/route-line.js?v=90e033e"></script>
+  <script src="js/route-api.js?v=90e033e"></script>
+  <script src="js/footer-stats.js?v=90e033e"></script>
   
 
-  <script src="js/ad-consent.js?v=17ea26b"></script>
+  <script src="js/ad-consent.js?v=90e033e"></script>
   
   <div id="ac" class="ac"></div>
   <script>
@@ -2813,54 +2846,31 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
     const BIZNO_ENDPOINT = _devEndpoint('biznoEndpoint') || SUPABASE_URL + '/functions/v1/bizno-proxy';
     const _bizFmt = (v) => { const d = v.replace(/[^0-9]/g, '').slice(0, 10); return d.length > 5 ? d.slice(0, 3) + '-' + d.slice(3, 5) + '-' + d.slice(5) : d.length > 3 ? d.slice(0, 3) + '-' + d.slice(3) : d; };
     function openBiznoModal() {
-      let m = $('bizno-modal');
-      if (!m) {
-        m = document.createElement('div'); m.id = 'bizno-modal';
-        m.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:3000;display:flex;align-items:center;justify-content:center;padding:16px;';
-        m.innerHTML = `<div style="background:var(--card);color:var(--text);border-radius:8px;max-width:680px;width:100%;max-height:86vh;overflow:auto;padding:20px;box-shadow:var(--c-shadow-lg);">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-            <b style="font-size:16px;">사업자등록증 조회</b>
-            <button id="bizno-close" type="button" class="btn-mini">닫기</button>
-          </div>
-          <div style="font-size:13px;color:var(--muted);margin-bottom:12px;"><b>사업자등록번호 · 상호 · 법인등록번호</b> 중 <b>하나만</b> 넣어도 됨. 상호나 법인등록번호로 찾으면 사업자등록번호를 자동으로 채워 사업자 상태 조회까지 이어감. 대표자·개업일자를 함께 넣으면 <b>진위 일치</b> 여부까지 확인.</div>
-          <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">사업자등록번호(선택)</div>
-          <input id="bizno-input" inputmode="numeric" maxlength="12" placeholder="123-45-67890"
-            style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--text);font:inherit;font-size:15px;margin-bottom:10px;">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+      const ui = uiWindow('bizno-modal', '사업자등록증 조회', 680);
+      if (!ui.main.childElementCount) {
+        ui.main.innerHTML = `<div class="ui-lbl" style="margin-bottom:12px;"><b>사업자등록번호 · 상호 · 법인등록번호</b> 중 <b>하나만</b> 넣어도 됩니다. 상호나 법인등록번호로 찾으면 사업자등록번호를 자동으로 채워 사업자 상태 조회까지 이어 갑니다. 대표자·개업일자를 함께 넣으면 <b>진위 일치</b> 여부까지 확인합니다.</div>
+          <div class="ui-lbl">사업자등록번호(선택)</div>
+          <input id="bizno-input" class="ui-inp" inputmode="numeric" maxlength="12" placeholder="123-45-67890">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
             <div>
-              <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">대표자</div>
-              <input id="bizno-name" maxlength="30" placeholder="홍길동" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--text);font:inherit;font-size:15px;">
+              <div class="ui-lbl">대표자</div>
+              <input id="bizno-name" class="ui-inp" maxlength="30" placeholder="홍길동">
             </div>
             <div>
-              <div style="font-size:13px;color:var(--muted);margin-bottom:4px;">개업일자</div>
-              <input id="bizno-date" type="date" max="${chungakToday()}" style="width:100%;box-sizing:border-box;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--text);font:inherit;font-size:15px;">
+              <div class="ui-lbl">개업일자</div>
+              <input id="bizno-date" class="ui-inp" type="date" max="${chungakToday()}">
             </div>
           </div>
-          <div style="font-size:13px;color:var(--muted);margin-bottom:10px;">상호(선택)</div>
-          <input id="bizno-bname" maxlength="50" placeholder="(주)OO부동산"
-            style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--text);font:inherit;font-size:15px;margin-bottom:12px;">
-          <div style="font-size:13px;color:var(--muted);margin:10px 0 4px;">법인등록번호(선택)</div>
-          <input id="bizno-crno" inputmode="numeric" maxlength="16" placeholder="110111-1105215"
-            style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--text);font-size:15px;margin-bottom:10px;">
-          <div style="display:flex;gap:8px;">
+          <div class="ui-lbl">상호(선택)</div>
+          <input id="bizno-bname" class="ui-inp" maxlength="50" placeholder="(주)OO부동산">
+          <div class="ui-lbl">법인등록번호(선택)</div>
+          <input id="bizno-crno" class="ui-inp" inputmode="numeric" maxlength="16" placeholder="110111-1105215">
+          <div style="display:flex;gap:8px;margin-top:2px;">
             <button id="bizno-go" type="button" class="pc-btn pc-btn-primary" style="flex:1;">조회하기</button>
             <button id="bizno-reset" type="button" class="pc-btn" style="flex:0 0 92px;">초기화</button>
           </div>
-          <div id="bizno-hist" style="display:none;"></div>
           <div id="bizno-result" style="margin-top:14px;display:none;"></div>
-        </div>`;
-        document.body.appendChild(m);
-        
-        
-        
-        
-        let _bizDownOnBg = false;
-        m.addEventListener('mousedown', (e) => { _bizDownOnBg = (e.target === m); });
-        m.addEventListener('click', (e) => {
-          if (e.target === m && _bizDownOnBg) m.style.display = 'none';
-          _bizDownOnBg = false;
-        });
-        $('bizno-close').onclick = () => { m.style.display = 'none'; };
+          <div id="bizno-hist" style="display:none;margin-top:14px;"></div>`;
         $('bizno-go').onclick = lookupBizno;
         
         
@@ -2876,7 +2886,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         $('bizno-input').addEventListener('input', (e) => { const f = _bizFmt(e.target.value || ''); if (f !== e.target.value) { e.target.value = f; try { e.target.setSelectionRange(f.length, f.length); } catch (er) {} } });
         ['bizno-input', 'bizno-name', 'bizno-date', 'bizno-bname'].forEach((id) => $(id).addEventListener('keydown', (e) => { if (isEnterKey(e)) lookupBizno(); }));
       }
-      m.style.display = 'flex';
+      ui.open();
       renderBiznoHist();
       setTimeout(() => $('bizno-input').focus(), 50);
     }
@@ -3170,6 +3180,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       const startDt = ($('bizno-date').value || '').replace(/-/g, '');
       const crno = ($('bizno-crno') ? $('bizno-crno').value : '').replace(/[^0-9]/g, '');
       box.style.display = 'block';
+      try { box.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (e) {}
       
       
       
@@ -3921,7 +3932,8 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       
       
       const _ctlH = 0; 
-      const w = sz.x - 30, h = Math.max(160, sz.y - 50 - _ctlH);
+      
+      const w = sz.x - 30, h = Math.max(160, sz.y - 60 - _ctlH);
       
       
       
@@ -3965,16 +3977,85 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       if (this._lpH) fitPopupText(content);
       else if (content.style.fontSize) content.style.fontSize = '';
     };
+    
+    
+    
+    
+    
+    function uiWindow(id, title, width) {
+      const had = document.getElementById(id);
+      if (had && had.__ui) return had.__ui;
+      const back = document.createElement('div');
+      back.className = 'ui-win-back';
+      back.style.display = 'none';
+      const win = document.createElement('div');
+      win.id = id;
+      win.className = 'ui-win';
+      win.setAttribute('role', 'dialog');
+      win.setAttribute('aria-modal', 'true');
+      win.setAttribute('aria-label', title);
+      win.style.width = 'min(' + width + 'px, calc(100vw - 32px))';
+      win.innerHTML = `<div class="ui-win-body"><div class="ui-win-title">${esc(title)}</div><div class="ui-win-main"></div></div>`
+        + '<button type="button" class="ui-pop-btn" aria-label="닫기" style="position:absolute;top:2px;right:2px;z-index:1100">&times;</button>'
+        + '<button type="button" class="ui-grip ui-grip-corner" title="드래그하여 크기 조절" tabindex="-1" aria-hidden="true"></button>';
+      back.appendChild(win);
+      document.body.appendChild(back);
+      const onKey = (e) => { if (e.key === 'Escape') ui.close(); };
+      let downOnBack = false;
+      back.addEventListener('mousedown', (e) => { downOnBack = (e.target === back); });
+      back.addEventListener('click', (e) => { if (e.target === back && downOnBack) ui.close(); downOnBack = false; });
+      win.querySelector('[aria-label="닫기"]').onclick = () => ui.close();
+      makeResizable(win.querySelector('.ui-grip'), win, {
+        minW: 280, minH: 160,
+        maxW: () => window.innerWidth - 24,
+        maxH: () => window.innerHeight - 24,
+        onStart: () => { win.style.maxHeight = 'none'; },   
+      });
+      win.tabIndex = -1;
+      let prevFocus = null;
+      const ui = {
+        win,
+        main: win.querySelector('.ui-win-main'),
+        open() {
+          if (back.style.display !== 'none') return;   
+          prevFocus = document.activeElement;
+          back.style.display = '';
+          document.addEventListener('keydown', onKey);
+          const first = win.querySelector('.ui-win-main input, .ui-win-main button, .ui-win-main [tabindex="0"]');
+          (first || win).focus({ preventScroll: true });
+        },
+        close() {
+          back.style.display = 'none';
+          document.removeEventListener('keydown', onKey);
+          if (prevFocus && prevFocus.isConnected) try { prevFocus.focus({ preventScroll: true }); } catch (e) {}
+          prevFocus = null;
+        },
+      };
+      win.__ui = ui;
+      return ui;
+    }
     let _restoreChip = null;   
+    
+    
+    function fitRestoreChip() {
+      if (!_restoreChip) return;
+      const mr = map.getContainer().getBoundingClientRect();
+      const rp = document.querySelector('.right-panels');
+      const pr = rp ? rp.getBoundingClientRect() : null;
+      const cover = pr && pr.width > 40 && pr.left < mr.right && pr.right > mr.left ? mr.right - pr.left : 0;
+      _restoreChip.style.right = (Math.max(0, cover) + 12) + 'px';
+    }
     function attachPopupControls(popup) {
+      
+      
+      
+      if (_restoreChip) { _restoreChip.remove(); _restoreChip = null; }
       const el = popup.getElement();
       if (!el || el.querySelector('.ui-grip')) return;
       const content = el.querySelector('.leaflet-popup-content');
       if (!content) return;
       
       content.classList.add('ui-scroll');
-      
-      if (_restoreChip) { _restoreChip.remove(); _restoreChip = null; }
       
       
       
@@ -3985,13 +4066,15 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       grip.type = 'button';
       grip.className = 'ui-grip ui-grip-corner';
       grip.title = '드래그하여 크기 조절';
+      grip.tabIndex = -1;                       
+      grip.setAttribute('aria-hidden', 'true');
       el.appendChild(grip);
       let autoPanPrev = null;
       makeResizable(grip, content, {
         applyStyle: false,
         minW: 220, minH: 120,
         maxW: () => map.getSize().x - 30,
-        maxH: () => map.getSize().y - 50,
+        maxH: () => map.getSize().y - 60,
         
         onStart: () => { autoPanPrev = popup.options.autoPan; popup.options.autoPan = false; },
         onResize: (w, h) => { popup._lpW = w; popup._lpH = h; popup._updateLayout(); popup._updatePosition(); },
@@ -4020,18 +4103,21 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         const source = popup._source;
         const latlng = popup.getLatLng();
         const titleEl = content.querySelector('.rp-name, .cctv-pc-head span') || content.querySelector('.pc-body > div') || content.querySelector('.pc-head');
-        const srcTitle = (titleEl ? titleEl.textContent.trim() : '팝업').slice(0, 18);
+        const srcTitle = titleEl ? titleEl.textContent.trim() : '팝업';   
         map.closePopup();
         const chip = document.createElement('div');
         chip.className = 'lp-restore-chip';
         chip.innerHTML = `<span>📌</span><b>${esc(srcTitle)}</b>`;
         chip.title = '클릭하여 팝업 복원';
+        
+        
         map.getContainer().appendChild(chip);
         
         
         L.DomEvent.disableClickPropagation(chip);
         if (_restoreChip) { _restoreChip.remove(); }
         _restoreChip = chip;
+        fitRestoreChip();
         chip.onclick = () => {
           chip.remove();
           if (_restoreChip === chip) _restoreChip = null;
@@ -13145,7 +13231,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         const tlHtml = jbCuHtml(d) + jbTlHtml(d);
         const biHtml = jbBiHtml(d);
         
-        return `<div class="pc" data-ptitle="${esc(d.name + ' (' + g + (es ? ' · ' + es : '') + ')')}"><div class="pc-head">${badgeLink(`<span style="display:inline-block;background:${c};color:#fff;font-size:12px;padding:2px 8px;border-radius:999px;">${g}</span>`)}${badgeLink(stageBadge)}<span class="rp-name">${esc(d.name)}</span></div><div class="pc-body"><div>${esc(d.gu)} ${esc(d.jibun || ((d.bi && d.bi.addr) || ''))}${areaTxt}${d.approx ? ' <span style="color:var(--c-price);">(동 근사위치)</span>' : ''}</div><div style="font-size:12px;color:var(--c-muted);margin-top:3px;">사업구분: ${esc(d.gubun)}</div>${meta.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:8px;border-top:1px solid var(--line);padding-top:8px;">${meta.join('')}</div>` : ''}${biHtml}<div style="margin:8px 0 4px;"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--c-muted);margin-bottom:3px;"><span>진행단계</span><span>${jbPct(es)}%</span></div><div style="height:5px;background:var(--line);border-radius:4px;overflow:hidden;"><div style="height:100%;width:${jbPct(es)}%;background:${stageColor(es)};border-radius:4px;transition:width .3s;"></div></div></div>${tlHtml}${cmpHtml}<div class="jb-rp-stat rp-stat" style="display:none;padding:5px 0;border-top:1px solid var(--c-border);"></div><div class="jb-community" style="display:none;margin-top:6px;"></div></div><div class="pc-actions">${linkBtns}<button class="jb-rp-filter pc-btn pc-btn-outline" style="border-color:var(--line) !important;color:var(--c-price);"><i class="fi fi-rr-search"></i>이 구역 실거래 보기</button><button class="jb-community-btn pc-btn pc-btn-outline" style="border-color:var(--line) !important;color:var(--c-success);"><i class="fi fi-rr-comments"></i>커뮤니티</button><button class="jb-cmp pc-btn pc-btn-outline" style="border-color:var(--line) !important;color:var(--c-primary);"><i class="fi fi-rr-plus"></i>비교</button><div class="pc-btn-row"><button class="rt-start pc-btn pc-btn-outline" style="border-color:var(--line) !important;color:var(--c-success);"><i class="fi fi-rr-flag"></i>출발</button><button class="rt-end pc-btn pc-btn-outline" style="border-color:var(--line) !important;color:var(--c-danger);"><i class="fi fi-rr-marker"></i>도착</button></div><button class="sv-btn pc-btn pc-btn-outline"><i class="fi fi-rr-video-camera"></i>거리뷰</button></div></div>`;
+        return `<div class="pc" data-ptitle="${esc(d.name + ' (' + g + (es ? ' · ' + es : '') + ')')}"><div class="pc-head">${badgeLink(`<span style="display:inline-block;background:${c};color:#fff;font-size:12px;padding:2px 8px;border-radius:999px;">${g}</span>`)}${badgeLink(stageBadge)}<span class="rp-name">${esc(d.name)}</span></div><div class="pc-body"><div>${esc(d.gu)} ${esc((/^[\d.,]+\s*(㎡|m²)?$/.test(d.jibun || '') ? '' : d.jibun) || ((d.bi && d.bi.addr) || ''))}${areaTxt}${d.approx ? ' <span style="color:var(--c-price);">(동 근사위치)</span>' : ''}</div><div style="font-size:12px;color:var(--c-muted);margin-top:3px;">사업구분: ${esc(d.gubun)}</div>${meta.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:8px;border-top:1px solid var(--line);padding-top:8px;">${meta.join('')}</div>` : ''}${biHtml}<div style="margin:8px 0 4px;"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--c-muted);margin-bottom:3px;"><span>진행단계</span><span>${jbPct(es)}%</span></div><div style="height:5px;background:var(--line);border-radius:4px;overflow:hidden;"><div style="height:100%;width:${jbPct(es)}%;background:${stageColor(es)};border-radius:4px;transition:width .3s;"></div></div></div>${tlHtml}${cmpHtml}<div class="jb-rp-stat rp-stat" style="display:none;padding:5px 0;border-top:1px solid var(--c-border);"></div><div class="jb-community" style="display:none;margin-top:6px;"></div></div><div class="pc-actions">${linkBtns}<button class="jb-rp-filter pc-btn pc-btn-outline" style="border-color:var(--line) !important;color:var(--c-price);"><i class="fi fi-rr-search"></i>이 구역 실거래 보기</button><button class="jb-community-btn pc-btn pc-btn-outline" style="border-color:var(--line) !important;color:var(--c-success);"><i class="fi fi-rr-comments"></i>커뮤니티</button><button class="jb-cmp pc-btn pc-btn-outline" style="border-color:var(--line) !important;color:var(--c-primary);"><i class="fi fi-rr-plus"></i>비교</button><div class="pc-btn-row"><button class="rt-start pc-btn pc-btn-outline" style="border-color:var(--line) !important;color:var(--c-success);"><i class="fi fi-rr-flag"></i>출발</button><button class="rt-end pc-btn pc-btn-outline" style="border-color:var(--line) !important;color:var(--c-danger);"><i class="fi fi-rr-marker"></i>도착</button></div><button class="sv-btn pc-btn pc-btn-outline"><i class="fi fi-rr-video-camera"></i>거리뷰</button></div></div>`;
       }
       window.jbPopupHtml = jbPopupHtml;   
       
@@ -13392,7 +13478,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         const stageBadgeHtml = (d) => { const e = jbEffStage(d); const cur = jbCurStep(d); return `<span class="jb-perm-badge" style="border-color:${stageColor(e)}"><span class="jb-top" style="background:${stageColor(e)}">${esc(d.name)} · ${jbPct(e)}%</span>${cur ? `<span class="jb-cur">${esc(cur)}</span>` : ''}</span>`; };
         const plainTipHtml = (d, approx) => approx
           ? `<b>${esc(d.name)}</b> · ${esc(d.stage || '')}`
-          : `<b>${esc(d.name)}</b><br><span style="font-size:12px;color:#555">${esc(d.stage || '')}</span>`;
+          : `<b>${esc(d.name)}</b><br><span style="font-size:12px;color:var(--muted)">${esc(d.stage || '')}</span>`;
         const jbBindTip = (layer, d, badge) => {
           try { layer.unbindTooltip(); } catch (e) {}
           layer.bindTooltip(badge ? stageBadgeHtml(d) : plainTipHtml(d, !!layer._approx),
@@ -13681,7 +13767,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
             if (rings && rings.length) areaM2 = Math.round(rings.reduce((a, r) => a + _ringArea(r), 0));
           }
           const id = 'jb|' + d.name + '|' + d.jibun;
-          if (cmpSel.has(id)) cmpSel.delete(id); else cmpSel.set(id, { id, kind: 'jb', name: d.name, gu: d.gu, jibun: d.jibun, gubun: d.gubun, stage: d.stage || '', areaM2, lat: d.lat, lng: d.lng });
+          if (cmpSel.has(id)) cmpSel.delete(id); else cmpSel.set(id, { id, kind: 'jb', name: d.name, gu: d.gu, jibun: d.jibun, addr: ((/^[\d.,]+\s*(㎡|m²)?$/.test(d.jibun || '') ? '' : d.jibun) || ((d.bi && d.bi.addr) || '')), gubun: d.gubun, stage: d.stage || '', areaM2, lat: d.lat, lng: d.lng });
           updateCmpBar();
           m.closePopup();
         };
@@ -13732,7 +13818,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       const jbRpBar = document.createElement('div');
       jbRpBar.id = 'jb-rp-bar';
       jbRpBar.style.display = 'none';
-      jbRpBar.innerHTML = '<span id="jb-rp-bar-txt"></span><button id="jb-rp-bar-close" title="닫기">✕</button>';
+      jbRpBar.innerHTML = '<span id="jb-rp-bar-txt"></span><button type="button" id="jb-rp-bar-close" title="닫기" aria-label="닫기">&times;</button>';
       document.getElementById('map').appendChild(jbRpBar);
       L.DomEvent.disableClickPropagation(jbRpBar);
       L.DomEvent.disableScrollPropagation(jbRpBar);
@@ -16811,6 +16897,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           const rw = rp ? Math.round(rp.getBoundingClientRect().width) : 0;
           document.querySelectorAll('.leaflet-left').forEach((el) => { el.style.left = lw + 'px'; });
           document.querySelectorAll('.leaflet-right').forEach((el) => { el.style.right = rw + 'px'; });
+          fitRestoreChip();
         } catch (e) {}
       }
       if (typeof ResizeObserver === 'function') {
@@ -24551,17 +24638,17 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         ov.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(94vw,820px);height:min(82vh,560px);z-index:3000;border-radius:8px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.7);background:#111;';
         ov.innerHTML = '<div id="sv-pano" style="width:100%;height:100%;"></div>'
           + '<div id="sv-minimap" style="position:absolute;bottom:16px;left:16px;width:200px;height:150px;border-radius:8px;overflow:hidden;resize:both;border:2px solid rgba(255,255,255,.85);box-shadow:0 2px 10px rgba(0,0,0,.5);z-index:3001;min-width:100px;min-height:80px;max-width:400px;max-height:300px;background:#e8e8e8;"></div>'
-          + '<button id="sv-close" style="position:absolute;top:10px;right:10px;z-index:3002;padding:6px 14px;background:rgba(0,0,0,.65);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;">✕ 닫기</button>';
+          + '<button id="sv-close" type="button" class="ui-pop-btn" aria-label="닫기" style="position:absolute;top:3px;right:3px;z-index:3002;">&times;</button>';
         document.body.appendChild(ov);
         
-        const ovGrip = document.createElement('div');
-        ovGrip.className = 'ui-grip';
-        ovGrip.style.cssText = 'position:absolute;right:12px;bottom:12px;z-index:3003;';
+        
+        const ovGrip = document.createElement('button');
+        ovGrip.type = 'button';
+        ovGrip.className = 'ui-grip ui-grip-corner';
+        ovGrip.style.zIndex = '3003';
+        ovGrip.tabIndex = -1;
+        ovGrip.setAttribute('aria-hidden', 'true');
         ovGrip.title = '드래그하여 크기 조절';
-        const ovHint = document.createElement('span');
-        ovHint.className = 'sv-grip-hint';
-        ovHint.textContent = '드래그로 크기 조절';
-        ovGrip.appendChild(ovHint);
         ov.appendChild(ovGrip);
         
         
@@ -24593,7 +24680,10 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
           try { typeof panorama.destroy === 'function' && panorama.destroy(); } catch (e) {}
           try { typeof miniMap.destroy === 'function' && miniMap.destroy(); } catch (e) {}
           ov.remove(); backdrop.remove();
+          document.removeEventListener('keydown', onSvKey);
         };
+        const onSvKey = (e) => { if (e.key === 'Escape') close(); };
+        document.addEventListener('keydown', onSvKey);
         ov.querySelector('#sv-close').onclick = close;
         backdrop.onclick = close;
 
@@ -24939,15 +25029,13 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
         ['건축년도', (d) => d.kind === 'jb' ? '-' : (d.build || '?') + '년'],
         ['층', (d) => d.kind === 'jb' ? '-' : (d.floor || '?') + '층'],
         ['거래일', (d) => d.kind === 'jb' ? '-' : (d.ymd || '-')],
-        ['위치', (d) => `${d.gu || ''} ${d.kind === 'jb' ? (d.jibun || '') : (d.dong || '')}`],
+        ['위치', (d) => `${d.gu || ''} ${d.kind === 'jb' ? (d.addr || '') : (d.dong || '')}`],
       ];
-      let modal = $('cmp-modal');
-      if (!modal) { modal = document.createElement('div'); modal.id = 'cmp-modal'; modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:3000;display:flex;align-items:center;justify-content:center;padding:16px;'; document.body.appendChild(modal); modal.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; }); }
       const th = items.map((d) => `<th style="padding:8px;border-bottom:2px solid var(--c-primary);font-size:14px;">${esc(d.name)}</th>`).join('');
       const trs = rows.map(([label, fn]) => `<tr><td style="padding:7px 8px;color:var(--c-muted);font-size:13px;white-space:nowrap;border-bottom:1px solid var(--line);">${label}</td>${items.map((d) => `<td style="padding:7px 8px;font-size:14px;border-bottom:1px solid var(--line);text-align:center;">${esc(fn(d))}</td>`).join('')}</tr>`).join('');
-      modal.innerHTML = `<div style="background:var(--card);color:var(--text);border-radius:8px;max-width:620px;width:100%;max-height:82vh;overflow:auto;padding:18px;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;"><b style="font-size:16px;">부동산 · 정비구역 비교</b><button id="cmp-close" style="border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;padding:6px 12px;cursor:pointer;font:inherit;">닫기</button></div><table style="width:100%;border-collapse:collapse;"><thead><tr><th></th>${th}</tr></thead><tbody>${trs}</tbody></table></div>`;
-      modal.style.display = 'flex';
-      $('cmp-close').onclick = () => { modal.style.display = 'none'; };
+      const ui = uiWindow('cmp-modal', '부동산 · 정비구역 비교', 620);
+      ui.main.innerHTML = `<table style="width:100%;border-collapse:collapse;"><thead><tr><th></th>${th}</tr></thead><tbody>${trs}</tbody></table>`;
+      ui.open();
     }
 
     function render() {
@@ -25653,8 +25741,13 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
     } catch (e) {}
     
     try { const f = sessionStorage.getItem('mj_flash'); if (f) { sessionStorage.removeItem('mj_flash'); setTimeout(() => alert(f), 300); } } catch (e) {}
-    $('profile-btn').addEventListener('click', (e) => { e.stopPropagation(); $('profile-menu').classList.toggle('on'); });
-    document.addEventListener('click', () => $('profile-menu').classList.remove('on'));
+    
+    const setProfileMenu = (on) => { $('profile-menu').classList.toggle('on', on); $('profile-btn').setAttribute('aria-expanded', on ? 'true' : 'false'); };
+    $('profile-btn').setAttribute('aria-controls', 'profile-menu');
+    setProfileMenu(false);
+    $('profile-btn').addEventListener('click', (e) => { e.stopPropagation(); setProfileMenu(!$('profile-menu').classList.contains('on')); });
+    document.addEventListener('click', () => setProfileMenu(false));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && $('profile-menu').classList.contains('on')) { setProfileMenu(false); $('profile-btn').focus(); } });
     
     function runSearch() {
       var q = $('search').value.trim();
@@ -25702,8 +25795,10 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
       const ac = $('ac');
       if (!ac || !ac.classList.contains('on')) return;
       const r = $('search').getBoundingClientRect();
-      ac.style.left = r.left + 'px';
-      ac.style.width = r.width + 'px';
+      
+      const w = Math.min(window.innerWidth - 16, Math.max(r.width, 280));
+      ac.style.left = Math.max(8, Math.min(r.left, window.innerWidth - w - 8)) + 'px';
+      ac.style.width = w + 'px';
       ac.style.top = (r.bottom + 4) + 'px';
     }
     document.addEventListener('scroll', acPlace, true);
@@ -25937,7 +26032,7 @@ const THEME_ORDER = ['base', 'dark', 'mock', 'lux', 'teal', 'soil'];
 
 
 
-    body :is(.pc-head, .sp-title, .ap-title, #dp-title, .pc-price, .lp-hstat b, #dp-panel-body .blk-h) {
+    body :is(.pc-head, .sp-title, .ap-title, #dp-title, .pc-price, .lp-hstat b, #dp-panel-body .blk-h, .ui-win-title, .apd-title) {
       font-size:15px !important;
     }
     body :is(.news-meta, .lp-roles-lbl, .pc-addrline, .doc-sub, .doc-note, .doc-more > summary,
