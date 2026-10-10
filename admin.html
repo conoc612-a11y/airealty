@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>관리자 모드</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-<link rel="stylesheet" href="css/buttons.css?v=6ecbda4" />
-<link rel="stylesheet" href="css/tokens.css?v=6ecbda4" />
+<link rel="stylesheet" href="css/buttons.css" />
+<link rel="stylesheet" href="css/tokens.css" />
 <style>
   :root { --bg:#0f1520; --card:#1a2332; --line:#2a3564; --text:#e8eef7; --muted:#8b9bb4; --accent:var(--brand-lt); }
   * { margin:0; }
@@ -128,6 +128,7 @@
 
       <div class="tabs">
         <button id="tab-member" class="on" onclick="showTab('member')">회원관리</button>
+        <button id="tab-approve" onclick="showTab('approve')">가입승인</button>
         <button id="tab-withdrawn" onclick="showTab('withdrawn')">탈퇴자</button>
         <button id="tab-stat" onclick="showTab('stat')">방문자 통계</button>
         <button id="tab-loc" onclick="showTab('loc')">방문자 위치</button>
@@ -147,6 +148,19 @@
           <table>
             <thead><tr><th>가입일</th><th>이름</th><th>가입 수단</th><th>상태</th><th>최종 접속</th><th>이메일</th><th></th></tr></thead>
             <tbody id="member-rows"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 가입승인 — 승인 대기 중인 신규 회원만 모은다(2026-10-10) -->
+      <div id="view-approve" class="hidden">
+        <div class="row">
+          <div class="sub" style="margin:0;" id="approve-note"></div>
+        </div>
+        <div class="tablebox">
+          <table>
+            <thead><tr><th>가입일</th><th>이름</th><th>가입 수단</th><th>이메일</th><th></th></tr></thead>
+            <tbody id="approve-rows"></tbody>
           </table>
         </div>
       </div>
@@ -406,7 +420,7 @@
     </div>
   </div>
 
-<script src="js/common.js?v=6ecbda4"></script>
+<script src="js/common.js"></script>
 <script>
 const FN = SUPABASE_URL + '/functions/v1';
 let token = sessionStorage.getItem('admin_token');
@@ -501,6 +515,7 @@ function render() {
   $('c-member').textContent = data.memberCount.toLocaleString();
   $('pending-note').textContent = data.pendingCount > 0 ? '승인 대기 ' + data.pendingCount + '명' : '';
   renderMembers();
+  renderApprove();
   renderWithdrawn();
   renderAds();
   renderLocations();
@@ -574,6 +589,20 @@ function renderMembers() {
       <td>${esc(m.email || '—')}</td>
       <td style="white-space:nowrap;">${m.approved_at ? '' : `<button class="btn" data-id="${esc(m.id)}" onclick="approveMember(this.dataset.id)">승인</button> `}<button class="btn del" data-id="${esc(m.id)}" data-label="${esc(m.name || m.email || '')}" onclick="deleteMember(this.dataset.id, this.dataset.label)">탈퇴</button></td>
     </tr>`).join('') || '<tr><td colspan="7" style="color:var(--muted);text-align:center;">회원 없음.</td></tr>';
+}
+
+// ── 가입승인 (2026-10-10 — 대기 중인 신규 회원만 모은 전용 탭) ──
+function renderApprove() {
+  const pend = (data.members || []).filter((m) => !m.approved_at);
+  $('approve-note').textContent = pend.length > 0 ? '승인 대기 ' + pend.length + '명 — 승인해야 입장할 수 있습니다' : '대기 중인 신규 회원이 없습니다.';
+  $('approve-rows').innerHTML = pend.map((m) => `
+    <tr>
+      <td>${(m.joined_at || '').slice(0, 10)}</td>
+      <td>${esc(m.name || '—')}</td>
+      <td>${provLabel(m)}</td>
+      <td>${esc(m.email || '—')}</td>
+      <td><button class="btn" data-id="${esc(m.id)}" onclick="approveMember(this.dataset.id)">승인</button></td>
+    </tr>`).join('') || '<tr><td colspan="5" style="color:var(--muted);text-align:center;">대기 중인 신규 회원이 없습니다.</td></tr>';
 }
 
 // ── 탈퇴자 ──
