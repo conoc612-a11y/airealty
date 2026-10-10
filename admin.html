@@ -15,34 +15,34 @@
   h1 { font-size:22px; margin-bottom:4px; }
   .sub { color:var(--muted); font-size:13px; margin-bottom:24px; }
 
-  
+  /* 로그인 */
   #login-view { max-width:360px; margin:12vh auto 0; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:28px; }
   #login-view h2 { font-size:17px; margin-bottom:18px; }
   #login-view input { width:100%; padding:11px 12px; border-radius:8px; border:1px solid var(--line); background:#0f1622; color:var(--text); font-size:15px; }
   #login-view button { width:100%; margin-top:12px; padding:11px; border:0; border-radius:8px; background:var(--accent); color:#fff; font-size:15px; font-weight:600; cursor:pointer; }
   #login-err { color:#ff7a7a; font-size:13px; margin-top:10px; min-height:18px; }
 
-  
+  /* 대시보드 헤더 */
   .topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
   .topbar button { background:var(--card); color:var(--muted); border:1px solid var(--line); border-radius:8px; padding:7px 14px; cursor:pointer; font-size:13px; }
   .tabs { display:flex; gap:8px; margin-bottom:16px; }
   .tabs button { background:var(--card); color:var(--muted); border:1px solid var(--line); border-radius:8px; padding:8px 16px; cursor:pointer; font-size:14px; }
   .tabs button.on { background:var(--accent); color:#fff; border-color:var(--accent); }
 
-  
+  /* 카드 */
   .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; margin-bottom:20px; }
   .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
   .card .k { color:var(--muted); font-size:12px; }
   .card .v { font-size:24px; font-weight:700; margin-top:4px; }
 
-  
+  /* 회원관리 */
   .tablebox { background:var(--card); border:1px solid var(--line); border-radius:10px; overflow:auto; max-height:520px; }
   table { width:100%; border-collapse:collapse; font-size:13px; }
   th, td { padding:9px 12px; text-align:left; border-bottom:1px solid var(--line); white-space:nowrap; }
   th { position:sticky; top:0; background:#1e2940; color:var(--muted); font-size:12px; }
   .tag { display:inline-block; background:#16233b; color:#8fb8ff; border-radius:4px; padding:1px 6px; font-size:11px; margin-right:3px; }
 
-  
+  /* 차트 */
   .charts { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:14px; }
   .chartbox { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; }
   .chartbox h3 { font-size:14px; color:var(--muted); margin-bottom:10px; font-weight:600; }
@@ -55,7 +55,7 @@
   .row { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
   .hidden { display:none !important; }
 
-  
+  /* 관제센터 — API/DB 연결 신호등 */
   .hc-item { display:flex; align-items:center; gap:10px; padding:8px 12px; }
   .hc-item + .hc-item { border-top:1px solid var(--line); }
   .hc-dot { width:14px; height:14px; border-radius:50%; flex-shrink:0; }
@@ -67,7 +67,7 @@
 </head>
 <body>
   <div class="wrap">
-    
+    <!-- 로그인 -->
     <div id="login-view">
       <h2>관리자 모드</h2>
       <input type="email" id="adm-email" placeholder="관리자 이메일" autocomplete="username" style="margin-bottom:10px;" onkeydown="if(event.key==='Enter')doLogin()">
@@ -82,7 +82,7 @@
       </div>
     </div>
 
-    
+    <!-- 비밀번호 변경: 인증 메일 발송 -->
     <div id="reset-view" class="hidden">
       <div style="max-width:360px;margin:12vh auto 0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:28px;">
         <h2 style="font-size:17px;margin-bottom:8px;">비밀번호 변경</h2>
@@ -95,7 +95,7 @@
       </div>
     </div>
 
-    
+    <!-- 비밀번호 변경: 이메일 링크 확인 후 새 비밀번호 설정 -->
     <div id="newpw-view" class="hidden">
       <div style="max-width:360px;margin:12vh auto 0;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:28px;">
         <h2 style="font-size:17px;margin-bottom:8px;">새 비밀번호 설정</h2>
@@ -106,7 +106,7 @@
       </div>
     </div>
 
-    
+    <!-- 대시보드 -->
     <div id="dash-view" class="hidden">
       <div class="topbar">
         <div>
@@ -114,7 +114,7 @@
           <div class="sub" id="asof"></div>
         </div>
         <div style="display:flex;gap:8px;">
-          <a href="index.html" class="btn" style="text-decoration:none;color:var(--muted);">홈으로</a>
+          <a href="land.html" class="btn" style="text-decoration:none;color:var(--muted);">홈으로</a>
           <button class="btn" onclick="logout()">로그아웃</button>
         </div>
       </div>
@@ -128,6 +128,7 @@
 
       <div class="tabs">
         <button id="tab-member" class="on" onclick="showTab('member')">회원관리</button>
+        <button id="tab-withdrawn" onclick="showTab('withdrawn')">탈퇴자</button>
         <button id="tab-stat" onclick="showTab('stat')">방문자 통계</button>
         <button id="tab-loc" onclick="showTab('loc')">방문자 위치</button>
         <button id="tab-api" onclick="showTab('api')">API 기관별 서비스</button>
@@ -136,20 +137,35 @@
         <button id="tab-health" onclick="showTab('health')">관제센터</button>
       </div>
 
-      
+      <!-- 회원관리 -->
       <div id="view-member">
         <div class="row">
+          <div class="sub" style="margin:0;" id="pending-note"></div>
           <button class="btn" onclick="exportMembers()">회원 CSV</button>
         </div>
         <div class="tablebox">
           <table>
-            <thead><tr><th>가입일</th><th>이름</th><th>가입 수단</th><th>최종 접속</th><th>이메일</th><th></th></tr></thead>
+            <thead><tr><th>가입일</th><th>이름</th><th>가입 수단</th><th>상태</th><th>최종 접속</th><th>이메일</th><th></th></tr></thead>
             <tbody id="member-rows"></tbody>
           </table>
         </div>
       </div>
 
-      
+      <!-- 탈퇴자 — 삭제 후에도 남는 기록(2026-10-08). 대시보드 수동 삭제는 함수 밖이라 여기 안 잡힌다 -->
+      <div id="view-withdrawn" class="hidden">
+        <div class="row">
+          <div class="sub" style="margin:0;">탈퇴하면 회원 정보는 지워지고 이 기록만 남는다.</div>
+          <button class="btn" onclick="exportWithdrawn()">탈퇴자 CSV</button>
+        </div>
+        <div class="tablebox">
+          <table>
+            <thead><tr><th>가입일</th><th>탈퇴일</th><th>이름</th><th>가입 수단</th><th>경로</th><th>이메일</th></tr></thead>
+            <tbody id="withdrawn-rows"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 방문자 통계 -->
       <div id="view-stat" class="hidden">
         <div class="row">
           <div class="sub" style="margin:0;">방문자 수는 동일 IP를 하루 1회만 집계한 값임.</div>
@@ -164,7 +180,7 @@
         </div>
       </div>
 
-      
+      <!-- 방문자 위치 -->
       <div id="view-loc" class="hidden">
         <div class="row">
           <div class="sub" style="margin:0;">IP 위치는 ipwho.is 로 조회한 값임. IP는 개인정보 보호를 위해 앞 3옥텟만 표시. 시간은 한국시간, 브라우저는 당일 첫 방문 기준임.</div>
@@ -177,7 +193,7 @@
           </table>
         </div>
       </div>
-    
+    <!-- 관제센터 -->
       <div id="view-health" class="hidden">
         <div class="row">
           <div class="sub" id="hc-asof" style="margin:0;">airealty이 연결하는 API·DB 상태를 확인.</div>
@@ -186,7 +202,7 @@
         <div class="tablebox" id="health-list" style="max-height:430px;"></div>
       </div>
 
-      
+      <!-- API 기관별 서비스 -->
       <div id="view-api" class="hidden">
         <div class="row">
           <div class="sub" style="margin:0;">연결된 공공데이터 <b id="api-n">—</b> · 정본 <code>api/OPS.tsv</code> → <code>tools/gen_ua_list.py</code>(기계 생성) · 관리자 토큰 뒤에서만 받음 · 사용자 화면에는 그리지 않음</div>
@@ -195,7 +211,7 @@
         <div class="tablebox" id="api-list" style="max-height:520px;"></div>
       </div>
 
-      
+      <!-- 광고관리 -->
       <div id="view-ad" class="hidden">
         <div class="row">
           <div style="display:flex;gap:8px;align-items:center;">
@@ -204,9 +220,12 @@
           </div>
         </div>
         <div class="tablebox" id="ad-list" style="max-height:520px;"></div>
+        <div class="charts" style="margin-top:14px;">
+          <div class="chartbox"><h3>광고 노출 (최근 30일)</h3><canvas id="ch-ad"></canvas></div>
+        </div>
       </div>
 
-      
+      <!-- 광고 등록/수정 폼 -->
       <div id="ad-form-view" class="hidden">
         <div style="max-width:700px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px;">
           <h2 style="font-size:17px;margin-bottom:18px;" id="ad-form-title">광고 등록</h2>
@@ -258,13 +277,20 @@
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
             <div>
-              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">타겟팅 (JSON)</label>
-              <textarea id="ad-targeting" rows="3" placeholder='{"region":["서울","경기"],"device":["mobile"]}' style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:13px;font-family:monospace;"></textarea>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">광고주 상호</label>
+              <input type="text" id="ad-bizname" placeholder="예: 김OO 법률사무소" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:14px;">
             </div>
             <div>
-              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">메모</label>
-              <textarea id="ad-memo" rows="3" placeholder="운영 메모..." style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:13px;"></textarea>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">사업자등록번호</label>
+              <input type="text" id="ad-bizno" placeholder="123-45-67890" style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:14px;">
             </div>
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:4px;">메모</label>
+            <textarea id="ad-memo" rows="3" placeholder="운영 메모..." style="width:100%;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#0f1622;color:var(--text);font-size:13px;"></textarea>
+          </div>
+          <div style="margin-bottom:4px;font-size:13px;color:var(--muted);">
+            <label style="cursor:pointer;"><input type="checkbox" id="ad-agree" style="accent-color:var(--accent);"> 광고 문구가 표시광고법·관련 법령(변호사 광고 규정 등)을 준수함을 광고주가 확인했습니다</label>
           </div>
           <div style="display:flex;gap:8px;justify-content:flex-end;">
             <button class="btn" onclick="hideAdForm()">취소</button>
@@ -273,7 +299,7 @@
         </div>
       </div>
 
-      
+      <!-- 아키텍처 관리 -->
       <div id="view-arch" class="hidden">
         <div class="row">
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
@@ -286,7 +312,7 @@
         <div class="tablebox" id="arch-list" style="max-height:520px;"></div>
       </div>
 
-      
+      <!-- 아키텍처 등록/수정 폼 -->
       <div id="arch-form-view" class="hidden">
         <div style="max-width:700px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px;">
           <h2 style="font-size:17px;margin-bottom:18px;" id="arch-form-title">서버/서비스 등록</h2>
@@ -386,7 +412,7 @@ const FN = SUPABASE_URL + '/functions/v1';
 let token = sessionStorage.getItem('admin_token');
 let data = null;
 let charts = {};
-const ACCENT = '#FF7A66'; 
+const ACCENT = '#FF7A66'; // tokens.css --brand-lt와 동기 (검사기가 지킴)
 
 async function doLogin() {
   const err = $('login-err');
@@ -404,10 +430,10 @@ async function doLogin() {
   } catch (e) { err.textContent = '서버 연결 실패: ' + e; }
 }
 
-
+// '보기' 버튼을 누르고 있는 동안만 비밀번호를 보여준다.
 function showPw(on) { $('pw').type = on ? 'text' : 'password'; }
 
-
+// ── 비밀번호 변경 (이메일 인증) ──
 function showReset() {
   $('login-view').classList.add('hidden');
   $('reset-view').classList.remove('hidden');
@@ -473,13 +499,16 @@ function render() {
   $('c-total').textContent = data.total.toLocaleString();
   $('c-ip').textContent = data.uniqueIps.toLocaleString();
   $('c-member').textContent = data.memberCount.toLocaleString();
+  $('pending-note').textContent = data.pendingCount > 0 ? '승인 대기 ' + data.pendingCount + '명' : '';
   renderMembers();
+  renderWithdrawn();
+  renderAds();
   renderLocations();
   renderCharts();
 }
 
 function logout() { sessionStorage.removeItem('admin_token'); token = null; location.reload(); }
-
+// 탭은 id 규약으로 전부 다룬다(tab-X ↔ view-X). 탭마다 줄을 적던 때는 api·ad·arch 가 빠져 눌러도 안 열렸다(2026-10-06 실측).
 function showTab(t) {
   document.querySelectorAll('.tabs button').forEach((b) => b.classList.toggle('on', b.id === 'tab-' + t));
   document.querySelectorAll('[id^="view-"]').forEach((v) => v.classList.toggle('hidden', v.id !== 'view-' + t));
@@ -487,9 +516,9 @@ function showTab(t) {
   if (t === 'api') loadApiServices();
 }
 
-
-
-
+// ── 관제센터 (API/DB 연결 신호등) ──
+// python tools/health_check.py --serve 로 켠 로컬 서버의 /api/health 를 읽는다.
+// 서버 없이 열면 health.json (1회 실행 스냅샷) 폴백 → 둘 다 없으면 안내만.
 async function loadHealth(force) {
   const box = $('health-list');
   box.innerHTML = '<div style="padding:12px;color:var(--muted);">확인 중… (' + new Date().toLocaleTimeString('ko-KR') + ')</div>';
@@ -498,7 +527,7 @@ async function loadHealth(force) {
     try {
       const r = await fetch(url, { cache: 'no-store' });
       if (r.ok) { j = await r.json(); break; }
-    } catch (e) {  }
+    } catch (e) { /* fallback */ }
   }
   if (!j || !j.services) {
     box.innerHTML = '<div style="padding:12px;color:var(--muted);">관제센터는 로컬에서 <code>python tools/health_check.py --serve</code> 서버를 켠 뒤 확인.</div>';
@@ -513,7 +542,7 @@ async function loadHealth(force) {
     </div>`).join('');
 }
 
-
+// ── 방문자 위치 ──
 function renderLocations() {
   $('loc-rows').innerHTML = (data.locations || []).map((l) => `
     <tr>
@@ -528,11 +557,11 @@ function renderLocations() {
     </tr>`).join('') || '<tr><td colspan="8" style="color:var(--muted);text-align:center;">위치 정보 없음 — 방문이 쌓이면 표시.</td></tr>';
 }
 
-
+// ── 회원관리 ── (취향 세그먼트 삭제 2026-09-13 — 전체 목록만 · 승인제 2026-10-08 — 대기 먼저)
 const PROV = { email: '이메일', kakao: '카카오', naver: '네이버' };
 const provLabel = (m) => (PROV[m.provider] || esc(m.provider || '-')) +
   (m.providers || []).filter((p) => p !== 'email' && p !== m.provider).map((p) => ' +' + (PROV[p] || esc(p))).join('');
-
+// 행: 이름·이메일은 esc() — 카카오 닉네임은 사용자 입력이다. 탈퇴·승인 버튼은 onclick 문자열 조립 대신 data-* 로.
 function renderMembers() {
   const rows = data.members;
   $('member-rows').innerHTML = rows.map((m) => `
@@ -540,13 +569,43 @@ function renderMembers() {
       <td>${(m.joined_at || '').slice(0, 10)}</td>
       <td>${esc(m.name || '—')}</td>
       <td>${provLabel(m)}</td>
+      <td>${m.approved_at ? '승인됨' : '<b style="color:#ffb84d;">대기</b>'}</td>
       <td>${(m.last_login_at || '').slice(0, 10) || '—'}</td>
       <td>${esc(m.email || '—')}</td>
-      <td><button class="btn del" data-id="${esc(m.id)}" data-label="${esc(m.name || m.email || '')}" onclick="deleteMember(this.dataset.id, this.dataset.label)">탈퇴</button></td>
-    </tr>`).join('') || '<tr><td colspan="6" style="color:var(--muted);text-align:center;">회원 없음.</td></tr>';
+      <td style="white-space:nowrap;">${m.approved_at ? '' : `<button class="btn" data-id="${esc(m.id)}" onclick="approveMember(this.dataset.id)">승인</button> `}<button class="btn del" data-id="${esc(m.id)}" data-label="${esc(m.name || m.email || '')}" onclick="deleteMember(this.dataset.id, this.dataset.label)">탈퇴</button></td>
+    </tr>`).join('') || '<tr><td colspan="7" style="color:var(--muted);text-align:center;">회원 없음.</td></tr>';
 }
 
+// ── 탈퇴자 ──
+const VIA = { self: '본인', admin: '관리자' };
+function renderWithdrawn() {
+  $('withdrawn-rows').innerHTML = (data.withdrawn || []).map((w) => `
+    <tr>
+      <td>${(w.joined_at || '').slice(0, 10) || '—'}</td>
+      <td>${(w.withdrawn_at || '').slice(0, 10)}</td>
+      <td>${esc(w.name || '—')}</td>
+      <td>${PROV[w.provider] || esc(w.provider || '—')}</td>
+      <td>${VIA[w.via] || esc(w.via || '—')}</td>
+      <td>${esc(w.email || '—')}</td>
+    </tr>`).join('') || '<tr><td colspan="6" style="color:var(--muted);text-align:center;">탈퇴자 없음.</td></tr>';
+}
 
+// ── 가입 승인 ──
+async function approveMember(id) {
+  try {
+    const r = await fetch(FN + '/admin-approve-user', {
+      method: 'POST', headers: { 'content-type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ user_id: id }),
+    });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.error || '승인 실패');
+    await loadData();
+  } catch (e) {
+    alert('승인 실패: ' + e.message);
+  }
+}
+
+// ── 회원 탈퇴 ──
 async function deleteMember(id, label) {
   if (!confirm(`회원 [${label}]을(를) 탈퇴시킬까요?\n즐겨찾기·알림·방문기록이 모두 삭제되며 복구할 수 없습니다.\n카카오·네이버 가입자는 해당 계정 연결도 함께 해제됩니다.`)) return;
   if (!confirm('최종 확인 — 다시 한 번 누르면 탈퇴 처리됩니다.')) return;
@@ -565,7 +624,7 @@ async function deleteMember(id, label) {
   }
 }
 
-
+// ── 차트 ──
 function mk(id, type, labels, values, label, extra) {
   if (typeof Chart === 'undefined') return;
   if (charts[id]) charts[id].destroy();
@@ -586,26 +645,122 @@ function mk(id, type, labels, values, label, extra) {
 }
 function renderCharts() {
   mk('ch-daily', 'line', data.daily.map((d) => d.d.slice(5)), data.daily.map((d) => d.c), '방문자');
+  mk('ch-ad', 'line', (data.adDaily || []).map((d) => d.d.slice(5)), (data.adDaily || []).map((d) => d.c), '노출');
   mk('ch-member', 'line', data.memberDaily.map((d) => d.d.slice(5)), data.memberDaily.map((d) => d.c), '신규가입');
   mk('ch-hour', 'bar', data.hourly.map((h) => h.h + '시'), data.hourly.map((h) => h.c), '방문');
   mk('ch-wd', 'bar', ['월', '화', '수', '목', '금', '토', '일'], data.weekday.map((w) => w.c), '방문');
   const labels = Object.keys(data.byPage).map((k) => (k === 'main' ? '메인(main)' : '부동산(land)'));
   const vals = Object.values(data.byPage);
-  mk('ch-page', 'doughnut', labels, vals, '방문', { backgroundColor: ['#FF7A66', '#D92A14'] }); 
+  mk('ch-page', 'doughnut', labels, vals, '방문', { backgroundColor: ['#FF7A66', '#D92A14'] }); // tokens.css --brand-lt/--brand과 동기
 }
 
-
+// ── CSV 내보내기 ──
 function download(name, text) {
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob(['\uFEFF' + text], { type: 'text/csv;charset=utf-8' }));
   a.download = name; a.click(); URL.revokeObjectURL(a.href);
 }
-
+// 셀이 = + - @ 탭 CR 로 시작하면 ' 를 앞에 붙인다 — 이름·닉네임은 사용자 입력이라 Excel 수식 주입 면적이 된다.
 const csv = (rows) => rows.map((r) => r.map((c) => { const v = c == null ? '' : String(c); return '"' + (/^[=+\-@\t\r]/.test(v) ? "'" + v : v).replace(/"/g, '""') + '"'; }).join(',')).join('\n');
 function exportMembers() {
-  const rows = [['가입일', '이름', '가입 수단', '최종 접속일', '이메일', '약관 동의일']]
-    .concat(data.members.map((m) => [m.joined_at.slice(0, 10), m.name ?? '', PROV[m.provider] || m.provider || '', (m.last_login_at || '').slice(0, 10), m.email ?? '', (m.terms_agreed_at || '').slice(0, 10)]));
+  const rows = [['가입일', '이름', '가입 수단', '상태', '최종 접속일', '이메일', '약관 동의일']]
+    .concat(data.members.map((m) => [m.joined_at.slice(0, 10), m.name ?? '', PROV[m.provider] || m.provider || '', m.approved_at ? '승인됨' : '대기', (m.last_login_at || '').slice(0, 10), m.email ?? '', (m.terms_agreed_at || '').slice(0, 10)]));
   download('회원목록_' + new Date().toISOString().slice(0, 10) + '.csv', csv(rows));
+}
+function exportWithdrawn() {
+  download('탈퇴자_' + new Date().toISOString().slice(0, 10) + '.csv', csv([['가입일', '탈퇴일', '이름', '가입 수단', '경로', '이메일']]
+    .concat((data.withdrawn || []).map((w) => [(w.joined_at || '').slice(0, 10), (w.withdrawn_at || '').slice(0, 10), w.name ?? '', PROV[w.provider] || w.provider || '', VIA[w.via] || w.via || '', w.email ?? '']))));
+}
+
+// ── 광고관리 (2026-10-09 광고 분석 — 등록·노출·클릭·CTR) ──
+const AD_POS = { 'main-top': '메인 상단', 'main-bottom': '메인 하단', 'land-sidebar': '부동산 사이드바', 'land-footer': '부동산 푸터', 'sidebar-left': '좌측 사이드바', 'sidebar-right': '우측 사이드바' };
+const adCtr = (a) => (a.views > 0 ? (a.clicks / a.views * 100).toFixed(1) + '%' : '—');
+function renderAds() {
+  $('ad-list').innerHTML = '<table><thead><tr><th>광고명</th><th>위치</th><th>기간</th><th>상태</th><th>노출</th><th>클릭</th><th>CTR</th><th>광고주</th><th></th></tr></thead><tbody>' +
+    ((data.ads || []).map((a) => `
+    <tr>
+      <td>${esc(a.name || '—')}</td>
+      <td>${AD_POS[a.position] || esc(a.position || '—')}</td>
+      <td>${(a.start_at || '').slice(0, 10) || '—'} ~ ${(a.end_at || '').slice(0, 10) || '—'}</td>
+      <td>${a.active ? '게재중' : '중지'}</td>
+      <td>${(a.views || 0).toLocaleString()}</td>
+      <td>${(a.clicks || 0).toLocaleString()}</td>
+      <td>${adCtr(a)}</td>
+      <td>${esc(a.business_name || '—')}</td>
+      <td style="white-space:nowrap;"><button class="btn" data-id="${a.id}" onclick="showAdForm(this.dataset.id)">수정</button> <button class="btn del" data-id="${a.id}" data-label="${esc(a.name || '')}" onclick="deleteAd(this.dataset.id, this.dataset.label)">삭제</button></td>
+    </tr>`).join('') || '<tr><td colspan="9" style="color:var(--muted);text-align:center;">등록된 광고 없음.</td></tr>') + '</tbody></table>';
+}
+function showAdForm(id) {
+  const a = id ? (data.ads || []).find((x) => String(x.id) === String(id)) : null;
+  $('ad-form-title').textContent = a ? '광고 수정' : '광고 등록';
+  $('ad-form-id').value = a ? a.id : '';
+  $('ad-name').value = a ? a.name || '' : '';
+  $('ad-position').value = a ? a.position || 'land-sidebar' : 'land-sidebar';
+  $('ad-url').value = a ? a.link_url || '' : '';
+  $('ad-img-desktop').value = a ? a.image_desktop || '' : '';
+  $('ad-img-mobile').value = a ? a.image_mobile || '' : '';
+  $('ad-start').value = a && a.start_at ? a.start_at.slice(0, 10) : '';
+  $('ad-end').value = a && a.end_at ? a.end_at.slice(0, 10) : '';
+  $('ad-priority').value = a && a.priority != null ? a.priority : 100;
+  $('ad-bizname').value = a ? a.business_name || '' : '';
+  $('ad-bizno').value = a ? a.business_no || '' : '';
+  $('ad-memo').value = a ? a.memo || '' : '';
+  $('ad-agree').checked = false;
+  document.querySelectorAll('[id^="view-"]').forEach((v) => v.classList.add('hidden'));
+  document.querySelectorAll('.tabs button').forEach((b) => b.classList.remove('on'));
+  $('ad-form-view').classList.remove('hidden');
+}
+function hideAdForm() {
+  $('ad-form-view').classList.add('hidden');
+  showTab('ad');
+}
+async function saveAd() {
+  if (!$('ad-agree').checked) { alert('법령 준수 확인에 체크해 주세요.'); return; }
+  const ad = {
+    id: $('ad-form-id').value || undefined,
+    name: $('ad-name').value.trim(),
+    position: $('ad-position').value,
+    link_url: $('ad-url').value.trim() || null,
+    image_desktop: $('ad-img-desktop').value.trim() || null,
+    image_mobile: $('ad-img-mobile').value.trim() || null,
+    start_at: $('ad-start').value || null,
+    end_at: $('ad-end').value || null,
+    priority: Number($('ad-priority').value) || 100,
+    business_name: $('ad-bizname').value.trim() || null,
+    business_no: $('ad-bizno').value.trim() || null,
+    memo: $('ad-memo').value.trim() || null,
+  };
+  if (!ad.name) { alert('광고명을 입력해 주세요.'); return; }
+  try {
+    const r = await fetch(FN + '/admin-ads', {
+      method: 'POST', headers: { 'content-type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ action: 'save', ad }),
+    });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.error || '저장 실패');
+    hideAdForm();
+    await loadData();
+  } catch (e) {
+    alert('저장 실패: ' + e.message);
+  }
+}
+async function deleteAd(id, label) {
+  if (!confirm(`광고 [${label}]을(를) 삭제할까요?\n노출·클릭 기록도 함께 삭제됩니다.`)) return;
+  try {
+    const r = await fetch(FN + '/admin-ads', {
+      method: 'POST', headers: { 'content-type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ action: 'delete', id: Number(id) }),
+    });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.error || '삭제 실패');
+    await loadData();
+  } catch (e) {
+    alert('삭제 실패: ' + e.message);
+  }
+}
+function exportAds() {
+  download('광고_' + new Date().toISOString().slice(0, 10) + '.csv', csv([['광고명', '위치', '시작일', '종료일', '상태', '노출', '클릭', 'CTR', '광고주', '사업자번호']]
+    .concat((data.ads || []).map((a) => [a.name ?? '', AD_POS[a.position] || a.position || '', (a.start_at || '').slice(0, 10), (a.end_at || '').slice(0, 10), a.active ? '게재중' : '중지', a.views || 0, a.clicks || 0, adCtr(a), a.business_name ?? '', a.business_no ?? '']))));
 }
 function exportStats() {
   const d = new Date().toISOString().slice(0, 10);
@@ -632,13 +787,13 @@ function exportLocations() {
     .concat((data.locations || []).map((l) => [(l.date || '').slice(0, 10), l.time || '', l.ip, l.country, l.region, l.city, l.ua || '', l.email]))));
 }
 
-
-
-
-
-
-
-
+// ── API 기관별 서비스 — 연결된 공공데이터 목록 ──
+// 🔴 이 목록은 **관리자 화면에만** 있다. 사용자 화면(land.html 레이어 패널·팝업)에는 서비스명·기관·op·포털 링크를
+//    그리지 않는다(사용자 결정 2026-10-06 — 출처는 이용약관에만 · LAND_SPEC §1-1·§7-2). land.html 은 종수(UA_SERVICES_N)만 쓴다.
+// 본체는 이 파일(공개 소스)에 없다 — admin-data 함수가 `?catalog=1` 로 **토큰 뒤에서** 내준다(3단계 B).
+//    목록 UA_SERVICES 는 기계 생성(api/OPS.tsv → tools/gen_ua_list.py → supabase/functions/admin-data/ua_catalog.ts),
+//    설명 UA_DETAILS 는 supabase/functions/admin-data/ua_details.ts 에 손으로 적는다.
+// "붙였다" 의 ③ 조건이 이 목록이다(AGENTS.md 규칙 3) — 검사: tools/check_ua_panel.js.
 let catalog = null;
 async function loadApiServices(force) {
   const box = $('api-list');
@@ -665,7 +820,7 @@ async function loadApiServices(force) {
   const rows = [];
   services.forEach(([cat, items]) => items.forEach((it) => {
     const d = byPk[it.pk] || details[it.t];
-    
+    // d.d 는 ua_details.ts 에 손으로 적은 설명문(<b>·<code>·<a> 서식 포함)이라 그대로 그린다. 기계 생성값(it.*)은 esc().
     const name = d && d.d
       ? `<details><summary style="cursor:pointer;">${esc(it.t)}</summary><div style="color:var(--muted);margin:6px 0 2px;line-height:1.55;">${d.d}</div></details>`
       : esc(it.t);
@@ -686,7 +841,7 @@ async function loadApiServices(force) {
     + rows.join('') + '</tbody></table>';
 }
 
-
+// 초기화: 토큰이 있으면 바로 대시보드 / 이메일 링크(?reset=)면 새 비밀번호 화면
 let resetToken = new URLSearchParams(location.search).get('reset') || '';
 (async () => {
   if (resetToken) {
