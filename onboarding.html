@@ -5,8 +5,8 @@
   <link rel="icon" type="image/png" href="favicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>로그인 — 부동산 all in one</title>
-  <link rel="stylesheet" href="css/buttons.css" />
-  <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/buttons.css?v=e298459" />
+  <link rel="stylesheet" href="css/tokens.css?v=e298459" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
     :root {
@@ -29,16 +29,16 @@
     .btn:disabled { opacity:.5; cursor:default; }
     .or { display:flex; align-items:center; gap:10px; color:var(--muted); font-size:12px; margin:16px 0 4px; }
     .or::before, .or::after { content:''; flex:1; border-top:1px solid var(--line); }
-    /* 소셜 버튼 — 브랜드 색을 꽉 채운 큰 버튼, 아이콘은 왼쪽 고정 · 글자는 가운데(2026-10-07 사용자 요청: "이런 식으로 깔끔하게"). */
+    
     .soc { position:relative; width:100%; height:52px; border:none; border-radius:8px; padding:0 56px; margin-top:0; cursor:pointer;
       display:flex; justify-content:center; align-items:center; font:inherit; font-size:16px; font-weight:600; letter-spacing:-.2px; }
-    .soc:not(.hidden) ~ .soc:not(.hidden) { margin-top:10px; }   /* 보이는 버튼 사이만 띄운다(숨긴 버튼이 첫째여도 위 간격이 안 생긴다) */
+    .soc:not(.hidden) ~ .soc:not(.hidden) { margin-top:10px; }   
     #soc-fld { margin-top:6px; }
     .soc .soc-ic { position:absolute; left:20px; top:50%; transform:translateY(-50%); display:flex; }
     .soc .soc-ic svg { width:22px; height:22px; display:block; }
-    .soc.kakao { background:#FEE500; color:rgba(0,0,0,.85); }   /* 카카오 공식 버튼색 · 심볼은 검정 */
-    /* 네이버 BI(developers.naver.com/docs/login/bi · 2026-10-07 확인) — 검수 항목:
-       배경 #03A94D · 로고·글자 #FFF · N 로고에 도형을 겹치지 않는다 · 완성형 N 16px 이상 · 왼쪽 정렬이면 로고 여백 20px. */
+    .soc.kakao { background:#FEE500; color:rgba(0,0,0,.85); }   
+    
+
     .soc.naver { background:#03A94D; color:#fff; }
     .soc.naver .soc-ic svg { width:18px; height:18px; }
     .soc:hover:not(:disabled) { filter:brightness(.97); }
@@ -66,25 +66,17 @@
     .nav-tab { color:var(--muted); padding:6px 10px; border-radius:8px; text-decoration:none; font-size:14px; }
     .nav-tab:hover { background:#f1f3f5; }
     .nav-tab.active { background:var(--accent); color:#fff; }
-    /* 확인·알림 창 — 브라우저 기본 confirm()/alert() 대신(2026-10-07). <dialog> 라 Esc·초점·배경은 브라우저가 맡는다. */
-    #ob-dlg { width:min(360px, calc(100vw - 32px)); box-sizing:border-box; padding:20px; border:1px solid var(--line); border-radius:8px; background:var(--card); color:var(--text); }
-    #ob-dlg::backdrop { background:rgba(0,0,0,.5); }
-    #ob-dlg-msg { margin:0; font-size:14px; line-height:1.6; white-space:pre-line; }
-    #ob-dlg-row { display:flex; gap:8px; }
-    #ob-dlg-row .btn { margin-top:16px; }
-    #ob-dlg-no { background:var(--card); color:var(--text); border:1px solid var(--line); }
-    #ob-dlg-no:hover { background:var(--bg); }
   </style>
 </head>
 <body>
-  <script src="js/ie-guard.js"></script>
+  <script src="js/ie-guard.js?v=e298459"></script>
   <div class="app">
     <div style="display:flex;gap:6px;margin-bottom:18px;">
       <a href="land.html" class="nav-tab">🏙️ 부동산 지도</a>
       <span class="nav-tab active">👤 내 정보</span>
     </div>
 
-    <!-- (A) 로그인/회원가입 -->
+    
     <div id="auth-view">
         <h1>부동산 all in one</h1>
         <p class="sub">경매 상세·관심 동기화를 쓰려면 로그인해 주세요.</p>
@@ -93,12 +85,11 @@
         <p class="notice">회원가입 시 실명이 필수이며, 허가 외 인원은 가입·탈퇴가 적용됩니다.</p>
         <p class="notice" id="terms-notice" style="font-weight:400;"></p>
         <div id="soc-fld">
-          <!-- 브랜드 버튼(인라인 SVG). 네이버는 BI 가이드에 맞췄다(위 CSS 주석 · 문구 변경은 가이드가 허용). LIVE 플래그 전엔 숨는다. -->
+          
           <button type="button" class="soc kakao hidden" id="kakao-btn" aria-label="카카오로 시작하기"><span class="soc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#000" d="M12 3C6.5 3 2 6.4 2 10.6c0 2.7 1.8 5 4.5 6.4l-1 3.7c-.1.3.3.6.6.4l4.3-2.9c.5.1 1 .1 1.6.1 5.5 0 10-3.4 10-7.7S17.5 3 12 3z"/></svg></span>카카오로 시작하기</button>
           <button type="button" class="soc naver hidden" id="naver-btn" aria-label="네이버로 시작하기"><span class="soc-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M16.273 12.845 7.376 0H0v24h7.726V11.156L16.624 24H24V0h-7.727v12.845Z"/></svg></span>네이버로 시작하기</button>
           <div class="or"><span>또는 이메일로</span></div>
         </div>
-        <p class="notice" id="soc-notice" style="font-weight:400;">처음이신가요? 카카오·네이버 버튼을 누르면 가입이 진행됩니다. 이메일 가입은 아래에 입력해 주세요.</p>
         <div id="name-fld" class="hidden">
           <label class="fld">이름 (필수)</label>
           <input type="text" id="name" placeholder="홍길동" autocomplete="name" maxlength="40" />
@@ -142,7 +133,7 @@
       </div>
     </div>
 
-    <!-- (A2) 비밀번호 재설정: 가입한 이메일로 확인 메일 발송 -->
+    
     <div id="reset-view" class="hidden">
       <h1>비밀번호 재설정</h1>
       <p class="sub">가입 시 등록한 이메일로 재설정 링크를 보내드려요.</p>
@@ -155,7 +146,7 @@
       </div>
     </div>
 
-    <!-- (A3) 메일 링크 확인 후 새 비밀번호 설정 -->
+    
     <div id="newpw-view" class="hidden">
       <h1>새 비밀번호 설정</h1>
       <p class="sub">이메일 확인이 완료되었습니다. 새 비밀번호를 입력해 주세요.</p>
@@ -167,51 +158,35 @@
       </div>
     </div>
 
-    <!-- (A4) 승인 대기 — 관리자가 승인하기 전에는 여기서 멈춘다(2026-10-08 가입 승인제) -->
-    <div id="pending-view" class="hidden">
-      <h1>승인 대기 중</h1>
-      <p class="sub">가입 신청이 접수되었습니다. 관리자가 승인하면 이용할 수 있습니다.</p>
-      <div class="card">
-        <button class="btn" id="pending-recheck">승인 상태 다시 확인</button>
-        <div class="msg" id="pending-msg"></div>
-        <div class="switch"><a id="pending-logout">로그아웃</a></div>
-      </div>
-    </div>
-
   </div>
 
-  <dialog id="ob-dlg" aria-labelledby="ob-dlg-msg">
-    <p id="ob-dlg-msg"></p>
-    <div id="ob-dlg-row"><button type="button" class="btn" id="ob-dlg-no">취소</button><button type="button" class="btn" id="ob-dlg-ok">확인</button></div>
-  </dialog>
-
-  <script src="js/common.js"></script>
+  <script src="js/common.js?v=e298459"></script>
   <script>
-    // ── 0) 복귀 처리는 createClient 보다 먼저 — ?code 는 1회용이고 supabase-js 가 보기 전에 주소에서 치운다 ──
+    
     const q0 = new URLSearchParams(location.search);
     const next = q0.get('next') || '';
-    if (next) sessionStorage.setItem('mj_next', next); // 이메일 확인 리다이렉트 후에도 유지
+    if (next) sessionStorage.setItem('mj_next', next); 
     const nv = q0.get('state') ? { code: q0.get('code') || '', state: q0.get('state'), error: q0.get('error') || '' } : null;
     const h0 = new URLSearchParams(location.hash.slice(1));
     const oauthErr = h0.get('error') ? { code: h0.get('error_code') || h0.get('error'), desc: h0.get('error_description') || '' } : null;
     const cancelled = q0.get('cancelled') === '1';
-    const keep = ['kakao', 'naver'].filter((k) => q0.get(k) === '1').map((k) => k + '=1').join('&');   // 실측용 ?kakao=1·?naver=1 은 남긴다
-    if (nv || oauthErr || cancelled) history.replaceState(null, '', location.pathname + (keep ? '?' + keep : ''));   // 성공 해시(#access_token)는 남겨 supabase-js 가 읽게 둔다
-    // 콘솔 설정(카카오: Supabase provider)·검수(네이버: 서비스 적용) 전엔 버튼을 숨긴다 — ?kakao=1 · ?naver=1 로만 보인다(실측·검수 캡처용). 끝나면 true.
-    // 2026-10-07 카카오는 켰다(사용자 승인 — 콘솔·Supabase provider 설정 끝). 네이버는 앱 검수 전이라 테스터만 로그인돼 숨긴다.
-    const LIVE = { kakao: true, naver: true };
+    const keep = ['kakao', 'naver'].filter((k) => q0.get(k) === '1').map((k) => k + '=1').join('&');   
+    if (nv || oauthErr || cancelled) history.replaceState(null, '', location.pathname + (keep ? '?' + keep : ''));   
+    
+    
+    const LIVE = { kakao: true, naver: false };
     if (LIVE.kakao || q0.get('kakao') === '1') $('kakao-btn').classList.remove('hidden');
-    if (LIVE.naver || q0.get('naver') === '1' || nv) $('naver-btn').classList.remove('hidden');   // 네이버 콜백이 왔으면 이 탭에서 시작한 것 — 재시도 버튼을 보인다
-    if (['kakao-btn', 'naver-btn'].every((id) => $(id).classList.contains('hidden'))) $('soc-fld').classList.add('hidden');   // 둘 다 숨기면 '또는' 구분선도 숨긴다
+    if (LIVE.naver || q0.get('naver') === '1' || nv) $('naver-btn').classList.remove('hidden');   
+    if (['kakao-btn', 'naver-btn'].every((id) => $(id).classList.contains('hidden'))) $('soc-fld').classList.add('hidden');   
     const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const TERMS_VERSION = '2026-10-14'; // terms.html '시행일' 과 같아야 한다 — tools/check_terms_version.js 가 잰다
-    // 제3조 사전 공지(7일) — 시행일 전까지만 보인다.
+    const TERMS_VERSION = '2026-10-14'; 
+    
     if (new Date(TERMS_VERSION + 'T00:00:00+09:00') > new Date()) {
       const [y, m, d] = TERMS_VERSION.split('-');
       $('terms-notice').innerHTML = `이용약관·개인정보처리방침이 ${y}년 ${m}월 ${d}일 개정·시행됩니다(소셜 로그인 수집 항목 추가). <a href="terms.html" target="_blank" rel="noopener">내용 보기</a>`;
     } else { $('terms-notice').remove(); }
-    let mode = 'login'; // login | signup | consent
+    let mode = 'login'; 
     const fail = (t) => { const m = $('auth-msg'); m.textContent = t; m.className = 'msg err'; };
     const setBusy = (on, t) => { ['auth-btn', 'kakao-btn', 'naver-btn'].forEach((id) => { $(id).disabled = on; }); if (t) { $('auth-msg').textContent = t; $('auth-msg').className = 'msg'; } };
     const NAVER_MSG = {
@@ -228,26 +203,26 @@
     const kakaoMsg = (e) => e.code === 'access_denied' ? '카카오 로그인을 취소하셨습니다. 다시 하시려면 카카오 로그인 버튼을 눌러 주세요.'
       : /email/i.test(e.desc) ? '카카오 계정의 이메일 제공에 동의해 주셔야 가입하실 수 있습니다. 카카오 로그인을 다시 눌러 이메일 항목에 동의해 주세요.'
       : /multiple accounts/i.test(e.desc) ? '같은 이메일로 가입된 계정이 여러 개 있어 자동으로 연결할 수 없습니다. 이메일로 로그인해 주세요.'
-      : '카카오 로그인에 실패했습니다. 잠시 후 다시 시도해 주세요. (오류: ' + e.code + ')';   // 영문 원문은 숨기고 코드만
+      : '카카오 로그인에 실패했습니다. 잠시 후 다시 시도해 주세요. (오류: ' + e.code + ')';   
 
-    // ── 소셜 버튼 ──
+    
     $('kakao-btn').addEventListener('click', async () => {
       setBusy(true);
       sessionStorage.removeItem('mj_naver_link');
-      sessionStorage.setItem('mj_kakao', '1');   // 복귀 해시의 #error 를 카카오 것으로 읽을 근거 — 비밀번호 재설정·가입 확인 링크도 같은 해시로 돌아온다
+      sessionStorage.setItem('mj_kakao', '1');   
       const { error } = await sb.auth.signInWithOAuth({ provider: 'kakao', options: { redirectTo: location.origin + location.pathname } });
       if (error) { setBusy(false); fail('카카오 로그인을 시작하지 못했습니다. 잠시 후 다시 시도해 주세요.'); }
     });
     function startNaver(reprompt) {
-      sessionStorage.removeItem('mj_naver_link');   // 연결을 시작했다가 그만둔 표식이 이 로그인을 연결로 바꾸지 않게
+      sessionStorage.removeItem('mj_naver_link');   
       const state = crypto.randomUUID();
       sessionStorage.setItem('mj_naver_state', state);
       location.href = SUPABASE_URL + '/functions/v1/naver-login?state=' + state + (reprompt ? '&reprompt=1' : '');
     }
     $('naver-btn').addEventListener('click', () => startNaver(false));
 
-    // ── 네이버 계정 연결(이메일·카카오 회원이 내 정보에서 시작) — 결과는 지도 화면에 한 번 띄운다 ──
-    // 🔴 두 증명이 다 있어야 서버가 잇는다: 이 탭에서 시작한 state + 지금 로그인한 회원 세션(Bearer). 다르면 서버에 보내지도 않는다.
+    
+    
     const LINK_MSG = {
       ok:             '네이버 계정이 연결되었습니다. 이제 네이버 로그인으로도 들어오실 수 있습니다.',
       already:        '이미 이 계정에 연결된 네이버 계정입니다.',
@@ -275,29 +250,13 @@
       back(LINK_MSG[j.error] || NAVER_MSG[j.error] || NAVER_MSG.default);
     }
 
-    // ── 게이트: 가입 수단과 무관하게 첫 로그인 때 약관 3종 동의 + 실명 + 관리자 승인(2026-10-08) ──
+    
     async function afterLogin(user) {
-      const { data: p, error } = await sb.from('profiles').select('name,terms_version,approved_at').eq('id', user.id).maybeSingle();
+      const { data: p, error } = await sb.from('profiles').select('name,terms_version').eq('id', user.id).maybeSingle();
       if (error) return fail('회원 정보를 불러오지 못했습니다. 새로고침해 주세요.');
-      if (p && p.terms_version) {
-        if (p.approved_at) return showOnboarding();
-        return showPending();
-      }
-      showConsent(user.app_metadata?.provider === 'kakao' ? '' : (p?.name || user.user_metadata?.name || ''));   // 닉네임은 실명이 아니다
+      if (p && p.terms_version) return showOnboarding();
+      showConsent(user.app_metadata?.provider === 'kakao' ? '' : (p?.name || user.user_metadata?.name || ''));   
     }
-    // 승인 대기 — 관리자가 승인하면 '다시 확인'을 눌러 들어간다. auth-guard(?pending=1)도 여기로 온다.
-    function showPending() {
-      ['auth-view', 'reset-view', 'newpw-view'].forEach((id) => $(id).classList.add('hidden'));
-      $('pending-view').classList.remove('hidden');
-      $('pending-msg').textContent = '';
-    }
-    $('pending-recheck').addEventListener('click', async () => {
-      const { data: { session } } = await sb.auth.getSession();
-      if (!session) { $('pending-view').classList.add('hidden'); $('auth-view').classList.remove('hidden'); return; }
-      $('pending-msg').textContent = '확인 중…';
-      await afterLogin(session.user);
-    });
-    $('pending-logout').addEventListener('click', async () => { await sb.auth.signOut(); location.reload(); });
     function showConsent(name) {
       mode = 'consent';
       $('auth-title').textContent = '약관 동의';
@@ -307,38 +266,22 @@
       $('name').value = name;
       $('auth-msg').textContent = '서비스를 이용하시려면 약관 동의와 이름 입력이 필요합니다.'; $('auth-msg').className = 'msg';
     }
-    // 확인·알림 창 — 브라우저 기본 confirm()/alert() 대신. 부르는 쪽은 await 한다. Esc 는 취소(false).
-    // 처음 초점은 첫 버튼(취소)이라 Enter 만 눌러서는 가입 취소(계정 삭제)로 가지 않는다. 알림(cancelable=false)은 취소 버튼을 숨겨 확인에 놓인다.
-    function obAsk(msg, okLabel, cancelable) {
-      const d = $('ob-dlg');
-      if (!d.showModal) { if (cancelable) return Promise.resolve(confirm(msg)); alert(msg); return Promise.resolve(true); }   // <dialog> 없는 아주 옛 브라우저
-      return new Promise((resolve) => {
-        $('ob-dlg-msg').textContent = msg;
-        $('ob-dlg-ok').textContent = okLabel || '확인';
-        $('ob-dlg-no').classList.toggle('hidden', !cancelable);
-        const done = (v) => { d.onclose = null; if (d.open) d.close(); resolve(v); };
-        $('ob-dlg-ok').onclick = () => done(true);
-        $('ob-dlg-no').onclick = () => done(false);
-        d.onclose = () => done(false);   // Esc
-        d.showModal();
-      });
-    }
     $('consent-cancel').addEventListener('click', async () => {
-      if (!await obAsk('동의하지 않으시면 계정이 만들어지지 않습니다. 가입을 취소하시겠어요?', '가입 취소', true)) return;
+      if (!confirm('동의하지 않으시면 계정이 만들어지지 않습니다. 가입을 취소하시겠어요?')) return;
       const { data: { session } } = await sb.auth.getSession();
       const r = session && await fetch(SUPABASE_URL + '/functions/v1/delete-account', { method: 'POST', headers: { Authorization: 'Bearer ' + session.access_token, 'Content-Type': 'application/json' } }).catch(() => null);
       if (!r || !r.ok) return fail('가입 취소에 실패했습니다. 잠시 후 다시 시도해 주세요.');
       const j = await r.json().catch(() => ({}));
       await sb.auth.signOut();
-      if (j.unlinked && (j.unlinked.kakao === false || j.unlinked.naver === false)) await obAsk('가입이 취소되었습니다. 소셜 계정 연결 해제는 실패하여, 카카오는 카카오톡 > 설정 > 카카오계정 > 연결된 서비스 관리에서, 네이버는 네이버 > 내정보 > 보안설정 > 외부사이트 연결에서 직접 끊어 주세요.');
-      location.replace(location.pathname + '?cancelled=1' + (keep ? '&' + keep : ''));   // 로그인 모드 + 문구
+      if (j.unlinked && (j.unlinked.kakao === false || j.unlinked.naver === false)) alert('가입이 취소되었습니다. 소셜 계정 연결 해제는 실패하여, 카카오는 카카오톡 > 설정 > 카카오계정 > 연결된 서비스 관리에서, 네이버는 네이버 > 내정보 > 보안설정 > 외부사이트 연결에서 직접 끊어 주세요.');
+      location.replace(location.pathname + '?cancelled=1' + (keep ? '&' + keep : ''));   
     });
 
-    // 로그인 시 이메일 기억 — 매번 아이디 입력 안 하도록 (2026-08-16). 비밀번호는 저장하지 않는다.
+    
     const _savedEmail = localStorage.getItem('mj_last_email');
     if (_savedEmail) $('email').value = _savedEmail;
 
-    // 동의 박스 클릭 → 해당 약관 내용 펼치기(접기) + 자동 체크. '내용 보기' 링크는 새 탭만.
+    
     let termsCache = null;
     async function termContent(sec) {
       if (!termsCache) termsCache = await fetch('terms.html').then((r) => r.text());
@@ -365,7 +308,7 @@
     document.querySelectorAll('.agree-open').forEach((a) =>
       a.addEventListener('click', () => { a.closest('.agree').querySelector('input').checked = true; }));
 
-    // ── 로그인/회원가입 전환 ──
+    
     function bindSwitch() {
       const link = $('auth-switch').querySelector('a');
       if (link) link.addEventListener('click', toggleMode);
@@ -384,7 +327,7 @@
     }
     bindSwitch();
 
-    // ── 로그인/회원가입/약관 동의 실행 ──
+    
     $('auth-btn').addEventListener('click', async () => {
       const email = $('email').value.trim();
       const password = $('password').value;
@@ -414,8 +357,8 @@
       const { data, error } = await fn;
       $('auth-btn').disabled = false;
       if (error) { msg.textContent = error.message; msg.className = 'msg err'; return; }
-      if (!data.session) { // 이메일 확인이 켜져 있는 경우
-        // 이미 가입된 이메일 — 이메일 확인 켜짐 상태의 Supabase 응답 규약 = identities 빈 배열
+      if (!data.session) { 
+        
         if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0)
           return fail('이미 가입된 이메일입니다. 로그인하시거나 "비밀번호를 잊으셨나요?" 를 눌러 주세요.');
         msg.textContent = '가입 확인 메일을 보냈어요. 메일을 확인해 주세요.'; msg.className = 'msg ok'; return;
@@ -424,13 +367,13 @@
       afterLogin(data.user);
     });
 
-    // ── 화면 전환: 로그인·동의가 끝나면 land로. ?next 는 같은 사이트 상대 경로만(열린 리다이렉트 봉합) ──
+    
     function showOnboarding() {
       const nxt = sessionStorage.getItem('mj_next'); sessionStorage.removeItem('mj_next');
       location.href = nxt && /^[\w-]+(\.html)?(\?[^#\s]*)?$/.test(nxt) ? nxt : 'land.html';
     }
 
-    // ── 비밀번호 재설정 (가입한 이메일로 확인 메일 발송) ──
+    
     $('forgot').addEventListener('click', () => {
       $('auth-view').classList.add('hidden');
       $('reset-view').classList.remove('hidden');
@@ -472,11 +415,11 @@
       $('newpw-view').classList.remove('hidden');
     }
 
-    // ── 세션 확인 (새로고침해도 로그인 유지) + 카카오·네이버 복귀 처리 ──
+    
     (async () => {
       if (cancelled) { $('auth-msg').textContent = '가입이 취소되었습니다.'; $('auth-msg').className = 'msg ok'; }
       if (oauthErr) {
-        // 같은 해시(#error=…)로 비밀번호 재설정·가입 확인 링크의 만료도 돌아온다 — 카카오를 눌렀던 탭에서만 카카오 문구.
+        
         const fromKakao = sessionStorage.getItem('mj_kakao') === '1'; sessionStorage.removeItem('mj_kakao');
         if (fromKakao) return fail(kakaoMsg(oauthErr));
         return fail(/otp_expired|otp_disabled/.test(oauthErr.code) ? '링크가 만료되었거나 이미 사용되었습니다. 비밀번호 재설정 또는 가입 확인 메일을 다시 요청해 주세요.'
@@ -485,7 +428,7 @@
       sessionStorage.removeItem('mj_kakao');
       if (nv) {
         const saved = sessionStorage.getItem('mj_naver_state'); sessionStorage.removeItem('mj_naver_state');
-        // 내 정보 '네이버 계정 연결' 에서 시작한 복귀다(land.html startNaverLink). 모드는 주소가 아니라 이 탭의 sessionStorage 로만 정한다.
+        
         const lk = sessionStorage.getItem('mj_naver_link'); sessionStorage.removeItem('mj_naver_link');
         if (lk) return linkNaver(nv, saved, lk);
         if (nv.error) return fail(nv.error === 'access_denied' ? '네이버 로그인을 취소하셨습니다. 다시 하시려면 네이버 로그인 버튼을 눌러 주세요.' : NAVER_MSG.default);
